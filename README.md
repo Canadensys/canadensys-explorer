@@ -5,9 +5,9 @@ Canadensys data portal.
 
 Documentation
 -------------
-Visit our [wiki](wiki)
+Visit our [wiki](https://github.com/Canadensys/canadensys-explorer/wiki)
 
 
-Dependencies
+Sources and Dependencies
 ------------
 coming soon
