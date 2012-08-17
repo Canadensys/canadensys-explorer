@@ -16,6 +16,7 @@ Dependencies
 * [Apache Maven 3](http://maven.apache.org/)
 * [Spring Framework 3.1](http://www.springsource.org/spring-framework)
 * [Canadensys Data Access 1.0](https://github.com/Canadensys/canadensys-data-access)
+* [Freemarker 2.3.18](http://freemarker.sourceforge.net/)
 * ...
 
 Build
