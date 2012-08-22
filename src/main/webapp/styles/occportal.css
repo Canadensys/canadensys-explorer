@@ -1,0 +1,449 @@
+/*-- Containers --*/
+
+#body.full_height { height: 90%!important; /* overwrite default min-height. Don't use for body with variable content. */ }
+
+#view { /* equivalent of #content in other sites */
+	font-size: 1.35em;
+	font-weight: normal;
+	height: 100%; /* old IE only */
+	line-height: 1.5em;
+	margin-right: 396px; /* 360 + 36px */
+	padding: 0 36px;
+	position: relative;
+	text-align: left!important;
+}
+#body > #view {
+	height: auto;
+	min-height: 100%; /* other browsers */
+}
+#view .details, #content .details {
+	color: #666666;
+	margin-top: -12px;
+}
+
+#control {
+	float: right; /* => Not used for other websites, as clear:both in content will push down content below sidebar (cannot be controlled in IPT). */
+	font-size: 1.35em;
+	padding-right: 36px;
+	position: relative;
+	width: 360px;
+}
+
+.nav_container {
+	height: 72px;
+	position: relative;
+}
+.nav_container .buttons {
+	position: absolute;
+	right: 0px;
+	top: 0px;
+}
+
+
+/*-- Table view --*/
+
+#table_wrapper { margin-right: -36px; } /* Any extra pixel will push the table down! */
+
+#results {
+	border: none;
+	border-collapse: collapse;
+	width: 100%;
+}
+#results th, #results td {
+	padding: 3px 6px;
+	vertical-align: top;
+}
+#results tbody tr {
+	cursor: pointer;
+	line-height: 1.7em;
+}
+#results .icon_column { width: 64px; /* 2 icons */ }
+
+.icon_1 { background: url("../images/extra-coordinates-media.png") center left no-repeat; }
+.icon_2 { background: url("../images/extra-coordinates.png") center left no-repeat; }
+.icon_3 { background: url("../images/extra-media.png") center left no-repeat; }
+
+#results .last_column { padding: 0 36px 0 0; }
+
+#results tbody tr:hover { background-color: #e7e7e7; }
+#results tbody tr.selected { background-color: #d3d3d3; }
+#results tbody tr.selected .last_column, #results tbody tr:hover .last_column { background: url("../images/arrow-right.png") top right no-repeat; }
+#results tbody tr.selected:hover .last_column { background: url("../images/arrow-left.png") top right no-repeat; }
+
+
+/* Responsive table: http://filamentgroup.com/lab/responsive_design_approach_for_complex_multicolumn_data_tables/ */
+/* All CSS for the display control box has been removed */
+.enhanced th, .enhanced td { display: none; }
+
+.legacy-ie .enhanced th.view_1, .legacy-ie .enhanced td.view_1 { display: inline; } /* Show view_1 */
+.enhanced th.view_1, .enhanced td.view_1 { display: table-cell; }
+
+@media screen and (min-width: 1400px) { /* Show view_2 */
+.legacy-ie .enhanced th.view_2, .legacy-ie .enhanced td.view_2 { display: inline; }
+.enhanced th.view_2, .enhanced td.view_2 { display: table-cell; }
+}
+
+@media screen and (min-width: 1850px) { /* Show view_3 = Show all */
+.legacy-ie .enhanced th.view_3, .legacy-ie .enhanced td.view_3 { display: inline; }
+.enhanced th.view_3, .enhanced td.view_3 { display: table-cell; }
+}
+
+
+/*-- Map view --*/
+
+#map_canvas {
+	bottom: 18px;
+	height: auto!important;
+	left: 36px;
+	position: absolute;
+	right: 36px;
+	top: 72px; /* for container_header */
+}
+
+
+/*-- Stats view --*/
+
+.stats_group h2 {
+	margin-top: 0;
+	clear: left;
+}
+
+.stats_container { /* table */
+	float: left;
+	width: 360px;
+}
+.stats_container td { padding: 3px; }
+
+.chart_container {
+	float: left;
+	height: 360px;
+	width: 560px;
+}
+.chart_container iframe {
+	margin: 0;
+	height: 360px;
+	width: 560px;
+}
+
+/*-- Side bar --*/
+
+#control_wrapper {
+	position: relative;
+	z-index: 10;
+}
+
+#control_bar {
+	line-height: 1.5em;
+	margin: 0 0 18px;
+	min-height: 360px;
+	padding: 0 18px!important;
+}
+#control_bar ul li { line-height: 1.5em; }
+#control_bar input[type=text] {
+	font-size: 1em;
+	height: 1.8em;
+}
+
+.search_button { /* Mimic black menu */
+	background: linear-gradient(bottom, #0b0b09 20%, #32342b 60%);
+	background: -webkit-linear-gradient(bottom, #0b0b09 20%, #32342b 60%);
+	background: -moz-linear-gradient(bottom, #0b0b09 20%, #32342b 60%);
+	background: -ms-linear-gradient(bottom, #0b0b09 20%, #32342b 60%);
+	background: -o-linear-gradient(bottom, #0b0b09 20%, #32342b 60%);
+	background-color: #22241e;
+	border: none;
+	border-radius: 5px;
+	color: white;
+	cursor: pointer;
+	float: right;
+	font-family: "Tw Cen MT", Arial, Sans-Serif;
+	font-size: 22px;
+	letter-spacing: 0.07em;
+	margin-bottom: 18px;
+	padding: 4px 18px 7px 18px;
+	text-transform: lowercase;
+}
+.search_button[disabled=disabled] {
+	background: #e7e7e7;
+	border: 1px solid #a8a7a5;
+	color: #a8a7a5;
+	cursor: default;
+}
+
+
+/*-- Filter select --*/
+
+#filter_select select { width: 100%; }
+
+/*-- Filter content -- */
+
+#filter_content { margin-bottom: 36px; }
+#filter_content button, #download_content button {
+	float: right;
+	margin-left: 9px;
+}
+.filter_info { background-color: #d3d3d3; }
+
+/*-- Filter single value --*/
+
+#filter_text input[type=text] { width: 318px; } /* text input */
+#filter_text select { width: 100%; }
+
+#partial_match { line-height: 1.5em; }
+#partial_match_value { font-weight: bold; }
+
+#filter_suggestions {
+	background-color: #d3d3d3;
+	margin-top: -18px;
+	min-height: 230px;
+	padding: 0;
+}
+#filter_suggestions table { /* A table */
+	border-collapse: collapse;
+	font-size: 1em;
+	margin-top: 6px;
+	width: 100%;
+}
+#filter_suggestions tr:hover {
+	background: #a82400;
+	color: white;
+	cursor: pointer;
+}
+#filter_suggestions td {
+	padding: 1px 6px; /* Does not work when applied to tr */
+	line-height: 1.5em;
+	vertical-align: top;
+}
+#filter_suggestions td:last-child {
+	text-align: right;
+}
+
+/*-- Filter date / Filter min-max --*/
+
+#filter_date label, #filter_minmax label, #download_content label {
+	display: block;
+	font-weight: bold;
+	padding-bottom: 6px;
+}
+#filter_date label.hidden, #filter_minmax label.hidden { display: none!important; }
+#filter_date .error, #filter_minmax .error { border-color: red; }
+
+#date_start, #interval_min { float: left; }
+#date_end, #interval_max { float: right; }
+
+.validationYear { width: 48px; }
+.validationMonth { width: 36px; }
+.validationDay { width: 36px; }
+.validationNumber { width: 140px; }
+
+/*-- Filter current --*/
+
+#filter_current {
+	list-style: none;
+	padding: 0;
+}
+
+#filter_current li {
+	line-height: 1.5em;
+	position: relative;
+}
+#filter_current .filter { /* Parent */
+	background-color: #d3d3d3;
+	font-weight: bold;
+	margin-bottom: 18px;
+}
+#filter_current li ul { /* Child-group */
+	font-weight: normal;
+	padding: 3px 18px 0 0; /* Leave 18px for delete button */
+}
+#filter_current span {
+	color: #707070;
+	font-size: 12px;
+	padding-left: 6px;
+}
+#filter_current .delete {
+	background: url("../images/delete.png") top right no-repeat;
+	cursor: pointer;
+	position: absolute;
+	font-size: 0;
+	height: 16px;
+	padding: 0;
+	top: 0;
+	right: -18px; /* Space reserved for delete button */
+	width: 16px;
+
+}
+#filter_current .delete:hover {
+	transform: rotate(90deg);
+	-webkit-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
+	-o-transform: rotate(90deg);
+}
+
+
+/*-- Download --*/
+
+#download_content input[type=text] { width: 318px; } /* Some general components are declared under filters */
+
+
+/*-- Occurrence preview --*/
+
+#occ_preview {
+	background-color: white;
+	border: 1px solid #a8a7a5;
+	border-radius: 0 5px 5px 0;
+	box-shadow: 1px 1px 2px #a8a7a5;
+	display: none;
+	min-height: 600px;
+	position: absolute;
+/*	right: 44px; /* Not setting left or right seems to work too */
+	top: 0;
+	width: 350px;
+	z-index: 30;
+}
+#occ_preview.fixed {
+	margin-top: 36px;
+	position: fixed;
+}
+@media screen and (max-height: 672px) { #occ_preview.fixed { position: absolute; } } /* Switch back to absolute position for small screens */
+
+#occ_preview_control {
+	background-color: #e7e7e7;
+	border-bottom: 1px solid #a8a7a5;
+	border-top-right-radius: 5px;
+	font-size: 12px;
+	padding: 3px 9px;
+	text-align: right;
+}
+
+#occ_preview_control span { color: #666666; }
+#occ_preview_control span:hover {
+	color: #22241e;
+	cursor: pointer;
+	text-decoration: none;
+}
+#occ_preview_content { padding: 9px 9px 9px 18px; }
+#occ_preview_content h2 {
+	font-size: 18px;
+	margin-top: 0;
+}
+#occ_preview_content dl {
+	margin: 0 0 18px 0;
+	padding: 0;
+}
+
+.occ_preview_classification, .occ_preview_links {
+	color: #666666;
+	font-size: 12px;
+}
+
+.occ_preview_classification dt, .occ_preview_classification dd {
+	display: inline;
+	margin: 0;
+}
+.occ_preview_classification dd span {
+	color: #22241e;
+	font-weight: bold;
+}
+.occ_preview_classification dd:after { content: " \203A "; }
+.occ_preview_classification dd:last-child:after { content: ""; }
+
+.occ_preview_data dt {
+	clear: both;
+	float: left;
+	font-weight: bold;
+	margin-right: 18px;
+	padding: 3px 0;
+	width: 33%;
+}
+.occ_preview_data dd {
+	float: right;
+	margin: 0;
+	padding: 3px 0;
+	width: 60%;
+}
+
+#occ_preview_media img {
+	border: none;
+	max-width: 32%;
+	max-height: 120px;
+	padding: 0 3px 3px 0;
+}
+
+
+/*-- Occurrence page -- */
+
+#occpage_navigation .buttons { left: 0; } /* #occpage_navigation extends .nav_container */
+
+#occpage_map, #occpage_media a { /* Size: 298x298 + padding + border = 300x300 */
+	border: 1px solid #a8a7a5;
+	background-color: #e7e7e7;
+	display: block;
+	height: 298px;
+	margin-bottom: 18px;
+	padding: 0px;
+	text-align: center;
+	width: 298px;
+}
+#occpage_map span { display: none; }
+#occpage_map.no_geo span { display: inline; }
+#occpage_map.no_geo {
+	background-color: #d3d3d3;
+	color: #666666;
+	display: table-cell;
+	vertical-align: middle;
+}
+#occpage_media a:hover {
+	background-color: #d3d3d3;
+}
+#occpage_media span {
+	display: table-cell; /* Necessary for vertical-align */
+	vertical-align: middle;
+	width: 298px;
+	height: 298px;
+}
+#occpage_media img {
+	border: none;
+	max-height: 298px;
+	max-width: 298px;
+}
+
+.occpage_group tbody { border-bottom: 18px solid transparent; } /* Neither padding/margin works */
+.occpage_group td, .occpage_group th { padding: 3px 6px; }
+.occpage_group th { 
+	padding-left: 0;
+	width: 180px;
+}
+.occpage_group .remark {
+	color: #666666;
+	display: block;
+}
+
+
+/*-- Occurrence dwc page --*/
+
+#dwc_table_toggle {
+	padding: 12px 6px;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+#dwc_table {
+	table-layout: fixed; /* This, in combination with break-word, avoids the table to break out its 100% for long unbreakable content, like urls. */
+}
+#dwc_table td, #dwc_table th {
+	padding: 3px 6px;
+	word-wrap: break-word;
+}
+#dwc_table td { border: 1px solid #a8a7a5; }
+#dwc_table td:first-child, #dwc_table th:first-child { width: 60px; }
+#dwc_table td:nth-child(2), #dwc_table th:nth-child(2) { width: 120px; }
+
+#dwc_table tr.unused, #dwc_table td.unused {
+	background-color: #e7e7e7;
+	color: #666666;
+}
+#dwc_table tr.unused a { color: #666666; }
+#dwc_table tr.unused { display: none; }
