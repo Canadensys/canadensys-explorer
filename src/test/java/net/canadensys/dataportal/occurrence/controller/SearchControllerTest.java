@@ -23,9 +23,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 /**
- * Testing the controller routing and make sure URLs are working.
- * 
- * 
+ * Testing the Search controller routing and make sure URLs are working.
  * @author canadensys
  *
  */
@@ -41,9 +39,6 @@ public class SearchControllerTest extends AbstractTransactionalJUnit4SpringConte
     private RequestMappingHandlerMapping handlerMapping;
     
     private JdbcTemplate jdbcTemplate;
-
-	private MockHttpServletRequest request;
-	private MockHttpServletResponse response;
 	
     @Autowired
     public void setDataSource(DataSource dataSource) {
@@ -52,9 +47,6 @@ public class SearchControllerTest extends AbstractTransactionalJUnit4SpringConte
 	
     @Before
     public void setup() {
-    	request = new MockHttpServletRequest();
-		response = new MockHttpServletResponse();
-       
 		//make sure the table is empty
 		jdbcTemplate.update("DELETE FROM unique_values");
 		//add controlled rows
@@ -71,6 +63,7 @@ public class SearchControllerTest extends AbstractTransactionalJUnit4SpringConte
 
     @Test
     public void testSearch() throws Exception {
+    	MockHttpServletResponse response = new MockHttpServletResponse();
     	MockHttpServletRequest request = new MockHttpServletRequest();
     	request.setMethod("GET");
     	request.setRequestURI("/search");
@@ -103,6 +96,7 @@ public class SearchControllerTest extends AbstractTransactionalJUnit4SpringConte
     
     @Test
     public void testLiveSearch() throws Exception {
+    	MockHttpServletResponse response = new MockHttpServletResponse();
     	MockHttpServletRequest request = new MockHttpServletRequest();
     	request.setMethod("GET");
     	request.setRequestURI("/livesearch");
@@ -118,6 +112,7 @@ public class SearchControllerTest extends AbstractTransactionalJUnit4SpringConte
     public void testGetPossiblevalues() throws Exception{
     	//need to take a Searchable Field that support this feature (getAllPossibleValues)
     	MockHttpServletRequest request = new MockHttpServletRequest();
+    	MockHttpServletResponse response = new MockHttpServletResponse();
     	request.setMethod("GET");
     	request.setRequestURI("/getpossiblevalues");
     	request.addParameter("fieldId", "8");
@@ -132,6 +127,7 @@ public class SearchControllerTest extends AbstractTransactionalJUnit4SpringConte
     @Test
     public void testStatisticsURL() throws Exception{
     	MockHttpServletRequest request = new MockHttpServletRequest();
+    	MockHttpServletResponse response = new MockHttpServletResponse();
     	request.setMethod("GET");
     	request.setRequestURI("/stats/unique/1");
     	Object handler = handlerMapping.getHandler(request).getHandler();
