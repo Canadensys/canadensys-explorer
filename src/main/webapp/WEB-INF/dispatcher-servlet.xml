@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	http://www.springframework.org/schema/task
+	http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+
+	<context:component-scan base-package="net.canadensys.dataportal.occurrence"/>
+	
+	<!-- use to return JSON -->
+	<mvc:annotation-driven/>
+	
+	<!-- use for async annotation -->
+	<task:annotation-driven executor="executor"/>
+	<task:executor id="executor" pool-size="3"/>
+	
+	<tx:annotation-driven transaction-manager="hibernateTransactionManager"/>
+
+	<!-- Handles GET requests for static content  --> 
+	<mvc:resources mapping="/js/**" location="/js/" />
+	<mvc:resources mapping="/styles/**" location="/styles/" />
+	<mvc:resources mapping="/images/**" location="/images/" />
+	<mvc:resources mapping="/leaflet/**" location="/leaflet/" />
+	<mvc:resources mapping="/download/**" location="/download/" />
+	<mvc:resources mapping="/error.html" location="/error.html" />
+	
+	<!-- Application configuration -->
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="/WEB-INF/portal-config.properties"/>
+	</bean>
+	<bean id="searchServiceConfig" class="net.canadensys.dataportal.occurrence.search.config.SearchServiceConfig">
+		<property name="generatedContentFolder" value="${searchServiceConfig.generatedContentFolder}"/>
+		<property name="publicDownloadURL" value="${searchServiceConfig.publicDownloadURL}"/>
+	</bean>
+	
+	<!-- Locale/language configuration -->
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+		<property name="defaultLocale" value="en" />
+	</bean>
+	<mvc:interceptors>
+    	<!-- Changes the locale when a 'lang' request parameter is sent; e.g. /?lang=fr -->
+    	<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+    		<property name="paramName" value="lang"></property>
+    	</bean>
+	</mvc:interceptors>
+	
+	<!-- Freemarker config -->
+	<bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+  		<property name="templateLoaderPath" value="/WEB-INF/view/"/>
+	</bean>
+
+	<bean id="occurrencePortalConfig" class="net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig">
+		<property name="rootURL" value="${url.rootURL}" />
+		<property name="googleAnalyticsSiteVerification" value="${googleanalytics.siteVerification}"/>
+		<property name="googleAnalyticsAccount" value="${googleanalytics.account}" />
+		<property name="dwcaTermUsed" value="${dwca.termUsed}" />
+	</bean>
+	
+	<bean id ="mapServerAccess" class="net.canadensys.dataportal.occurrence.map.impl.WindshaftMapServerAccess">
+		<property name="tableUsed" value="occurrence"/>
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<!-- Hibernate config -->
+	<bean id="dataSource"
+		class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${database.driver}" />
+        <property name="jdbcUrl" value="${database.url}" />
+        <property name="user" value="${database.user}" />
+        <property name="password" value="${database.password}" />
+        <property name="idleConnectionTestPeriod" value="${database.idleConnectionTestPeriod}"/>
+	</bean>
+	
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="annotatedClasses">
+			<list>
+				<value>net.canadensys.dataportal.occurrence.model.UniqueValuesModel</value>
+				<value>net.canadensys.dataportal.occurrence.model.OccurrenceModel</value>
+				<value>net.canadensys.dataportal.occurrence.model.OccurrenceRawModel</value>
+				<value>net.canadensys.dataportal.occurrence.model.DownloadLogModel</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.jdbc.fetch_size">1000</prop>	
+			</props>
+		</property>
+	</bean>
+	<bean id="hibernateTransactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="templateMailSender" class="net.canadensys.mail.TemplateMailSender">
+		<property name="mailSender" ref="mailSender" />
+		<property name="freemarkerConfig" ref="freemarkerMailConfiguration" />
+		<property name="from" value="${searchServiceConfig.emailFrom}" />
+	</bean>
+	
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${email.smtpServer}" />
+		<property name="port" value="${email.port}" />
+	</bean>
+	
+	<bean id="freemarkerMailConfiguration" class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
+		<property name="templateLoaderPath" value="/WEB-INF/email/" />
+	</bean>
+		
+	<!-- Warning, those 2 ViewResolver are based on UrlBasedViewResolver. That means that the
+	 JSP must be in a separate folder than the ftl otherwise, 2 files with jsp and ftl extensions will
+	 always be resolved as the first ViewResolver : FreeMarker-->
+	<bean id="freeMarkerViewResolver" 
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+	  <property name="cache" value="true"/>
+	  <property name="prefix" value=""/>
+	  <property name="suffix" value=".ftl"/>
+	  <property name="contentType" value="text/html;charset=UTF-8"/>
+	</bean>
+	
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix">
+			<value>/WEB-INF/view/jsp/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+	</bean>
+</beans>
