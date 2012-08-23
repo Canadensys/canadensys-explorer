@@ -7,18 +7,33 @@ Documentation
 -------------
 Visit our [wiki](https://github.com/Canadensys/canadensys-explorer/wiki)
 
-Sources
--------
-More files are added each week but we still need some time until the whole project is moved to GitHub.
-
 Dependencies
 ------------
+### Softwares
+* [Apache Server 2.2](http://httpd.apache.org/)
+* [Tomcat 6](http://tomcat.apache.org/)
+* [Postgresql 9.1](http://www.postgresql.org/)
+* [Windshaft](https://github.com/Vizzuality/Windshaft)
+
+### Libraries
 * [Apache Maven 3](http://maven.apache.org/)
 * [Spring Framework 3.1](http://www.springsource.org/spring-framework)
 * [Canadensys Data Access 1.0](https://github.com/Canadensys/canadensys-data-access)
+* [Hibernate 4.0](http://www.hibernate.org/)
 * [Freemarker 2.3.18](http://freemarker.sourceforge.net/)
-* ...
+
+* [H2 Database 1.3.163](http://www.h2database.com) (for unit testing only)
 
 Build
 -----
-This project cannot be built for the moment.
+```
+mvn clean package
+```
+
+Tests
+-----
+Unit tests
+
+```
+mvn test
+```

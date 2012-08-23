@@ -24,7 +24,7 @@ public class OccurrenceSearchableFieldLanguageSupport {
 	private static final String CHART_PREFIX = "view.stats.chart.";
 	
 	/**
-	 * This is used for dynamic component only. It doesn't contain all the resources.
+	 * This is used for dynamic components only. It doesn't contain all the resources.
 	 * Contains language string for operators, filters, download and stats components.
 	 * @param locale
 	 * @return
