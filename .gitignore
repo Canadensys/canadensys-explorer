@@ -1,5 +1,6 @@
 # Ignore specific files
 portal-config.properties
+log4j.properties
 .DS_Store
 
 *.jar
