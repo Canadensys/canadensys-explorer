@@ -11,3 +11,5 @@ log4j.properties
 
 bin/**/*
 target/**/*
+build/**/*
+.gradle/**/*
