@@ -37,5 +37,3 @@ Unit tests
 ```
 mvn test
 ```
-
-dev branch
