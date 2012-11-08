@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig;
 import net.canadensys.dataportal.occurrence.search.parameter.SearchURLHelper;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -46,6 +47,13 @@ public class ControllerHelper {
 			modelRoot.put("gaAccount", appConfig.getGoogleAnalyticsAccount());
 			modelRoot.put("gaSiteVerification", appConfig.getGoogleAnalyticsSiteVerification());
 		}
+		
+		//Are we using versioning?
+		if(!StringUtils.isBlank(appConfig.getCurrentVersion())){
+			modelRoot.put("currentVersion", appConfig.getCurrentVersion());
+		}
+		//Are we using minified files?
+		modelRoot.put("useMinified", BooleanUtils.toBoolean(appConfig.getUseMinified()));
 		
 		//Root URL of the web page
 		if(!StringUtils.isBlank(appConfig.getRootURL())){

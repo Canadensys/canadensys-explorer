@@ -13,4 +13,5 @@ build.gradle
 bin/**/*
 target/**/*
 build/**/*
+config/**/*
 .gradle/**/*

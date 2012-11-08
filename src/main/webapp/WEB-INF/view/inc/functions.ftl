@@ -32,3 +32,17 @@
 	</#if>
   <#return value>
 </#function>
+
+ <#function formatFileInclude fileName version useMinified ext>
+ 	<#if useMinified?has_content && useMinified>
+		<#local ext=".min"+ext>
+	</#if>
+	
+ 	<#if version?has_content>
+		<#local formatted=fileName+"-"+version+ext>
+	<#else>
+		<#local formatted=fileName+ext>
+	</#if>
+	
+	<#return formatted>
+ </#function>

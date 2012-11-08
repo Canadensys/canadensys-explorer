@@ -39,8 +39,14 @@
 	
 	<!-- Application configuration -->
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location" value="/WEB-INF/portal-config.properties"/>
+		<property name="locations">
+			<list>
+				<value>/WEB-INF/portal-config.properties</value>
+				<value>/WEB-INF/version.properties</value>
+			</list>
+		</property>
 	</bean>
+	
 	<bean id="searchServiceConfig" class="net.canadensys.dataportal.occurrence.search.config.SearchServiceConfig">
 		<property name="generatedContentFolder" value="${searchServiceConfig.generatedContentFolder}"/>
 		<property name="publicDownloadURL" value="${searchServiceConfig.publicDownloadURL}"/>
@@ -64,6 +70,7 @@
 
 	<bean id="occurrencePortalConfig" class="net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig">
 		<property name="rootURL" value="${url.rootURL}" />
+		<property name="currentVersion" value="${version.current}" />
 		<property name="googleAnalyticsSiteVerification" value="${googleanalytics.siteVerification}"/>
 		<property name="googleAnalyticsAccount" value="${googleanalytics.account}" />
 		<property name="dwcaTermUsed" value="${dwca.termUsed}" />
