@@ -1,7 +1,20 @@
 <!DOCTYPE html>
 <html>
 <#include "inc/functions.ftl">
-<#assign javaScriptIncludeList = ["js/chart.js","js/occurrence-portal.js","js/stats-backbone.js"]>
+
+<#assign javaScriptIncludeList = [
+"http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js",
+"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js",
+"js/lib/json2.js",
+"https://www.google.com/jsapi",
+"js/lib/underscore-min.js",
+"js/lib/backbone-min.js",
+"js/${formatFileInclude(\"occurrence-utils\",root.currentVersion?if_exists,root.useMinified,\".js\")}",
+"js/${formatFileInclude(\"occurrence-backbone\",root.currentVersion?if_exists,root.useMinified,\".js\")}",
+"js/${formatFileInclude(\"chart\",root.currentVersion?if_exists,root.useMinified,\".js\")}",
+"js/${formatFileInclude(\"occurrence-portal\",root.currentVersion?if_exists,root.useMinified,\".js\")}",
+"js/${formatFileInclude(\"stats-backbone\",root.currentVersion?if_exists,root.useMinified,\".js\")}"]>
+
 <#assign javaScriptSetupCallList = []>
 <#include "inc/header.ftl">
 <body>
@@ -62,10 +75,6 @@
 		</script>
 	</div>
 </div><#-- body -->
-
-<#assign javaScriptIncludeList = ["http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js",
-"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js","js/lib/json2.js","https://www.google.com/jsapi","js/lib/underscore-min.js","js/lib/backbone-min.js","js/occurrence-utils.js","js/occurrence-backbone.js"]+javaScriptIncludeList>
-
 <#assign javaScriptSetupCallList = javaScriptSetupCallList + [
 "occurrenceStats.initStatsView(searchAndFilter.getInitialFilterParamMap())",
 "occurrenceStats.loadFieldUniqueCount(${root.availableFilters.kingdom},\"${ltext(\"view.stats.kingdom\")}\",'classification')",

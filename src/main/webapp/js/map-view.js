@@ -103,10 +103,10 @@ var occurrenceMap  = (function($){
 		  tiler_domain:'tiles.canadensys.net',
 		  featureOver: function(ev, latlng, pos, data) {
 	          map.setOptions({draggableCursor: 'pointer'});
-	        },
+	      },
 	      featureOut: function() {
 	          map.setOptions({draggableCursor: 'default'});
-	      },
+	      }
 		});
 	
 		function onMapClick(ev, latlng, pos, data) {

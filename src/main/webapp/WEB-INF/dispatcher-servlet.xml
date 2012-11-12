@@ -71,6 +71,7 @@
 	<bean id="occurrencePortalConfig" class="net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig">
 		<property name="rootURL" value="${url.rootURL}" />
 		<property name="currentVersion" value="${version.current}" />
+		<property name="useMinified" value="${url.useMinified}" />
 		<property name="googleAnalyticsSiteVerification" value="${googleanalytics.siteVerification}"/>
 		<property name="googleAnalyticsAccount" value="${googleanalytics.account}" />
 		<property name="dwcaTermUsed" value="${dwca.termUsed}" />

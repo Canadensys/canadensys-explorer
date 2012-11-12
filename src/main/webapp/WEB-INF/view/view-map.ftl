@@ -3,7 +3,20 @@
 <#include "inc/functions.ftl">
 <#assign cssList =["http://code.google.com/apis/maps/documentation/javascript/examples/default.css","styles/cartodb_gv3.css"]>
 
-<#assign javaScriptIncludeList = ["http://maps.googleapis.com/maps/api/js?sensor=false","js/lib/wax.g.min-6.2.0-touched.js","js/lib/cartodb-gmapsv3-min.js","js/occurrence-portal.js","js/map-view.js"]>
+<#assign javaScriptIncludeList = [
+"http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js",
+"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js",
+"js/lib/json2.js",
+"js/lib/underscore-min.js",
+"js/lib/backbone-min.js",
+"js/${formatFileInclude(\"occurrence-utils\",root.currentVersion?if_exists,root.useMinified,\".js\")}",
+"js/${formatFileInclude(\"occurrence-backbone\",root.currentVersion?if_exists,root.useMinified,\".js\")}",
+"http://maps.googleapis.com/maps/api/js?sensor=false",
+"js/lib/wax.g.min-6.2.0-touched.js",
+"js/lib/cartodb-gmapsv3-min.js",
+"js/${formatFileInclude(\"occurrence-portal\",root.currentVersion?if_exists,root.useMinified,\".js\")}",
+"js/${formatFileInclude(\"map-view\",root.currentVersion?if_exists,root.useMinified,\".js\")}"]>
+
 <#assign javaScriptSetupCallList = []>
 <#include "inc/header.ftl">
 <body>
@@ -29,11 +42,7 @@
 		</div>
 	</div>
 </div><#-- body -->
-
-<#assign javaScriptIncludeList = ["http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js",
-"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js","js/lib/json2.js","js/lib/underscore-min.js","js/lib/backbone-min.js","js/occurrence-utils.js","js/occurrence-backbone.js"]+javaScriptIncludeList>
 <#assign javaScriptSetupCallList = javaScriptSetupCallList + ["occurrenceMap.setupMap('occ_preview','map_canvas',\"${root.embeddedMapQuery}\")"]>
-
 <#include "inc/footer.ftl">
 </body>
 </html>

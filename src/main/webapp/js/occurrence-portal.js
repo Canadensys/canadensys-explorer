@@ -246,14 +246,14 @@ var occurrenceDetails  = (function($){
 		});
 	}
 	
-	function setupSingleOccurrenceMap(mapCanvasId,lat,long,uncertainty) {
+	function setupSingleOccurrenceMap(mapCanvasId,lat,lng,uncertainty) {
 		
-		if(!lat || !long){
+		if(!lat || !lng){
 			$('#'+mapCanvasId).addClass('no_geo');
 			return;
 		}
 		
-		var latlng = new google.maps.LatLng(lat,long);
+		var latlng = new google.maps.LatLng(lat,lng);
 		var map = new google.maps.Map(document.getElementById(mapCanvasId), {
 		  center: latlng,
 		  zoom: 12,

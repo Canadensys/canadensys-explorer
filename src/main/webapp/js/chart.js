@@ -26,7 +26,7 @@ var canadensysChart = (function($){
 				title: this.title,
 		  	    width: 560,
 		  	    height: 360,
-		  	    bar:{groupWidth:'98%'},
+		  	    bar:{groupWidth:'98%'}
 	  	    };
 			
 			if(this.googleChartOptions){

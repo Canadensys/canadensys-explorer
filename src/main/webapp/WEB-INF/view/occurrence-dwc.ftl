@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html>
 <#include "inc/functions.ftl">
-<#assign javaScriptIncludeList = ["https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js","${root.rootURL?if_exists}js/occurrence-portal.js","${root.rootURL?if_exists}js/lib/sorttable.js"]>
+<#assign javaScriptIncludeList = [
+"https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js",
+"${root.rootURL?if_exists}js/${formatFileInclude(\"occurrence-portal\",root.currentVersion?if_exists,root.useMinified,\".js\")}",
+"${root.rootURL?if_exists}js/lib/sorttable.js"]>
+
 <#assign javaScriptSetupCallList = []>
 <#include "inc/header.ftl">
 <body>

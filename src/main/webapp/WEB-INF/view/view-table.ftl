@@ -1,7 +1,20 @@
 <!DOCTYPE html>
 <html>
 <#include "inc/functions.ftl">
-<#assign javaScriptIncludeList = ["js/occurrence-portal.js","js/lib/rwd-table.js","js/lib/respond.js"]>
+
+<#assign javaScriptIncludeList = [
+"http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js",
+"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js",
+"js/lib/json2.js",
+"js/lib/underscore-min.js",
+"js/lib/backbone-min.js",
+"js/lib/sorttable.js",
+"js/${formatFileInclude(\"occurrence-utils\",root.currentVersion?if_exists,root.useMinified,\".js\")}",
+"js/${formatFileInclude(\"occurrence-backbone\",root.currentVersion?if_exists,root.useMinified,\".js\")}",
+"js/${formatFileInclude(\"occurrence-portal\",root.currentVersion?if_exists,root.useMinified,\".js\")}",
+"js/lib/rwd-table.js",
+"js/lib/respond.js"]>
+
 <#assign javaScriptSetupCallList = []>
 <#include "inc/header.ftl">
 <body>
@@ -72,11 +85,7 @@
 		</div><#-- table_wrapper -->
 	</div>
 </div><#-- body -->
-
-<#assign javaScriptIncludeList = ["https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js",
-"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js","js/lib/json2.js","js/lib/underscore-min.js","js/lib/backbone-min.js","js/lib/sorttable.js","js/occurrence-utils.js","js/occurrence-backbone.js"]+javaScriptIncludeList>
 <#assign javaScriptSetupCallList = javaScriptSetupCallList + ["occurrenceControl.restoreDisplay()"]>
-
 <#include "inc/footer.ftl">
 </body>
 </html>
