@@ -59,7 +59,7 @@ var occurrencePreview = (function($){
 		var $viewSourceRecordLink = $('#viewsourcerecord', $occPreviewLinks);
 		var $viewFullRecordLink = $('#viewfullrecord', $occPreviewLinks);
 		
-		$viewFullRecordLink.attr('href', 'd/'+json['sourcefileid']+'/'+json['occurrenceid']);
+		$viewFullRecordLink.attr('href', 'd/'+json['sourcefileid']+'/'+json['dwcaid']);
 		
 		if(json['_references']){
 			$viewSourceRecordLink.attr('href', json['_references']);

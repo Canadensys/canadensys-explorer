@@ -51,8 +51,8 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
 		//make sure the tables are empty
 		jdbcTemplate.update("DELETE FROM occurrence");
 		jdbcTemplate.update("DELETE FROM occurrence_raw");
-		jdbcTemplate.update("INSERT INTO occurrence_raw (auto_id,occurrenceid,country,locality,sourcefileid) VALUES (1,'2','Mexico','Mexico','uom-occurrence')");
-		jdbcTemplate.update("INSERT INTO occurrence (auto_id,occurrenceid,country,locality,sourcefileid,syear,smonth,sday) VALUES (1,'2','Mexico','Mexico','uom-occurrence',2001,03,21)");
+		jdbcTemplate.update("INSERT INTO occurrence_raw (auto_id,dwcaId,country,locality,sourcefileid) VALUES (1,'2','Mexico','Mexico','uom-occurrence')");
+		jdbcTemplate.update("INSERT INTO occurrence (auto_id,dwcaId,country,locality,sourcefileid,syear,smonth,sday) VALUES (1,'2','Mexico','Mexico','uom-occurrence',2001,03,21)");
     }
 
     @Test
@@ -68,7 +68,7 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
     }
 
     @Test
-    public void testOccurrenURL() throws Exception {
+    public void testOccurrenceURL() throws Exception {
     	MockHttpServletResponse response = new MockHttpServletResponse();
     	MockHttpServletRequest request = new MockHttpServletRequest();
     	request.setMethod("GET");

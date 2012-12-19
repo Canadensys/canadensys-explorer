@@ -20,7 +20,7 @@
 		</div>
 		<div id="content" class="clear_fix">
 			<h1>${root.occModel.scientificname?if_exists} (${root.occModel.collectioncode?if_exists} ${root.occModel.catalognumber?if_exists})</h1>
-			<p class="details">${ltext("occpage.header.details")}: ${root.occModel.sourcefileid?if_exists}/${root.occModel.occurrenceid?if_exists}</p>
+			<p class="details">${ltext("occpage.header.details")}: ${root.occModel.sourcefileid?if_exists}/${root.occModel.dwcaid?if_exists}</p>
 			<div class="nav_container" id="occpage_navigation">
 				<ul class="buttons">
 					<li><a href="?view=normal">${ltext("occpage.header.button.normal")}</a></li>

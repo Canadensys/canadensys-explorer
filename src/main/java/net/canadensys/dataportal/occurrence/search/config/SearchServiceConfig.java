@@ -97,7 +97,7 @@ public class SearchServiceConfig {
 		OCCURENCE_SUMMARY_FIELDS.add("rawscientificname");
 		OCCURENCE_SUMMARY_FIELDS.add("_references");
 		OCCURENCE_SUMMARY_FIELDS.add("sourcefileid");
-		OCCURENCE_SUMMARY_FIELDS.add("occurrenceid");
+		OCCURENCE_SUMMARY_FIELDS.add("dwcaid");
 	}
 	
 	public SearchServiceConfig(){

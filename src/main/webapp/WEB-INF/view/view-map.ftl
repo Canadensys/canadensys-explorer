@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <#include "inc/functions.ftl">
-<#assign cssList =["http://code.google.com/apis/maps/documentation/javascript/examples/default.css","styles/cartodb_gv3.css"]>
+<#assign cssList =["http://code.google.com/apis/maps/documentation/javascript/examples/default.css"]>
 
 <#assign javaScriptIncludeList = [
 "http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js",

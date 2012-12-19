@@ -67,13 +67,13 @@ public class OccurrenceController {
 	/**
 	 * Occurrence page
 	 * @param dataset
-	 * @param occurrenceId
+	 * @param dwcaId
 	 * @param request needs to get some parameters and Locale
 	 * @return
 	 */
-	@RequestMapping(value="/d/{dataset}/{occurrenceId}", method=RequestMethod.GET)
-	public ModelAndView handleOccurrence(@PathVariable String dataset,@PathVariable String occurrenceId, HttpServletRequest request){
-		OccurrenceModel occModel = occurrenceService.loadOccurrenceModel(dataset,occurrenceId,true);
+	@RequestMapping(value="/d/{dataset}/{dwcaId}", method=RequestMethod.GET)
+	public ModelAndView handleOccurrence(@PathVariable String dataset,@PathVariable String dwcaId, HttpServletRequest request){
+		OccurrenceModel occModel = occurrenceService.loadOccurrenceModel(dataset,dwcaId,true);
 		HashMap<String,Object> modelRoot = new HashMap<String,Object>();
 		
 		if(occModel != null){

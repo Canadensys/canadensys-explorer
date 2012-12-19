@@ -17,11 +17,11 @@ public interface OccurrenceService {
 	public boolean datasetExists(String dataset);
 	
 	/**
-	 * Load an occurrence model based on the unique key dataset(sourcefileid)/occurrenceId 
+	 * Load an occurrence model based on the unique key dataset(sourcefileid)/dwcaId 
 	 * @param dataset unique within the portal
-	 * @param occurrenceId unique within the dataset
+	 * @param dwcaId unique within the dataset
 	 * @return
 	 */
-	public OccurrenceModel loadOccurrenceModel(String dataset, String occurrenceId, boolean loadRawModel);
+	public OccurrenceModel loadOccurrenceModel(String dataset, String dwcaId, boolean loadRawModel);
 
 }
