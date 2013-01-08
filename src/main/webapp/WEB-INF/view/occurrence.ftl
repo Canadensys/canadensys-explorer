@@ -102,7 +102,7 @@
 			</tbody>
 			<tbody>	
 				<tr><th>${ltext("occ.sourcefileid")}</th><td>${root.occModel.sourcefileid?if_exists}</td></tr>
-				<tr><th>${ltext("occ.occurrenceid")}</th><td>${root.occModel.occurrenceid?if_exists}</td></tr>
+				<tr><th>${ltext("occ.dwcaid")}</th><td>${root.occModel.dwcaid?if_exists}</td></tr>
 				<tr><th>${ltext("occ.basisofrecord")}</th><td>${root.occRawModel.basisofrecord?if_exists}</td></tr>
 				<tr><th>${ltext("occ.modified")}</th><td>${root.occRawModel.modified?if_exists}</td></tr>	
 			</tbody>
