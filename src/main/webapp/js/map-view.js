@@ -80,7 +80,7 @@ var occurrenceMap  = (function($){
 		var $previewElement = $("#"+previewElementId);
 		var lastAutoId = -1;
 		var map = new google.maps.Map(document.getElementById(mapCanvasId), {
-		  center: new google.maps.LatLng(20,0),
+		  center: new google.maps.LatLng(45.5,-73.5),
 		  zoom: 3,
 		  mapTypeId: google.maps.MapTypeId.TERRAIN,
 		  mapTypeControl: true
