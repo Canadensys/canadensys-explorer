@@ -53,7 +53,7 @@
 				<tr class="unused"><td>17</td><td>root</td><td><a href="http://rs.tdwg.org/dwc/terms/informationWithheld">informationWithheld</a></td><td>${root.occRawModel.informationwithheld?if_exists}</td><td class="unused"></td></tr>
 				<tr class="unused"><td>18</td><td>root</td><td><a href="http://rs.tdwg.org/dwc/terms/dataGeneralizations">dataGeneralizations</a></td><td>${root.occRawModel.datageneralizations?if_exists}</td><td class="unused"></td></tr>
 				<tr ><td>19</td><td>root</td><td><a href="http://rs.tdwg.org/dwc/terms/dynamicProperties">dynamicProperties</a></td><td>${root.occRawModel.dynamicproperties?if_exists}</td><td class="unused"></td></tr>
-				<tr ><td>20</td><td>occurrence</td><td><a href="http://rs.tdwg.org/dwc/terms/occurrenceID">occurrenceID</a></td><td>${root.occRawModel.occurrenceid?if_exists}</td><td>${root.occModel.occurrenceid?if_exists}</td></tr>
+				<tr ><td>20</td><td>occurrence</td><td><a href="http://rs.tdwg.org/dwc/terms/occurrenceID">occurrenceID</a></td><td>${root.occRawModel.occurrenceid?if_exists}</td><td class="unused"></td></tr>
 				<tr ><td>21</td><td>occurrence</td><td><a href="http://rs.tdwg.org/dwc/terms/catalogNumber">catalogNumber</a></td><td>${root.occRawModel.catalognumber?if_exists}</td><td>${root.occModel.catalognumber?if_exists}</td></tr>
 				<tr ><td>22</td><td>occurrence</td><td><a href="http://rs.tdwg.org/dwc/terms/occurrenceRemarks">occurrenceRemarks</a></td><td>${root.occRawModel.occurrenceremarks?if_exists}</td><td class="unused"></td></tr>
 				<tr ><td>23</td><td>occurrence</td><td><a href="http://rs.tdwg.org/dwc/terms/recordNumber">recordNumber</a></td><td>${root.occRawModel.recordnumber?if_exists}</td><td>${root.occModel.recordnumber?if_exists}</td></tr>
