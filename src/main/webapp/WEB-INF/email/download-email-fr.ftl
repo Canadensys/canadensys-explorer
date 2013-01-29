@@ -17,6 +17,10 @@
 		<p>Merci,</p>
 		<p>l'<a href="http://www.canadensys.net/about/people" style="color: #a82400;">&eacute;quipe Canadensys</a></p>
 		<img src="http://data.canadensys.net/common/images/canadensys-logo-60.png" alt="Canadensys logo">
+		<p><small>Canadensys ne garantit pas la qualité, l'exactitude ni l'intégralité des Données ayant été téléchargées et/ou extraites de tous serveurs de Canadensys.
+Lesdites Données sont fournis « telles quelles », sans garantie ni condition de toute sorte. Canadensys rejette toute autre garantie, expresse ou tacite, y compris, mais non de façon limitative, les garanties implicites de la qualité marchande ou de l'utilité aux fins d'un usage particulier des Données.</small></p>
+<p><small>De plus, vous dégagez de toute responsabilité et renoncez à exercer toute poursuite, réclamation, action, recours ou procédure contre Canadensys ainsi que tous leurs officiers,
+employés et agents pour tout dommage quel qu'il soit, pouvant résulter de votre utilisation ou incapacité d'utilisation des Données ou lier à la performance de celles-ci.</small></p>
 	</div>
 </body>
 </html>

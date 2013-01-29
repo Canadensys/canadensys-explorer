@@ -17,6 +17,8 @@
 		<p>Thanks,</p>
 		<p>The <a href="http://www.canadensys.net/about/people" style="color: #a82400;">Canadensys team</a></p>
 		<img src="http://data.canadensys.net/common/images/canadensys-logo-60.png" alt="Canadensys logo">
+		<p><small>Canadensys does not warrant the quality, accuracy, or completeness of any of the Data downloaded and/or retrieved from any of its servers. Such Data are provided on an "AS IS" basis without warranty or condition of any nature. Canadensys disclaims all other warranties, expressed or implied, including but not limited to implied warranties of merchantability and fitness for a particular purpose.</small></p>
+<p><small>Furthermore, in no event shall Canadensys or any of their officers, employees or agents be liable for any damages whatsoever in respect of any claim, action, demand or proceeding of any kind arising out or related to your use, inability to use or performance of the Data retrieved.</small></p>
 	</div>
 </body>
 </html>
