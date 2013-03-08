@@ -3,14 +3,15 @@
 	<title>${ltext("page.search.title")}</title>
 	<link rel="stylesheet" href="http://data.canadensys.net/common/styles/common.css" media="screen"/>
 	<link rel="stylesheet" href="${root.rootURL?if_exists}styles/occportal.css" media="screen">
-	<link href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" />
-	<link rel="shortcut icon" href="http://data.canadensys.net/common/images/favicon.png"/>
 <#-- Add additional CSS if needed -->
 <#if cssList??>
 	<#list cssList as css>
 	<link rel="stylesheet" href="${css}" media="screen"/>
 	</#list>
 </#if>
+	<link rel="shortcut icon" href="http://data.canadensys.net/common/images/favicon.png"/>
+	<link rel="dns-prefetch" href="http://tiles.canadensys.net"/>
+	<link rel="prefetch" href="http://tiles.canadensys.net"/>
 <#if root.gaAccount??>
 	<meta name="google-site-verification" content="${root.gaSiteVerification}"/>
 	<script type="text/javascript">
