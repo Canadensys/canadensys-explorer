@@ -19,7 +19,7 @@ var occurrenceMap  = (function($){
 	    		  self.options.map.setCenter(center);
 		      }
 		      else{
-		    	  var center = new google.maps.LatLng(45.5582573, -73.5562295);
+		    	  var center = new google.maps.LatLng(45.5,-73.5);
 		    	  self.options.map.map.setCenter(center);
 		      }
 		    },
