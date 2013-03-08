@@ -12,7 +12,7 @@
 	<dt>${ltext("occ.genus")}: </dt><dd><span id="genus"></span></dd>
 	<dt>${ltext("occ.rawscientificname")}: </dt><dd><span id="rawscientificname"></span></dd>
 </dl>
-<p class="occ_preview_links"><a id="viewfullrecord" href="#" target="_blank">${ltext("view.preview.viewfullrecord")}</a><span> | <a id="viewsourcerecord" href="#" target="_blank">${ltext("view.preview.viewsourcerecord")}</a><span></p>
+<p class="occ_preview_links"><a id="viewfullrecord" href="#" target="_blank">${ltext("view.preview.viewfullrecord")}</a><span> | <a id="viewsourcerecord" href="#" target="_blank">${ltext("view.preview.viewsourcerecord")}</a></span></p>
 <dl class="occ_preview_data clear_fix">
 	<dt>${ltext("occ.institutioncode")}</dt><dd id="institutioncode"></dd>
 	<dt>${ltext("occ.datasetname")}</dt><dd id="datasetname"></dd>
@@ -35,7 +35,7 @@
 <dl class="occ_preview_data clear_fix">
 	<dt>${ltext("occ.habitat")}</dt><dd id="habitat"></dd>
 </dl>
-<div class="occ_preview_data clear_fix">
+<dl class="occ_preview_data clear_fix">
 	<dt>${ltext("occ.associatedmedia")}</dt><dd id="occ_preview_media"></dd>
-</div>
+</dl>
 </div>
