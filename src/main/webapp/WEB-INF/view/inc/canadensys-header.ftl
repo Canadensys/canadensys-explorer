@@ -9,6 +9,7 @@
 			<li class="menu_first">&nbsp;</li>
 			<li class="page_item current_page_item"><a href="${ltext("header.menu.occportal.url")}">${ltext("header.menu.occportal")}</a></li>	
 			<li><a href="${ltext("header.menu.ipt.url")}">${ltext("header.menu.ipt")}</a></li>
+			<li><a href="${ltext("header.menu.tools.url")}">${ltext("header.menu.tools")}</a></li>
 			<li><a href="${ltext("header.menu.vascan.url")}">${ltext("header.menu.vascan")}</a></li>
 			<li class="menu_last">&nbsp;</li>
 		</ul>  
