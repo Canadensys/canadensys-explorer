@@ -163,7 +163,7 @@
 
 <!-- Current filters template -->
 <script type="text/template" id="filter_template_current">
-	<%= valueText %>
+	<%- valueText %>
 	<span>(<%= opText %>)</span>
 	<span class="delete">${ltext("control.search.button.delete")}</span>
 	<input type="hidden" name="<%= groupId %>_f" value="<%= searchableFieldId %>"/>
