@@ -1,14 +1,10 @@
-<!DOCTYPE html>
-<html>
 <#include "inc/functions.ftl">
-<#assign javaScriptIncludeList = [
-"https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js",
+<#assign page={"title":rc.getMessage("page.search.title"),"cssList":["${root.rootURL?if_exists}styles/occportal.css"],"prefetchList":["http://tiles.canadensys.net"],
+"javaScriptIncludeList":
+["https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js",
 "${root.rootURL?if_exists}js/${formatFileInclude(\"occurrence-portal\",root.currentVersion?if_exists,root.useMinified,\".js\")}",
-"${root.rootURL?if_exists}js/lib/sorttable.js"]>
-
-<#assign javaScriptSetupCallList = []>
+"${root.rootURL?if_exists}js/lib/sorttable.js"]}>
 <#include "inc/header.ftl">
-<body>
 <div id="feedback_bar"><a href="http://code.google.com/p/canadensys/issues/entry?template=Explorer%20-%20Interface%20issue" target="_blank" title="${ltext("feedback.hover")}">&nbsp;</a></div>
 	<#include "inc/canadensys-header.ftl">
 	<div id="body" class="fullscreen">
@@ -198,5 +194,3 @@
 		</div>
 	</div><#-- body -->
 <#include "inc/footer.ftl">
-</body>
-</html>

@@ -69,6 +69,16 @@
 <!-- 	    <property name="defaultEncoding" value="UTF-8"/> -->
 	</bean>
 	
+	<!-- Wrap the URLHelper -->
+	<bean id="freemarkerDefaultBeansWrapper" class="freemarker.ext.beans.BeansWrapper"
+		factory-method="getDefaultInstance"/>
+	<bean id="freemarkerStaticModels" factory-bean="freemarkerDefaultBeansWrapper"
+		factory-method="getStaticModels"/>
+
+	<bean id="URLHelper" factory-bean="freemarkerStaticModels" factory-method="get">
+          <constructor-arg value="net.canadensys.web.FreemarkerURLHelper"/>
+ 	</bean>
+	
 	<!-- Freemarker config -->
 	<bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
   		<property name="templateLoaderPath" value="/WEB-INF/view/"/>
@@ -76,6 +86,7 @@
         <map>
           <entry key="gaSiteVerification" value="${googleanalytics.siteVerification:}"/>
           <entry key="gaAccount" value="${googleanalytics.account:}"/>
+          <entry key="URLHelper" value-ref="URLHelper"/>
         </map>
 		</property>
 	</bean>

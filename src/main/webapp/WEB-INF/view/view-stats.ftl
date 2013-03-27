@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html>
 <#include "inc/functions.ftl">
-
-<#assign javaScriptIncludeList = [
-"http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js",
+<#assign page={"title":rc.getMessage("page.search.title"),"cssList":["${root.rootURL?if_exists}styles/occportal.css"],"prefetchList":["http://tiles.canadensys.net"],
+"javaScriptIncludeList":
+["http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js",
 "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js",
 "js/lib/json2.js",
 "https://www.google.com/jsapi",
@@ -13,11 +11,8 @@
 "js/${formatFileInclude(\"occurrence-backbone\",root.currentVersion?if_exists,root.useMinified,\".js\")}",
 "js/${formatFileInclude(\"chart\",root.currentVersion?if_exists,root.useMinified,\".js\")}",
 "js/${formatFileInclude(\"occurrence-portal\",root.currentVersion?if_exists,root.useMinified,\".js\")}",
-"js/${formatFileInclude(\"stats-backbone\",root.currentVersion?if_exists,root.useMinified,\".js\")}"]>
-
-<#assign javaScriptSetupCallList = []>
+"js/${formatFileInclude(\"stats-backbone\",root.currentVersion?if_exists,root.useMinified,\".js\")}"]}>
 <#include "inc/header.ftl">
-<body>
 <div id="feedback_bar"><a href="http://code.google.com/p/canadensys/issues/entry?template=Explorer%20-%20Interface%20issue" target="_blank" title="${ltext("feedback.hover")}">&nbsp;</a></div>
 <#include "inc/canadensys-header.ftl">
 <div id="body" class="fullscreen">
@@ -75,7 +70,7 @@
 		</script>
 	</div>
 </div><#-- body -->
-<#assign javaScriptSetupCallList = javaScriptSetupCallList + [
+<#assign page = page + {"jQueryJavaScriptSetupCallList": page.jQueryJavaScriptSetupCallList + [
 "occurrenceStats.initStatsView(searchAndFilter.getInitialFilterParamMap())",
 "occurrenceStats.loadFieldUniqueCount(${root.availableFilters.kingdom},\"${ltext(\"view.stats.kingdom\")}\",'classification')",
 "occurrenceStats.loadFieldUniqueCount(${root.availableFilters.phylum},\"${ltext(\"view.stats.phylum\")}\",'classification')",
@@ -92,9 +87,9 @@
 "occurrenceStats.loadStaticChart(${root.availableFilters.decade},'decade',\"${ltext(\"view.stats.chart.decade.title\")}\")",
 "occurrenceStats.loadStaticChart(${root.availableFilters.averagealtituderounded},'altitude',\"${ltext(\"view.stats.chart.altitude.title\")}\")",
 "occurrenceStats.selectDefaultChart(${root.availableFilters.family})",
-"occurrenceStats.selectDefaultChart(${root.availableFilters.stateprovince})"]>
-<#assign nojQueryJSSetupCallList = ["google.load('visualization', '1', {'packages':['corechart']})"]>
-
+"occurrenceStats.selectDefaultChart(${root.availableFilters.stateprovince})"]}>
+<#if !(page.javaScriptSetupCallList)??>
+<#assign page = page + {"javaScriptSetupCallList":[]}>
+</#if>
+<#assign page = page + {"javaScriptSetupCallList" : page.javaScriptSetupCallList + ["google.load('visualization', '1', {'packages':['corechart']})"]}>
 <#include "inc/footer.ftl">
-</body>
-</html>

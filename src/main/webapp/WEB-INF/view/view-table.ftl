@@ -12,7 +12,6 @@
 "js/${formatFileInclude(\"occurrence-portal\",root.currentVersion?if_exists,root.useMinified,\".js\")}",
 "js/lib/rwd-table.js",
 "js/lib/respond.js"]}>
-
 <#include "inc/header.ftl">
 <div id="feedback_bar"><a href="http://code.google.com/p/canadensys/issues/entry?template=Explorer%20-%20Interface%20issue" target="_blank" title="${ltext("feedback.hover")}">&nbsp;</a></div>
 <#include "inc/canadensys-header.ftl">
