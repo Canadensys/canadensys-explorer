@@ -200,4 +200,7 @@
 </script>
 
 <#-- JavaScript init call functions -->
-<#assign javaScriptSetupCallList = javaScriptSetupCallList + ["languageResources.setLanguageResources(${root.languageResources})","searchAndFilter.setAvailableSearchFields(${root.availableFiltersMap})","searchAndFilter.loadFilter(${root.searchCriteria})","searchAndFilter.setNumberOfResult(${root.occurrenceCount?c})"]>
+<#if !(page.jQueryJavaScriptSetupCallList)??>
+<#assign page = page + {"jQueryJavaScriptSetupCallList":[]}>
+</#if>
+<#assign page = page + {"jQueryJavaScriptSetupCallList":page.jQueryJavaScriptSetupCallList + ["languageResources.setLanguageResources(${root.languageResources})","searchAndFilter.setAvailableSearchFields(${root.availableFiltersMap})","searchAndFilter.loadFilter(${root.searchCriteria})","searchAndFilter.setNumberOfResult(${root.occurrenceCount?c})"]}>
