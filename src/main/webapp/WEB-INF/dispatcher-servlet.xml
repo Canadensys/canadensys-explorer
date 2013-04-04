@@ -66,7 +66,7 @@
 	<bean id="messageSource"
 	    class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 	    <property name="basename" value="classpath:ApplicationResources" />
-<!-- 	    <property name="defaultEncoding" value="UTF-8"/> -->
+	    <property name="defaultEncoding" value="UTF-8"/>
 	</bean>
 	
 	<!-- Wrap the URLHelper -->
