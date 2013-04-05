@@ -24,6 +24,9 @@ Dependencies
 
 * [H2 Database 1.3.163](http://www.h2database.com) (for unit testing only)
 
+### Projects
+* [canadensys-view-includes](https://github.com/Canadensys/canadensys-view-includes)
+
 Build
 -----
 ```
