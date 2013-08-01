@@ -4,7 +4,9 @@ import java.util.List;
 
 import net.canadensys.dataportal.occurrence.OccurrenceService;
 import net.canadensys.dataportal.occurrence.dao.OccurrenceDAO;
+import net.canadensys.dataportal.occurrence.dao.ResourceContactDAO;
 import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
+import net.canadensys.dataportal.occurrence.model.ResourceContactModel;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class OccurrenceServiceImpl implements OccurrenceService {
 	@Autowired
 	private OccurrenceDAO occurrenceDAO;
 	
+	@Autowired
+	private ResourceContactDAO resourceContactDAO;
+	
 	@Override
 	@Transactional(readOnly=true)
 	public boolean datasetExists(String dataset) {
@@ -34,9 +39,18 @@ public class OccurrenceServiceImpl implements OccurrenceService {
 	
 	@Override
 	@Transactional(readOnly=true)
-	public OccurrenceModel loadOccurrenceModel(String dataset, String dwcaId, boolean loadRawModel) {
-		OccurrenceModel occModel = occurrenceDAO.load(dataset, dwcaId, loadRawModel);
+	public OccurrenceModel loadOccurrenceModel(String datasetShortName, String dwcaId, boolean loadRawModel) {
+		OccurrenceModel occModel = occurrenceDAO.load(datasetShortName, dwcaId, loadRawModel);
 		return occModel;
 	}
-
+	
+	@Override
+	@Transactional(readOnly=true)
+	public ResourceContactModel loadResourceContactModel(String datasetShortName) {
+		List<ResourceContactModel> resourceContactModelList = resourceContactDAO.load(datasetShortName);
+		if(resourceContactModelList.size() > 0){
+			return resourceContactModelList.get(0);
+		}
+		return null;
+	}
 }

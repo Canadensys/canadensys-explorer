@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import net.canadensys.dataportal.occurrence.OccurrenceService;
 import net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig;
 import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
+import net.canadensys.dataportal.occurrence.model.ResourceContactModel;
 import net.canadensys.exception.web.ResourceNotFoundException;
 
 import org.apache.log4j.Logger;
@@ -85,8 +86,8 @@ public class OccurrenceController {
 		}
 
 		Locale locale = RequestContextUtils.getLocale(request);
-		//Set common stuff (GoogleAnalytics, language, ...)
-		ControllerHelper.setPageHeaderVariables(request, locale, appConfig, modelRoot);
+		//Set common stuff
+		ControllerHelper.setPageHeaderVariables(locale, appConfig, modelRoot);
 		
 		//handle view stuff
 		String view = request.getParameter(VIEW_PARAM);
@@ -94,5 +95,31 @@ public class OccurrenceController {
 			return new ModelAndView("occurrence-dwc","root",modelRoot);
 		}
 		return new ModelAndView("occurrence","root",modelRoot);
+	}
+	
+	/**
+	 * Resource contact page.
+	 * This mapping 'could' conflict with /d/{dataset}/{dwcaId} in case someone used 'contact' as id in a DarwinCore file.
+	 * This could be solved by adding 'record' e.g. /d/{dataset}/record/{dwcaId}
+	 * @param dataset
+	 * @return
+	 */
+	@RequestMapping(value="/d/{dataset}/contact", method=RequestMethod.GET)
+	public ModelAndView handleResourceContact(@PathVariable String dataset,HttpServletRequest request){
+		ResourceContactModel resourceContactModel = occurrenceService.loadResourceContactModel(dataset);
+		HashMap<String,Object> modelRoot = new HashMap<String,Object>();
+		
+		if(resourceContactModel != null){
+			modelRoot.put("data", resourceContactModel);
+		}
+		else{
+			throw new ResourceNotFoundException();
+		}
+		
+		Locale locale = RequestContextUtils.getLocale(request);
+		//Set common stuff
+		ControllerHelper.setPageHeaderVariables(locale, appConfig, modelRoot);
+
+		return new ModelAndView("resource-contact","root",modelRoot);
 	}
 }
