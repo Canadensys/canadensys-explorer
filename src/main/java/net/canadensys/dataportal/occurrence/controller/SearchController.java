@@ -30,6 +30,7 @@ import net.canadensys.dataportal.occurrence.search.parameter.SearchURLHelper.Vie
 import net.canadensys.query.LimitedResult;
 import net.canadensys.query.SearchQueryPart;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonGenerationException;
@@ -167,9 +168,9 @@ public class SearchController {
 		Locale locale = RequestContextUtils.getLocale(request);
 		
 		//Set common stuff (GoogleAnalytics, language, ...)
-		ControllerHelper.setPageHeaderVariables(request, locale, appConfig, modelRoot);
+		ControllerHelper.setPageHeaderVariables(locale, appConfig, modelRoot);
 		
-		modelRoot.put("languageResources", languageResourcesByLocale.get(locale));
+		modelRoot.put("languageResources", ObjectUtils.defaultIfNull(languageResourcesByLocale.get(locale),languageResourcesByLocale.get(Locale.ENGLISH)));
 		modelRoot.put("availableFilters", searchServiceConfig.getFreemarkerSearchableFieldMap());
 		modelRoot.put("availableFiltersMap", availableSearchFieldsMap);
 		

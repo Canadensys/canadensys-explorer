@@ -47,3 +47,7 @@
 	</#if>
 	<#return formatted>
  </#function>
+ 
+ <#function getI18nContextUrl uri>
+	<#return rc.getContextUrl(URLHelper.getUriWithLanguage(uri,rc.getLocale().getLanguage()))>
+</#function>

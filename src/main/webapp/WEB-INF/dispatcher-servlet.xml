@@ -62,7 +62,7 @@
     		<property name="paramName" value="lang"></property>
     	</bean>
 	</mvc:interceptors>
-	
+
 	<bean id="messageSource"
 	    class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 	    <property name="basename" value="classpath:ApplicationResources" />
@@ -93,10 +93,8 @@
 
 	<bean id="occurrencePortalConfig" class="net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig">
 		<property name="rootURL" value="${url.rootURL}" />
-		<property name="currentVersion" value="${version.current}" />
+		<property name="currentVersion" value="${version.current:}" />
 		<property name="useMinified" value="${url.useMinified}" />
-		<property name="googleAnalyticsSiteVerification" value="${googleanalytics.siteVerification}"/>
-		<property name="googleAnalyticsAccount" value="${googleanalytics.account}" />
 		<property name="dwcaTermUsed" value="${dwca.termUsed}" />
 	</bean>
 	
@@ -124,6 +122,7 @@
 				<value>net.canadensys.dataportal.occurrence.model.OccurrenceModel</value>
 				<value>net.canadensys.dataportal.occurrence.model.OccurrenceRawModel</value>
 				<value>net.canadensys.dataportal.occurrence.model.DownloadLogModel</value>
+				<value>net.canadensys.dataportal.occurrence.model.ResourceContactModel</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

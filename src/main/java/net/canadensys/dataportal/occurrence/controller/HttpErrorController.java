@@ -32,7 +32,7 @@ public class HttpErrorController {
 		//Handle locale
 		Locale locale = RequestContextUtils.getLocale(request);
 		//Set common stuff (GoogleAnalytics, language, ...)
-		ControllerHelper.setPageHeaderVariables(request, locale, appConfig, modelRoot);
+		ControllerHelper.setPageHeaderVariables(locale, appConfig, modelRoot);
         return new ModelAndView("error/404","root",modelRoot);
     }
 }

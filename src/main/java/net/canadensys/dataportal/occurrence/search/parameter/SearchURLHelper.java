@@ -85,17 +85,4 @@ public class SearchURLHelper {
 		compBuilder.queryParam(VIEW_PARAM, ViewNameEnum.TABLE_VIEW_NAME.getViewName());
 		return compBuilder.build().toUriString();
 	}
-	
-	/**
-	 * This method return a generated URL to switch the current URL into targetLang language
-	 * It only changes (adds) the language parameter.
-	 * @param request
-	 * @param targetLang
-	 * @return
-	 */
-	public static String getLanguageSwitcherURL(HttpServletRequest request, String targetLang){
-		ServletUriComponentsBuilder compBuilder = ServletUriComponentsBuilder.fromRequest(request);
-		compBuilder.replaceQueryParam(LANGUAGE_PARAM, targetLang);
-		return compBuilder.build().toUriString();
-	}
 }
