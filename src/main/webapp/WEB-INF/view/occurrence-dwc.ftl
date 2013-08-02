@@ -1,17 +1,17 @@
 <#include "inc/functions.ftl">
-<#assign page={"title":rc.getMessage("page.search.title"),"cssList":["${root.rootURL?if_exists}styles/occportal.css"],"prefetchList":["http://tiles.canadensys.net"],
+<#assign page={"title":rc.getMessage("page.search.title"),"cssList":[rc.getContextUrl('/styles/occportal.css')],"prefetchList":["http://tiles.canadensys.net"],
 "javaScriptIncludeList":
 ["https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js",
-"${root.rootURL?if_exists}js/${formatFileInclude(\"occurrence-portal\",root.currentVersion?if_exists,root.useMinified,\".js\")}",
-"${root.rootURL?if_exists}js/lib/sorttable.js"]}>
+rc.getContextUrl("/js/"+formatFileInclude("occurrence-portal",root.currentVersion?if_exists,root.useMinified,".js")),
+rc.getContextUrl("js/lib/sorttable.js")]}>
 <#include "inc/header.ftl">
-<div id="feedback_bar"><a href="http://code.google.com/p/canadensys/issues/entry?template=Explorer%20-%20Interface%20issue" target="_blank" title="${ltext("feedback.hover")}">&nbsp;</a></div>
+<div id="feedback_bar"><a href="http://code.google.com/p/canadensys/issues/entry?template=Explorer%20-%20Interface%20issue" target="_blank" title="${rc.getMessage("feedback.hover")}">&nbsp;</a></div>
 	<#include "inc/canadensys-header.ftl">
 	<div id="body" class="fullscreen">
 		<div id="side_bar">
-			<p><a class="round big_button no_margin" href="${root.occRawModel.datasetid?if_exists}">${ltext("occpage.menu.datasetcontact")}</a></p>
+			<p><a class="round big_button no_margin" href="${root.occRawModel.datasetid?if_exists}">${rc.getMessage("occpage.menu.datasetcontact")}</a></p>
 			<#if root.occRawModel._references?has_content >
-			<p><a class="round big_button" href="${root.occRawModel._references?if_exists}">${ltext("occpage.menu.sourcerecord")}</a></p>
+			<p><a class="round big_button" href="${root.occRawModel._references?if_exists}">${rc.getMessage("occpage.menu.sourcerecord")}</a></p>
 			</#if>
 		</div>
 		<div id="content" class="clear_fix">
