@@ -5,6 +5,7 @@
 	<div id="body">
 		<div id="content" class="clear_fix">
 			<h1>${root.data.dataset_title}</h1>
+			<h2>${rc.getMessage("resourcecontact.header")}</h2>
 			<table>
 			<tbody>
 				<tr><th>${rc.getMessage("resourcecontact.name")}</th><td>${root.data.name}</td></tr>
@@ -12,7 +13,7 @@
 				<tr><th>${rc.getMessage("resourcecontact.organization")}</th><td>${root.data.organization_name}</td></tr>
 				<tr><th>${rc.getMessage("resourcecontact.address")}</th><td>${root.data.address}, ${root.data.city}, ${root.data.administrative_area}, ${root.data.postal_code}, ${root.data.country}</td></tr>
 				<tr><th>${rc.getMessage("resourcecontact.email")}</th><td>${root.data.email}</td></tr>
-				<tr><th>${rc.getMessage("resourcecontact.phone")}</th><td>${root.data.phone}</td></tr>
+				<tr><th>${rc.getMessage("resourcecontact.telephone")}</th><td>${root.data.phone}</td></tr>
 			</tbody>
 			</table>
 		</div>
