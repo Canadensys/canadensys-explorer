@@ -16,7 +16,6 @@ public class OccurrencePortalConfig {
 	public static String BUNDLE_NAME = "ApplicationResources";
 	
 	private String currentVersion;
-	private String rootURL;
 	private Boolean useMinified;
 	
 	private ResourceBundle enBundle;
@@ -89,14 +88,7 @@ public class OccurrencePortalConfig {
 	public void setCurrentVersion(String currentVersion) {
 		this.currentVersion = currentVersion;
 	}
-
-	public String getRootURL() {
-		return rootURL;
-	}
-	public void setRootURL(String rootURL) {
-		this.rootURL = rootURL;
-	}
-
+	
 	public Boolean getUseMinified() {
 		return useMinified;
 	}

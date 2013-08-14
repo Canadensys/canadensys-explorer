@@ -92,7 +92,6 @@
 	</bean>
 
 	<bean id="occurrencePortalConfig" class="net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig">
-		<property name="rootURL" value="${url.rootURL}" />
 		<property name="currentVersion" value="${version.current:}" />
 		<property name="useMinified" value="${url.useMinified}" />
 		<property name="dwcaTermUsed" value="${dwca.termUsed}" />

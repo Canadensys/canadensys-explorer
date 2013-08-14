@@ -144,7 +144,7 @@ public class SearchController {
 	 */
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	public ModelAndView handleRoot(HttpServletRequest request){
-		RedirectView rv = new RedirectView(appConfig.getRootURL()+"search");
+		RedirectView rv = new RedirectView(request.getContextPath()+"/search");
 		rv.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
 		ModelAndView mv = new ModelAndView(rv);
 		return mv;

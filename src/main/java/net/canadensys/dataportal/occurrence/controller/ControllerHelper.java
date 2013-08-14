@@ -33,11 +33,6 @@ public class ControllerHelper {
 		}
 		//Are we using minified files?
 		modelRoot.put("useMinified", BooleanUtils.toBoolean(appConfig.getUseMinified()));
-		
-		//Root URL of the web page
-		if(!StringUtils.isBlank(appConfig.getRootURL())){
-			modelRoot.put("rootURL", appConfig.getRootURL());
-		}
 	}
 
 }

@@ -53,13 +53,11 @@ public class OccurrenceController {
 	 * @return
 	 */
 	@RequestMapping(value="/d/{dataset}", method=RequestMethod.GET)
-	public ModelAndView handleDataset(@PathVariable String dataset){
-
+	public ModelAndView handleDataset(@PathVariable String dataset, HttpServletRequest request){
 		if(!occurrenceService.datasetExists(dataset)){
 			throw new ResourceNotFoundException();
 		}
-		
-		RedirectView rv = new RedirectView(appConfig.getRootURL()+"search?dataset="+dataset);
+		RedirectView rv = new RedirectView(request.getContextPath()+"/search?dataset="+dataset);
 		rv.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
 		ModelAndView mv = new ModelAndView(rv);
 		return mv;
