@@ -2,6 +2,7 @@
 portal-config.properties
 log4j.properties
 build.gradle
+gradle.properties
 .DS_Store
 
 *.jar
@@ -10,9 +11,9 @@ build.gradle
 *.classpath
 *.project
 
-bin/**/*
-target/**/*
-build
-config/**/*
-.gradle/**/*
-/bin
+target/
+build/
+config/
+.gradle/
+bin/
+.settings/
