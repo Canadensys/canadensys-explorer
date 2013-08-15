@@ -1,6 +1,6 @@
 package net.canadensys.dataportal.occurrence.search.config;
 
-import junit.framework.Assert;
+import static org.junit.Assert.*;
 import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
 import net.canadensys.query.interpreter.QueryPartInterpreter;
 import net.canadensys.query.interpreter.QueryPartInterpreterResolver;
@@ -26,7 +26,7 @@ public class SearchServiceConfigTest {
 			} catch (SecurityException e) {
 				e.printStackTrace();
 			} catch (NoSuchFieldException e) {
-				Assert.fail(fieldName + " is not a member of class OccurrenceModel");
+				fail(fieldName + " is not a member of class OccurrenceModel");
 			}
 		}
 	}
@@ -43,7 +43,7 @@ public class SearchServiceConfigTest {
 			} catch (SecurityException e) {
 				e.printStackTrace();
 			} catch (NoSuchFieldException e) {
-				Assert.fail(fieldName + " is not a member of class OccurrenceModel");
+				fail(fieldName + " is not a member of class OccurrenceModel");
 			}
 		}
 	}
@@ -59,7 +59,7 @@ public class SearchServiceConfigTest {
 		for(Integer key : searchServiceConfig.getSearchableFieldMap().keySet()){
 			interpreter = QueryPartInterpreterResolver.getQueryPartInterpreter(searchServiceConfig.getSearchableFieldbyId(key).getSearchableFieldTypeEnum());
 			if(!interpreter.canHandleSearchableField(searchServiceConfig.getSearchableFieldbyId(key))){
-				Assert.fail("OccurrenceSearchableField :" + key + " can't be handled by the proper Interpreter");
+				fail("OccurrenceSearchableField :" + key + " can't be handled by the proper Interpreter");
 			}
 		}
 	}

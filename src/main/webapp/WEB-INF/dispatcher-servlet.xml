@@ -89,6 +89,11 @@
           <entry key="URLHelper" value-ref="URLHelper"/>
         </map>
 		</property>
+		<property name="freemarkerSettings"> 
+			<props> 
+				<prop key="template_exception_handler">ignore</prop>
+			</props>
+		</property>
 	</bean>
 
 	<bean id="occurrencePortalConfig" class="net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig">

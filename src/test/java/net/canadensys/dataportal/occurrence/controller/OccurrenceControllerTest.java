@@ -51,8 +51,10 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
 		//make sure the tables are empty
 		jdbcTemplate.update("DELETE FROM occurrence");
 		jdbcTemplate.update("DELETE FROM occurrence_raw");
+		jdbcTemplate.update("DELETE FROM resource_contact");
 		jdbcTemplate.update("INSERT INTO occurrence_raw (auto_id,dwcaId,country,locality,sourcefileid) VALUES (1,'2','Mexico','Mexico','uom-occurrence')");
 		jdbcTemplate.update("INSERT INTO occurrence (auto_id,dwcaId,country,locality,sourcefileid,syear,smonth,sday) VALUES (1,'2','Mexico','Mexico','uom-occurrence',2001,03,21)");
+		jdbcTemplate.update("INSERT INTO resource_contact (id,dataset_shortname,name) VALUES (1,'uom-occurrence','Jim')");
     }
 
     @Test
@@ -78,6 +80,18 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
         ModelAndView mav = handlerAdapter.handle(request, response, handler);
         assertEquals(HttpServletResponse.SC_OK, response.getStatus());
         assertViewName(mav,"occurrence");
+    }
+    
+    @Test
+    public void testOccurrenceContactURL() throws Exception {
+    	MockHttpServletResponse response = new MockHttpServletResponse();
+    	MockHttpServletRequest request = new MockHttpServletRequest();
+    	request.setMethod("GET");
+    	request.setRequestURI("/d/uom-occurrence/contact");
+    	Object handler = handlerMapping.getHandler(request).getHandler();    	
+        ModelAndView mav = handlerAdapter.handle(request, response, handler);
+        assertEquals(HttpServletResponse.SC_OK, response.getStatus());
+        assertViewName(mav,"resource-contact");
     }
 
 }
