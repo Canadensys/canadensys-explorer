@@ -1,6 +1,9 @@
 Version History
 ===============
 
+Version 1.2.2 2013-08-16
+* Fixed French pages encoding issue
+
 Version 1.2.1 2013-08-15
 * New Resource Contact page
 
