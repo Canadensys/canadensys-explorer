@@ -59,4 +59,18 @@ public class ExplorerPageIntegrationTest extends AbstractIntegrationTest {
 		//make sure footer is there
 		assertEquals("div",footerDiv.getTagName());
 	}
+	
+	@Test
+	public void testFrenchPageEncoding() {
+		browser.get(TESTING_SERVER_URL+"search?view=table&lang=fr");
+		
+		//bind the WebElement to the current page
+		PageFactory.initElements(browser, this);
+		
+		WebElement search_h3 = browser.findElement(By.cssSelector("#search h3"));
+		assertEquals("Créer un nouveau filtre",search_h3.getText());
+		
+		//make sure footer is there
+		assertEquals("div",footerDiv.getTagName());
+	}
 }

@@ -28,80 +28,80 @@ rc.getContextUrl("/js/"+formatFileInclude("occurrence-portal",root.currentVersio
 		</div>
 		<div id="content" class="clear_fix">
 			<h1>${root.occModel.scientificname?if_exists} (${root.occModel.collectioncode?if_exists} ${root.occModel.catalognumber?if_exists})</h1>
-			<p class="details">${ltext("occpage.header.details")}: ${root.occModel.sourcefileid?if_exists}/${root.occModel.dwcaid?if_exists}</p>
+			<p class="details">${rc.getMessage("occpage.header.details")}: ${root.occModel.sourcefileid?if_exists}/${root.occModel.dwcaid?if_exists}</p>
 			<div class="nav_container" id="occpage_navigation">
 			<ul class="buttons">
-				<li><a href="?view=normal" class="selected">${ltext("occpage.header.button.normal")}</a></li>
-				<li><a href="?view=dwc">${ltext("occpage.header.button.dwc")}</a></li>
+				<li><a href="?view=normal" class="selected">${rc.getMessage("occpage.header.button.normal")}</a></li>
+				<li><a href="?view=dwc">${rc.getMessage("occpage.header.button.dwc")}</a></li>
 			</ul>
 			</div>
 			
-			<h2>${ltext("occpage.group.classification")}</h2>
+			<h2>${rc.getMessage("occpage.group.classification")}</h2>
 			<table class="occpage_group">
 			<tbody>
-				<tr><th>${ltext("occ.kingdom")}</th><td>${root.occModel.kingdom?if_exists}</td></tr>
-				<tr><th>${ltext("occ.phylum")}</th><td>${root.occModel.phylum?if_exists}</td></tr>
-				<tr><th>${ltext("occ._class")}</th><td>${root.occModel._class?if_exists}</td></tr>
-				<tr><th>${ltext("occ._order")}</th><td>${root.occModel._order?if_exists}</td></tr>
-				<tr><th>${ltext("occ.family")}</th><td>${root.occModel.family?if_exists}</td></tr>
-				<tr><th>${ltext("occ.genus")}</th><td>${root.occModel.genus?if_exists}</td></tr>
-				<tr><th>${ltext("occ.scientificname")}</th><td>${root.occModel.scientificname?if_exists} <span class="remark">(${ltext("occpage.remark.interpretedfrom")}: ${root.occRawModel.scientificname?if_exists})</span></td></tr>
-				<tr><th>${ltext("occ.scientificnameauthorship")}</th><td>${root.occModel.scientificnameauthorship?if_exists}</td></tr>
+				<tr><th>${rc.getMessage("occ.kingdom")}</th><td>${root.occModel.kingdom?if_exists}</td></tr>
+				<tr><th>${rc.getMessage("occ.phylum")}</th><td>${root.occModel.phylum?if_exists}</td></tr>
+				<tr><th>${rc.getMessage("occ._class")}</th><td>${root.occModel._class?if_exists}</td></tr>
+				<tr><th>${rc.getMessage("occ._order")}</th><td>${root.occModel._order?if_exists}</td></tr>
+				<tr><th>${rc.getMessage("occ.family")}</th><td>${root.occModel.family?if_exists}</td></tr>
+				<tr><th>${rc.getMessage("occ.genus")}</th><td>${root.occModel.genus?if_exists}</td></tr>
+				<tr><th>${rc.getMessage("occ.scientificname")}</th><td>${root.occModel.scientificname?if_exists} <span class="remark">(${rc.getMessage("occpage.remark.interpretedfrom")}: ${root.occRawModel.scientificname?if_exists})</span></td></tr>
+				<tr><th>${rc.getMessage("occ.scientificnameauthorship")}</th><td>${root.occModel.scientificnameauthorship?if_exists}</td></tr>
 			</tbody>
 			</table>
 			
-			<h2>${ltext("occpage.group.location")}</h2>
+			<h2>${rc.getMessage("occpage.group.location")}</h2>
 			<table class="occpage_group">
 			<tbody>
-				<tr><th>${ltext("occ.country")}</th><td>${root.occModel.country?if_exists}</td></tr>
-				<tr><th>${ltext("occ.stateprovince")}</th><td>${root.occModel.stateprovince?if_exists}</td></tr>
-				<tr><th>${ltext("occ.county")}</th><td>${root.occModel.county?if_exists}</td></tr>
-				<tr><th>${ltext("occ.municipality")}</th><td>${root.occModel.municipality?if_exists}</td></tr>
-				<tr><th>${ltext("occ.locality")}</th><td>${root.occModel.locality?if_exists}</td></tr>
+				<tr><th>${rc.getMessage("occ.country")}</th><td>${root.occModel.country?if_exists}</td></tr>
+				<tr><th>${rc.getMessage("occ.stateprovince")}</th><td>${root.occModel.stateprovince?if_exists}</td></tr>
+				<tr><th>${rc.getMessage("occ.county")}</th><td>${root.occModel.county?if_exists}</td></tr>
+				<tr><th>${rc.getMessage("occ.municipality")}</th><td>${root.occModel.municipality?if_exists}</td></tr>
+				<tr><th>${rc.getMessage("occ.locality")}</th><td>${root.occModel.locality?if_exists}</td></tr>
 			</tbody>
 			<tbody>	
-				<tr><th>${ltext("occ.decimallatitude")}</th><td>${safeNumber(root.occModel.decimallatitude!"","")}</td></tr>
-				<tr><th>${ltext("occ.decimallongitude")}</th><td>${safeNumber(root.occModel.decimallongitude!"","")}</td></tr>
-				<tr><th>${ltext("occ.coordinateuncertaintyinmeters")}</th><td>${root.occRawModel.coordinateuncertaintyinmeters?if_exists}</td></tr>
+				<tr><th>${rc.getMessage("occ.decimallatitude")}</th><td>${safeNumber(root.occModel.decimallatitude!"","")}</td></tr>
+				<tr><th>${rc.getMessage("occ.decimallongitude")}</th><td>${safeNumber(root.occModel.decimallongitude!"","")}</td></tr>
+				<tr><th>${rc.getMessage("occ.coordinateuncertaintyinmeters")}</th><td>${root.occRawModel.coordinateuncertaintyinmeters?if_exists}</td></tr>
 			</tbody>
 			<tbody>	
-				<tr><th>${ltext("occ.minimumelevationinmeters")}</th><td>${root.occModel.minimumelevationinmeters?if_exists}</td></tr>
-				<tr><th>${ltext("occ.maximumelevationinmeters")}</th><td>${root.occModel.maximumelevationinmeters?if_exists}</td></tr>			
+				<tr><th>${rc.getMessage("occ.minimumelevationinmeters")}</th><td>${root.occModel.minimumelevationinmeters?if_exists}</td></tr>
+				<tr><th>${rc.getMessage("occ.maximumelevationinmeters")}</th><td>${root.occModel.maximumelevationinmeters?if_exists}</td></tr>			
 			<tbody>
 			</tbody>	
-				<tr><th>${ltext("occ.habitat")}</th><td>${root.occModel.habitat?if_exists}</td></tr>
+				<tr><th>${rc.getMessage("occ.habitat")}</th><td>${root.occModel.habitat?if_exists}</td></tr>
 			</tbody>
 			</table>
 			
-			<h2>${ltext("occpage.group.date")}</h2>
+			<h2>${rc.getMessage("occpage.group.date")}</h2>
 			<table class="occpage_group">
 			<tbody>	
-				<tr><th>${ltext("view.preview.daterange")}</th><td>${formatdate(root.occModel.syear!-1,root.occModel.smonth!-1,root.occModel.sday!-1)}</td></tr>
+				<tr><th>${rc.getMessage("view.preview.daterange")}</th><td>${formatdate(root.occModel.syear!-1,root.occModel.smonth!-1,root.occModel.sday!-1)}</td></tr>
 			</tbody>
 			</table>
 			
-			<h2>${ltext("occpage.group.specimen")}</h2>
+			<h2>${rc.getMessage("occpage.group.specimen")}</h2>
 			<table class="occpage_group">
 			<tbody>
-				<tr><th>${ltext("occ.collectioncode")}</th><td>${root.occModel.collectioncode?if_exists}</td></tr>
-				<tr><th>${ltext("occ.catalognumber")}</th><td>${root.occModel.catalognumber?if_exists}</td></tr>
-				<tr><th>${ltext("occ.recordedby")}</th><td>${root.occModel.recordedby?if_exists}</td></tr>
-				<tr><th>${ltext("occ.recordnumber")}</th><td>${root.occModel.recordnumber?if_exists}</td></tr>
+				<tr><th>${rc.getMessage("occ.collectioncode")}</th><td>${root.occModel.collectioncode?if_exists}</td></tr>
+				<tr><th>${rc.getMessage("occ.catalognumber")}</th><td>${root.occModel.catalognumber?if_exists}</td></tr>
+				<tr><th>${rc.getMessage("occ.recordedby")}</th><td>${root.occModel.recordedby?if_exists}</td></tr>
+				<tr><th>${rc.getMessage("occ.recordnumber")}</th><td>${root.occModel.recordnumber?if_exists}</td></tr>
 			</tbody>
 			</table>
 
-			<h2>${ltext("occpage.group.dataset")}</h2>
+			<h2>${rc.getMessage("occpage.group.dataset")}</h2>
 			<table class="occpage_group">
 			<tbody>
-				<tr><th>${ltext("occ.institutioncode")}</th><td>${root.occModel.institutioncode?if_exists}</td></tr>
-				<tr><th>${ltext("occ.datasetname")}</th><td><a href="${root.occRawModel.datasetid?if_exists}">${root.occModel.datasetname?if_exists}</a></td></tr>
-				<tr><th>${ltext("occ.rights")}</th><td>${root.occRawModel.rights?if_exists}</td></tr>
+				<tr><th>${rc.getMessage("occ.institutioncode")}</th><td>${root.occModel.institutioncode?if_exists}</td></tr>
+				<tr><th>${rc.getMessage("occ.datasetname")}</th><td><a href="${root.occRawModel.datasetid?if_exists}">${root.occModel.datasetname?if_exists}</a></td></tr>
+				<tr><th>${rc.getMessage("occ.rights")}</th><td>${root.occRawModel.rights?if_exists}</td></tr>
 			</tbody>
 			<tbody>	
-				<tr><th>${ltext("occ.sourcefileid")}</th><td>${root.occModel.sourcefileid?if_exists}</td></tr>
-				<tr><th>${ltext("occ.dwcaid")}</th><td>${root.occModel.dwcaid?if_exists}</td></tr>
-				<tr><th>${ltext("occ.basisofrecord")}</th><td>${root.occRawModel.basisofrecord?if_exists}</td></tr>
-				<tr><th>${ltext("occ.modified")}</th><td>${root.occRawModel.modified?if_exists}</td></tr>	
+				<tr><th>${rc.getMessage("occ.sourcefileid")}</th><td>${root.occModel.sourcefileid?if_exists}</td></tr>
+				<tr><th>${rc.getMessage("occ.dwcaid")}</th><td>${root.occModel.dwcaid?if_exists}</td></tr>
+				<tr><th>${rc.getMessage("occ.basisofrecord")}</th><td>${root.occRawModel.basisofrecord?if_exists}</td></tr>
+				<tr><th>${rc.getMessage("occ.modified")}</th><td>${root.occRawModel.modified?if_exists}</td></tr>	
 			</tbody>
 			</table>
 		</div>

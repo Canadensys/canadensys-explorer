@@ -1,10 +1,5 @@
 <#-- Copyright 2011-2013 Canadensys -->
 
-<#-- Language text function. This function simply makes the syntax easier to read. -->
-<#function ltext t>
-  <#return root.locale[t]>
-</#function>
-
 <#function formatdate y m d>
 	<#assign formattedDate = "">
 	<#if (y > 0)>

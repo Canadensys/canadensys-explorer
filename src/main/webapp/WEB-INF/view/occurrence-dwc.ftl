@@ -16,18 +16,18 @@ rc.getContextUrl("js/lib/sorttable.js")]}>
 		</div>
 		<div id="content" class="clear_fix">
 			<h1>${root.occModel.scientificname?if_exists} (${root.occModel.collectioncode?if_exists} ${root.occModel.catalognumber?if_exists})</h1>
-			<p class="details">${ltext("occpage.header.details")}: ${root.occModel.sourcefileid?if_exists}/${root.occModel.dwcaid?if_exists}</p>
+			<p class="details">${rc.getMessage("occpage.header.details")}: ${root.occModel.sourcefileid?if_exists}/${root.occModel.dwcaid?if_exists}</p>
 			<div class="nav_container" id="occpage_navigation">
 				<ul class="buttons">
-					<li><a href="?view=normal">${ltext("occpage.header.button.normal")}</a></li>
-					<li><a href="?view=dwc" class="selected">${ltext("occpage.header.button.dwc")}</a></li>
+					<li><a href="?view=normal">${rc.getMessage("occpage.header.button.normal")}</a></li>
+					<li><a href="?view=dwc" class="selected">${rc.getMessage("occpage.header.button.dwc")}</a></li>
 				</ul>
-				<a id="dwc_table_toggle" href="#">${ltext("occpage.header.toggle.unused")}</a>
+				<a id="dwc_table_toggle" href="#">${rc.getMessage("occpage.header.toggle.unused")}</a>
 			</div>
 			
 			<table id="dwc_table" class="sortable">
 			<thead>
-				<tr><th class="sorttable_numeric">${ltext("occpage.dwctable.order")}</th><th class="sorttable_alpha">${ltext("occpage.dwctable.category")}</th><th class="sorttable_alpha">${ltext("occpage.dwctable.term")}</th><th class="sorttable_alpha">${ltext("occpage.dwctable.raw")}</th><th class="sorttable_alpha">${ltext("occpage.dwctable.interpreted")}</th></tr>
+				<tr><th class="sorttable_numeric">${rc.getMessage("occpage.dwctable.order")}</th><th class="sorttable_alpha">${rc.getMessage("occpage.dwctable.category")}</th><th class="sorttable_alpha">${rc.getMessage("occpage.dwctable.term")}</th><th class="sorttable_alpha">${rc.getMessage("occpage.dwctable.raw")}</th><th class="sorttable_alpha">${rc.getMessage("occpage.dwctable.interpreted")}</th></tr>
 			</thead>
 			<tbody>
 				<tr ><td>1</td><td>root</td><td><a href="http://purl.org/dc/terms/type">type</a></td><td>${root.occRawModel.type?if_exists}</td><td class="unused"></td></tr>

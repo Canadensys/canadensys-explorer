@@ -1,9 +1,14 @@
 package net.canadensys.dataportal.occurrence.config;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
+import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 /**
@@ -38,8 +43,17 @@ public class OccurrencePortalConfig {
 
 	public OccurrencePortalConfig(){
 		try{
-			enBundle = ResourceBundle.getBundle(BUNDLE_NAME, new Locale("en"));
-			frBundle = ResourceBundle.getBundle(BUNDLE_NAME, new Locale("fr"));
+			try {
+				//TODO : move this to canadensys-core as class UTF8ResourceBundle
+				enBundle = new PropertyResourceBundle(new InputStreamReader(OccurrencePortalConfig.class.getResourceAsStream("/"+BUNDLE_NAME+"_en.properties"), "UTF-8"));
+				frBundle = new PropertyResourceBundle(new InputStreamReader(OccurrencePortalConfig.class.getResourceAsStream("/"+BUNDLE_NAME+"_fr.properties"), "UTF-8"));
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}catch(MissingResourceException e){
 		    System.out.println(e);
 		}
