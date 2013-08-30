@@ -4,8 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.ModelAndViewAssert.assertViewName;
 
+import java.util.HashMap;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+
+import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -53,7 +57,9 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
 		jdbcTemplate.update("DELETE FROM occurrence_raw");
 		jdbcTemplate.update("DELETE FROM resource_contact");
 		jdbcTemplate.update("INSERT INTO occurrence_raw (auto_id,dwcaId,country,locality,sourcefileid) VALUES (1,'2','Mexico','Mexico','uom-occurrence')");
+		jdbcTemplate.update("INSERT INTO occurrence_raw (auto_id,dwcaId,country,locality,sourcefileid) VALUES (2,'2.2','Mexico','Mexico','uom-occurrence')");
 		jdbcTemplate.update("INSERT INTO occurrence (auto_id,dwcaId,country,locality,sourcefileid,syear,smonth,sday) VALUES (1,'2','Mexico','Mexico','uom-occurrence',2001,03,21)");
+		jdbcTemplate.update("INSERT INTO occurrence (auto_id,dwcaId,country,locality,sourcefileid,syear,smonth,sday) VALUES (2,'2.2','Mexico','Mexico','uom-occurrence',2001,03,21)");
 		jdbcTemplate.update("INSERT INTO resource_contact (id,dataset_shortname,name) VALUES (1,'uom-occurrence','Jim')");
     }
 
@@ -80,6 +86,21 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
         ModelAndView mav = handlerAdapter.handle(request, response, handler);
         assertEquals(HttpServletResponse.SC_OK, response.getStatus());
         assertViewName(mav,"occurrence");
+        
+        //using a dot in dwcaid
+        response = new MockHttpServletResponse();
+    	request = new MockHttpServletRequest();
+    	request.setMethod("GET");
+    	request.setRequestURI("/d/uom-occurrence/2.2");
+    	//test default view
+    	handler = handlerMapping.getHandler(request).getHandler();    	
+        mav = handlerAdapter.handle(request, response, handler);
+        assertEquals(HttpServletResponse.SC_OK, response.getStatus());
+        assertViewName(mav,"occurrence");
+        
+        HashMap<String,Object> modelRoot = (HashMap<String,Object>)mav.getModel().get("root");
+        OccurrenceModel occModel = (OccurrenceModel)modelRoot.get("occModel");
+        assertEquals("2.2", occModel.getDwcaid());
     }
     
     @Test

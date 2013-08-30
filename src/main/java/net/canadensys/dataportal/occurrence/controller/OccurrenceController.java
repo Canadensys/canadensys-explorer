@@ -70,7 +70,7 @@ public class OccurrenceController {
 	 * @param request needs to get some parameters and Locale
 	 * @return
 	 */
-	@RequestMapping(value="/d/{dataset}/{dwcaId}", method=RequestMethod.GET)
+	@RequestMapping(value="/d/{dataset}/{dwcaId:.+}", method=RequestMethod.GET)
 	public ModelAndView handleOccurrence(@PathVariable String dataset,@PathVariable String dwcaId, HttpServletRequest request){
 		OccurrenceModel occModel = occurrenceService.loadOccurrenceModel(dataset,dwcaId,true);
 		HashMap<String,Object> modelRoot = new HashMap<String,Object>();

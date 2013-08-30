@@ -1,4 +1,5 @@
 <#include "inc/functions.ftl">
+<#include "inc/global-functions.ftl">
 <#assign page={"title":rc.getMessage("page.search.title"),"cssList":[rc.getContextUrl("/styles/occportal.css")],"prefetchList":["http://tiles.canadensys.net"],
 "javaScriptIncludeList":
 ["https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js", "http://maps.googleapis.com/maps/api/js?sensor=false",
