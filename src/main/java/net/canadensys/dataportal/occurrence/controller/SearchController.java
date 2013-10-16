@@ -33,9 +33,6 @@ import net.canadensys.query.SearchQueryPart;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
@@ -49,6 +46,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Controller of all search related features of the occurrence portal.
@@ -75,8 +76,8 @@ public class SearchController {
 	public static final ObjectMapper JACKSON_MAPPER = new ObjectMapper();
 	static{
 		//avoid sending irrelevant data on the client side
-		JACKSON_MAPPER.getSerializationConfig().addMixInAnnotations(SearchQueryPart.class, SearchQueryPartMixIn.class);
-		JACKSON_MAPPER.getSerializationConfig().addMixInAnnotations(OccurrenceSearchableField.class, OccurrenceSearchableFieldMixIn.class);
+		JACKSON_MAPPER.addMixInAnnotations(SearchQueryPart.class, SearchQueryPartMixIn.class);
+		JACKSON_MAPPER.addMixInAnnotations(OccurrenceSearchableField.class, OccurrenceSearchableFieldMixIn.class);
 	}
 	private String availableSearchFieldsMap;
 	

@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.canadensys.query.SearchableField;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * The mix-in annotation is used to decouple the model from its Jackson annotations.
@@ -14,7 +14,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  * This information is useless on the client side.
  * 
  * To use it call something like : 
- * objectMapper.getSerializationConfig().addMixInAnnotations(Target.class, MixIn.class);
+ * objectMapper.addMixInAnnotations(Target.class, MixIn.class);
  * http://www.cowtowncoder.com/blog/archives/2009/08/entry_305.html
  * @author canadensys
  *
