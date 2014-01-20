@@ -30,9 +30,18 @@ public class OccurrenceServiceImpl implements OccurrenceService {
 	
 	@Override
 	@Transactional(readOnly=true)
-	public boolean datasetExists(String dataset) {
+	public boolean resourceExists(String resourceName) {
 		OccurrenceModel model = new OccurrenceModel();
-		model.setSourcefileid(dataset);
+		model.setSourcefileid(resourceName);
+		List<OccurrenceModel> occModelList = occurrenceDAO.search(model, 1);
+		return !occModelList.isEmpty();
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public boolean datasetExists(String datasetName) {
+		OccurrenceModel model = new OccurrenceModel();
+		model.setDatasetname(datasetName);
 		List<OccurrenceModel> occModelList = occurrenceDAO.search(model, 1);
 		return !occModelList.isEmpty();
 	}

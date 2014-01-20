@@ -17,6 +17,7 @@ public class SearchURLHelper {
 	//TODO move to configuration?
 	public static final String VIEW_PARAM = "view";
 	public static final String DATASET_PARAM = "dataset";
+	public static final String IPT_RESOURCE_PARAM = "iptresource";
 		
 	public enum ViewNameEnum {
 		TABLE_VIEW_NAME("table"), MAP_VIEW_NAME("map"), IMAGE_VIEW_NAME("image"), STATS_VIEW_NAME("stats");

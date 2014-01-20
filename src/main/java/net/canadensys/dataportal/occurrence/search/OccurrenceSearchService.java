@@ -54,6 +54,13 @@ public interface OccurrenceSearchService {
 	public SearchQueryPart getSearchQueryPartFromSourceFileId(String sourceFileId);
 	
 	/**
+	 * Build a SearchQueryPart for a specific datasetName.
+	 * @param sourceFileId
+	 * @return
+	 */
+	public SearchQueryPart getSearchQueryPartFromDatasetName(String datasetName);
+	
+	/**
 	 * Get all values and their count for a specific searchCriteria/column.
 	 * @param searchCriteria
 	 * @param column

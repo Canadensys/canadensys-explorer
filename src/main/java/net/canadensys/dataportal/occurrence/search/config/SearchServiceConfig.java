@@ -149,7 +149,8 @@ public class SearchServiceConfig {
 				new OccurrenceSearchableFieldBuilder(23,"municipality").singleValue("municipality",String.class).eqOperator().supportSuggestion().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(28,
 				new OccurrenceSearchableFieldBuilder(28,"boundingbox").geoCoordinates("the_geom").inOperator().toOccurrenceSearchableField());
-		//29 protected area 
+		SEARCHABLE_FIELD_MAP.put(29,
+				new OccurrenceSearchableFieldBuilder(29,"sourcefileid").singleValue("sourcefileid",String.class).eqOperator().supportSelectionList().toOccurrenceSearchableField());
 		
 		//Those searchable fields are used for stats only
 		SEARCHABLE_FIELD_MAP.put(24,

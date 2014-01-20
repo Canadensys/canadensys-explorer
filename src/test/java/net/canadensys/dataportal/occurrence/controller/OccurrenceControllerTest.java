@@ -56,23 +56,45 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
 		jdbcTemplate.update("DELETE FROM occurrence");
 		jdbcTemplate.update("DELETE FROM occurrence_raw");
 		jdbcTemplate.update("DELETE FROM resource_contact");
-		jdbcTemplate.update("INSERT INTO occurrence_raw (auto_id,dwcaId,country,locality,sourcefileid) VALUES (1,'2','Mexico','Mexico','uom-occurrence')");
-		jdbcTemplate.update("INSERT INTO occurrence_raw (auto_id,dwcaId,country,locality,sourcefileid) VALUES (2,'2.2','Mexico','Mexico','uom-occurrence')");
-		jdbcTemplate.update("INSERT INTO occurrence (auto_id,dwcaId,country,locality,sourcefileid,syear,smonth,sday) VALUES (1,'2','Mexico','Mexico','uom-occurrence',2001,03,21)");
-		jdbcTemplate.update("INSERT INTO occurrence (auto_id,dwcaId,country,locality,sourcefileid,syear,smonth,sday) VALUES (2,'2.2','Mexico','Mexico','uom-occurrence',2001,03,21)");
+		jdbcTemplate.update("INSERT INTO occurrence_raw (auto_id,dwcaId,country,locality,datasetname,sourcefileid) VALUES (1,'2','Mexico','Mexico','University of Mexico (UOM)','uom-occurrence')");
+		jdbcTemplate.update("INSERT INTO occurrence_raw (auto_id,dwcaId,country,locality,datasetname,sourcefileid) VALUES (2,'2.2','Mexico','Mexico','University of Mexico (UOM)','uom-occurrence')");
+		jdbcTemplate.update("INSERT INTO occurrence (auto_id,dwcaId,country,locality,datasetname,sourcefileid,syear,smonth,sday) VALUES (1,'2','Mexico','Mexico','University of Mexico (UOM)','uom-occurrence',2001,03,21)");
+		jdbcTemplate.update("INSERT INTO occurrence (auto_id,dwcaId,country,locality,datasetname,sourcefileid,syear,smonth,sday) VALUES (2,'2.2','Mexico','Mexico','University of Mexico (UOM)','uom-occurrence',2001,03,21)");
 		jdbcTemplate.update("INSERT INTO resource_contact (id,dataset_shortname,name) VALUES (1,'uom-occurrence','Jim')");
     }
 
+    @Test
+    public void testIptResourceURL() throws Exception {
+    	MockHttpServletResponse response = new MockHttpServletResponse();
+    	MockHttpServletRequest request = new MockHttpServletRequest();
+    	request.setMethod("GET");
+    	request.setRequestURI("/r/uom-occurrence");
+    	//test default view
+    	Object handler = handlerMapping.getHandler(request).getHandler();    
+    	ModelAndView mav = handlerAdapter.handle(request, response, handler);
+    	assertTrue(((RedirectView)mav.getView()).getUrl().contains("search?iptresource=uom-occurrence"));
+    	
+    	//Test legacy support
+    	response = new MockHttpServletResponse();
+    	request = new MockHttpServletRequest();
+    	request.setMethod("GET");
+    	request.setRequestURI("/d/uom-occurrence");
+    	//test default view
+    	handler = handlerMapping.getHandler(request).getHandler();    
+    	mav = handlerAdapter.handle(request, response, handler);
+    	assertTrue(((RedirectView)mav.getView()).getUrl().contains("search?iptresource=uom-occurrence"));
+    }
+    
     @Test
     public void testDatasetURL() throws Exception {
     	MockHttpServletResponse response = new MockHttpServletResponse();
     	MockHttpServletRequest request = new MockHttpServletRequest();
     	request.setMethod("GET");
-    	request.setRequestURI("/d/uom-occurrence");
+    	request.setRequestURI("/d/University of Mexico (UOM)");
     	//test default view
     	Object handler = handlerMapping.getHandler(request).getHandler();    
     	ModelAndView mav = handlerAdapter.handle(request, response, handler);
-    	assertTrue(((RedirectView)mav.getView()).getUrl().contains("search?dataset=uom-occurrence"));
+    	assertTrue(((RedirectView)mav.getView()).getUrl().contains("search?dataset=University of Mexico (UOM)"));
     }
 
     @Test

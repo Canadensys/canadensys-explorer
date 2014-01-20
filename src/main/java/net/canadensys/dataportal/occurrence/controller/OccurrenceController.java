@@ -47,7 +47,7 @@ public class OccurrenceController {
 	private OccurrencePortalConfig appConfig;
 	
 	/**
-	 * Redirect this URL to a search on search on this dataset.
+	 * Redirect this URL to a search on this dataset with a fallback to iptresource (for legacy reason).
 	 * We support this to have a clean URL to the dataset
 	 * @param dataset
 	 * @return
@@ -55,6 +55,11 @@ public class OccurrenceController {
 	@RequestMapping(value="/d/{dataset}", method=RequestMethod.GET)
 	public ModelAndView handleDataset(@PathVariable String dataset, HttpServletRequest request){
 		if(!occurrenceService.datasetExists(dataset)){
+			//some links might refer to an IPT resource with a dataset name (used until version 1.2.4)
+			if(occurrenceService.resourceExists(dataset)){
+				return handleIptResource(dataset, request);
+			}
+			
 			throw new ResourceNotFoundException();
 		}
 		RedirectView rv = new RedirectView(request.getContextPath()+"/search?dataset="+dataset);
@@ -119,5 +124,22 @@ public class OccurrenceController {
 		ControllerHelper.setPageHeaderVariables(locale, appConfig, modelRoot);
 
 		return new ModelAndView("resource-contact","root",modelRoot);
+	}
+	
+	/**
+	 * Redirect this URL to a search on an IPT resource.
+	 * We support this to have a clean URL to an IPT resource.
+	 * @param iptResource
+	 * @return
+	 */
+	@RequestMapping(value="/r/{iptResource}", method=RequestMethod.GET)
+	public ModelAndView handleIptResource(@PathVariable String iptResource, HttpServletRequest request){
+		if(!occurrenceService.resourceExists(iptResource)){
+			throw new ResourceNotFoundException();
+		}
+		RedirectView rv = new RedirectView(request.getContextPath()+"/search?iptresource="+iptResource);
+		rv.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
+		ModelAndView mv = new ModelAndView(rv);
+		return mv;
 	}
 }

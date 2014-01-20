@@ -26,6 +26,7 @@
 						<optgroup label="${rc.getMessage("filter.group.dataset")}">
 							<option value="${root.availableFilters.institutioncode}">${rc.getMessage("filter.institutioncode")}</option>
 							<option value="${root.availableFilters.datasetname}">${rc.getMessage("filter.datasetname")}</option>
+							<option value="${root.availableFilters.sourcefileid}">${rc.getMessage("filter.sourcefileid")}</option>
 						</optgroup>
 						<optgroup label="${rc.getMessage("filter.group.specimen")}">
 							<option value="${root.availableFilters.collectioncode}">${rc.getMessage("filter.collectioncode")}</option>

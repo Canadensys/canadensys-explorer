@@ -129,22 +129,46 @@ public class OccurrenceSearchServiceImpl implements OccurrenceSearchService {
 	
 	@Override
 	@Transactional(readOnly=true)
-	public SearchQueryPart getSearchQueryPartFromSourceFileId(String sourceFileId){
+	public SearchQueryPart getSearchQueryPartFromDatasetName(String datasetName){
 		SearchQueryPart sqp = null;
-		//sourceFileId is not a SearchableField so translate it into datasetname
 		OccurrenceSearchableField datasetNameSearchField = null;
 		datasetNameSearchField = (OccurrenceSearchableField)searchServiceConfig.getSearchableFieldbyName("datasetname");
 		
 		OccurrenceModel occModel = new OccurrenceModel();
-		occModel.setSourcefileid(sourceFileId);
+		occModel.setDatasetname(datasetName);
 		List<OccurrenceModel> results = occurrenceDAO.search(occModel, 1);
 		if(!results.isEmpty()){
-			String datasetName = results.get(0).getDatasetname();
+			String _datasetName = results.get(0).getDatasetname();
 			sqp = new SearchQueryPart();
 			sqp.setSearchableField(datasetNameSearchField);
 			sqp.setOp(QueryOperatorEnum.EQ);
-			sqp.addValue(datasetName);
-			sqp.addParsedValue(datasetName, datasetNameSearchField.getRelatedField(), datasetName);
+			sqp.addValue(_datasetName);
+			sqp.addParsedValue(_datasetName, datasetNameSearchField.getRelatedField(), _datasetName);
+		}
+		else{
+			LOGGER.error("Couldn't find datasetName " + datasetName);
+		}
+		return sqp;
+	}
+	
+	@Override
+	@Transactional(readOnly=true)
+	public SearchQueryPart getSearchQueryPartFromSourceFileId(String sourceFileId){
+		SearchQueryPart sqp = null;
+		OccurrenceSearchableField sourcefileIdSearchField = null;
+		sourcefileIdSearchField = (OccurrenceSearchableField)searchServiceConfig.getSearchableFieldbyName("sourcefileid");
+		
+		//ensure it exists, TODO duplicate from OccurrenceService
+		OccurrenceModel occModel = new OccurrenceModel();
+		occModel.setSourcefileid(sourceFileId);
+		List<OccurrenceModel> results = occurrenceDAO.search(occModel, 1);
+		if(!results.isEmpty()){
+			String _sourceFileId = results.get(0).getSourcefileid();
+			sqp = new SearchQueryPart();
+			sqp.setSearchableField(sourcefileIdSearchField);
+			sqp.setOp(QueryOperatorEnum.EQ);
+			sqp.addValue(_sourceFileId);
+			sqp.addParsedValue(_sourceFileId, sourcefileIdSearchField.getRelatedField(), _sourceFileId);
 		}
 		else{
 			LOGGER.error("Couldn't find sourceFileId " + sourceFileId);

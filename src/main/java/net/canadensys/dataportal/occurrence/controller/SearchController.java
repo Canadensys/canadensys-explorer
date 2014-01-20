@@ -178,8 +178,9 @@ public class SearchController {
 		//handle search related params
 		Collection<SearchQueryPart> searchRelatedParams= searchParamHandler.getSearchQueryPartCollection(request.getParameterMap());
 		
-		//handle special param 'dataset'
+		//handle special parameters 'dataset','iptresource'
 		handleDatasetParam(request.getParameter(SearchURLHelper.DATASET_PARAM),searchRelatedParams);
+		handleIptResourceParam(request.getParameter(SearchURLHelper.IPT_RESOURCE_PARAM),searchRelatedParams);
 		Map<String,List<SearchQueryPart>> searchCriteria = searchParamHandler.asMap(searchRelatedParams);
 
 		//handling data related to the view
@@ -379,7 +380,22 @@ public class SearchController {
 	 * @param sourceFileId
 	 * @param searchRelatedParams
 	 */
-	private void handleDatasetParam(String sourceFileId, Collection<SearchQueryPart> searchRelatedParams){
+	private void handleDatasetParam(String datasetName, Collection<SearchQueryPart> searchRelatedParams){
+		if(!StringUtils.isBlank(datasetName)){
+			SearchQueryPart sqp = occurrenceSearchService.getSearchQueryPartFromDatasetName(datasetName);
+			if(sqp != null){
+				//we need to copy the list to be able to add a new element
+				searchRelatedParams.add(sqp);
+			}
+		}
+	}
+	
+	/**
+	 * This function handles URL parameter 'iptresource=...'
+	 * @param sourceFileId
+	 * @param searchRelatedParams
+	 */
+	private void handleIptResourceParam(String sourceFileId, Collection<SearchQueryPart> searchRelatedParams){
 		if(!StringUtils.isBlank(sourceFileId)){
 			SearchQueryPart sqp = occurrenceSearchService.getSearchQueryPartFromSourceFileId(sourceFileId);
 			if(sqp != null){
