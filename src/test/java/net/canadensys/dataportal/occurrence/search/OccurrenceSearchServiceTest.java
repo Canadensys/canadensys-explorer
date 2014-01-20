@@ -93,7 +93,7 @@ public class OccurrenceSearchServiceTest extends AbstractTransactionalJUnit4Spri
     @Test
     public void testGetSearchQueryPartFromSourceFileId(){
     	OccurrenceSearchService searchService = (OccurrenceSearchService)applicationContext.getBean("occurrenceSearchService");
-    	SearchQueryPart qp = searchService.getSearchQueryPartFromSourceFileId("uow-occurrence");
+    	SearchQueryPart qp = searchService.getSearchQueryPartFromFieldName("sourcefileid","uow-occurrence");
     	
     	//This must match the field in datasetname SearchServiceConfig
     	assertEquals(new Integer(29),qp.getSearchableFieldId());
@@ -103,7 +103,7 @@ public class OccurrenceSearchServiceTest extends AbstractTransactionalJUnit4Spri
     @Test
     public void testGetSearchQueryPartFromDatasetName(){
     	OccurrenceSearchService searchService = (OccurrenceSearchService)applicationContext.getBean("occurrenceSearchService");
-    	SearchQueryPart qp = searchService.getSearchQueryPartFromDatasetName("Test USA Herbarium");
+    	SearchQueryPart qp = searchService.getSearchQueryPartFromFieldName("datasetname","Test USA Herbarium");
     	
     	//This must match the field in datasetname SearchServiceConfig
     	assertEquals(new Integer(8),qp.getSearchableFieldId());

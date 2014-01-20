@@ -382,7 +382,7 @@ public class SearchController {
 	 */
 	private void handleDatasetParam(String datasetName, Collection<SearchQueryPart> searchRelatedParams){
 		if(!StringUtils.isBlank(datasetName)){
-			SearchQueryPart sqp = occurrenceSearchService.getSearchQueryPartFromDatasetName(datasetName);
+			SearchQueryPart sqp = occurrenceSearchService.getSearchQueryPartFromFieldName("datasetname", datasetName);
 			if(sqp != null){
 				//we need to copy the list to be able to add a new element
 				searchRelatedParams.add(sqp);
@@ -397,7 +397,7 @@ public class SearchController {
 	 */
 	private void handleIptResourceParam(String sourceFileId, Collection<SearchQueryPart> searchRelatedParams){
 		if(!StringUtils.isBlank(sourceFileId)){
-			SearchQueryPart sqp = occurrenceSearchService.getSearchQueryPartFromSourceFileId(sourceFileId);
+			SearchQueryPart sqp = occurrenceSearchService.getSearchQueryPartFromFieldName("sourcefileid", sourceFileId);
 			if(sqp != null){
 				//we need to copy the list to be able to add a new element
 				searchRelatedParams.add(sqp);

@@ -47,18 +47,14 @@ public interface OccurrenceSearchService {
 	public int getGeoreferencedOccurrenceCount(Map<String, List<SearchQueryPart>> searchCriteria);
 	
 	/**
-	 * Build a SearchQueryPart for a specific sourceFileId.
-	 * @param sourceFileId
+	 * Build a SearchQueryPart for a specific field defined in SearchServiceConfig.
+	 * The SearchQueryPart will be built with an EQ operator for String.
+	 * @param fieldName
+	 * @param fieldValue
 	 * @return
 	 */
-	public SearchQueryPart getSearchQueryPartFromSourceFileId(String sourceFileId);
+	public SearchQueryPart getSearchQueryPartFromFieldName(String fieldName, String fieldValue);
 	
-	/**
-	 * Build a SearchQueryPart for a specific datasetName.
-	 * @param sourceFileId
-	 * @return
-	 */
-	public SearchQueryPart getSearchQueryPartFromDatasetName(String datasetName);
 	
 	/**
 	 * Get all values and their count for a specific searchCriteria/column.
