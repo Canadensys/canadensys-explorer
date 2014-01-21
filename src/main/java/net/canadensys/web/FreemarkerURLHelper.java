@@ -1,5 +1,6 @@
 package net.canadensys.web;
 
+import org.springframework.mail.javamail.ConfigurableMimeFileTypeMap;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -45,5 +46,15 @@ public class FreemarkerURLHelper {
 		UriComponentsBuilder bldr = UriComponentsBuilder.fromUriString(uri);
 		bldr.replaceQueryParam("lang",lang);
 		return bldr.build().toUriString();
+	}
+	
+	/**
+	 * Get the mime type (e.g. image/x-png) of a file designed by a url(or not).
+	 * @param url
+	 * @return mime type image/jpeg text/html
+	 */
+	public static String getMimeFileType(String url){
+		ConfigurableMimeFileTypeMap cmft = new ConfigurableMimeFileTypeMap();
+		return cmft.getContentType(url);
 	}
 }

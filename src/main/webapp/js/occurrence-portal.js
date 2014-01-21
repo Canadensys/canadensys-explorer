@@ -97,9 +97,16 @@ var occurrencePreview = (function($){
 			for (var i = 0; i < associatedmedia.length; i++) {
 				var href = $('<a />');
 				href.attr('href', associatedmedia[i]).attr('target', '_blank');
-				var image = $('<img />');
-				image.attr('src', associatedmedia[i]).attr('alt','Image ' + (i+1));
-				href.append(image);
+				//this is temporary, mime type will be included in the json object.
+				var extension = associatedmedia[i].substring(associatedmedia[i].lastIndexOf("."),associatedmedia[i].length);
+				if(extension === ".png" || extension === ".jpg"){
+					var image = $('<img />');
+					image.attr('src', associatedmedia[i]).attr('alt','Image ' + (i+1));
+					href.append(image);
+				}
+				else{
+					href.text(languageResources.getLanguageResource('occpage.menu.associatedmedia')+ (i+1));
+				}
 				$occPreviewMedia.append(href);
 			}
 		}

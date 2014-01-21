@@ -22,7 +22,13 @@ rc.getContextUrl("/js/"+formatFileInclude("occurrence-portal",root.currentVersio
 			<div id="occpage_media">
 			<#if root.occModel.associatedmedia?has_content>
 				<#list root.occModel.associatedmedia?split("; ") as am>
-					<a class="round" href="${am}" target="_blank"><span><img src="${am}" alt="Image"/></span></a>
+					<a class="round" href="${am}" target="_blank">
+					<#if isImageMimeType(am)>
+						<span><img src="${am}" alt="Image"/></span>
+					<#else>
+						${rc.getMessage("occpage.menu.associatedmedia")}
+					</#if>
+					</a>
 				</#list>
 			</#if>
 			</div>

@@ -28,6 +28,10 @@
   <#return value>
 </#function>
  
- <#function getI18nContextUrl uri>
+<#function getI18nContextUrl uri>
 	<#return rc.getContextUrl(URLHelper.getUriWithLanguage(uri,rc.getLocale().getLanguage()))>
+</#function>
+
+<#function isImageMimeType url>
+	<#return URLHelper.getMimeFileType(url)?contains("image")>
 </#function>

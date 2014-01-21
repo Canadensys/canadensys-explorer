@@ -22,6 +22,7 @@ public class OccurrenceSearchableFieldLanguageSupport {
 	private static final String FILTER_PREFIX = "filter.";
 	private static final String DOWNLOAD_PREFIX = "control.download.";
 	private static final String CHART_PREFIX = "view.stats.chart.";
+	private static final String OCC_PAGE_MENU_PREFIX = "occpage.menu.";
 	
 	/**
 	 * This is used for dynamic components only. It doesn't contain all the resources.
@@ -42,7 +43,8 @@ public class OccurrenceSearchableFieldLanguageSupport {
 		String currKey = null;
 		while(rbKeys.hasMoreElements()){
 			currKey = rbKeys.nextElement();
-			if(currKey.startsWith(FILTER_PREFIX) || currKey.startsWith(DOWNLOAD_PREFIX) || currKey.startsWith(CHART_PREFIX)){
+			if(currKey.startsWith(FILTER_PREFIX) || currKey.startsWith(DOWNLOAD_PREFIX) 
+					|| currKey.startsWith(CHART_PREFIX) || currKey.startsWith(OCC_PAGE_MENU_PREFIX)){
 				languageResources.put(currKey, resourceBundle.getString(currKey));
 			}
 		}
