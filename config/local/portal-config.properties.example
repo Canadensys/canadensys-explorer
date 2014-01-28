@@ -1,16 +1,13 @@
-#The root URL of the Explorer. Must ends with a slash. (http://data.canadensys.net/explorer/)
-url.rootURL=YOUR_VALUE
-
 #Do we use the minified version of JavaScript and CSS files
-url.useMinified=true
+url.useMinified=false
 
 #GoogleAnalytics variables, if you don't want to use it, just remove the next 2 lines
 googleanalytics.siteVerification=YOUR_VALUE
 googleanalytics.account=YOUR_VALUE
 
 #Database
-database.driver=org.postgresql.Driver
-database.url=jdbc:postgresql://YOUR_VALUE
+database.driver=org.h2.Driver
+database.url=jdbc:h2:mem:postgresql;DB_CLOSE_DELAY=-1;MODE=PostgreSQL;TRACE_LEVEL_SYSTEM_OUT=2;
 database.user=YOUR_VALUE
 database.password=YOUR_VALUE
 database.idleConnectionTestPeriod=60

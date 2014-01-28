@@ -1,7 +1,6 @@
 # Ignore specific files
 portal-config.properties
 log4j.properties
-build.gradle
 gradle.properties
 .DS_Store
 
@@ -13,7 +12,6 @@ gradle.properties
 
 target/
 build/
-config/
-.gradle/
 bin/
 .settings/
+.gradle/
