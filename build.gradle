@@ -1,0 +1,101 @@
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'eclipse'
+
+//Use Canadensys common web build file
+apply from: "https://raw.github.com/Canadensys/canadensys-common/master/gradle/canadensys_web_build.gradle"
+
+//Make sure tomcat will run with the right encoding
+System.setProperty('file.encoding', 'UTF-8')
+
+def group = 'canadensys.net'
+
+ext {
+	sourceCompatibility = JavaVersion.VERSION_1_6
+	sourceEncoding = 'UTF-8'
+	
+	springVersion = '3.2.6.RELEASE'
+	hibernateVersion = '4.2.8.Final'
+
+	tomcatVersion = '6.0.29'
+	seleniumVersion = '2.39.0'
+	dataAccessVersion = '2.2.2'
+	
+	versionFile = project.file("config/production/version.properties")
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    
+    maven {
+        url "http://repository.gbif.org/content/groups/gbif"
+    }
+}
+
+compileJava.options.encoding = sourceEncoding
+compileTestJava.options.encoding = sourceEncoding
+
+dependencies {
+	providedCompile group: 'javax.servlet', name: 'servlet-api', version: '2.5'
+	
+	compile group: 'net.canadensys', name: 'canadensys-data-access', version: dataAccessVersion
+	compile group: 'log4j', name: 'log4j', version: '1.2.17'
+	compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.2'
+	
+	compile group: 'javax.mail', name: 'mail', version: '1.4.5'
+	compile group: 'org.springframework', name: 'spring-webmvc', version: springVersion
+	compile group: 'org.springframework', name: 'spring-web', version: springVersion
+	compile group: 'org.springframework', name: 'spring-context-support', version: springVersion
+	compile group: 'postgresql', name: 'postgresql', version: '9.1-901.jdbc4'
+	compile group: 'org.hibernate', name: 'hibernate-c3p0', version: hibernateVersion
+	compile group: 'org.freemarker', name: 'freemarker', version: '2.3.18'
+	
+	//h2 is included to allow integration testing using a mock database
+    compile group: 'com.h2database', name: 'h2', version: '1.3.172'
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+	testCompile group: 'org.hamcrest', name: 'hamcrest-library', version: '1.3'	
+    testCompile group: 'org.springframework', name: 'spring-test', version: springVersion
+    testCompile group: 'com.jayway.jsonpath', name: 'json-path', version: '0.8.1'
+    testCompile group: 'org.seleniumhq.selenium', name :'selenium-java',version:seleniumVersion
+    testCompile group: 'org.seleniumhq.selenium', name :'selenium-firefox-driver',version:seleniumVersion
+    testCompile group: 'org.seleniumhq.selenium', name :'selenium-htmlunit-driver',version:seleniumVersion
+    
+    tomcat("org.apache.tomcat:catalina:${tomcatVersion}")
+    tomcat("org.apache.tomcat:coyote:${tomcatVersion}")
+    tomcat("org.apache.tomcat:jasper:${tomcatVersion}")
+}
+
+//WAR plugin settings
+war {
+	from("${additionalWebFilesDir}/js"){
+        into("js")
+        include ("**/*.js")
+	}
+	from("${additionalWebFilesDir}/css"){
+        into("styles")
+        include ("*.css")
+	}
+	webInf { from "${buildDir}/config" }
+	webInf { from "../canadensys-view-includes/WEB-INF" }
+}
+
+tomcatRunWar {
+    httpPort = 9966
+    contextPath = 'explorer'
+    stopKey = 'stopKey' 
+}
+
+tomcatStop {
+	stopKey = 'stopKey'
+}
+
+//This task allows us to replace the dispatcher-servlet.xml with the one from 'test'.
+task useTestDispatcher{
+	war.excludes = ['WEB-INF/dispatcher-servlet.xml']
+	war.webInf { from 'src/test/resources/integration'
+				 include 'integration-data-source.xml','integration-dispatcher-servlet.xml'
+				 rename 'integration-dispatcher-servlet.xml','dispatcher-servlet.xml'
+				}
+}
+runIntegrationTest.dependsOn useTestDispatcher

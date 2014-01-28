@@ -17,15 +17,16 @@
 	http://www.springframework.org/schema/task
 	http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
-	<import resource="classpath:/test-data-source.xml" />
+	<import resource="test-data-source.xml" />
 
 	<context:component-scan base-package="net.canadensys.dataportal.occurrence"/>
 	
 	<!-- Application configuration -->
 	<context:property-placeholder location="classpath:portal-test.properties" />
-	
+
 	<jdbc:initialize-database data-source="dataSource">
-    	<jdbc:script location="classpath:createTablesPublicSchema-portal.sql" />
+		<!-- loaded from canadensys-data-access jar file -->
+    	<jdbc:script location="/script/occurrence/create_occurrence_tables.sql" />
   	</jdbc:initialize-database>
   	
 	<task:annotation-driven executor="executor"/>
