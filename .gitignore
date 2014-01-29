@@ -1,5 +1,5 @@
 # Ignore specific files
-portal-config.properties
+config/production/portal-config.properties
 log4j.properties
 gradle.properties
 .DS_Store

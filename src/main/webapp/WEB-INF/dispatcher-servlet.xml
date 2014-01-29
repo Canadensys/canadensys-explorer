@@ -18,6 +18,8 @@
 	http://www.springframework.org/schema/task
 	http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
+	<import resource="data-source.xml" />
+
 	<context:component-scan base-package="net.canadensys.dataportal.occurrence"/>
 	
 	<!-- use to return JSON -->
@@ -104,41 +106,6 @@
 	
 	<bean id ="mapServerAccess" class="net.canadensys.dataportal.occurrence.map.impl.WindshaftMapServerAccess">
 		<property name="tableUsed" value="occurrence"/>
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	
-	<!-- Hibernate config -->
-	<bean id="dataSource"
-		class="com.mchange.v2.c3p0.ComboPooledDataSource">
-		<property name="driverClass" value="${database.driver}" />
-        <property name="jdbcUrl" value="${database.url}" />
-        <property name="user" value="${database.user}" />
-        <property name="password" value="${database.password}" />
-        <property name="idleConnectionTestPeriod" value="${database.idleConnectionTestPeriod}"/>
-	</bean>
-	
-	<bean id="sessionFactory"
-		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-		<property name="annotatedClasses">
-			<list>
-				<value>net.canadensys.dataportal.occurrence.model.UniqueValuesModel</value>
-				<value>net.canadensys.dataportal.occurrence.model.OccurrenceModel</value>
-				<value>net.canadensys.dataportal.occurrence.model.OccurrenceRawModel</value>
-				<value>net.canadensys.dataportal.occurrence.model.DownloadLogModel</value>
-				<value>net.canadensys.dataportal.occurrence.model.ResourceContactModel</value>
-			</list>
-		</property>
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
-				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
-				<prop key="hibernate.jdbc.fetch_size">1000</prop>	
-			</props>
-		</property>
-	</bean>
-	<bean id="hibernateTransactionManager"
-		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	

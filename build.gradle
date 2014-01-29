@@ -90,12 +90,11 @@ tomcatStop {
 	stopKey = 'stopKey'
 }
 
-//This task allows us to replace the dispatcher-servlet.xml with the one from 'test'.
-task useTestDispatcher{
-	war.excludes = ['WEB-INF/dispatcher-servlet.xml']
-	war.webInf { from 'src/test/resources/integration'
-				 include 'integration-data-source.xml','integration-dispatcher-servlet.xml'
-				 rename 'integration-dispatcher-servlet.xml','dispatcher-servlet.xml'
-				}
+//This task allows us to replace the data-source.xml with the one from 'config/local'.
+task useLocalDataSource{
+	if( file("config/local/data-source.xml").exists()){
+		war.excludes = ['WEB-INF/data-source.xml']
+		war.webInf { from 'config/local/data-source.xml' }
+	}
 }
-runIntegrationTest.dependsOn useTestDispatcher
+runIntegrationTest.dependsOn useLocalDataSource
