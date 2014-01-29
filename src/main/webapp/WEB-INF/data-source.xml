@@ -4,6 +4,16 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 	
+	<!-- Application configuration -->
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>/WEB-INF/portal-config.properties</value>
+				<value>/WEB-INF/version.properties</value>
+			</list>
+		</property>
+	</bean>
+	
 	<!-- Hibernate config -->
 	<bean id="dataSource"
 		class="com.mchange.v2.c3p0.ComboPooledDataSource">
