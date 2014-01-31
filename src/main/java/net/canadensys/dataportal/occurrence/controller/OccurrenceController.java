@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import net.canadensys.dataportal.occurrence.OccurrenceService;
 import net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig;
 import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
+import net.canadensys.dataportal.occurrence.model.OccurrenceViewModel;
 import net.canadensys.dataportal.occurrence.model.ResourceContactModel;
 import net.canadensys.exception.web.ResourceNotFoundException;
 
@@ -15,6 +16,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.mail.javamail.ConfigurableMimeFileTypeMap;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +37,7 @@ public class OccurrenceController {
 	
 	//get log4j handler
 	private static final Logger LOGGER = Logger.getLogger(OccurrenceController.class);
+	private static final ConfigurableMimeFileTypeMap MIME_TYPE_MAP = new ConfigurableMimeFileTypeMap();
 	
 	private static String VIEW_PARAM = "view";
 	private static String DWC_VIEW_NAME = "dwc";
@@ -48,7 +51,7 @@ public class OccurrenceController {
 	
 	/**
 	 * Redirect this URL to a search on this dataset with a fallback to iptresource (for legacy reason).
-	 * We support this to have a clean URL to the dataset
+	 * We support this to have a clean URL to the dataset.
 	 * @param dataset
 	 * @return
 	 */
@@ -69,7 +72,7 @@ public class OccurrenceController {
 	}
 	
 	/**
-	 * Occurrence page
+	 * We keep this URL for legacy reason. Dataset was misused as sourcefileid.
 	 * @param dataset
 	 * @param dwcaId
 	 * @param request needs to get some parameters and Locale
@@ -77,12 +80,43 @@ public class OccurrenceController {
 	 */
 	@RequestMapping(value="/d/{dataset}/{dwcaId:.+}", method=RequestMethod.GET)
 	public ModelAndView handleOccurrence(@PathVariable String dataset,@PathVariable String dwcaId, HttpServletRequest request){
-		OccurrenceModel occModel = occurrenceService.loadOccurrenceModel(dataset,dwcaId,true);
+//		OccurrenceModel occModel = occurrenceService.loadOccurrenceModel(dataset,dwcaId,true);
+//		HashMap<String,Object> modelRoot = new HashMap<String,Object>();
+//		
+//		if(occModel != null){
+//			modelRoot.put("occModel", occModel);
+//			modelRoot.put("occRawModel",occModel.getRawModel());
+//			modelRoot.put("occViewModel", buildOccurrenceViewModel(occModel));
+//		}
+//		else{
+//			throw new ResourceNotFoundException();
+//		}
+//
+//		Locale locale = RequestContextUtils.getLocale(request);
+//		//Set common stuff
+//		ControllerHelper.setPageHeaderVariables(locale, appConfig, modelRoot);
+//		
+//		//handle view stuff
+//		String view = request.getParameter(VIEW_PARAM);
+//		if(DWC_VIEW_NAME.equalsIgnoreCase(view)){
+//			return new ModelAndView("occurrence-dwc","root",modelRoot);
+//		}
+//		return new ModelAndView("occurrence","root",modelRoot);
+		RedirectView rv = new RedirectView(request.getContextPath()+"/r/" + dataset + "/"+dwcaId);
+		rv.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
+		ModelAndView mv = new ModelAndView(rv);
+		return mv;
+	}
+	
+	@RequestMapping(value="/r/{iptResource}/{dwcaId:.+}", method=RequestMethod.GET)
+	public ModelAndView handleOccurrencePerResource(@PathVariable String iptResource,@PathVariable String dwcaId, HttpServletRequest request){
+		OccurrenceModel occModel = occurrenceService.loadOccurrenceModel(iptResource,dwcaId,true);
 		HashMap<String,Object> modelRoot = new HashMap<String,Object>();
 		
 		if(occModel != null){
 			modelRoot.put("occModel", occModel);
 			modelRoot.put("occRawModel",occModel.getRawModel());
+			modelRoot.put("occViewModel", buildOccurrenceViewModel(occModel));
 		}
 		else{
 			throw new ResourceNotFoundException();
@@ -102,14 +136,14 @@ public class OccurrenceController {
 	
 	/**
 	 * Resource contact page.
-	 * This mapping 'could' conflict with /d/{dataset}/{dwcaId} in case someone used 'contact' as id in a DarwinCore file.
-	 * This could be solved by adding 'record' e.g. /d/{dataset}/record/{dwcaId}
+	 * This mapping 'could' conflict with /r/{iptResource}/{dwcaId} in case someone used 'contact' as id in a DarwinCore file.
+	 * This could be solved by adding 'record' e.g. /r/{iptResource}/record/{dwcaId}
 	 * @param dataset
 	 * @return
 	 */
-	@RequestMapping(value="/d/{dataset}/contact", method=RequestMethod.GET)
-	public ModelAndView handleResourceContact(@PathVariable String dataset,HttpServletRequest request){
-		ResourceContactModel resourceContactModel = occurrenceService.loadResourceContactModel(dataset);
+	@RequestMapping(value="/r/{iptResource}/contact", method=RequestMethod.GET)
+	public ModelAndView handleResourceContact(@PathVariable String iptResource, HttpServletRequest request){
+		ResourceContactModel resourceContactModel = occurrenceService.loadResourceContactModel(iptResource);
 		HashMap<String,Object> modelRoot = new HashMap<String,Object>();
 		
 		if(resourceContactModel != null){
@@ -141,5 +175,26 @@ public class OccurrenceController {
 		rv.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
 		ModelAndView mv = new ModelAndView(rv);
 		return mv;
+	}
+	
+	/**
+	 * Build and fill A OccurrenceViewModel based on a OccurrenceModel.
+	 * @param occModel
+	 * @return OccurrenceViewModel instance, never null
+	 */
+	public static OccurrenceViewModel buildOccurrenceViewModel(OccurrenceModel occModel){
+		//assumes that data are coming from harvester
+		String[] media = occModel.getAssociatedmedia().split("; ");
+		OccurrenceViewModel occViewModel = new OccurrenceViewModel();
+		
+		for(String currentMedia : media){
+			if(MIME_TYPE_MAP.getContentType(currentMedia).startsWith("image")){
+				occViewModel.addImage(currentMedia);
+			}
+			else{
+				occViewModel.addOtherMedia(currentMedia);
+			}
+		}
+		return occViewModel;
 	}
 }

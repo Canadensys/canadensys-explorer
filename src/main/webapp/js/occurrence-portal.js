@@ -59,7 +59,7 @@ var occurrencePreview = (function($){
 		var $viewSourceRecordLink = $('#viewsourcerecord', $occPreviewLinks);
 		var $viewFullRecordLink = $('#viewfullrecord', $occPreviewLinks);
 		
-		$viewFullRecordLink.attr('href', 'd/'+json['sourcefileid']+'/'+json['dwcaid']);
+		$viewFullRecordLink.attr('href', 'r/'+json['sourcefileid']+'/'+json['dwcaid']);
 		
 		if(json['_references']){
 			$viewSourceRecordLink.attr('href', json['_references']);
@@ -92,23 +92,19 @@ var occurrencePreview = (function($){
 		
 		var $occPreviewMedia = $("#occ_preview_media","#occ_preview_content");
 		$occPreviewMedia.empty();
-		if(json['associatedmedia']){
-			var associatedmedia = json['associatedmedia'].split('; ');
-			for (var i = 0; i < associatedmedia.length; i++) {
-				var href = $('<a />');
-				href.attr('href', associatedmedia[i]).attr('target', '_blank');
-				//this is temporary, mime type will be included in the json object.
-				var extension = associatedmedia[i].substring(associatedmedia[i].lastIndexOf("."),associatedmedia[i].length);
-				if(extension === ".png" || extension === ".jpg"){
-					var image = $('<img />');
-					image.attr('src', associatedmedia[i]).attr('alt','Image ' + (i+1));
-					href.append(image);
-				}
-				else{
-					href.text(languageResources.getLanguageResource('occpage.menu.associatedmedia')+ (i+1));
-				}
-				$occPreviewMedia.append(href);
+		if(json['viewModel'] && (json['viewModel']['imageList'] || json['viewModel']['otherMediaList'])){
+			var href = $('<a />');
+			if(json['viewModel']['imageList'] !=null && json['viewModel']['imageList'].length > 0){
+				href.attr('href', json['viewModel']['imageList'][0]).attr('target', '_blank');
+				var image = $('<img />');
+				image.attr('src', json['viewModel']['imageList'][0]).attr('alt','Image');
+				href.append(image);
 			}
+			else if (json['viewModel']['otherMediaList'] != null && json['viewModel']['otherMediaList'].length > 0){
+				href.attr('href', json['viewModel']['otherMediaList'][0]).attr('target', '_blank');
+				href.text(languageResources.getLanguageResource('occpage.menu.associatedmedia'));
+			}
+			$occPreviewMedia.append(href);
 		}
 	}
 	

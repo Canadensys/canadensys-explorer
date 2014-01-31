@@ -115,10 +115,16 @@ public class OccurrenceSearchServiceImpl implements OccurrenceSearchService {
 		return occurrenceDAO.searchWithLimit(searchCriteria, SearchServiceConfig.OCCURRENCE_SEARCH_FIELDS);
 	}
 	
+//	@Override
+//	@Transactional(readOnly=true)
+//	public String getOccurrenceSummary(int auto_id) {
+//		return occurrenceDAO.getOccurrenceSummaryJson(auto_id,OccurrencePortalConfig.OCCURRENCE_MANAGED_ID_FIELD,SearchServiceConfig.OCCURENCE_SUMMARY_FIELDS);
+//	}
+	
 	@Override
 	@Transactional(readOnly=true)
-	public String getOccurrenceSummary(int auto_id) {
-		return occurrenceDAO.getOccurrenceSummaryJson(auto_id,OccurrencePortalConfig.OCCURRENCE_MANAGED_ID_FIELD,SearchServiceConfig.OCCURENCE_SUMMARY_FIELDS);
+	public OccurrenceModel getOccurrenceSummary(int auto_id) {
+		return occurrenceDAO.loadOccurrenceSummary(auto_id,SearchServiceConfig.OCCURENCE_SUMMARY_FIELDS);
 	}
 	
 	@Override

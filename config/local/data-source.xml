@@ -30,6 +30,7 @@
 	<!-- create tables from the canadensys-data-access jar -->
 	<jdbc:initialize-database data-source="dataSource">
     	<jdbc:script location="classpath:/script/occurrence/create_occurrence_tables.sql" />
+    	<jdbc:script location="/WEB-INF/insert_test_data.sql" />
   	</jdbc:initialize-database>
 	
 	<bean id="sessionFactory"

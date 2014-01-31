@@ -11,7 +11,7 @@ import net.canadensys.dataportal.occurrence.model.ResourceContactModel;
 public interface OccurrenceService {
 	
 	/**
-	 * Checks if a resourceName exists or not in the database.
+	 * Checks if a resourceName(sourcefileid) exists or not in the database.
 	 * @param dataset
 	 * @return the resourceName exists or not
 	 */
@@ -25,18 +25,18 @@ public interface OccurrenceService {
 	public boolean datasetExists(String datasetName);
 	
 	/**
-	 * Load an occurrence model based on the unique key dataset(sourcefileid)/dwcaId 
-	 * @param datasetShortName unique within the portal
+	 * Load an occurrence model based on the unique key sourcefileid/dwcaId 
+	 * @param sourcefileid unique within the portal
 	 * @param dwcaId unique within the dataset
 	 * @return
 	 */
-	public OccurrenceModel loadOccurrenceModel(String datasetShortName, String dwcaId, boolean loadRawModel);
+	public OccurrenceModel loadOccurrenceModel(String sourcefileid, String dwcaId, boolean loadRawModel);
 	
 	/**
-	 * Load a ResourceContactModel based on the datasetShortName
-	 * @param datasetShortName
+	 * Load a ResourceContactModel based on the sourcefileid
+	 * @param sourcefileid
 	 * @return
 	 */
-	public ResourceContactModel loadResourceContactModel(String datasetShortName);
+	public ResourceContactModel loadResourceContactModel(String sourcefileid);
 
 }

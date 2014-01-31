@@ -19,7 +19,7 @@ ext {
 
 	tomcatVersion = '6.0.29'
 	seleniumVersion = '2.39.0'
-	dataAccessVersion = '2.2.2'
+	dataAccessVersion = '2.3.0-SNAPSHOT'
 	
 	versionFile = project.file("config/production/version.properties")
 }
@@ -95,6 +95,7 @@ task useLocalDataSource{
 	if( file("config/local/data-source.xml").exists()){
 		war.excludes = ['WEB-INF/data-source.xml']
 		war.webInf { from 'config/local/data-source.xml' }
+		war.webInf { from 'src/test/resources/insert_test_data.sql' }
 	}
 }
 runIntegrationTest.dependsOn useLocalDataSource

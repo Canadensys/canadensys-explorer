@@ -26,11 +26,11 @@ public interface OccurrenceSearchService {
 	public LimitedResult<List<Map<String, String>>> searchWithLimit(Map<String, List<SearchQueryPart>> searchCriteria);
 	
 	/**
-	 * Get the occurrence summary in JSON
+	 * Get the occurrence summary object
 	 * @param auto_id
 	 * @return
 	 */
-	public String getOccurrenceSummary(int auto_id);
+	public OccurrenceModel getOccurrenceSummary(int auto_id);
 	
 	/**
 	 * Count the number of occurrence for these searchCriteria

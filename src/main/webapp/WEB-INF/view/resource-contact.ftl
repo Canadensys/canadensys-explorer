@@ -1,10 +1,10 @@
-<#assign page={"title":rc.getMessage("resourcecontact.title",[root.data.dataset_title]),"cssList":[rc.getContextUrl("/styles/occportal.css")],"prefetchList":["http://tiles.canadensys.net"]}>
+<#assign page={"title":rc.getMessage("resourcecontact.title",[root.data.resource_name]),"cssList":[rc.getContextUrl("/styles/occportal.css")],"prefetchList":["http://tiles.canadensys.net"]}>
 <#include "inc/header.ftl">
 <div id="feedback_bar"><a href="http://code.google.com/p/canadensys/issues/entry?template=Explorer%20-%20Interface%20issue" target="_blank" title="${rc.getMessage("feedback.hover")}">&nbsp;</a></div>
 	<#include "inc/canadensys-header.ftl">
 	<div id="body">
 		<div id="content" class="clear_fix no_side_bar">
-			<h1>${root.data.dataset_title!}</h1>
+			<h1>${root.data.resource_name!}</h1>
 			<h2>${rc.getMessage("resourcecontact.header")}</h2>
 			<table>
 			<tbody>

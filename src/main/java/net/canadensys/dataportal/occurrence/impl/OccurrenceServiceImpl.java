@@ -48,15 +48,15 @@ public class OccurrenceServiceImpl implements OccurrenceService {
 	
 	@Override
 	@Transactional(readOnly=true)
-	public OccurrenceModel loadOccurrenceModel(String datasetShortName, String dwcaId, boolean loadRawModel) {
-		OccurrenceModel occModel = occurrenceDAO.load(datasetShortName, dwcaId, loadRawModel);
+	public OccurrenceModel loadOccurrenceModel(String sourcefileid, String dwcaId, boolean loadRawModel) {
+		OccurrenceModel occModel = occurrenceDAO.load(sourcefileid, dwcaId, loadRawModel);
 		return occModel;
 	}
 	
 	@Override
 	@Transactional(readOnly=true)
-	public ResourceContactModel loadResourceContactModel(String datasetShortName) {
-		List<ResourceContactModel> resourceContactModelList = resourceContactDAO.load(datasetShortName);
+	public ResourceContactModel loadResourceContactModel(String sourceFileId) {
+		List<ResourceContactModel> resourceContactModelList = resourceContactDAO.load(sourceFileId);
 		if(resourceContactModelList.size() > 0){
 			return resourceContactModelList.get(0);
 		}

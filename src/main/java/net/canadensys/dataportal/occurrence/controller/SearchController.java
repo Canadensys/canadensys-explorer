@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import net.canadensys.chart.ChartModel;
 import net.canadensys.dataportal.occurrence.autocomplete.AutoCompleteService;
 import net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig;
+import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
+import net.canadensys.dataportal.occurrence.model.OccurrenceViewModel;
 import net.canadensys.dataportal.occurrence.search.DownloadResultStatus;
 import net.canadensys.dataportal.occurrence.search.OccurrenceSearchService;
 import net.canadensys.dataportal.occurrence.search.OccurrenceSearchService.DownloadPropertiesEnum;
@@ -49,7 +51,9 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Controller of all search related features of the occurrence portal.
@@ -259,17 +263,23 @@ public class SearchController {
 	
 	/**
 	 * Occurrence summary as JSON object.
-	 * The "context" parameter can be used to tell that we are in the map context and that
-	 * the primary id is different.
 	 * @param auto_id the database key
 	 * @return occurrence summary as JSON
-	 */
+	 */	
 	@RequestMapping(value="/occurrence-summary/{auto_id}", method=RequestMethod.GET)
 	public ResponseEntity<String> handleOccurrenceSummary(@PathVariable Integer auto_id, HttpServletRequest request){
-		String occurrence = occurrenceSearchService.getOccurrenceSummary(auto_id);
+		OccurrenceModel occModel = occurrenceSearchService.getOccurrenceSummary(auto_id);
+		
+		OccurrenceViewModel occViewModel = OccurrenceController.buildOccurrenceViewModel(occModel);
+		
+		JsonNode rootNode = JACKSON_MAPPER.valueToTree(occModel);
+		JsonNode viewModelNode = JACKSON_MAPPER.valueToTree(occViewModel);
+		//attach viewModel to the root node
+		((ObjectNode)rootNode).put("viewModel", viewModelNode);
+		
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.add("Content-Type", JSON_CONTENT_TYPE);
-		return new ResponseEntity<String>(occurrence, responseHeaders, HttpStatus.OK);
+		return new ResponseEntity<String>(beanAsJSONString(rootNode), responseHeaders, HttpStatus.OK);
 	}
 	
 	/**
