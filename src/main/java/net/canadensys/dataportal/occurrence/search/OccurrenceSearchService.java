@@ -99,12 +99,5 @@ public interface OccurrenceSearchService {
 	 * @return long,lat
 	 */
 	public String[] getMapCenter(String sqlQuery);
-	
-	/**
-	 * This is not used anymore. We will keep this for now in case we need to change our map service.
-	 * @param id id of the occurrence in the map context
-	 * @return The summary of the occurrence in the map context as JSON
-	 */
-//	public String getMapOccurrenceSummary(int id);
-	
+		
 }

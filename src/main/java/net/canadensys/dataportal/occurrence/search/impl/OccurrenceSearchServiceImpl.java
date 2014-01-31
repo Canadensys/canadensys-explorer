@@ -115,12 +115,6 @@ public class OccurrenceSearchServiceImpl implements OccurrenceSearchService {
 		return occurrenceDAO.searchWithLimit(searchCriteria, SearchServiceConfig.OCCURRENCE_SEARCH_FIELDS);
 	}
 	
-//	@Override
-//	@Transactional(readOnly=true)
-//	public String getOccurrenceSummary(int auto_id) {
-//		return occurrenceDAO.getOccurrenceSummaryJson(auto_id,OccurrencePortalConfig.OCCURRENCE_MANAGED_ID_FIELD,SearchServiceConfig.OCCURENCE_SUMMARY_FIELDS);
-//	}
-	
 	@Override
 	@Transactional(readOnly=true)
 	public OccurrenceModel getOccurrenceSummary(int auto_id) {
@@ -160,16 +154,6 @@ public class OccurrenceSearchServiceImpl implements OccurrenceSearchService {
 	public String[] getMapCenter(String sqlQuery){
 		return mapServerAccess.getMapCenter(sqlQuery);
 	}
-	
-//	/**
-//	 * @deprecated This was used when the id used on the map were not the same as the
-//	 * id used in the table with all the data. Could it be useful in the future?
-//	 */
-//	@Override
-//	@Deprecated
-//	public String getMapOccurrenceSummary(int id){
-//		return mapServerAccess.getMapElementDetails(id,SearchServiceConfig.OCCURENCE_SUMMARY_FIELDS);
-//	}
 
 	@Override
 	@Transactional(readOnly=true)

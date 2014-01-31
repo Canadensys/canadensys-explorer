@@ -72,7 +72,7 @@ public class OccurrenceController {
 	}
 	
 	/**
-	 * We keep this URL for legacy reason. Dataset was misused as sourcefileid.
+	 * We keep this URL for legacy reason. /d/{dataset}/ was misused as sourcefileid.
 	 * @param dataset
 	 * @param dwcaId
 	 * @param request needs to get some parameters and Locale
@@ -80,28 +80,6 @@ public class OccurrenceController {
 	 */
 	@RequestMapping(value="/d/{dataset}/{dwcaId:.+}", method=RequestMethod.GET)
 	public ModelAndView handleOccurrence(@PathVariable String dataset,@PathVariable String dwcaId, HttpServletRequest request){
-//		OccurrenceModel occModel = occurrenceService.loadOccurrenceModel(dataset,dwcaId,true);
-//		HashMap<String,Object> modelRoot = new HashMap<String,Object>();
-//		
-//		if(occModel != null){
-//			modelRoot.put("occModel", occModel);
-//			modelRoot.put("occRawModel",occModel.getRawModel());
-//			modelRoot.put("occViewModel", buildOccurrenceViewModel(occModel));
-//		}
-//		else{
-//			throw new ResourceNotFoundException();
-//		}
-//
-//		Locale locale = RequestContextUtils.getLocale(request);
-//		//Set common stuff
-//		ControllerHelper.setPageHeaderVariables(locale, appConfig, modelRoot);
-//		
-//		//handle view stuff
-//		String view = request.getParameter(VIEW_PARAM);
-//		if(DWC_VIEW_NAME.equalsIgnoreCase(view)){
-//			return new ModelAndView("occurrence-dwc","root",modelRoot);
-//		}
-//		return new ModelAndView("occurrence","root",modelRoot);
 		RedirectView rv = new RedirectView(request.getContextPath()+"/r/" + dataset + "/"+dwcaId);
 		rv.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
 		ModelAndView mv = new ModelAndView(rv);

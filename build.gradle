@@ -23,7 +23,7 @@ ext {
 
 	tomcatVersion = '6.0.29'
 	seleniumVersion = '2.39.0'
-	dataAccessVersion = '2.3.0-SNAPSHOT'
+	dataAccessVersion = '2.3.0'
 	
 	h2Version = '1.3.175'
 	versionFile = project.file("config/production/version.properties")
