@@ -183,16 +183,18 @@ public class OccurrenceController {
 	 * @return OccurrenceViewModel instance, never null
 	 */
 	public static OccurrenceViewModel buildOccurrenceViewModel(OccurrenceModel occModel){
-		//assumes that data are coming from harvester
-		String[] media = occModel.getAssociatedmedia().split("; ");
 		OccurrenceViewModel occViewModel = new OccurrenceViewModel();
 		
-		for(String currentMedia : media){
-			if(MIME_TYPE_MAP.getContentType(currentMedia).startsWith("image")){
-				occViewModel.addImage(currentMedia);
-			}
-			else{
-				occViewModel.addOtherMedia(currentMedia);
+		if(occModel.getAssociatedmedia() != null){
+			//assumes that data are coming from harvester
+			String[] media = occModel.getAssociatedmedia().split("; ");
+			for(String currentMedia : media){
+				if(MIME_TYPE_MAP.getContentType(currentMedia).startsWith("image")){
+					occViewModel.addImage(currentMedia);
+				}
+				else{
+					occViewModel.addOtherMedia(currentMedia);
+				}
 			}
 		}
 		return occViewModel;

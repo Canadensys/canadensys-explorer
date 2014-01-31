@@ -9,7 +9,7 @@ rc.getContextUrl("/js/"+formatFileInclude("occurrence-portal",root.currentVersio
 	<#include "inc/canadensys-header.ftl">
 	<div id="body">
 		<div id="side_bar">
-			<p><a class="round big_button no_margin" href="${getI18nContextUrl('/d/'+root.occRawModel.sourcefileid+'/contact')}">${rc.getMessage("occpage.menu.datasetcontact")}</a></p>
+			<p><a class="round big_button no_margin" href="${getI18nContextUrl('/r/'+root.occRawModel.sourcefileid+'/contact')}">${rc.getMessage("occpage.menu.datasetcontact")}</a></p>
 			<#if root.occRawModel._references?has_content >
 			<p><a class="round big_button" href="${root.occRawModel._references}">${rc.getMessage("occpage.menu.sourcerecord")}</a></p>
 			</#if>
@@ -19,19 +19,22 @@ rc.getContextUrl("/js/"+formatFileInclude("occurrence-portal",root.currentVersio
 			<span>${rc.getMessage("occpage.nogeo")}</span>
 			</div>
 			
-			<div id="occpage_media">
-			<#if root.occModel.associatedmedia?has_content>
-				<#list root.occModel.associatedmedia?split("; ") as am>
-					<a class="round" href="${am}" target="_blank">
-					<#if isImageMimeType(am)>
-						<span><img src="${am}" alt="Image"/></span>
-					<#else>
-						${rc.getMessage("occpage.menu.associatedmedia")}
-					</#if>
-					</a>
-				</#list>
+			<#if root.occViewModel.imageList?has_content>
+				<div id="occpage_image">
+					<#list root.occViewModel.imageList as currImg>
+					<a class="round" href="${currImg}" target="_blank"><span><img src="${currImg}" alt="Image"/></span></a>
+					</#list>
+				</div>
 			</#if>
-			</div>
+			<#if root.occViewModel.otherMediaList?has_content>
+				<div id="occpage_media">
+					<#assign mediaNumber = 1>
+					<#list root.occViewModel.otherMediaList as currOm>
+					<p><a class="round big_button" href="${currOm}" target="_blank">${rc.getMessage("occpage.menu.associatedmedia")} ${mediaNumber}</a></p>
+					<#assign mediaNumber = mediaNumber + 1>
+					</#list>
+				</div>
+			</#if>
 		</div>
 		<div id="content" class="clear_fix">
 			<h1>${root.occModel.scientificname?if_exists} (${root.occModel.collectioncode?if_exists} ${root.occModel.catalognumber?if_exists})</h1>

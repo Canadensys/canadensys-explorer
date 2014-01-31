@@ -60,7 +60,7 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
 		jdbcTemplate.update("INSERT INTO occurrence_raw (auto_id,dwcaId,country,locality,datasetname,sourcefileid) VALUES (2,'2.2','Mexico','Mexico','University of Mexico (UOM)','uom-occurrence')");
 		jdbcTemplate.update("INSERT INTO occurrence (auto_id,dwcaId,country,locality,datasetname,sourcefileid,syear,smonth,sday) VALUES (1,'2','Mexico','Mexico','University of Mexico (UOM)','uom-occurrence',2001,03,21)");
 		jdbcTemplate.update("INSERT INTO occurrence (auto_id,dwcaId,country,locality,datasetname,sourcefileid,syear,smonth,sday) VALUES (2,'2.2','Mexico','Mexico','University of Mexico (UOM)','uom-occurrence',2001,03,21)");
-		jdbcTemplate.update("INSERT INTO resource_contact (id,dataset_shortname,name) VALUES (1,'uom-occurrence','Jim')");
+		jdbcTemplate.update("INSERT INTO resource_contact (id,sourcefileid,name) VALUES (1,'uom-occurrence','Jim')");
     }
 
     @Test
@@ -102,7 +102,7 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
     	MockHttpServletResponse response = new MockHttpServletResponse();
     	MockHttpServletRequest request = new MockHttpServletRequest();
     	request.setMethod("GET");
-    	request.setRequestURI("/d/uom-occurrence/2");
+    	request.setRequestURI("/r/uom-occurrence/2");
     	//test default view
     	Object handler = handlerMapping.getHandler(request).getHandler();    	
         ModelAndView mav = handlerAdapter.handle(request, response, handler);
@@ -113,7 +113,7 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
         response = new MockHttpServletResponse();
     	request = new MockHttpServletRequest();
     	request.setMethod("GET");
-    	request.setRequestURI("/d/uom-occurrence/2.2");
+    	request.setRequestURI("/r/uom-occurrence/2.2");
     	//test default view
     	handler = handlerMapping.getHandler(request).getHandler();    	
         mav = handlerAdapter.handle(request, response, handler);
@@ -123,6 +123,15 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
         HashMap<String,Object> modelRoot = (HashMap<String,Object>)mav.getModel().get("root");
         OccurrenceModel occModel = (OccurrenceModel)modelRoot.get("occModel");
         assertEquals("2.2", occModel.getDwcaid());
+        
+        //test redirect for legacy support where /d/ was misused as a resource identifier
+        response = new MockHttpServletResponse();
+    	request = new MockHttpServletRequest();
+    	request.setMethod("GET");
+    	request.setRequestURI("/d/uom-occurrence/2");
+    	handler = handlerMapping.getHandler(request).getHandler();    
+    	mav = handlerAdapter.handle(request, response, handler);
+    	assertTrue(((RedirectView)mav.getView()).getUrl().equals("/r/uom-occurrence/2"));
     }
     
     @Test
@@ -130,7 +139,7 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
     	MockHttpServletResponse response = new MockHttpServletResponse();
     	MockHttpServletRequest request = new MockHttpServletRequest();
     	request.setMethod("GET");
-    	request.setRequestURI("/d/uom-occurrence/contact");
+    	request.setRequestURI("/r/uom-occurrence/contact");
     	Object handler = handlerMapping.getHandler(request).getHandler();    	
         ModelAndView mav = handlerAdapter.handle(request, response, handler);
         assertEquals(HttpServletResponse.SC_OK, response.getStatus());

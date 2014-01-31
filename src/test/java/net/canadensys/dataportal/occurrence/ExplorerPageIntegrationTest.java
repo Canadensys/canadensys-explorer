@@ -1,35 +1,24 @@
 package net.canadensys.dataportal.occurrence;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 /**
- * Very simple and basic Integration test to make sure we can rendered a page.
- * Needs to be expanded when test data will be included in the test suite.
+ * Very simple and basic Integration test to make sure we can rendered some pages.
  * @author canadensys
  *
  */
 public class ExplorerPageIntegrationTest extends AbstractIntegrationTest {
 	
+	//the footer div presence ensure the page was all rendered by Freemarker
 	@FindBy(css = "div#footer")
 	private WebElement footerDiv;
-	
-	@Before
-	public void setup() {
-		browser = new FirefoxDriver();
-	}
-	@After
-	public void tearDown() {
-		browser.close();
-	}
 	
 	@Test
 	public void testTablePage() {
@@ -39,9 +28,7 @@ public class ExplorerPageIntegrationTest extends AbstractIntegrationTest {
 		PageFactory.initElements(browser, this);
 		
 		WebElement resultTable = browser.findElement(By.cssSelector("table#results"));
-		
 		assertEquals("table",resultTable.getTagName());
-		
 		//make sure footer is there
 		assertEquals("div",footerDiv.getTagName());
 	}

@@ -376,7 +376,7 @@
 
 #occpage_navigation .buttons { left: 0; } /* #occpage_navigation extends .nav_container */
 
-#occpage_map, #occpage_media a { /* Size: 298x298 + padding + border = 300x300 */
+#occpage_map, #occpage_image a { /* Size: 298x298 + padding + border = 300x300 */
 	border: 1px solid #a8a7a5;
 	background-color: #e7e7e7;
 	display: block;
@@ -394,16 +394,16 @@
 	display: table-cell;
 	vertical-align: middle;
 }
-#occpage_media a:hover {
+#occpage_image a:hover {
 	background-color: #d3d3d3;
 }
-#occpage_media span {
+#occpage_image span {
 	display: table-cell; /* Necessary for vertical-align */
 	vertical-align: middle;
 	width: 298px;
 	height: 298px;
 }
-#occpage_media img {
+#occpage_image img {
 	border: none;
 	max-height: 298px;
 	max-width: 298px;

@@ -2,6 +2,9 @@ apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'eclipse'
 
+ext {
+    tomcatContextPath = 'explorer'
+}
 //Use Canadensys common web build file
 apply from: "https://raw.github.com/Canadensys/canadensys-common/master/gradle/canadensys_web_build.gradle"
 
@@ -16,11 +19,13 @@ ext {
 	
 	springVersion = '3.2.6.RELEASE'
 	hibernateVersion = '4.2.8.Final'
+	freemarkerVersion = '2.3.20'
 
 	tomcatVersion = '6.0.29'
 	seleniumVersion = '2.39.0'
 	dataAccessVersion = '2.3.0-SNAPSHOT'
 	
+	h2Version = '1.3.175'
 	versionFile = project.file("config/production/version.properties")
 }
 
@@ -49,10 +54,10 @@ dependencies {
 	compile group: 'org.springframework', name: 'spring-context-support', version: springVersion
 	compile group: 'postgresql', name: 'postgresql', version: '9.1-901.jdbc4'
 	compile group: 'org.hibernate', name: 'hibernate-c3p0', version: hibernateVersion
-	compile group: 'org.freemarker', name: 'freemarker', version: '2.3.18'
+	compile group: 'org.freemarker', name: 'freemarker', version: freemarkerVersion
 	
 	//h2 is included to allow integration testing using a mock database
-    compile group: 'com.h2database', name: 'h2', version: '1.3.172'
+    compile group: 'com.h2database', name: 'h2', version: h2Version
     testCompile group: 'junit', name: 'junit', version: '4.11'
 	testCompile group: 'org.hamcrest', name: 'hamcrest-library', version: '1.3'	
     testCompile group: 'org.springframework', name: 'spring-test', version: springVersion
@@ -81,13 +86,9 @@ war {
 }
 
 tomcatRunWar {
-    httpPort = 9966
-    contextPath = 'explorer'
+    httpPort = tomcatHttpPort
+    contextPath = tomcatContextPath
     stopKey = 'stopKey' 
-}
-
-tomcatStop {
-	stopKey = 'stopKey'
 }
 
 //This task allows us to replace the data-source.xml with the one from 'config/local'.
