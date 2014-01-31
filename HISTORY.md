@@ -1,5 +1,9 @@
 Version History
 ===============
+Version 1.2.5 2014-01-31
+* Fixed issues [#8](https://github.com/Canadensys/canadensys-explorer/issues/8) and [#10](https://github.com/Canadensys/canadensys-explorer/issues/10).
+* URL to a resource is now explorer/r/mt-specimens 
+* Dependencies update
 
 Version 1.2.4 2013-10-16
 * Dependency update (canadensys-data-access 2.2.0)
