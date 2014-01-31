@@ -1,8 +1,8 @@
 <#include "inc/functions.ftl">
 <#include "inc/global-functions.ftl">
-<#assign page={"title":rc.getMessage("page.search.title"),"cssList":[rc.getContextUrl("/styles/occportal.css")],"prefetchList":["http://tiles.canadensys.net"],
-"javaScriptIncludeList":
-["https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js", "http://maps.googleapis.com/maps/api/js?sensor=false",
+<#assign page={"title":rc.getMessage("page.search.title"),
+"cssScreenPrintList": [rc.getContextUrl("/styles/"+formatFileInclude("occportal",root.currentVersion!,false,".css"))],"prefetchList":["http://tiles.canadensys.net"],
+"javaScriptIncludeList":["https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js", "http://maps.googleapis.com/maps/api/js?sensor=false",
 rc.getContextUrl("/js/"+formatFileInclude("occurrence-portal",root.currentVersion!,root.useMinified,".js"))]}>
 <#include "inc/header.ftl">
 <div id="feedback_bar"><a href="http://code.google.com/p/canadensys/issues/entry?template=Explorer%20-%20Interface%20issue" target="_blank" title="${rc.getMessage("feedback.hover")}">&nbsp;</a></div>

@@ -1,8 +1,8 @@
 <#include "inc/functions.ftl">
 <#include "inc/global-functions.ftl">
-<#assign page={"title":rc.getMessage("page.search.title"),"cssList":[rc.getContextUrl('/styles/occportal.css')],"prefetchList":["http://tiles.canadensys.net"],
-"javaScriptIncludeList":
-["https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js",
+<#assign page={"title":rc.getMessage("page.search.title"),
+"cssScreenPrintList": [rc.getContextUrl("/styles/"+formatFileInclude("occportal",root.currentVersion!,false,".css"))],"prefetchList":["http://tiles.canadensys.net"],
+"javaScriptIncludeList":["https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js",
 rc.getContextUrl("/js/"+formatFileInclude("occurrence-portal",root.currentVersion?if_exists,root.useMinified,".js")),
 rc.getContextUrl("js/lib/sorttable.js")]}>
 <#include "inc/header.ftl">
@@ -99,7 +99,7 @@ rc.getContextUrl("js/lib/sorttable.js")]}>
 				<tr ><td>66</td><td>location</td><td><a href="http://rs.tdwg.org/dwc/terms/stateProvince">stateProvince</a></td><td>${root.occRawModel.stateprovince?if_exists}</td><td>${root.occModel.stateprovince?if_exists}</td></tr>
 				<tr ><td>67</td><td>location</td><td><a href="http://rs.tdwg.org/dwc/terms/county">county</a></td><td>${root.occRawModel.county?if_exists}</td><td>${root.occModel.county?if_exists}</td></tr>
 				<tr ><td>68</td><td>location</td><td><a href="http://rs.tdwg.org/dwc/terms/municipality">municipality</a></td><td>${root.occRawModel.municipality?if_exists}</td><td>${root.occModel.municipality?if_exists}</td></tr>
-				<tr ><td>69</td><td>location</td><td><a href="http://rs.tdwg.org/dwc/terms/locality">locality</a></td><td>${root.occRawModel.locality?if_exists}</td><td>${root.occModel.locality}</td></tr>
+				<tr ><td>69</td><td>location</td><td><a href="http://rs.tdwg.org/dwc/terms/locality">locality</a></td><td>${root.occRawModel.locality?if_exists}</td><td>${root.occModel.locality?if_exists}</td></tr>
 				<tr class="unused"><td>70</td><td>location</td><td><a href="http://rs.tdwg.org/dwc/terms/verbatimLocality">verbatimLocality</a></td><td>${root.occRawModel.verbatimlocality?if_exists}</td><td class="unused"></td></tr>
 				<tr ><td>71</td><td>location</td><td><a href="http://rs.tdwg.org/dwc/terms/verbatimElevation">verbatimElevation</a></td><td>${root.occRawModel.verbatimelevation?if_exists}</td><td class="unused"></td></tr>
 				<tr ><td>72</td><td>location</td><td><a href="http://rs.tdwg.org/dwc/terms/minimumElevationInMeters">minimumElevationInMeters</a></td><td>${root.occRawModel.minimumelevationinmeters?if_exists}</td><td>${root.occModel.minimumelevationinmeters?if_exists}</td></tr>
