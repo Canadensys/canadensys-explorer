@@ -91,6 +91,16 @@ tomcatRunWar {
     stopKey = 'stopKey' 
 }
 
+
+//Used for conditional configuration. The configuration is applied only when we know that the task will be executed.
+def onlyFor(task, config) {
+    gradle.taskGraph.whenReady { graph ->
+        if (graph.hasTask(task)) { 
+            project.configure(project, config)
+        }
+    }
+}
+
 /**
  * This task allows us to replace the data-source.xml with the one from 'config/local'.
  */

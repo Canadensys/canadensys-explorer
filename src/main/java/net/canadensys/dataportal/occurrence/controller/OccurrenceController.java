@@ -12,6 +12,7 @@ import net.canadensys.dataportal.occurrence.model.OccurrenceViewModel;
 import net.canadensys.dataportal.occurrence.model.ResourceContactModel;
 import net.canadensys.exception.web.ResourceNotFoundException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -163,7 +164,7 @@ public class OccurrenceController {
 	public static OccurrenceViewModel buildOccurrenceViewModel(OccurrenceModel occModel){
 		OccurrenceViewModel occViewModel = new OccurrenceViewModel();
 		
-		if(occModel.getAssociatedmedia() != null){
+		if(StringUtils.isNotEmpty(occModel.getAssociatedmedia())){
 			//assumes that data are coming from harvester
 			String[] media = occModel.getAssociatedmedia().split("; ");
 			for(String currentMedia : media){
