@@ -91,12 +91,17 @@ tomcatRunWar {
     stopKey = 'stopKey' 
 }
 
-//This task allows us to replace the data-source.xml with the one from 'config/local'.
+/**
+ * This task allows us to replace the data-source.xml with the one from 'config/local'.
+ */
 task useLocalDataSource{
-	if( file("config/local/data-source.xml").exists()){
-		war.excludes = ['WEB-INF/data-source.xml']
-		war.webInf { from 'config/local/data-source.xml' }
-		war.webInf { from 'src/test/resources/insert_test_data.sql' }
+	//only include this configuration if 'copyLocalConfig' is in the task list
+	onlyFor(copyLocalConfig) {
+		if( file("config/local/data-source.xml").exists()){
+			war.excludes = ['WEB-INF/data-source.xml']
+			war.webInf { from 'config/local/data-source.xml' }
+			war.webInf { from 'src/test/resources/insert_test_data.sql' }
+		}
 	}
 }
 runIntegrationTest.dependsOn useLocalDataSource
