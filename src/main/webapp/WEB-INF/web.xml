@@ -30,4 +30,25 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j
 		<exception-type>java.lang.Exception</exception-type>
 		<location>/error.html</location>
 	</error-page>
+	
+	<listener>
+		<listener-class>org.ocpsoft.rewrite.servlet.impl.RewriteServletRequestListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.ocpsoft.rewrite.servlet.impl.RewriteServletContextListener</listener-class>
+	</listener>
+	<filter>
+	   <filter-name>OCPsoft Rewrite Filter</filter-name>
+	   <filter-class>org.ocpsoft.rewrite.servlet.RewriteFilter</filter-class>
+	   <async-supported>true</async-supported>
+	</filter>
+	<filter-mapping>
+	   <filter-name>OCPsoft Rewrite Filter</filter-name>
+	   <url-pattern>/*</url-pattern>
+	   <dispatcher>FORWARD</dispatcher>
+	   <dispatcher>REQUEST</dispatcher>
+	   <dispatcher>INCLUDE</dispatcher>
+	   <dispatcher>ASYNC</dispatcher>
+	   <dispatcher>ERROR</dispatcher>
+	</filter-mapping>
 </web-app>
