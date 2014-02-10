@@ -28,26 +28,3 @@
 		</div>
 	</div>
 </div>
-<#-- JavaScript handling -->
-<#if (page.javaScriptIncludeList)??>
-	<#list page.javaScriptIncludeList as jsFile>
-<script src="${jsFile}"></script>
-	</#list>
-</#if>
-
-<#if (page.javaScriptSetupCallList)?? || (page.jQueryJavaScriptSetupCallList)??>
-<script>
-<#if (page.javaScriptSetupCallList)??>
-	<#list page.javaScriptSetupCallList as jsCall>
-${jsCall};
-	</#list>
-</#if>
-<#if (page.jQueryJavaScriptSetupCallList)??>
-	$(function() {
-	<#list page.jQueryJavaScriptSetupCallList as jsCall>
-		${jsCall};
-	</#list>
-	});
-</#if>
-</script>
-</#if>

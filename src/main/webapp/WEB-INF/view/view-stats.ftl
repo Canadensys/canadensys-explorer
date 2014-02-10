@@ -1,19 +1,12 @@
 <#include "inc/functions.ftl">
 <#include "inc/global-functions.ftl">
-<#assign page={"title":rc.getMessage("page.search.title"),"cssList":[rc.getContextUrl('/styles/occportal.css')],"prefetchList":["http://tiles.canadensys.net"],
-"javaScriptIncludeList":
-["http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js",
-"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js",
-"js/lib/json2.js",
-"https://www.google.com/jsapi",
-"js/lib/underscore-min.js",
-"js/lib/backbone-min.js",
-"js/${formatFileInclude(\"occurrence-utils\",root.currentVersion?if_exists,root.useMinified,\".js\")}",
-"js/${formatFileInclude(\"occurrence-backbone\",root.currentVersion?if_exists,root.useMinified,\".js\")}",
-"js/${formatFileInclude(\"chart\",root.currentVersion?if_exists,root.useMinified,\".js\")}",
-"js/${formatFileInclude(\"occurrence-portal\",root.currentVersion?if_exists,root.useMinified,\".js\")}",
-"js/${formatFileInclude(\"stats-backbone\",root.currentVersion?if_exists,root.useMinified,\".js\")}"]}>
-<#include "inc/header.ftl">
+<head>
+<title>${rc.getMessage("page.search.title")}</title>
+<link rel="stylesheet" href="${rc.getContextUrl("/styles/"+formatFileInclude("occportal",root.currentVersion!,false,".css"))}" media="screen,print"/>
+<link rel="dns-prefetch" href="http://tiles.canadensys.net"/>
+<link rel="prefetch" href="http://tiles.canadensys.net"/>
+</head>
+
 <div id="feedback_bar"><a href="http://code.google.com/p/canadensys/issues/entry?template=Explorer%20-%20Interface%20issue" target="_blank" title="${rc.getMessage("feedback.hover")}">&nbsp;</a></div>
 <#include "inc/canadensys-header.ftl">
 <div id="body" class="fullscreen">
@@ -71,26 +64,46 @@
 		</script>
 	</div>
 </div><#-- body -->
-<#assign page = page + {"jQueryJavaScriptSetupCallList": page.jQueryJavaScriptSetupCallList + [
-"occurrenceStats.initStatsView(searchAndFilter.getInitialFilterParamMap())",
-"occurrenceStats.loadFieldUniqueCount(${root.availableFilters.kingdom},\"${rc.getMessage(\"view.stats.kingdom\")}\",'classification')",
-"occurrenceStats.loadFieldUniqueCount(${root.availableFilters.phylum},\"${rc.getMessage(\"view.stats.phylum\")}\",'classification')",
-"occurrenceStats.loadFieldUniqueCount(${root.availableFilters._class},\"${rc.getMessage(\"view.stats.class\")}\",'classification')",
-"occurrenceStats.loadFieldUniqueCount(${root.availableFilters._order},\"${rc.getMessage(\"view.stats.order\")}\",'classification')",
-"occurrenceStats.loadFieldUniqueCount(${root.availableFilters.family},\"${rc.getMessage(\"view.stats.family\")}\",'classification')",
-"occurrenceStats.loadFieldUniqueCount(${root.availableFilters.genus},\"${rc.getMessage(\"view.stats.genus\")}\",'classification')",
-"occurrenceStats.loadFieldUniqueCount(${root.availableFilters.scientificname},\"${rc.getMessage(\"view.stats.scientificname\")}\",'classification')",
-"occurrenceStats.loadFieldUniqueCount(${root.availableFilters.continent},\"${rc.getMessage(\"view.stats.continent\")}\",'location')",
-"occurrenceStats.loadFieldUniqueCount(${root.availableFilters.country},\"${rc.getMessage(\"view.stats.country\")}\",'location')",
-"occurrenceStats.loadFieldUniqueCount(${root.availableFilters.stateprovince},\"${rc.getMessage(\"view.stats.stateprovince\")}\",'location')",
-"occurrenceStats.loadFieldUniqueCount(${root.availableFilters.county},\"${rc.getMessage(\"view.stats.county\")}\",'location')",
-"occurrenceStats.loadFieldUniqueCount(${root.availableFilters.municipality},\"${rc.getMessage(\"view.stats.municipality\")}\",'location')",
-"occurrenceStats.loadStaticChart(${root.availableFilters.decade},'decade',\"${rc.getMessage(\"view.stats.chart.decade.title\")}\")",
-"occurrenceStats.loadStaticChart(${root.availableFilters.averagealtituderounded},'altitude',\"${rc.getMessage(\"view.stats.chart.altitude.title\")}\")",
-"occurrenceStats.selectDefaultChart(${root.availableFilters.family})",
-"occurrenceStats.selectDefaultChart(${root.availableFilters.stateprovince})"]}>
-<#if !(page.javaScriptSetupCallList)??>
-<#assign page = page + {"javaScriptSetupCallList":[]}>
-</#if>
-<#assign page = page + {"javaScriptSetupCallList" : page.javaScriptSetupCallList + ["google.load('visualization', '1', {'packages':['corechart']})"]}>
-<#include "inc/footer.ftl">
+
+<content tag="local_script">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+<script src="https://www.google.com/jsapi"></script>
+
+<script src="${rc.getContextUrl("/js/"+formatFileInclude("occurrence-portal",root.currentVersion!,root.useMinified,".js"))}"></script>
+<script src="${rc.getContextUrl("/js/lib/json2.js")}"></script>
+<script src="${rc.getContextUrl("/js/lib/underscore-min.js")}"></script>
+<script src="${rc.getContextUrl("/js/lib/backbone-min.js")}"></script>
+<script src="${rc.getContextUrl("/js/"+formatFileInclude("chart",root.currentVersion!,root.useMinified,".js"))}"></script>
+<script src="${rc.getContextUrl("/js/"+formatFileInclude("occurrence-utils",root.currentVersion!,root.useMinified,".js"))}"></script>
+<script src="${rc.getContextUrl("/js/"+formatFileInclude("occurrence-backbone",root.currentVersion!,root.useMinified,".js"))}"></script>
+<script src="${rc.getContextUrl("/js/"+formatFileInclude("stats-backbone",root.currentVersion!,root.useMinified,".js"))}"></script>
+
+<script>
+$(function() {
+
+occurrenceStats.initStatsView(searchAndFilter.getInitialFilterParamMap());
+occurrenceStats.loadFieldUniqueCount(${root.availableFilters.kingdom},"${rc.getMessage("view.stats.kingdom")}",'classification');
+occurrenceStats.loadFieldUniqueCount(${root.availableFilters.phylum},"${rc.getMessage("view.stats.phylum")}",'classification');
+occurrenceStats.loadFieldUniqueCount(${root.availableFilters._class},"${rc.getMessage("view.stats.class")}",'classification');
+occurrenceStats.loadFieldUniqueCount(${root.availableFilters._order},"${rc.getMessage("view.stats.order")}",'classification');
+occurrenceStats.loadFieldUniqueCount(${root.availableFilters.family},"${rc.getMessage("view.stats.family")}",'classification');
+occurrenceStats.loadFieldUniqueCount(${root.availableFilters.genus},"${rc.getMessage("view.stats.genus")}",'classification');
+occurrenceStats.loadFieldUniqueCount(${root.availableFilters.scientificname},"${rc.getMessage("view.stats.scientificname")}",'classification');
+occurrenceStats.loadFieldUniqueCount(${root.availableFilters.continent},"${rc.getMessage("view.stats.continent")}",'location');
+occurrenceStats.loadFieldUniqueCount(${root.availableFilters.country},"${rc.getMessage("view.stats.country")}",'location');
+occurrenceStats.loadFieldUniqueCount(${root.availableFilters.stateprovince},"${rc.getMessage("view.stats.stateprovince")}",'location');
+occurrenceStats.loadFieldUniqueCount(${root.availableFilters.county},"${rc.getMessage("view.stats.county")}",'location');
+occurrenceStats.loadFieldUniqueCount(${root.availableFilters.municipality},"${rc.getMessage("view.stats.municipality")}",'location');
+occurrenceStats.loadStaticChart(${root.availableFilters.decade},'decade',"${rc.getMessage("view.stats.chart.decade.title")}");
+occurrenceStats.loadStaticChart(${root.availableFilters.averagealtituderounded},'altitude',"${rc.getMessage("view.stats.chart.altitude.title")}");
+occurrenceStats.selectDefaultChart(${root.availableFilters.family});
+occurrenceStats.selectDefaultChart(${root.availableFilters.stateprovince});
+
+<@controlJavaScriptInit/>
+});
+
+google.load('visualization', '1', {'packages':['corechart']});
+
+</script>
+</content>

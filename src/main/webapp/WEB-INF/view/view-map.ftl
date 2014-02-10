@@ -1,20 +1,12 @@
 <#include "inc/functions.ftl">
 <#include "inc/global-functions.ftl">
-<#assign page={"title":rc.getMessage("page.search.title"),"cssList":[rc.getContextUrl('/styles/occportal.css')],"prefetchList":["http://tiles.canadensys.net"],
-"javaScriptIncludeList":
-["http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js",
-"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js",
-"js/lib/json2.js",
-"js/lib/underscore-min.js",
-"js/lib/backbone-min.js",
-"js/${formatFileInclude(\"occurrence-utils\",root.currentVersion?if_exists,root.useMinified,\".js\")}",
-"js/${formatFileInclude(\"occurrence-backbone\",root.currentVersion?if_exists,root.useMinified,\".js\")}",
-"http://maps.googleapis.com/maps/api/js?sensor=false",
-"js/lib/wax.g.min-6.2.0-touched.js",
-"js/lib/cartodb-gmapsv3-min.js",
-"js/${formatFileInclude(\"occurrence-portal\",root.currentVersion?if_exists,root.useMinified,\".js\")}",
-"js/${formatFileInclude(\"map-view\",root.currentVersion?if_exists,root.useMinified,\".js\")}"]}>
-<#include "inc/header.ftl">
+<head>
+<title>${rc.getMessage("page.search.title")}</title>
+<link rel="stylesheet" href="${rc.getContextUrl("/styles/"+formatFileInclude("occportal",root.currentVersion!,false,".css"))}" media="screen,print"/>
+<link rel="dns-prefetch" href="http://tiles.canadensys.net"/>
+<link rel="prefetch" href="http://tiles.canadensys.net"/>
+</head>
+
 <div id="feedback_bar"><a href="http://code.google.com/p/canadensys/issues/entry?template=Explorer%20-%20Interface%20issue" target="_blank" title="${rc.getMessage("feedback.hover")}">&nbsp;</a></div>
 <#include "inc/canadensys-header.ftl">
 <div id="body" class="fullscreen full_height">
@@ -37,5 +29,25 @@
 		</div>
 	</div>
 </div><#-- body -->
-<#assign page = page + {"jQueryJavaScriptSetupCallList": page.jQueryJavaScriptSetupCallList + ["occurrenceMap.setupMap('occ_preview','map_canvas',\"${root.embeddedMapQuery}\")"]}>
-<#include "inc/footer.ftl">
+
+<content tag="local_script">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script src="${rc.getContextUrl("/js/"+formatFileInclude("occurrence-portal",root.currentVersion!,root.useMinified,".js"))}"></script>
+<script src="${rc.getContextUrl("/js/lib/json2.js")}"></script>
+<script src="${rc.getContextUrl("/js/lib/underscore-min.js")}"></script>
+<script src="${rc.getContextUrl("/js/lib/backbone-min.js")}"></script>
+<script src="${rc.getContextUrl("/js/"+formatFileInclude("occurrence-utils",root.currentVersion!,root.useMinified,".js"))}"></script>
+<script src="${rc.getContextUrl("/js/"+formatFileInclude("occurrence-backbone",root.currentVersion!,root.useMinified,".js"))}"></script>
+<script src="${rc.getContextUrl("/js/lib/wax.g.min-6.2.0-touched.js")}"></script>
+<script src="${rc.getContextUrl("/js/lib/cartodb-gmapsv3-min.js")}"></script>
+<script src="${rc.getContextUrl("/js/"+formatFileInclude("map-view",root.currentVersion!,root.useMinified,".js"))}"></script>
+
+<script>
+$(function() {
+	occurrenceMap.setupMap('occ_preview','map_canvas',"${root.embeddedMapQuery}");
+	<@controlJavaScriptInit/> 
+});
+</script>
+</content>

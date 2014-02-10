@@ -1,3 +1,11 @@
+<!-- JavaScript init call related to controls -->
+<#macro controlJavaScriptInit>
+	languageResources.setLanguageResources(${root.languageResources});
+	searchAndFilter.setAvailableSearchFields(${root.availableFiltersMap});
+	searchAndFilter.loadFilter(${root.searchCriteria});
+	searchAndFilter.setNumberOfResult(${root.occurrenceCount?c});
+</#macro>
+
 <div id="control">
 	<div class="nav_container">
 		<ul id="control_buttons" class="buttons">
@@ -198,9 +206,3 @@
 <script type="text/template" id="display_template_map">
 	<p>${rc.getMessage("control.display.map.details1")}</p>
 </script>
-
-<#-- JavaScript init call functions -->
-<#if !(page.jQueryJavaScriptSetupCallList)??>
-<#assign page = page + {"jQueryJavaScriptSetupCallList":[]}>
-</#if>
-<#assign page = page + {"jQueryJavaScriptSetupCallList":page.jQueryJavaScriptSetupCallList + ["languageResources.setLanguageResources(${root.languageResources})","searchAndFilter.setAvailableSearchFields(${root.availableFiltersMap})","searchAndFilter.loadFilter(${root.searchCriteria})","searchAndFilter.setNumberOfResult(${root.occurrenceCount?c})"]}>
