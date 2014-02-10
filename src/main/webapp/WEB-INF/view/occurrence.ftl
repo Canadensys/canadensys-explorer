@@ -1,10 +1,13 @@
 <#include "inc/functions.ftl">
 <#include "inc/global-functions.ftl">
-<#assign page={"title":rc.getMessage("page.search.title"),
-"cssScreenPrintList": [rc.getContextUrl("/styles/"+formatFileInclude("occportal",root.currentVersion!,false,".css"))],"prefetchList":["http://tiles.canadensys.net"],
-"javaScriptIncludeList":["https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js", "http://maps.googleapis.com/maps/api/js?sensor=false",
-rc.getContextUrl("/js/"+formatFileInclude("occurrence-portal",root.currentVersion!,root.useMinified,".js"))]}>
-<#include "inc/header.ftl">
+
+<head>
+<title>${rc.getMessage("page.search.title")}</title>
+<link rel="stylesheet" href="${rc.getContextUrl("/styles/"+formatFileInclude("occportal",root.currentVersion!,false,".css"))}" media="screen,print"/>
+<link rel="dns-prefetch" href="http://tiles.canadensys.net"/>
+<link rel="prefetch" href="http://tiles.canadensys.net"/>
+</head>
+
 <div id="feedback_bar"><a href="http://code.google.com/p/canadensys/issues/entry?template=Explorer%20-%20Interface%20issue" target="_blank" title="${rc.getMessage("feedback.hover")}">&nbsp;</a></div>
 	<#include "inc/canadensys-header.ftl">
 	<div id="body">
@@ -120,9 +123,13 @@ rc.getContextUrl("/js/"+formatFileInclude("occurrence-portal",root.currentVersio
 <#if root.occRawModel.coordinateuncertaintyinmeters?? && (root.occRawModel.coordinateuncertaintyinmeters?length>0)>
 <#assign coordinateuncertaintyinmeters=root.occRawModel.coordinateuncertaintyinmeters?number>
 </#if>
-<#if !(page.jQueryJavaScriptSetupCallList)??>
-<#assign page = page + {"jQueryJavaScriptSetupCallList":[]}>
-</#if>
-<#assign page = page + {"jQueryJavaScriptSetupCallList": page.jQueryJavaScriptSetupCallList + 
-["occurrenceDetails.setupSingleOccurrenceMap('occpage_map',${safeNumber(root.occModel.decimallatitude!\"\",\"undefined\")},${safeNumber(root.occModel.decimallongitude!\"\",\"undefined\")},${coordinateuncertaintyinmeters?c})"]}>
-<#include "inc/footer.ftl">
+
+<#-- JavaScript handling -->
+<content tag="local_script">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script src="${rc.getContextUrl("/js/"+formatFileInclude("occurrence-portal",root.currentVersion!,root.useMinified,".js"))}"</script>
+<script>
+occurrenceDetails.setupSingleOccurrenceMap('occpage_map',${safeNumber(root.occModel.decimallatitude!"","undefined")},${safeNumber(root.occModel.decimallongitude!"","undefined")},${coordinateuncertaintyinmeters?c});
+</script>
+</content>

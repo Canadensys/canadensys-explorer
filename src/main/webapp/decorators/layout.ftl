@@ -9,5 +9,6 @@ ${head}
 <body>
 	${body}
 	<#include "include/footer.ftl">
+	${page.getProperty("page.local_script")!}
 </body>
 </html>

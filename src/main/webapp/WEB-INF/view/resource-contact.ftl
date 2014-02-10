@@ -1,7 +1,8 @@
 <#ftl strip_whitespace=true>
+<#include "inc/global-functions.ftl">
 <head>
 <title>${rc.getMessage("resourcecontact.title",[root.data.resource_name])}</title>
-<link rel="stylesheet" href="${rc.getContextUrl("/styles/occportal.css")}" media="screen,print"/>
+<link rel="stylesheet" href="${rc.getContextUrl("/styles/"+formatFileInclude("occportal",root.currentVersion!,false,".css"))}" media="screen,print"/>
 <link rel="dns-prefetch" href="http://tiles.canadensys.net"/>
 <link rel="prefetch" href="http://tiles.canadensys.net"/>
 </head>
