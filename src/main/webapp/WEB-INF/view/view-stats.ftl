@@ -25,7 +25,7 @@
 				<li><a href="${root.statsViewURL}" class="selected">${rc.getMessage("view.stats.header.button")}</a></li>
 			</ul>
 		</div>
-		
+		<a id="main-content"></a>
 		<div class="stats_group chart_pie">
 			<h2>${rc.getMessage("view.stats.group.classification")}</h2>
 			<div class="chart_container" id="classification_chart_div"></div>

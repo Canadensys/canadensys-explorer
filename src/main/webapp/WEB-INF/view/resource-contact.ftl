@@ -10,6 +10,7 @@
 <div id="feedback_bar"><a href="http://code.google.com/p/canadensys/issues/entry?template=Explorer%20-%20Interface%20issue" target="_blank" title="${rc.getMessage("feedback.hover")}">&nbsp;</a></div>
 <#include "inc/canadensys-header.ftl">
 <div id="body">
+	<a id="main-content"></a>
 	<div id="content" class="clear_fix no_side_bar">
 		<h1>${root.data.resource_name!}</h1>
 		<h2>${rc.getMessage("resourcecontact.header")}</h2>

@@ -26,6 +26,7 @@
 				<li><a href="${root.statsViewURL}">${rc.getMessage("view.stats.header.button")}</a></li>
 			</ul>
 		</div>
+		<a id="main-content"></a>
 		<div id="table_wrapper">
 			<table id="results" class="sortable">
 			<thead>
