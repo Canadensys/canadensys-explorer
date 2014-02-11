@@ -1,6 +1,5 @@
 <#include "inc/functions.ftl">
 <#include "inc/global-functions.ftl">
-
 <head>
 <title>${rc.getMessage("page.search.title")}</title>
 <link rel="stylesheet" href="${rc.getContextUrl("/styles/"+formatFileInclude("occportal",root.currentVersion!,false,".css"))}" media="screen,print"/>
@@ -8,8 +7,6 @@
 <link rel="prefetch" href="http://tiles.canadensys.net"/>
 </head>
 
-<div id="feedback_bar"><a href="http://code.google.com/p/canadensys/issues/entry?template=Explorer%20-%20Interface%20issue" target="_blank" title="${rc.getMessage("feedback.hover")}">&nbsp;</a></div>
-<#include "inc/canadensys-header.ftl">
 <div id="body" class="fullscreen">
 	<#include "inc/control.ftl">
 	<div id="view" class="clear_fix">

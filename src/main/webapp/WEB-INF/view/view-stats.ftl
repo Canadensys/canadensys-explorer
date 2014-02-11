@@ -7,8 +7,6 @@
 <link rel="prefetch" href="http://tiles.canadensys.net"/>
 </head>
 
-<div id="feedback_bar"><a href="http://code.google.com/p/canadensys/issues/entry?template=Explorer%20-%20Interface%20issue" target="_blank" title="${rc.getMessage("feedback.hover")}">&nbsp;</a></div>
-<#include "inc/canadensys-header.ftl">
 <div id="body" class="fullscreen">
 	<#include "inc/control.ftl">
 	<div id="view" class="clear_fix">
