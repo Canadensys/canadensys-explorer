@@ -8,7 +8,7 @@
 </head>
 
 <content tag="lang_switch">
-${URLHelper.resourceToI18nString("fr","occurrence",root.occModel.sourcefileid,root.occModel.dwcaid)}
+${URLHelper.toI18nResource("fr","occurrence",root.occModel.sourcefileid,root.occModel.dwcaid)}
 </content>
 
 <a id="main-content"></a>

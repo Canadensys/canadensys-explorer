@@ -1,5 +1,8 @@
 package net.canadensys.web;
 
+import java.util.Locale;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.mail.javamail.ConfigurableMimeFileTypeMap;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -32,6 +35,71 @@ public class FreemarkerURLHelper {
 	}
 	
 	/**
+	 * Replace or add a query parameter in the current request and return the new query part of the request.
+	 * @param hr
+	 * @param name
+	 * @param value query part only e.g. view=table&filter=auto
+	 * @return
+	 */
+	public static String replaceCurrentQueryParam(HttpRequestHashModel hr, String name, String value){
+		UriComponentsBuilder bldr = ServletUriComponentsBuilder.fromRequest(hr.getRequest());
+		bldr.replaceQueryParam(name,value);
+		return bldr.build().getQuery();
+	}
+	
+	public static String resourceToI18nString(String lang, String resourceName){
+		if(resourceName.startsWith("/")){
+			resourceName = resourceName.replaceAll("/", "");
+		}
+		InMemoryResourceBundle rb = InMemoryResourceBundle.getBundle("urlResource", new Locale(LANG_PARAM));
+		String t = rb.inverseLookup(resourceName);
+		return t;
+	}
+	
+	/**
+	 * Build a i18n resource path from a resource name and parameters.
+	 * @param lang
+	 * @param resourceName
+	 * @param params
+	 * @return
+	 */
+	public static String toI18nResource(String lang, String resourceName, String ... params){
+		InMemoryResourceBundle rb = InMemoryResourceBundle.getBundle("urlResource", new Locale(LANG_PARAM));
+		
+		StringBuilder url = new StringBuilder();
+		String translationFormat = I18NTranslationHandler.getTranslationFormat(resourceName);
+		String[] pathParts = translationFormat.split("/");
+		
+		int paramId = 0;
+		for(String currPathPart : pathParts){
+			if(StringUtils.isNotBlank(currPathPart)){
+				url.append("/");
+				if("{}".equals(currPathPart)){
+					url.append(params[paramId]);
+					paramId++;
+				}
+				else{
+					url.append(rb.inverseLookup(currPathPart));
+				}
+			}
+		}
+		return url.toString();
+	}
+	
+	/**
+	 * Replace or add a query parameter to the provided uri.
+	 * @param uri
+	 * @param name
+	 * @param value
+	 * @return
+	 */
+	public static String replaceQueryParameter(String uri, String name, String value){
+		UriComponentsBuilder bldr = UriComponentsBuilder.fromUriString(uri);
+		bldr.replaceQueryParam(name, value);
+		return bldr.build().toUriString();
+	}
+	
+	/**
 	 * Get an URI with a provided language as query parameter.
 	 * Then parameter will be added or replaced.
 	 * e.g. 
@@ -44,7 +112,7 @@ public class FreemarkerURLHelper {
 	 */
 	public static String getUriWithLanguage(String uri, String lang){
 		UriComponentsBuilder bldr = UriComponentsBuilder.fromUriString(uri);
-		bldr.replaceQueryParam("lang",lang);
+		bldr.replaceQueryParam(LANG_PARAM,lang);
 		return bldr.build().toUriString();
 	}
 	
