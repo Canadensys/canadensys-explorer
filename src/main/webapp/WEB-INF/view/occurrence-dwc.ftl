@@ -3,7 +3,7 @@
 
 <head>
 <title>${rc.getMessage("page.search.title")}</title>
-<link rel="stylesheet" href="${rc.getContextUrl("/styles/"+formatFileInclude("occportal",root.currentVersion!,false,".css"))}" media="screen,print"/>
+<@cssAsset fileName="occportal" version=root.currentVersion! useMinified=false/>
 <link rel="dns-prefetch" href="http://tiles.canadensys.net"/>
 <link rel="prefetch" href="http://tiles.canadensys.net"/>
 </head>
@@ -198,6 +198,6 @@
 <#-- JavaScript handling -->
 <content tag="local_script">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script src="${rc.getContextUrl("/js/lib/sorttable.js")}"></script>
-<script src="${rc.getContextUrl("/js/"+formatFileInclude("occurrence-portal",root.currentVersion!,root.useMinified,".js"))}"></script>
+<@jsLibAsset libName="sorttable.js"/>
+<@jsAsset fileName="occurrence-portal" version=root.currentVersion! useMinified=root.useMinified/>
 </content>

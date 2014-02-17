@@ -32,10 +32,9 @@
 	<tx:annotation-driven transaction-manager="hibernateTransactionManager"/>
 
 	<!-- Handles GET requests for static content  --> 
-	<mvc:resources mapping="/js/**" location="/js/" />
-	<mvc:resources mapping="/styles/**" location="/styles/" />
-	<mvc:resources mapping="/images/**" location="/images/" />
-	<mvc:resources mapping="/leaflet/**" location="/leaflet/" />
+	<mvc:resources mapping="/assets/js/**" location="/js/" />
+	<mvc:resources mapping="/assets/styles/**" location="/styles/" />
+	<mvc:resources mapping="/assets/images/**" location="/images/" />
 	<mvc:resources mapping="/download/**" location="/download/" />
 	<mvc:resources mapping="/error.html" location="/error.html" />
 	
@@ -80,11 +79,6 @@
           <entry key="gaAccount" value="${googleanalytics.account:}"/>
           <entry key="URLHelper" value-ref="URLHelper"/>
         </map>
-		</property>
-		<property name="freemarkerSettings"> 
-			<props> 
-				<prop key="template_exception_handler">ignore</prop>
-			</props>
 		</property>
 	</bean>
 

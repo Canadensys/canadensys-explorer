@@ -2,11 +2,10 @@
 <#include "inc/global-functions.ftl">
 <head>
 <title>${rc.getMessage("page.search.title")}</title>
-<link rel="stylesheet" href="${rc.getContextUrl("/styles/"+formatFileInclude("occportal",root.currentVersion!,false,".css"))}" media="screen,print"/>
+<@cssAsset fileName="occportal" version=root.currentVersion! useMinified=false/> 
 <link rel="dns-prefetch" href="http://tiles.canadensys.net"/>
 <link rel="prefetch" href="http://tiles.canadensys.net"/>
 </head>
-
 <div id="body" class="fullscreen">
 	<#include "inc/control.ftl">
 	<div id="view" class="clear_fix">
@@ -18,9 +17,9 @@
 			</#if>
 			<p class="details">(${rc.getMessage("view.table.header.details")})</p>
 			<ul class="buttons">
-				<li><a href="${root.mapViewURL}">${rc.getMessage("view.map.header.button")}</a></li>
-				<li><a href="${root.tableViewURL}" class="selected">${rc.getMessage("view.table.header.button")}</a></li>
-				<li><a href="${root.statsViewURL}">${rc.getMessage("view.stats.header.button")}</a></li>
+				<li><a href="?${URLHelper.replaceCurrentQueryParam(Request,"view","map")}">${rc.getMessage("view.map.header.button")}</a></li>
+				<li><a href="?${URLHelper.replaceCurrentQueryParam(Request,"view","table")}" class="selected">${rc.getMessage("view.table.header.button")}</a></li>
+				<li><a href="?${URLHelper.replaceCurrentQueryParam(Request,"view","stats")}">${rc.getMessage("view.stats.header.button")}</a></li>
 			</ul>
 		</div>
 		<a id="main-content"></a>
@@ -77,15 +76,15 @@
 <content tag="local_script">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-<script src="${rc.getContextUrl("/js/"+formatFileInclude("occurrence-portal",root.currentVersion!,root.useMinified,".js"))}"></script>
-<script src="${rc.getContextUrl("/js/lib/json2.js")}"></script>
-<script src="${rc.getContextUrl("/js/lib/underscore-min.js")}"></script>
-<script src="${rc.getContextUrl("/js/lib/backbone-min.js")}"></script>
-<script src="${rc.getContextUrl("/js/lib/sorttable.js")}"></script>
-<script src="${rc.getContextUrl("/js/"+formatFileInclude("occurrence-utils",root.currentVersion!,root.useMinified,".js"))}"></script>
-<script src="${rc.getContextUrl("/js/"+formatFileInclude("occurrence-backbone",root.currentVersion!,root.useMinified,".js"))}"></script>
-<script src="${rc.getContextUrl("/js/lib/rwd-table.js")}"></script>
-<script src="${rc.getContextUrl("/js/lib/respond.js")}"></script>
+<@jsAsset fileName="occurrence-portal" version=root.currentVersion! useMinified=root.useMinified/> 
+<@jsLibAsset libName="json2.js"/>
+<@jsLibAsset libName="underscore-min.js"/>
+<@jsLibAsset libName="backbone-min.js"/>
+<@jsLibAsset libName="sorttable.js"/>
+<@jsAsset fileName="occurrence-utils" version=root.currentVersion! useMinified=root.useMinified/> 
+<@jsAsset fileName="occurrence-backbone" version=root.currentVersion! useMinified=root.useMinified/>
+<@jsLibAsset libName="rwd-table.js"/>
+<@jsLibAsset libName="respond.js"/>
 
 <script>
 $(function() {

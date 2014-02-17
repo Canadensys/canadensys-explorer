@@ -2,7 +2,7 @@
 <#include "inc/global-functions.ftl">
 <head>
 <title>${rc.getMessage("resourcecontact.title",[root.data.resource_name])}</title>
-<link rel="stylesheet" href="${rc.getContextUrl("/styles/"+formatFileInclude("occportal",root.currentVersion!,false,".css"))}" media="screen,print"/>
+<@cssAsset fileName="occportal" version=root.currentVersion! useMinified=false/>
 <link rel="dns-prefetch" href="http://tiles.canadensys.net"/>
 <link rel="prefetch" href="http://tiles.canadensys.net"/>
 </head>
