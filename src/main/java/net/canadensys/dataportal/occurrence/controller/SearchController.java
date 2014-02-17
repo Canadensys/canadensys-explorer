@@ -31,6 +31,7 @@ import net.canadensys.dataportal.occurrence.search.parameter.SearchURLHelper;
 import net.canadensys.dataportal.occurrence.search.parameter.SearchURLHelper.ViewNameEnum;
 import net.canadensys.query.LimitedResult;
 import net.canadensys.query.SearchQueryPart;
+import net.canadensys.web.I18NTranslation;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -156,6 +157,7 @@ public class SearchController {
 	}
 	
 	@RequestMapping(value="/search", method=RequestMethod.GET)
+	@I18NTranslation(resourceName="search", translateFormat = "/search")
 	public ModelAndView handleSearch(HttpServletRequest request){
 		HashMap<String,Object> modelRoot = new HashMap<String,Object>();
 		long occurrenceCount = 0;
@@ -165,9 +167,6 @@ public class SearchController {
 			currentView=DEFAULT_VIEW;
 		}
 		modelRoot.put("currentView", currentView);
-		modelRoot.put("tableViewURL", SearchURLHelper.getViewURL(request,ViewNameEnum.TABLE_VIEW_NAME));
-		modelRoot.put("mapViewURL", SearchURLHelper.getViewURL(request,ViewNameEnum.MAP_VIEW_NAME));
-		modelRoot.put("statsViewURL", SearchURLHelper.getViewURL(request,ViewNameEnum.STATS_VIEW_NAME));
 		
 		//Handle locale
 		Locale locale = RequestContextUtils.getLocale(request);
