@@ -11,6 +11,7 @@ import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
 import net.canadensys.dataportal.occurrence.model.OccurrenceViewModel;
 import net.canadensys.dataportal.occurrence.model.ResourceContactModel;
 import net.canadensys.exception.web.ResourceNotFoundException;
+import net.canadensys.web.I18NTranslation;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -56,6 +57,7 @@ public class OccurrenceController {
 	 * @param dataset
 	 * @return
 	 */
+	@Deprecated
 	@RequestMapping(value="/d/{dataset}", method=RequestMethod.GET)
 	public ModelAndView handleDataset(@PathVariable String dataset, HttpServletRequest request){
 		if(!occurrenceService.datasetExists(dataset)){
@@ -79,6 +81,7 @@ public class OccurrenceController {
 	 * @param request needs to get some parameters and Locale
 	 * @return
 	 */
+	@Deprecated
 	@RequestMapping(value="/d/{dataset}/{dwcaId:.+}", method=RequestMethod.GET)
 	public ModelAndView handleOccurrence(@PathVariable String dataset,@PathVariable String dwcaId, HttpServletRequest request){
 		RedirectView rv = new RedirectView(request.getContextPath()+"/r/" + dataset + "/"+dwcaId);
@@ -87,7 +90,8 @@ public class OccurrenceController {
 		return mv;
 	}
 	
-	@RequestMapping(value="/r/{iptResource}/{dwcaId:.+}", method=RequestMethod.GET)
+	@RequestMapping(value="/resources/{iptResource}/occurrences/{dwcaId:.+}", method=RequestMethod.GET)
+	@I18NTranslation(resourceName="occurrence", translateFormat = "/resources/{}/occurrences/{}")
 	public ModelAndView handleOccurrencePerResource(@PathVariable String iptResource,@PathVariable String dwcaId, HttpServletRequest request){
 		OccurrenceModel occModel = occurrenceService.loadOccurrenceModel(iptResource,dwcaId,true);
 		HashMap<String,Object> modelRoot = new HashMap<String,Object>();
@@ -115,12 +119,11 @@ public class OccurrenceController {
 	
 	/**
 	 * Resource contact page.
-	 * This mapping 'could' conflict with /r/{iptResource}/{dwcaId} in case someone used 'contact' as id in a DarwinCore file.
-	 * This could be solved by adding 'record' e.g. /r/{iptResource}/record/{dwcaId}
-	 * @param dataset
+	 * @param ipt resource identifier (sourcefileid).
 	 * @return
 	 */
-	@RequestMapping(value="/r/{iptResource}/contact", method=RequestMethod.GET)
+	@RequestMapping(value="/resources/{iptResource}/contact", method=RequestMethod.GET)
+	@I18NTranslation(resourceName="contact", translateFormat = "/resources/{}/contact")
 	public ModelAndView handleResourceContact(@PathVariable String iptResource, HttpServletRequest request){
 		ResourceContactModel resourceContactModel = occurrenceService.loadResourceContactModel(iptResource);
 		HashMap<String,Object> modelRoot = new HashMap<String,Object>();

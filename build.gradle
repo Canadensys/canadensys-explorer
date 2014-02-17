@@ -23,11 +23,12 @@ ext {
 	rewriteVersion = '2.0.10.Final'
 	//sitemeshVersion = '3.0.0-SNAPSHOT'
 	sitemeshVersion = '2.4.2'
+	reflectionsVersion = '0.9.9-RC1'
 
 	tomcatVersion = '6.0.29'
 	seleniumVersion = '2.39.0'
 	dataAccessVersion = '2.3.0'
-	
+		
 	h2Version = '1.3.175'
 	versionFile = project.file("config/production/version.properties")
 }
@@ -63,6 +64,7 @@ dependencies {
 	compile group: 'org.ocpsoft.rewrite', name: 'rewrite-integration-spring', version: rewriteVersion
 	//compile group: 'org.sitemesh', name: 'sitemesh', version: sitemeshVersion
 	compile group: 'opensymphony', name: 'sitemesh', version: sitemeshVersion
+	compile group: 'org.reflections', name: 'reflections', version: reflectionsVersion
 
 	//h2 is included to allow integration testing using a mock database
     compile group: 'com.h2database', name: 'h2', version: h2Version
