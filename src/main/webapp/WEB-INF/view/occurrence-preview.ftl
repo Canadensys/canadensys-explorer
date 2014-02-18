@@ -13,7 +13,7 @@
 	<dt>${rc.getMessage("occ.genus")}: </dt><dd><span id="genus">${root.occModel.genus!}</span></dd>
 	<dt>${rc.getMessage("occ.rawscientificname")}: </dt><dd><span id="rawscientificname">${root.occModel.rawscientificname!}</span></dd>
 </dl>
-<p class="occ_preview_links"><a id="viewfullrecord" href="#" target="_blank">${rc.getMessage("view.preview.viewfullrecord")}</a><span> | <a id="viewsourcerecord" href="#" target="_blank">${rc.getMessage("view.preview.viewsourcerecord")}</a></span></p>
+<p class="occ_preview_links"><a id="viewfullrecord" href="<@i18nResource resourceName="occurrence" param1=root.occModel.sourcefileid param2=root.occModel.dwcaid/>" target="_blank">${rc.getMessage("view.preview.viewfullrecord")}</a><span> | <a id="viewsourcerecord" href="#" target="_blank">${rc.getMessage("view.preview.viewsourcerecord")}</a></span></p>
 <dl class="occ_preview_data clear_fix">
 	<dt>${rc.getMessage("occ.institutioncode")}</dt><dd id="institutioncode"></dd>
 	<dt>${rc.getMessage("occ.datasetname")}</dt><dd id="datasetname"></dd>

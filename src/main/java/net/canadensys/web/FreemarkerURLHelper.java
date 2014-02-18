@@ -1,8 +1,5 @@
 package net.canadensys.web;
 
-import java.util.Locale;
-
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.mail.javamail.ConfigurableMimeFileTypeMap;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -47,13 +44,8 @@ public class FreemarkerURLHelper {
 		return bldr.build().getQuery();
 	}
 	
-	public static String resourceToI18nString(String lang, String resourceName){
-		if(resourceName.startsWith("/")){
-			resourceName = resourceName.replaceAll("/", "");
-		}
-		InMemoryResourceBundle rb = InMemoryResourceBundle.getBundle("urlResource", new Locale(LANG_PARAM));
-		String t = rb.inverseLookup(resourceName);
-		return t;
+	public static String toI18nResource(String lang, String resourceName){
+		return I18NUrlBuilder.generateI18nResourcePath(lang,I18NTranslationHandler.getTranslationFormat(resourceName),(String)null);
 	}
 	
 	/**
@@ -64,26 +56,7 @@ public class FreemarkerURLHelper {
 	 * @return
 	 */
 	public static String toI18nResource(String lang, String resourceName, String ... params){
-		InMemoryResourceBundle rb = InMemoryResourceBundle.getBundle("urlResource", new Locale(LANG_PARAM));
-		
-		StringBuilder url = new StringBuilder();
-		String translationFormat = I18NTranslationHandler.getTranslationFormat(resourceName);
-		String[] pathParts = translationFormat.split("/");
-		
-		int paramId = 0;
-		for(String currPathPart : pathParts){
-			if(StringUtils.isNotBlank(currPathPart)){
-				url.append("/");
-				if("{}".equals(currPathPart)){
-					url.append(params[paramId]);
-					paramId++;
-				}
-				else{
-					url.append(rb.inverseLookup(currPathPart));
-				}
-			}
-		}
-		return url.toString();
+		return I18NUrlBuilder.generateI18nResourcePath(lang,I18NTranslationHandler.getTranslationFormat(resourceName),params);
 	}
 	
 	/**
