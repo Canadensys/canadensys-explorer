@@ -48,11 +48,6 @@ var occurrencePreview = (function($){
 	}
 	
 	function replacePreviewContent(json){
-		for (var key in json) {
-			if (json.hasOwnProperty(key)) {
-				$("#"+key,$occPreview).html(json[key]);
-			}
-		}
 		
 		//special elements
 		var $occPreviewLinks = $('.occ_preview_links','#occ_preview_content');
@@ -68,27 +63,6 @@ var occurrencePreview = (function($){
 		else{
 			$viewSourceRecordLink.closest('span').hide();
 		}
-		
-		var dateRangeStr = canadensysUtils.formatDate(json['syear'],json['smonth'],json['sday']);
-		var endDate = canadensysUtils.formatDate(json['eyear'],json['emonth'],json['eday']);
-		if(endDate){
-			dateRangeStr =+ '/' + endDate;
-		}
-		var $daterange = $("#daterange","#occ_preview_content");
-		$daterange.html(dateRangeStr);
-		
-		var altituteStr = "";
-		//since 0 convert to false but it's a valid value
-		if(json['minimumelevationinmeters'] || json['minimumelevationinmeters']===0){
-			altituteStr = json['minimumelevationinmeters'];
-			if((json['maximumelevationinmeters'] || json['minimumelevationinmeters']===0) &&
-					json['maximumelevationinmeters'] !== json['minimumelevationinmeters']){
-				altituteStr += '-'+json['maximumelevationinmeters'];
-			}
-			altituteStr += ' m';
-		}
-		var $altituderange = $('#altituderange','#occ_preview_content');
-		$altituderange.html(altituteStr);
 		
 		var $occPreviewMedia = $("#occ_preview_media","#occ_preview_content");
 		$occPreviewMedia.empty();

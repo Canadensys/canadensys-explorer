@@ -1,9 +1,9 @@
 INSERT INTO occurrence(
-auto_id,datasetname,sourcefileid,dwcaid,associatedmedia,scientificname,taxonrank,country,stateprovince,collectioncode,catalognumber)
+auto_id,datasetname,sourcefileid,dwcaid,associatedmedia,scientificname,taxonrank,country,stateprovince,collectioncode,catalognumber,minimumelevationinmeters,maximumelevationinmeters)
 VALUES (
 1,'E. C. Smith Herbarium (ACAD)','acad-specimens',
 'ACAD-1','http://procyon.acadiau.ca/ecsmith/cgi-bin/image.cgi?ECS019597,jpeg; http://procyon.acadiau.ca/ecsmith/cgi-bin/image.cgi?ECS019597.jpeg',
-'Acer pseudoplatanus','species','Canada','Nova Scotia','ACAD','ECS019597'
+'Acer pseudoplatanus','species','Canada','Nova Scotia','ACAD','ECS019597',100,200
 );
 INSERT INTO occurrence_raw(
 auto_id,datasetname,sourcefileid,dwcaid,associatedmedia,scientificname,taxonrank,country,stateprovince,collectioncode,catalognumber)
