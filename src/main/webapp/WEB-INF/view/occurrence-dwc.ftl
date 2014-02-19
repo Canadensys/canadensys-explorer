@@ -12,7 +12,7 @@
 <a id="main-content"></a>
 <div id="body" class="fullscreen">
 	<div id="side_bar">
-		<p><a class="round big_button no_margin" href="${getI18nContextUrl('/r/'+root.occRawModel.sourcefileid+'/contact')}">${rc.getMessage("occpage.menu.datasetcontact")}</a></p>
+		<p><a class="round big_button no_margin" href="${getI18nContextUrl('../contact')}">${rc.getMessage("occpage.menu.datasetcontact")}</a></p>
 		<#if root.occRawModel._references?has_content >
 		<p><a class="round big_button" href="${root.occRawModel._references?if_exists}">${rc.getMessage("occpage.menu.sourcerecord")}</a></p>
 		</#if>
