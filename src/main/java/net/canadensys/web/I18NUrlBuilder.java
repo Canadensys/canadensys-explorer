@@ -25,9 +25,14 @@ public class I18NUrlBuilder {
 	 * @param translationFormat where '/' is a separator, '{}' represents variable and all text represent a value
 	 * to use for inverse lookup.
 	 * @param params all variables needed for translationFormat in their order of appearance or null if no variable are needed.
-	 * @return
+	 * @return null if lang or translationFormat is null
 	 */
 	public static String generateI18nResourcePath(String lang, String translationFormat, String ... params){
+		
+		if(lang == null || translationFormat == null){
+			return null;
+		}
+		
 		//TODO check it's a known lang
 		if(!resourceBundleMap.containsKey(lang)){
 			resourceBundleMap.put(lang, InMemoryResourceBundle.getBundle(RESOURCE_BUNDLE_BASE_NAME, new Locale(lang)));

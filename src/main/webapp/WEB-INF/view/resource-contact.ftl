@@ -6,7 +6,9 @@
 <link rel="dns-prefetch" href="http://tiles.canadensys.net"/>
 <link rel="prefetch" href="http://tiles.canadensys.net"/>
 </head>
-
+<content tag="lang_switch">
+<@i18nLanguageSwitch resourceName="contact" params=[root.occModel.sourcefileid]/>
+</content>
 <div id="body">
 	<a id="main-content"></a>
 	<div id="content" class="clear_fix no_side_bar">

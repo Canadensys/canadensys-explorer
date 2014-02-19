@@ -6,7 +6,9 @@
 <link rel="dns-prefetch" href="http://tiles.canadensys.net"/>
 <link rel="prefetch" href="http://tiles.canadensys.net"/>
 </head>
-
+<content tag="lang_switch">
+<@i18nLanguageSwitch resourceName="search"/>
+</content>
 <div id="body" class="fullscreen">
 	<#include "inc/control.ftl">
 	<div id="view" class="clear_fix">

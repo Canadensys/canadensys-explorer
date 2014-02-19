@@ -32,14 +32,12 @@
 	<#return rc.getContextUrl(URLHelper.getUriWithLanguage(uri,rc.getLocale().getLanguage()))>
 </#function>
 
-<#macro i18nResource resourceName>
-${rc.getContextUrl(URLHelper.toI18nResource(rc.getLocale().getLanguage(),resourceName))}
+<#macro i18nResource resourceName params=[]>
+${rc.getContextUrl(URLHelper.toI18nResource(rc.getLocale().getLanguage(),resourceName,params))}
 </#macro>
-<#macro i18nResource resourceName param1>
-${rc.getContextUrl(URLHelper.toI18nResource(rc.getLocale().getLanguage(),resourceName,param1))}
-</#macro>
-<#macro i18nResource resourceName param1 param2>
-${rc.getContextUrl(URLHelper.toI18nResource(rc.getLocale().getLanguage(),resourceName,param1,param2))}
+
+<#macro i18nLanguageSwitch resourceName params=[]>
+${URLHelper.getLanguageSwitchPath(Request,rc.getLocale().getLanguage(),resourceName,params)}
 </#macro>
 
 <#function isImageMimeType url>

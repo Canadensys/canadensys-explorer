@@ -1,5 +1,8 @@
 package net.canadensys.web;
 
+import java.util.Locale;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.mail.javamail.ConfigurableMimeFileTypeMap;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -57,6 +60,33 @@ public class FreemarkerURLHelper {
 	 */
 	public static String toI18nResource(String lang, String resourceName, String ... params){
 		return I18NUrlBuilder.generateI18nResourcePath(lang,I18NTranslationHandler.getTranslationFormat(resourceName),params);
+	}
+	
+	/**
+	 * 
+	 * @param hr Request object
+	 * @param resourceName
+	 * @param params
+	 * @return
+	 */
+	public static String getLanguageSwitchPath(HttpRequestHashModel hr, String currentLanguage, String resourceName, String ... params){		
+		String targetLanguage = null;
+		//TODO find a better way to handle that
+		if(Locale.ENGLISH.getLanguage().equals(currentLanguage)){
+			targetLanguage = Locale.FRENCH.getLanguage();
+		}
+		else if(Locale.FRENCH.getLanguage().equals(currentLanguage)){
+			targetLanguage = Locale.ENGLISH.getLanguage();
+		}
+		
+		String path = I18NUrlBuilder.generateI18nResourcePath(targetLanguage,I18NTranslationHandler.getTranslationFormat(resourceName),params);
+		//prepend the context path (e.g. /explorer)
+		path = hr.getRequest().getContextPath() + path;
+		
+		if(StringUtils.isNotBlank(hr.getRequest().getQueryString())){
+			path += "?"+hr.getRequest().getQueryString();
+		}
+		return path;
 	}
 	
 	/**
