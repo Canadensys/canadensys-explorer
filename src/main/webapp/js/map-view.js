@@ -117,9 +117,9 @@ var occurrenceMap  = (function($){
 				return;
 			}
 			marker.setPosition(latlng);
-			var req = $.get('occurrence-summary/'+data.auto_id,'context=map')
-				.success(function(json){
-					occurrencePreview.replacePreviewContent(json);
+			var req = $.get('occurrence-preview/'+data.auto_id,'context=map')
+				.success(function(htmlFragment){
+					occurrencePreview.replacePreviewContent(htmlFragment);
 					occurrencePreview.togglePreview(undefined,data.auto_id);
 				})
 			   .error(function(jqXHR, textStatus, errorThrown){

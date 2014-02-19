@@ -275,7 +275,7 @@ public class SearchController {
 		else{
 			throw new ResourceNotFoundException();
 		}
-		return new ModelAndView("occurrence-preview","root",modelRoot);
+		return new ModelAndView("fragment/occurrence-preview","root",modelRoot);
 	}
 	
 	/**

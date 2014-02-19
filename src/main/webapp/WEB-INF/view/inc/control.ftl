@@ -15,7 +15,7 @@
 		</ul>
 	</div>
 	<div id="control_wrapper">
-		<div id="occ_preview"><#include "../occurrence-preview.ftl"></div>
+		<div id="occ_preview"><#-- Will be injected --></div>
 		<div id="control_bar" class="round clear_fix">
 			<!-- Search -->
 			<div id="search" class="clear_fix">

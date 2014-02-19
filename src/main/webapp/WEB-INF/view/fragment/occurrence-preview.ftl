@@ -1,4 +1,4 @@
-<#include "inc/functions.ftl">
+<#include "../inc/functions.ftl">
 <div id="occ_preview_control"><span id="preview_close">${rc.getMessage("view.preview.close")} &times;</span></div>
 <div id="occ_preview_content">
 
@@ -13,7 +13,10 @@
 	<dt>${rc.getMessage("occ.genus")}: </dt><dd><span id="genus">${root.occModel.genus!}</span></dd>
 	<dt>${rc.getMessage("occ.rawscientificname")}: </dt><dd><span id="rawscientificname">${root.occModel.rawscientificname!}</span></dd>
 </dl>
-<p class="occ_preview_links"><a id="viewfullrecord" href="<@i18nResource resourceName="occurrence" param1=root.occModel.sourcefileid param2=root.occModel.dwcaid/>" target="_blank">${rc.getMessage("view.preview.viewfullrecord")}</a><span> | <a id="viewsourcerecord" href="#" target="_blank">${rc.getMessage("view.preview.viewsourcerecord")}</a></span></p>
+<p class="occ_preview_links"><a id="viewfullrecord" href="<@i18nResource resourceName="occurrence" param1=root.occModel.sourcefileid param2=root.occModel.dwcaid/>" target="_blank">${rc.getMessage("view.preview.viewfullrecord")}</a><span>
+<#if root.occModel._references??>
+ | <a id="viewsourcerecord" href="${root.occModel._references}" target="_blank">${rc.getMessage("view.preview.viewsourcerecord")}</a></span></p>
+</#if>
 <dl class="occ_preview_data clear_fix">
 	<dt>${rc.getMessage("occ.institutioncode")}</dt><dd id="institutioncode"></dd>
 	<dt>${rc.getMessage("occ.datasetname")}</dt><dd id="datasetname"></dd>
@@ -47,6 +50,13 @@
 	<dt>${rc.getMessage("occ.habitat")}</dt><dd id="habitat">${root.occModel.habitat!}</dd>
 </dl>
 <dl class="occ_preview_data clear_fix">
-	<dt>${rc.getMessage("occ.associatedmedia")}</dt><dd id="occ_preview_media"></dd>
+	<dt>${rc.getMessage("occ.associatedmedia")}</dt>
+	<dd id="occ_preview_media">
+		<#if root.occViewModel.imageList?has_content>
+			<a href="${root.occViewModel.imageList[0]}"><img src="${root.occViewModel.imageList[0]}" alt="" target="_blank"</img></a>
+		<#elseif root.occViewModel.otherMediaList?has_content>
+			<a href="${root.occViewModel.otherMediaList[0]}">${rc.getMessage("occpage.menu.associatedmedia")}</a>
+		</#if>
+	</dd>
 </dl>
 </div>

@@ -47,39 +47,8 @@ var occurrencePreview = (function($){
 		}
 	}
 	
-	function replacePreviewContent(json){
-		
-		//special elements
-		var $occPreviewLinks = $('.occ_preview_links','#occ_preview_content');
-		var $viewSourceRecordLink = $('#viewsourcerecord', $occPreviewLinks);
-		var $viewFullRecordLink = $('#viewfullrecord', $occPreviewLinks);
-		
-		$viewFullRecordLink.attr('href', 'r/'+json['sourcefileid']+'/'+json['dwcaid']);
-		
-		if(json['_references']){
-			$viewSourceRecordLink.attr('href', json['_references']);
-			$viewSourceRecordLink.closest('span').show();
-		}
-		else{
-			$viewSourceRecordLink.closest('span').hide();
-		}
-		
-		var $occPreviewMedia = $("#occ_preview_media","#occ_preview_content");
-		$occPreviewMedia.empty();
-		if(json['viewModel'] && (json['viewModel']['imageList'] || json['viewModel']['otherMediaList'])){
-			var href = $('<a />');
-			if(json['viewModel']['imageList'] !=null && json['viewModel']['imageList'].length > 0){
-				href.attr('href', json['viewModel']['imageList'][0]).attr('target', '_blank');
-				var image = $('<img />');
-				image.attr('src', json['viewModel']['imageList'][0]).attr('alt','Image');
-				href.append(image);
-			}
-			else if (json['viewModel']['otherMediaList'] != null && json['viewModel']['otherMediaList'].length > 0){
-				href.attr('href', json['viewModel']['otherMediaList'][0]).attr('target', '_blank');
-				href.text(languageResources.getLanguageResource('occpage.menu.associatedmedia'));
-			}
-			$occPreviewMedia.append(href);
-		}
+	function replacePreviewContent(htmlFragment){
+		$occPreview.html(htmlFragment);
 	}
 	
 	//Public methods
@@ -169,19 +138,13 @@ var occurrenceTable  = (function($){
 			
 			//do not send query to the server for the same element
 			if(!$oldSelection || $oldSelection.attr('id') !== $(this).attr('id')){
-				$.ajax({
-					type: "GET",
-					url: "occurrence-summary/"+$(this).attr("id"),
-					dataType: "json",
-					//data: mapParam,
-					context: document.body,
-					success: function(json){
-						occurrencePreview.replacePreviewContent(json);
-					},
-					error: function(jqXHR, textStatus, errorThrown){
-						alert(textStatus);
-					}
-				});
+			
+				$.get("occurrence-preview/"+$(this).attr("id"), function(htmlFragment) {
+					occurrencePreview.replacePreviewContent(htmlFragment);
+				})
+				.fail(function(jqXHR, textStatus, errorThrown) {
+    				console.log( textStatus );
+    			});
 			}
 			
 			if($oldSelection){
