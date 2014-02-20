@@ -198,7 +198,7 @@
 </div><#-- body -->
 <#-- JavaScript handling -->
 <content tag="local_script">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <@jsLibAsset libName="sorttable.js"/>
 <@jsAsset fileName="occurrence-portal" version=root.currentVersion! useMinified=root.useMinified/>
 </content>
