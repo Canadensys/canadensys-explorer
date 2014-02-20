@@ -16,7 +16,7 @@ var occurrencePreview = (function($){
 	});
 	
 	function loadEvents() {
-    initclosePreview();
+    initClosePreview();
 		$(window).scroll(function(event) {
 			if ($(this).scrollTop() >= sidebarTop) {
 				$occPreview.addClass('fixed');
