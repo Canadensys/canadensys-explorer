@@ -20,7 +20,7 @@ public class OccurrencePageIntegrationTest extends AbstractIntegrationTest {
 		
 	@Test
 	public void testOccurrencePage() {
-		browser.get(TESTING_SERVER_URL+"r/acad-specimens/ACAD-1");
+		browser.get(TESTING_SERVER_URL+"resources/acad-specimens/occurrences/ACAD-1");
 		
 		//bind the WebElement to the current page
 		PageFactory.initElements(browser, this);
@@ -33,7 +33,7 @@ public class OccurrencePageIntegrationTest extends AbstractIntegrationTest {
 	
 	@Test
 	public void testOccurrencePageDwcView() {
-		browser.get(TESTING_SERVER_URL+"r/acad-specimens/ACAD-1?view=dwc");
+		browser.get(TESTING_SERVER_URL+"resources/acad-specimens/occurrences/ACAD-1?view=dwc");
 		
 		//bind the WebElement to the current page
 		PageFactory.initElements(browser, this);
@@ -46,7 +46,7 @@ public class OccurrencePageIntegrationTest extends AbstractIntegrationTest {
 	
 	@Test
 	public void testOccurrenceContactPage() {
-		browser.get(TESTING_SERVER_URL+"r/acad-specimens/contact");
+		browser.get(TESTING_SERVER_URL+"resources/acad-specimens/contact");
 		
 		//bind the WebElement to the current page
 		PageFactory.initElements(browser, this);

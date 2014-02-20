@@ -68,7 +68,7 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
     	MockHttpServletResponse response = new MockHttpServletResponse();
     	MockHttpServletRequest request = new MockHttpServletRequest();
     	request.setMethod("GET");
-    	request.setRequestURI("/r/uom-occurrence");
+    	request.setRequestURI("/resources/uom-occurrence");
     	//test default view
     	Object handler = handlerMapping.getHandler(request).getHandler();    
     	ModelAndView mav = handlerAdapter.handle(request, response, handler);
@@ -102,7 +102,7 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
     	MockHttpServletResponse response = new MockHttpServletResponse();
     	MockHttpServletRequest request = new MockHttpServletRequest();
     	request.setMethod("GET");
-    	request.setRequestURI("/r/uom-occurrence/2");
+    	request.setRequestURI("/resources/uom-occurrence/occurrences/2");
     	//test default view
     	Object handler = handlerMapping.getHandler(request).getHandler();    	
         ModelAndView mav = handlerAdapter.handle(request, response, handler);
@@ -113,7 +113,7 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
         response = new MockHttpServletResponse();
     	request = new MockHttpServletRequest();
     	request.setMethod("GET");
-    	request.setRequestURI("/r/uom-occurrence/2.2");
+    	request.setRequestURI("/resources/uom-occurrence/occurrences/2.2");
     	//test default view
     	handler = handlerMapping.getHandler(request).getHandler();    	
         mav = handlerAdapter.handle(request, response, handler);
@@ -139,7 +139,7 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
     	MockHttpServletResponse response = new MockHttpServletResponse();
     	MockHttpServletRequest request = new MockHttpServletRequest();
     	request.setMethod("GET");
-    	request.setRequestURI("/r/uom-occurrence/contact");
+    	request.setRequestURI("/resources/uom-occurrence/contact");
     	Object handler = handlerMapping.getHandler(request).getHandler();    	
         ModelAndView mav = handlerAdapter.handle(request, response, handler);
         assertEquals(HttpServletResponse.SC_OK, response.getStatus());

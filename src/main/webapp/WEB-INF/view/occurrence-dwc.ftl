@@ -7,7 +7,7 @@
 <link rel="prefetch" href="http://tiles.canadensys.net"/>
 </head>
 <content tag="lang_switch">
-<@i18nLanguageSwitch resourceName="occurrence" params=[root.occModel.sourcefileid param2=root.occModel.dwcaid]/>
+<@i18nLanguageSwitch resourceName="occurrence" params=[root.occModel.sourcefileid,root.occModel.dwcaid]/>
 </content>
 <a id="main-content"></a>
 <div id="body" class="fullscreen">

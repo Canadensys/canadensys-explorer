@@ -1,4 +1,5 @@
 <#ftl strip_whitespace=true>
+<#include "inc/functions.ftl">
 <#include "inc/global-functions.ftl">
 <head>
 <title>${rc.getMessage("resourcecontact.title",[root.data.resource_name])}</title>
@@ -7,8 +8,9 @@
 <link rel="prefetch" href="http://tiles.canadensys.net"/>
 </head>
 <content tag="lang_switch">
-<@i18nLanguageSwitch resourceName="contact" params=[root.occModel.sourcefileid]/>
+<@i18nLanguageSwitch resourceName="contact" params=[root.data.sourcefileid]/>
 </content>
+
 <div id="body">
 	<a id="main-content"></a>
 	<div id="content" class="clear_fix no_side_bar">

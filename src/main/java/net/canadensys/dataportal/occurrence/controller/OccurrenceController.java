@@ -148,7 +148,7 @@ public class OccurrenceController {
 	 * @param iptResource
 	 * @return
 	 */
-	@RequestMapping(value="/r/{iptResource}", method=RequestMethod.GET)
+	@RequestMapping(value="/resources/{iptResource}", method=RequestMethod.GET)
 	public ModelAndView handleIptResource(@PathVariable String iptResource, HttpServletRequest request){
 		if(!occurrenceService.resourceExists(iptResource)){
 			throw new ResourceNotFoundException();
