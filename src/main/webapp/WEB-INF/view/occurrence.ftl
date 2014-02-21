@@ -128,8 +128,8 @@
 
 <#-- JavaScript handling -->
 <content tag="local_script">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
 <@jsAsset fileName="occurrence-portal" version=root.currentVersion! useMinified=root.useMinified/>
 <script>
 occurrenceDetails.setupSingleOccurrenceMap('occpage_map',${safeNumber(root.occModel.decimallatitude!"","undefined")},${safeNumber(root.occModel.decimallongitude!"","undefined")},${coordinateuncertaintyinmeters?c});

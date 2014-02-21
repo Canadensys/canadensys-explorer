@@ -5,8 +5,8 @@ var occurrencePreview = (function($){
 	//initialize will run in document.ready
 	$(function initialize(){
 		$sideBar = $('#control_wrapper');
-		$occPreview = $('#occ_preview',$sideBar);
-		$closeElement = $('#preview_close',$sideBar);
+		$occPreview = $('#occ_preview');
+		$closeElement = $('#preview_close');
 		
 		//if the module exists in the HTML
 		if($occPreview.length && $closeElement.length){
@@ -16,16 +16,19 @@ var occurrencePreview = (function($){
 	});
 	
 	function loadEvents() {
-		$closeElement.click(function(){  
-			$occPreview.hide('slide',500);
-		});
-		
+    initClosePreview();
 		$(window).scroll(function(event) {
 			if ($(this).scrollTop() >= sidebarTop) {
 				$occPreview.addClass('fixed');
 			} else {
 				$occPreview.removeClass('fixed');
 			}
+		});
+	}
+	
+	function initClosePreview() {
+	  $('#preview_close').on('click', function(){
+			$occPreview.hide('slide',500);
 		});
 	}
 	
@@ -49,6 +52,7 @@ var occurrencePreview = (function($){
 	
 	function replacePreviewContent(htmlFragment){
 		$occPreview.html(htmlFragment);
+		initClosePreview();
 	}
 	
 	//Public methods
@@ -74,12 +78,10 @@ var occurrenceControl = (function($){
 	});
 	
 	function loadEvents() {
-		$('#control_buttons a').click(function() {
-			var id = $(this).attr("href");
-			$("#control_buttons a").removeClass("selected");
-			$(this).addClass("selected");
-			$("#control_bar > div").addClass("hidden");
-			$(id).removeClass("hidden");
+		$('#control_buttons').on('click', 'a', function() {
+		  var id = $(this).attr("href");
+			$(this).addClass("selected").parent().siblings().children().removeClass("selected");
+			$(id).removeClass("hidden").siblings().addClass("hidden");
 			return false;
 		});
 	}
@@ -88,10 +90,11 @@ var occurrenceControl = (function($){
 	 * This function is to restore the display settings from the cookie
 	 */
 	function restoreDisplay() {
-		if($('#display_columns').length){
-			$('#display_columns').on('click', ':checkbox', function() {
+	  var $display = $('#display_columns');
+		if($display.length){
+			$($display).on('click', 'input:checkbox', function() {
 				var selectedColumn = [];
-				$('#display_columns :checkbox:checked').each(function(index) {
+				$.each($display.find('input:checked'), function() {
 					selectedColumn.push($(this).val());
 				});
 				canadensysUtils.createCookie(COOKIE_NAME,selectedColumn.join('|'),7);
@@ -101,11 +104,11 @@ var occurrenceControl = (function($){
 			if(settingsCookie){
 				//we cannot store a ; in the cookie so use a pipe (|)
 				var arrayOfSettings = settingsCookie.split('|');
-				$('#display_columns :checkbox').each(function(index) {
+				$.each($display.find('input:checkbox'), function() {
 					var isSelected = _.include(arrayOfSettings, $(this).val());
 					if(isSelected !== this.checked){
 						//need to click to update the table display
-						this.click();
+						this.trigger('click');
 					}
 				});
 			}
@@ -119,12 +122,12 @@ var occurrenceControl = (function($){
 
 var occurrenceTable  = (function($){
 	
-	var $occPreview, $results;
+	var $results;
 	
 	//initialize will run in document.ready
 	$(function initialize(){
-		$occPreview = $('#occ_preview');
 		$results = $('#results');
+		$occPreview = $('#occ_preview');
 		//if the module exists in the HTML
 		if($occPreview.length && $results.length){
 			loadEvents();
@@ -133,8 +136,8 @@ var occurrenceTable  = (function($){
 	
 	function loadEvents() {
 		var $oldSelection;
-		$results.delegate('tbody tr', 'click', function(event) {
-			//TODO:switch to deferred like livesearch
+    		
+		$results.on('click', 'tbody tr', function() {
 			
 			//do not send query to the server for the same element
 			if(!$oldSelection || $oldSelection.attr('id') !== $(this).attr('id')){
@@ -169,7 +172,7 @@ var occurrenceTable  = (function($){
 	}
 }(jQuery));
 
-var occurrenceDetails  = (function($){	
+var occurrenceDetails  = (function($){
 	var $dwcTable;
 	//initialize will run in document.ready
 	$(function initialize(){
@@ -181,7 +184,7 @@ var occurrenceDetails  = (function($){
 	});
 	
 	function loadEvents() {
-		$('#dwc_table_toggle').click(function() {
+		$('#dwc_table_toggle').on('click', function() {
 			$('tr.unused').toggle();
 		});
 	}

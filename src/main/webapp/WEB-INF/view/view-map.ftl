@@ -32,9 +32,9 @@
 </div><#-- body -->
 
 <content tag="local_script">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
 <@jsAsset fileName="occurrence-portal" version=root.currentVersion! useMinified=root.useMinified/>
 <@jsLibAsset libName="json2.js"/>
 <@jsLibAsset libName="underscore-min.js"/>
