@@ -31,6 +31,7 @@ import net.canadensys.dataportal.occurrence.search.parameter.SearchURLHelper.Vie
 import net.canadensys.exception.web.ResourceNotFoundException;
 import net.canadensys.query.LimitedResult;
 import net.canadensys.query.SearchQueryPart;
+import net.canadensys.query.sort.SearchSortPart;
 import net.canadensys.web.I18NTranslation;
 
 import org.apache.commons.lang3.ObjectUtils;
@@ -176,7 +177,8 @@ public class SearchController {
 		modelRoot.put("availableFilters", searchServiceConfig.getFreemarkerSearchableFieldMap());
 		modelRoot.put("availableFiltersMap", availableSearchFieldsMap);
 		
-		//handle search related params
+		//handle search related parameters
+		@SuppressWarnings("unchecked")
 		Collection<SearchQueryPart> searchRelatedParams= searchParamHandler.getSearchQueryPartCollection(request.getParameterMap());
 		
 		//handle special parameters 'dataset','iptresource'
@@ -194,9 +196,13 @@ public class SearchController {
 			occurrenceCount = occurrenceSearchService.getOccurrenceCount(searchCriteria);
 		}
 		else if(currentView.equals(ViewNameEnum.TABLE_VIEW_NAME.getViewName())){
+			//sorting only make sense for table view
+			@SuppressWarnings("unchecked")
+			SearchSortPart searchSortPart = searchParamHandler.getSearchQuerySort(request.getParameterMap());
+			
 			//Handle search
 			List<Map<String,String>> searchResult= new ArrayList<Map<String,String>>();
-			LimitedResult<List<Map<String, String>>> qr =  occurrenceSearchService.searchWithLimit(searchCriteria);			
+			LimitedResult<List<Map<String, String>>> qr =  occurrenceSearchService.searchWithLimit(searchCriteria,searchSortPart);			
 			searchResult= qr.getRows();
 			occurrenceCount = qr.getTotal_rows();
 			modelRoot.put("occurrenceList", searchResult);

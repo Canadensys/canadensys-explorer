@@ -12,6 +12,7 @@ import net.canadensys.chart.ChartModel;
 import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
 import net.canadensys.query.LimitedResult;
 import net.canadensys.query.SearchQueryPart;
+import net.canadensys.query.sort.SearchSortPart;
 
 /**
  * Interface for the Search service layer
@@ -24,6 +25,14 @@ public interface OccurrenceSearchService {
 	
 	public List<OccurrenceModel> search(HashMap<String, List<String>> searchCriteria);
 	public LimitedResult<List<Map<String, String>>> searchWithLimit(Map<String, List<SearchQueryPart>> searchCriteria);
+	
+	/**
+	 * Do a search with sorting options.
+	 * @param searchCriteria
+	 * @param searchSortPart
+	 * @return
+	 */
+	public LimitedResult<List<Map<String, String>>> searchWithLimit(Map<String, List<SearchQueryPart>> searchCriteria, SearchSortPart searchSortPart);
 	
 	/**
 	 * Get the occurrence summary object

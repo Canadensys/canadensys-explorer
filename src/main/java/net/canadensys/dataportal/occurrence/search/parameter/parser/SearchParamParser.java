@@ -1,4 +1,4 @@
-package net.canadensys.dataportal.occurrence.search.parameter;
+package net.canadensys.dataportal.occurrence.search.parameter.parser;
 
 import java.util.ArrayList;
 import java.util.Collection;

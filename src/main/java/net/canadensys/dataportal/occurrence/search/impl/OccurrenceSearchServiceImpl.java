@@ -34,6 +34,7 @@ import net.canadensys.query.LimitedResult;
 import net.canadensys.query.QueryOperatorEnum;
 import net.canadensys.query.SearchQueryPart;
 import net.canadensys.query.SearchableFieldTypeEnum;
+import net.canadensys.query.sort.SearchSortPart;
 import net.canadensys.utils.NumberUtils;
 import net.canadensys.utils.ZipUtils;
 
@@ -113,6 +114,15 @@ public class OccurrenceSearchServiceImpl implements OccurrenceSearchService {
 	public LimitedResult<List<Map<String, String>>> searchWithLimit(Map<String, List<SearchQueryPart>> searchCriteria) {
 		//if the searchCriteria is empty, the first n records are returned
 		return occurrenceDAO.searchWithLimit(searchCriteria, SearchServiceConfig.OCCURRENCE_SEARCH_FIELDS);
+	}
+	
+	@Override
+	@Transactional(readOnly=true)
+	public LimitedResult<List<Map<String, String>>> searchWithLimit(Map<String, List<SearchQueryPart>> searchCriteria, SearchSortPart searchSortPart) {
+		if(searchSortPart == null){
+			return occurrenceDAO.searchWithLimit(searchCriteria, SearchServiceConfig.OCCURRENCE_SEARCH_FIELDS);
+		}
+		return occurrenceDAO.searchWithLimit(searchCriteria, SearchServiceConfig.OCCURRENCE_SEARCH_FIELDS,searchSortPart);
 	}
 	
 	@Override

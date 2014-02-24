@@ -10,8 +10,11 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 
 import net.canadensys.dataportal.occurrence.search.config.SearchServiceConfig;
+import net.canadensys.dataportal.occurrence.search.parameter.parser.SearchParamParser;
+import net.canadensys.dataportal.occurrence.search.parameter.parser.SearchSortPartParser;
 import net.canadensys.query.SearchQueryPart;
 import net.canadensys.query.SearchQueryPartValidator;
+import net.canadensys.query.sort.SearchSortPart;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +36,15 @@ public class SearchParamHandler {
 	private SearchServiceConfig searchServiceConfig;
 	
 	private SearchParamParser paramParser;
+	private SearchSortPartParser sortParser;
 	
 	@PostConstruct
 	public void initialize() {
 		 paramParser = new SearchParamParser();
 		 paramParser.setSearchConfig(searchServiceConfig);
+		 
+		 sortParser = new SearchSortPartParser();
+		 sortParser.setSearchConfig(searchServiceConfig);
 	}
 	
 	/**
@@ -56,6 +63,10 @@ public class SearchParamHandler {
 			}
 		}
 		return searchRelatedParams;
+	}
+	
+	public SearchSortPart getSearchQuerySort(Map<String,String[]> parametersMap){
+		return sortParser.parse(parametersMap);
 	}
 	
 	/**

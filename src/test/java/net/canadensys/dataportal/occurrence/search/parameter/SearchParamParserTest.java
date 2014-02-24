@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import net.canadensys.dataportal.occurrence.search.config.SearchServiceConfig;
-import net.canadensys.dataportal.occurrence.search.parameter.SearchParamParser;
+import net.canadensys.dataportal.occurrence.search.parameter.parser.SearchParamParser;
 import net.canadensys.query.QueryOperatorEnum;
 import net.canadensys.query.SearchQueryPart;
 

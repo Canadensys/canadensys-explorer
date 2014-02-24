@@ -1,6 +1,8 @@
 package net.canadensys.dataportal.occurrence.search.parameter;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -8,8 +10,9 @@ import java.util.List;
 import java.util.Map;
 
 import net.canadensys.dataportal.occurrence.search.config.SearchServiceConfig;
-import net.canadensys.dataportal.occurrence.search.parameter.SearchParamHandler;
+import net.canadensys.query.OrderEnum;
 import net.canadensys.query.SearchQueryPart;
+import net.canadensys.query.sort.SearchSortPart;
 
 import org.junit.Test;
 
@@ -44,5 +47,32 @@ public class SearchParamHandlerTest {
 		assertTrue(result.get("continent") != null);
 		assertEquals("Laval",result.get("continent").get(0).getSingleValue());
 	}
-
+	
+	@Test
+	public void testSearchParamHandlerSortPath(){
+		Map<String,String[]> parametersMap = new HashMap<String, String[]>();
+		//Group #1 (valid)
+		parametersMap.put("1_f", new String[]{"3"});
+		parametersMap.put("1_o", new String[]{"eq"});
+		parametersMap.put("1_v", new String[]{"Laval"});
+		
+		//Sorting options
+		parametersMap.put("sortby", new String[]{"country"});
+		parametersMap.put("sort", new String[]{"desc"});
+		
+		SearchParamHandler paramHandler = new SearchParamHandler();
+		paramHandler.setSearchServiceConfig(new SearchServiceConfig());
+		paramHandler.initialize();
+		
+		
+		SearchSortPart sortPart = paramHandler.getSearchQuerySort(parametersMap);
+		assertEquals(OrderEnum.DESC, sortPart.getOrder());
+		assertEquals("country", sortPart.getOrderByColumn());
+		
+		//try with non-valid sorting column
+		parametersMap.put("sortby", new String[]{"thisisnotvalid"});
+		sortPart = paramHandler.getSearchQuerySort(parametersMap);
+		assertEquals(OrderEnum.DESC, sortPart.getOrder());
+		assertNull(sortPart.getOrderByColumn());
+	}
 }
