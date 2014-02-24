@@ -1,4 +1,5 @@
 <#include "inc/functions.ftl">
+<#include "inc/paging.ftl">
 <#include "inc/global-functions.ftl">
 <head>
 <title>${rc.getMessage("page.search.title")}</title>
@@ -74,6 +75,10 @@
 			</table>
 		</div><#-- table_wrapper -->
 	</div>
+	<#assign totalPages=(root.occurrenceCount!0/root.pageSize)?ceiling/>
+	<#if ((root.occurrenceCount!0) >= root.pageSize)>
+		<@pages 1..totalPages root.pageNumber!1 />
+	</#if>
 </div><#-- body -->
 
 <content tag="local_script">

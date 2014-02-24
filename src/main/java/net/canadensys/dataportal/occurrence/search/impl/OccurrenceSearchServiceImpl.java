@@ -100,6 +100,10 @@ public class OccurrenceSearchServiceImpl implements OccurrenceSearchService {
 		DWCA_HEADERS = Arrays.asList(appConfig.getDwcaTermUsed().split(","));
 	}
 	
+	public int getDefaultPageSize(){
+		return OccurrenceDAO.DEFAULT_LIMIT;
+	}
+	
 	@Override
 	@Transactional(readOnly=true)
 	public List<OccurrenceModel> search(HashMap<String, List<String>> searchCriteria) {

@@ -23,6 +23,13 @@ public interface OccurrenceSearchService {
 	public enum DownloadPropertiesEnum {EMAIL,LOCALE,SEARCH_URL}
 	public enum StatsPropertiesEnum {RESOURCE_BUNDLE,MAX_RESULT}
 	
+	/**
+	 * Get the default value of a page size.
+	 * Currently returning the default of the DAO
+	 * @return
+	 */
+	public int getDefaultPageSize();
+	
 	public List<OccurrenceModel> search(HashMap<String, List<String>> searchCriteria);
 	public LimitedResult<List<Map<String, String>>> searchWithLimit(Map<String, List<SearchQueryPart>> searchCriteria);
 	

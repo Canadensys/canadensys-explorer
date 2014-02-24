@@ -194,29 +194,26 @@ public class SearchController {
 			
 			//get regular count
 			occurrenceCount = occurrenceSearchService.getOccurrenceCount(searchCriteria);
+			modelRoot.put("occurrenceCount", occurrenceCount);
 		}
 		else if(currentView.equals(ViewNameEnum.TABLE_VIEW_NAME.getViewName())){
 			//sorting only make sense for table view
 			@SuppressWarnings("unchecked")
 			SearchSortPart searchSortPart = searchParamHandler.getSearchQuerySort(request.getParameterMap());
-			
-			//Handle search
-			List<Map<String,String>> searchResult= new ArrayList<Map<String,String>>();
-			LimitedResult<List<Map<String, String>>> qr =  occurrenceSearchService.searchWithLimit(searchCriteria,searchSortPart);			
-			searchResult= qr.getRows();
-			occurrenceCount = qr.getTotal_rows();
-			modelRoot.put("occurrenceList", searchResult);
+			handleSearchTableView(modelRoot,searchCriteria,searchSortPart);
 		}
 		else if(currentView.equals(ViewNameEnum.STATS_VIEW_NAME.getViewName())){
 			//get regular count
 			occurrenceCount = occurrenceSearchService.getOccurrenceCount(searchCriteria);
+			modelRoot.put("occurrenceCount", occurrenceCount);
 		}
+		
 		//let the view know that we search on all record
 		modelRoot.put("allRecordsTargeted", searchCriteria.isEmpty());
 
 		String searchCriteriaJson = beanAsJSONString(searchParamHandler.asList(searchRelatedParams));
 		modelRoot.put("searchCriteria", searchCriteriaJson);
-		modelRoot.put("occurrenceCount", occurrenceCount);
+		
 		modelRoot.put("debug", locale.toString());
 		
 		if(currentView.equals(ViewNameEnum.MAP_VIEW_NAME.getViewName())){
@@ -227,6 +224,27 @@ public class SearchController {
 		}
 
 		return new ModelAndView("view-table","root",modelRoot);
+	}
+	
+	/**
+	 * Handle table-view specific data.
+	 * @param model
+	 * @param searchCriteria
+	 * @param searchSortPart
+	 */
+	private void handleSearchTableView(HashMap<String,Object> model, Map<String,List<SearchQueryPart>> searchCriteria, SearchSortPart searchSortPart){
+		//Handle search
+		List<Map<String,String>> searchResult= new ArrayList<Map<String,String>>();
+		LimitedResult<List<Map<String, String>>> qr =  occurrenceSearchService.searchWithLimit(searchCriteria,searchSortPart);			
+		searchResult = qr.getRows();
+		long occurrenceCount = qr.getTotal_rows();
+		model.put("occurrenceList", searchResult);
+		model.put("occurrenceCount", occurrenceCount);
+		
+		if(searchSortPart != null){
+			model.put("pageSize", occurrenceSearchService.getDefaultPageSize());
+			model.put("pageNumber", searchSortPart.getPageNumber());
+		}
 	}
 	
 	/**
