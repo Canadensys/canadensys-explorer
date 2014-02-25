@@ -5,8 +5,10 @@ apply plugin: 'eclipse'
 ext {
     tomcatContextPath = 'explorer'
 }
+
 //Use Canadensys common web build file
 apply from: "https://raw.github.com/Canadensys/canadensys-common/master/gradle/canadensys_web_build.gradle"
+apply from: "http://dl.bintray.com/scalding/generic/waroverlay.gradle"
 
 //Make sure tomcat will run with the right encoding
 System.setProperty('file.encoding', 'UTF-8')
@@ -17,18 +19,19 @@ ext {
 	sourceCompatibility = JavaVersion.VERSION_1_6
 	sourceEncoding = 'UTF-8'
 	
-	springVersion = '3.2.6.RELEASE'
+	springVersion = '3.2.8.RELEASE'
 	hibernateVersion = '4.2.8.Final'
 	freemarkerVersion = '2.3.20'
 	rewriteVersion = '2.0.10.Final'
 	//sitemeshVersion = '3.0.0-SNAPSHOT'
 	sitemeshVersion = '2.4.2'
-	reflectionsVersion = '0.9.9-RC1'
+	
+	dataAccessVersion = '2.4.0-SNAPSHOT'
+	webCoreVersion = '0.1-SNAPSHOT'
 
 	tomcatVersion = '6.0.29'
 	seleniumVersion = '2.39.0'
-	dataAccessVersion = '2.4.0-SNAPSHOT'
-		
+
 	h2Version = '1.3.175'
 	versionFile = project.file("config/production/version.properties")
 }
@@ -39,7 +42,7 @@ repositories {
     
     maven {
         url "http://repository.gbif.org/content/groups/gbif"
-        //url "https://oss.sonatype.org/content/repositories/snapshots"
+        url "https://oss.sonatype.org/content/repositories/snapshots"
     }
 }
 
@@ -50,6 +53,9 @@ dependencies {
 	providedCompile group: 'javax.servlet', name: 'servlet-api', version: '2.5'
 	
 	compile group: 'net.canadensys', name: 'canadensys-data-access', version: dataAccessVersion
+	compile group: 'net.canadensys', name: 'canadensys-web-core', version: webCoreVersion
+	compile("net.canadensys:canadensys-webapp-core:${webCoreVersion}@war")
+	
 	compile group: 'log4j', name: 'log4j', version: '1.2.17'
 	compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.2'
 	
@@ -61,10 +67,8 @@ dependencies {
 	compile group: 'org.hibernate', name: 'hibernate-c3p0', version: hibernateVersion
 	compile group: 'org.freemarker', name: 'freemarker', version: freemarkerVersion
 	compile group: 'org.ocpsoft.rewrite', name: 'rewrite-servlet', version: rewriteVersion
-	compile group: 'org.ocpsoft.rewrite', name: 'rewrite-integration-spring', version: rewriteVersion
 	//compile group: 'org.sitemesh', name: 'sitemesh', version: sitemeshVersion
 	compile group: 'opensymphony', name: 'sitemesh', version: sitemeshVersion
-	compile group: 'org.reflections', name: 'reflections', version: reflectionsVersion
 
 	//h2 is included to allow integration testing using a mock database
     compile group: 'com.h2database', name: 'h2', version: h2Version
@@ -92,7 +96,7 @@ war {
         include ("*.css")
 	}
 	webInf { from "${buildDir}/config" }
-	webInf { from "../canadensys-view-includes/WEB-INF" }
+	//webInf { from "../canadensys-view-includes/WEB-INF" }
 }
 
 tomcatRunWar {
@@ -101,7 +105,6 @@ tomcatRunWar {
     stopKey = 'stopKey'
     outputFile = file('tomcat.log') 
 }
-
 
 //Used for conditional configuration. The configuration is applied only when we know that the task will be executed.
 def onlyFor(task, config) {

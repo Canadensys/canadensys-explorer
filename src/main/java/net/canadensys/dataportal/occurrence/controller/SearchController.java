@@ -32,7 +32,7 @@ import net.canadensys.exception.web.ResourceNotFoundException;
 import net.canadensys.query.LimitedResult;
 import net.canadensys.query.SearchQueryPart;
 import net.canadensys.query.sort.SearchSortPart;
-import net.canadensys.web.I18NTranslation;
+import net.canadensys.web.i18n.annotation.I18nTranslation;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -156,7 +156,7 @@ public class SearchController {
 	}
 	
 	@RequestMapping(value="/search", method=RequestMethod.GET)
-	@I18NTranslation(resourceName="search", translateFormat = "/search")
+	@I18nTranslation(resourceName="search", translateFormat = "/search")
 	public ModelAndView handleSearch(HttpServletRequest request){
 		HashMap<String,Object> modelRoot = new HashMap<String,Object>();
 		long occurrenceCount = 0;
@@ -240,9 +240,9 @@ public class SearchController {
 		long occurrenceCount = qr.getTotal_rows();
 		model.put("occurrenceList", searchResult);
 		model.put("occurrenceCount", occurrenceCount);
+		model.put("pageSize", occurrenceSearchService.getDefaultPageSize());
 		
 		if(searchSortPart != null){
-			model.put("pageSize", occurrenceSearchService.getDefaultPageSize());
 			model.put("pageNumber", searchSortPart.getPageNumber());
 		}
 	}

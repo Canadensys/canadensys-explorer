@@ -11,7 +11,7 @@ import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
 import net.canadensys.dataportal.occurrence.model.OccurrenceViewModel;
 import net.canadensys.dataportal.occurrence.model.ResourceContactModel;
 import net.canadensys.exception.web.ResourceNotFoundException;
-import net.canadensys.web.I18NTranslation;
+import net.canadensys.web.i18n.annotation.I18nTranslation;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -91,7 +91,7 @@ public class OccurrenceController {
 	}
 	
 	@RequestMapping(value="/resources/{iptResource}/occurrences/{dwcaId:.+}", method=RequestMethod.GET)
-	@I18NTranslation(resourceName="occurrence", translateFormat = "/resources/{}/occurrences/{}")
+	@I18nTranslation(resourceName="occurrence", translateFormat = "/resources/{}/occurrences/{}")
 	public ModelAndView handleOccurrencePerResource(@PathVariable String iptResource,@PathVariable String dwcaId, HttpServletRequest request){
 		OccurrenceModel occModel = occurrenceService.loadOccurrenceModel(iptResource,dwcaId,true);
 		HashMap<String,Object> modelRoot = new HashMap<String,Object>();
@@ -123,7 +123,7 @@ public class OccurrenceController {
 	 * @return
 	 */
 	@RequestMapping(value="/resources/{iptResource}/contact", method=RequestMethod.GET)
-	@I18NTranslation(resourceName="contact", translateFormat = "/resources/{}/contact")
+	@I18nTranslation(resourceName="contact", translateFormat = "/resources/{}/contact")
 	public ModelAndView handleResourceContact(@PathVariable String iptResource, HttpServletRequest request){
 		ResourceContactModel resourceContactModel = occurrenceService.loadResourceContactModel(iptResource);
 		HashMap<String,Object> modelRoot = new HashMap<String,Object>();

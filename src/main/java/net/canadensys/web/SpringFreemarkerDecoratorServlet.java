@@ -27,7 +27,8 @@ public class SpringFreemarkerDecoratorServlet extends FreemarkerDecoratorServlet
 	public void init() throws ServletException {
 		super.init();
 		try {
-			getConfiguration().setSharedVariable("URLHelper", BeansWrapper.getDefaultInstance().getStaticModels().get("net.canadensys.web.FreemarkerURLHelper"));
+			getConfiguration().setSharedVariable("URLHelper",
+					BeansWrapper.getDefaultInstance().getStaticModels().get("net.canadensys.web.freemarker.FreemarkerURLHelper"));
 		} catch (TemplateModelException e) {
 			e.printStackTrace();
 		}
