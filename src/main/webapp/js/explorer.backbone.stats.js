@@ -80,7 +80,8 @@ EXPLORER.stats = (function() {
   }
 
   var StatsSelectionView = Backbone.View.extend({
-    initialize : function() {
+    initialize : function(options) {
+      this.options = options || {};
       uniqueCountModelList.bind('add', this.addStats, this);
       //el could be set through the caller
       this.setElement(this.el);
@@ -115,8 +116,10 @@ EXPLORER.stats = (function() {
 
   // PieChart view
   var PieChartView = Backbone.View.extend({
-    initialize : function() {
+    initialize : function(options) {
       var self = this;
+
+      this.options = options || {};
       // Set a callback to run when the Google Visualization API is loaded.
         google.setOnLoadCallback(function() {
           $(function() {
@@ -245,8 +248,10 @@ EXPLORER.stats = (function() {
 
   // Column Chart view
   var ColumnChartView = Backbone.View.extend({
-    initialize : function() {
+    initialize : function(options) {
       var self = this;
+
+      this.options = options || {};
       // Set a callback to run when the Google Visualization API is loaded.
         google.setOnLoadCallback(function() {
           $(function() {
