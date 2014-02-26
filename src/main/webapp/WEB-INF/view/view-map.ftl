@@ -35,19 +35,20 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 <script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
-<@jsAsset fileName="occurrence-portal" version=root.currentVersion! useMinified=root.useMinified/>
 <@jsLibAsset libName="json2.js"/>
 <@jsLibAsset libName="underscore-min.js"/>
 <@jsLibAsset libName="backbone-min.js"/>
-<@jsAsset fileName="occurrence-utils" version=root.currentVersion! useMinified=root.useMinified/>
-<@jsAsset fileName="occurrence-backbone" version=root.currentVersion! useMinified=root.useMinified/>
 <@jsLibAsset libName="wax.g.min-6.2.0-touched.js"/>
 <@jsLibAsset libName="cartodb-gmapsv3-min.js"/>
-<@jsAsset fileName="map-view" version=root.currentVersion! useMinified=root.useMinified/>
+<@jsAsset fileName="explorer" version=root.currentVersion! useMinified=root.useMinified/>
+<@jsAsset fileName="explorer.utils" version=root.currentVersion! useMinified=root.useMinified/>
+<@jsAsset fileName="explorer.portal" version=root.currentVersion! useMinified=root.useMinified/>
+<@jsAsset fileName="explorer.backbone" version=root.currentVersion! useMinified=root.useMinified/>
+<@jsAsset fileName="explorer.map" version=root.currentVersion! useMinified=root.useMinified/>
 
 <script>
 $(function() {
-	occurrenceMap.setupMap('occ_preview','map_canvas',"${root.embeddedMapQuery}");
+	EXPLORER.map.setupMap('occ_preview','map_canvas',"${root.embeddedMapQuery}");
 	<@controlJavaScriptInit/> 
 });
 </script>

@@ -3,8 +3,6 @@
 <head>
 <title>${rc.getMessage("page.search.title")}</title>
 <@cssAsset fileName="occportal" version=root.currentVersion! useMinified=false/>
-<link rel="dns-prefetch" href="http://tiles.canadensys.net"/>
-<link rel="prefetch" href="http://tiles.canadensys.net"/>
 </head>
 <content tag="lang_switch">
 <@i18nLanguageSwitch resourceName="occurrence" params=[root.occModel.sourcefileid,root.occModel.dwcaid]/>
@@ -200,5 +198,6 @@
 <content tag="local_script">
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <@jsLibAsset libName="sorttable.js"/>
-<@jsAsset fileName="occurrence-portal" version=root.currentVersion! useMinified=root.useMinified/>
+<@jsAsset fileName="explorer" version=root.currentVersion! useMinified=root.useMinified/>
+<@jsAsset fileName="explorer.portal" version=root.currentVersion! useMinified=root.useMinified/>
 </content>

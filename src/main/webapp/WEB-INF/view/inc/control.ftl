@@ -1,9 +1,9 @@
 <!-- JavaScript init call related to controls -->
 <#macro controlJavaScriptInit>
-	languageResources.setLanguageResources(${root.languageResources});
-	searchAndFilter.setAvailableSearchFields(${root.availableFiltersMap});
-	searchAndFilter.loadFilter(${root.searchCriteria});
-	searchAndFilter.setNumberOfResult(${root.occurrenceCount?c});
+	EXPLORER.i18n.setLanguageResources(${root.languageResources});
+	EXPLORER.backbone.setAvailableSearchFields(${root.availableFiltersMap});
+	EXPLORER.backbone.loadFilter(${root.searchCriteria});
+	EXPLORER.backbone.setNumberOfResult(${root.occurrenceCount?c});
 </#macro>
 
 <div id="control">

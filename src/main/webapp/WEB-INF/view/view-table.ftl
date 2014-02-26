@@ -4,8 +4,6 @@
 <head>
 <title>${rc.getMessage("page.search.title")}</title>
 <@cssAsset fileName="occportal" version=root.currentVersion! useMinified=false/> 
-<link rel="dns-prefetch" href="http://tiles.canadensys.net"/>
-<link rel="prefetch" href="http://tiles.canadensys.net"/>
 </head>
 <content tag="lang_switch">
 <@i18nLanguageSwitch resourceName="search"/>
@@ -84,19 +82,20 @@
 <content tag="local_script">
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
-<@jsAsset fileName="occurrence-portal" version=root.currentVersion! useMinified=root.useMinified/> 
 <@jsLibAsset libName="json2.js"/>
 <@jsLibAsset libName="underscore-min.js"/>
 <@jsLibAsset libName="backbone-min.js"/>
 <@jsLibAsset libName="sorttable.js"/>
-<@jsAsset fileName="occurrence-utils" version=root.currentVersion! useMinified=root.useMinified/> 
-<@jsAsset fileName="occurrence-backbone" version=root.currentVersion! useMinified=root.useMinified/>
+<@jsAsset fileName="explorer" version=root.currentVersion! useMinified=root.useMinified/>
+<@jsAsset fileName="explorer.utils" version=root.currentVersion! useMinified=root.useMinified/>
+<@jsAsset fileName="explorer.backbone" version=root.currentVersion! useMinified=root.useMinified/>
+<@jsAsset fileName="explorer.portal" version=root.currentVersion! useMinified=root.useMinified/>
 <@jsLibAsset libName="rwd-table.js"/>
 <@jsLibAsset libName="respond.js"/>
 
 <script>
 $(function() {
-	occurrenceControl.restoreDisplay();
+	EXPLORER.control.restoreDisplay();
 	<@controlJavaScriptInit/> 
 });
 </script>

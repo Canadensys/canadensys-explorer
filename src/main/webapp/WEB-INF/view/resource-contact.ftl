@@ -4,8 +4,6 @@
 <head>
 <title>${rc.getMessage("resourcecontact.title",[root.data.resource_name])}</title>
 <@cssAsset fileName="occportal" version=root.currentVersion! useMinified=false/>
-<link rel="dns-prefetch" href="http://tiles.canadensys.net"/>
-<link rel="prefetch" href="http://tiles.canadensys.net"/>
 </head>
 <content tag="lang_switch">
 <@i18nLanguageSwitch resourceName="contact" params=[root.data.sourcefileid]/>
