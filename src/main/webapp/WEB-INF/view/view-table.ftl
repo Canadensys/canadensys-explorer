@@ -95,8 +95,8 @@
 
 <script>
 $(function() {
-	EXPLORER.control.restoreDisplay();
-	<@controlJavaScriptInit/> 
+ EXPLORER.control.restoreDisplay();
+ <@controlJavaScriptInit/> 
 });
 </script>
 </content>

@@ -75,6 +75,7 @@
   		<property name="templateLoaderPath" value="/WEB-INF/view/"/>
   		<property name="freemarkerVariables">
         <map>
+          <entry key="tileServer" value="${tileServer.url:}"/>
           <entry key="URLHelper" value-ref="URLHelper"/>
         </map>
 		</property>
