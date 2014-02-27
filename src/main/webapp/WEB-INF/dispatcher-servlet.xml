@@ -77,6 +77,7 @@
         <map>
           <entry key="gaSiteVerification" value="${googleanalytics.siteVerification:}"/>
           <entry key="gaAccount" value="${googleanalytics.account:}"/>
+          <entry key="tileServer" value="${tileServer.url:}"/>
           <entry key="URLHelper" value-ref="URLHelper"/>
         </map>
 		</property>

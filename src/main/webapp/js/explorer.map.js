@@ -84,7 +84,7 @@ EXPLORER.map = (function() {
       };
     },
 
-    setupMap: function(previewElementId, mapCanvasId, mapQuery) {
+    setupMap: function(previewElementId, mapCanvasId, tileServer, mapQuery) {
       var lastAutoId = -1, map, marker, cartodb_gmapsv3;
 
       map = new google.maps.Map($('#' + mapCanvasId)[0], {
@@ -127,7 +127,7 @@ EXPLORER.map = (function() {
         infowindow: true,
         auto_bound: true,
         featureClick: onMapClick,
-        tiler_domain:'tiles.canadensys.net',
+        tiler_domain: tileServer.substr(tileServer.indexOf('://')+3),
         featureOver: function() {
           map.setOptions({draggableCursor: 'pointer'});
         },
@@ -142,8 +142,8 @@ EXPLORER.map = (function() {
 
   return {
     init: function() { _private.init(); },
-    setupMap: function(previewElementId, mapCanvasId, mapQuery) { 
-      _private.setupMap(previewElementId, mapCanvasId, mapQuery);
+    setupMap: function(previewElementId, mapCanvasId, tileServer, mapQuery) {
+      _private.setupMap(previewElementId, mapCanvasId, tileServer, mapQuery);
     }
   };
 

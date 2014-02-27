@@ -11,6 +11,8 @@ database.idleConnectionTestPeriod=60
 email.smtpServer=smtp.mydomain.com
 email.port=25
 
+tileServer.url=http://tiles.canadensys.net
+
 searchServiceConfig.generatedContentFolder=/tmp/explorer-test
 searchServiceConfig.publicDownloadURL=http://data.canadensys.net/downloads/explorer/
 searchServiceConfig.emailFrom=noreply@mydomain.net
