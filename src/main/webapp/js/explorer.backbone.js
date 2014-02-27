@@ -316,6 +316,9 @@ EXPLORER.backbone = (function(){
 
   var SelectionValueView = Backbone.View.extend({
     textSelectionTemplate : _.template($('#filter_template_select').html()),
+    initialize: function() {
+      return;
+    },
     destroy : function(){
       this.remove();
     },
@@ -328,17 +331,15 @@ EXPLORER.backbone = (function(){
       "click button" : "createNewFilter"
     },
     loadContent : function(fieldId) {
-      var option = $('<option />');
+      var $select, options = "";
       //could also be loaded with a model fetch
       $.get('getpossiblevalues',{fieldId:fieldId})
         .success(function(json){
-          var $select = $("#value_select",this.$el), key;
-          for (key in json) {
-            if (json.hasOwnProperty(key)) {
-                option.attr('value', json[key].value).text(json[key].value);
-                $select.append(option);
-              }
-          }
+          $select = $("#value_select",this.$el);
+          $.each(json, function() {
+            options += '<option value="'+this.value+'">'+this.value+'</option>';
+          });
+          $select.append(options);
         })
          .error(function(jqXHR, textStatus, errorThrown){
            alert(textStatus);
@@ -374,6 +375,9 @@ EXPLORER.backbone = (function(){
   //View that supports creation of a filter with the LIKE operator
   var BooleanValueView = Backbone.View.extend({
     booleanValueTemplate : _.template($('#filter_template_boolean_value').html()),
+    initialize: function() {
+      return;
+    },
     destroy : function(){
       this.remove();
     },
@@ -474,6 +478,12 @@ EXPLORER.backbone = (function(){
 
   var DateIntervalValueView = Backbone.View.extend({
     dateIntervalTemplate : _.template($('#filter_template_date').html()),
+    initialize: function() {
+      return;
+    },
+    destroy: function() {
+      return;
+    },
     render : function() {
       this.setElement(this.dateIntervalTemplate());
       //by default, this is hidden
@@ -557,6 +567,12 @@ EXPLORER.backbone = (function(){
   
   var MinMaxValueView = Backbone.View.extend({
     minMaxValueTemplate : _.template($('#filter_template_minmax').html()),
+    initialize: function() {
+      return;
+    },
+    destroy: function() {
+      return;
+    },
     render : function() {
       this.setElement(this.minMaxValueTemplate());
       //by default, this is hidden
@@ -568,6 +584,9 @@ EXPLORER.backbone = (function(){
       "focus input[type=text]" : "onFocus",
       "blur input[type=text]" : "onBlur",
       "change input[type=checkbox]" : "onSearchIntervalChanged"
+    },
+    onFocus: function() {
+      return;
     },
     onBlur : function(e){
       var $el = $(e.currentTarget),
@@ -639,6 +658,9 @@ EXPLORER.backbone = (function(){
   var FilterGroupView = Backbone.View.extend({
     tagName: 'li', // name of tag to be created
     className: 'filter round',
+    initialize: function() {
+      return;
+    },
     render : function() {
       $(this.el).html(this.model.get('searchableFieldText') + '<ul></ul>');
       return this;
@@ -756,11 +778,13 @@ EXPLORER.backbone = (function(){
       this.setElement('#filter_content');
       currFilterKey.bind('change:searchableFieldId', this.onFilterKeyChanged, this);
     },
+    events : {
+    },
     onFilterKeyChanged : function(filterKey) {
       var searchableFieldTypeEnum = availableSearchFields[filterKey.get('searchableFieldId')].searchableFieldTypeEnum;
 
       //This is not necessary but it makes it clear that we create new element each time
-      if(this.lastComponent){
+      if(typeof this.lastComponent !== 'undefined'){
         this.lastComponent.destroy();
       }
 
@@ -836,6 +860,8 @@ EXPLORER.backbone = (function(){
 
   var DisplayMapView = Backbone.View.extend({
     displayMapTemplate : _.template($('#display_template_map').html()),
+    events: {
+    },
     initialize : function() {
       //el could be set through the caller
       this.setElement(this.el);
