@@ -1,6 +1,6 @@
 <#include "/WEB-INF/view/inc/global-functions.ftl">
 <!DOCTYPE html>
-<html>
+<html lang="${rc.getLocale().getLanguage()}">
 <head>
 <meta charset="UTF-8">
 <title>${title}</title>

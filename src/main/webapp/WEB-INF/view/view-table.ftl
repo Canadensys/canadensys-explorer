@@ -74,7 +74,7 @@
 		</div><#-- table_wrapper -->
 	</div>
 	<#if ((root.occurrenceCount!0) >= root.pageSize)>
-		<#assign totalPages=(root.occurrenceCount!0/root.pageSize)?ceiling/>
+		<#assign totalPages=((root.occurrenceCount!0)/root.pageSize)?ceiling/>
 		<@pages 1..totalPages root.pageNumber!1 />
 	</#if>
 </div><#-- body -->
