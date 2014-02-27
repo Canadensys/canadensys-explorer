@@ -2,14 +2,14 @@
 Copyright (c) 2013 Canadensys
 Explorer backbone
 ****************************/
-/*global EXPLORER, $, window, _, Backbone, google*/
+/*global EXPLORER, $, window, _, Backbone, google, alert*/
 
 EXPLORER.backbone = (function(){
 
   'use strict';
 
   var filterViewTemplate = _.template($('#filter_template_current').html());
-  
+
   var FilterKey = Backbone.Model.extend({
     defaults: {
       searchableFieldId: -1,
@@ -47,16 +47,16 @@ EXPLORER.backbone = (function(){
 
   FilterList = Backbone.Collection.extend({
     model: FilterItem
-  });
+  }),
 
-  var filterList = new FilterList();
-  var currFilterKey = new FilterKey();
-  var currSearchResult = new SearchResult();
-  var currTextSearch = new TextSearch();
+  filterList = new FilterList(),
+  currFilterKey = new FilterKey(),
+  currSearchResult = new SearchResult(),
+  currTextSearch = new TextSearch(),
 
-  var availableSearchFields;
-  var initialFilterParamMap;
-  var DEFAULT_SEARCHABLE_FIELD_ID = 16; //scientificName
+  availableSearchFields,
+  initialFilterParamMap,
+  DEFAULT_SEARCHABLE_FIELD_ID = 16; //scientificName
 
   function setNumberOfResult(numberOfRecord){
     currSearchResult.set("numberOfRecord",numberOfRecord);
@@ -66,12 +66,37 @@ EXPLORER.backbone = (function(){
     availableSearchFields = _availableSearchFields;
   }
 
+  function getInitialFilterParamMap(){
+    return initialFilterParamMap;
+  }
+
+  function getOperatorText(operator){
+    var varName = 'operator.'+operator.toLowerCase();
+    return EXPLORER.i18n.getLanguageResource(varName);
+  }
+
+  function getAvailableFieldText(fieldName){
+    var varName = 'filter.'+fieldName.toLowerCase();
+    return EXPLORER.i18n.getLanguageResource(varName);
+  }
+
+  function safeGetValueText(valueList){
+    var parsedValueText = [], varName;
+    $.each(valueList, function() {
+      varName = 'filter.value.'+this.toString().toLowerCase();
+      if(EXPLORER.i18n.getLanguageResource(varName)){
+        parsedValueText.push(EXPLORER.i18n.getLanguageResource(varName));
+      } else {
+        parsedValueText.push(this);
+      }
+    });
+    return parsedValueText.join();
+  }
+
   //load filter form outer source
   function loadFilter(json){
-    var currFilter;
-    var filterItem;
-    var lastSearchableFieldId;
-    var key;
+    var filterItem, lastSearchableFieldId, key;
+
     for (key in json) {
       if (json.hasOwnProperty(key)) {
         filterItem = new FilterItem();
@@ -98,33 +123,6 @@ EXPLORER.backbone = (function(){
       searchableFieldText:getAvailableFieldText(availableSearchFields[lastSearchableFieldId].searchableFieldName)});
   }
 
-  function getInitialFilterParamMap(){
-    return initialFilterParamMap;
-  }
-
-  function getOperatorText(operator){
-    var varName = 'operator.'+operator.toLowerCase();
-    return EXPLORER.i18n.getLanguageResource(varName);
-  }
-  function getAvailableFieldText(fieldName){
-    var varName = 'filter.'+fieldName.toLowerCase();
-    return EXPLORER.i18n.getLanguageResource(varName);
-  }
-  
-  function safeGetValueText(valueList){
-    var parsedValueText = [], varName;
-    $.each(valueList, function() {
-      varName = 'filter.value.'+this.toString().toLowerCase();
-      if(EXPLORER.i18n.getLanguageResource(varName)){
-        parsedValueText.push(EXPLORER.i18n.getLanguageResource(varName));
-      } else {
-        parsedValueText.push(this);
-      }
-    });
-
-    return parsedValueText.join();
-  }
-  
   //View that supports the text entry
   var TextEntryView = Backbone.View.extend({
     textValueTemplate : _.template($('#filter_template_text_input').html()),
@@ -137,16 +135,16 @@ EXPLORER.backbone = (function(){
     events : {
       "keyup input" : "onTextTyped"
     },
-    onTextTyped : function(evt) {
-      var value = undefined;
-      var enter = undefined;
-      if(evt){
-        value = $(evt.currentTarget).val();
-        currTextSearch.set({currentText:value,validate:(evt.keyCode === 13)});
+    onTextTyped : function(e) {
+      var value;
+
+      if(e){
+        value = $(e.currentTarget).val();
+        currTextSearch.set({currentText:value,validate:(e.keyCode === 13)});
       }
     }
   });
-  
+
   //View that supports text suggestion
   var TextValueSuggestionView = Backbone.View.extend({
     suggestionValueTemplate : _.template($('#filter_template_suggestions').html()),
@@ -170,31 +168,31 @@ EXPLORER.backbone = (function(){
       "click #value_suggestions tr" : "createNewSuggestionFilter"
     },
     onTextChanged : function(textSearchModel) {
-      var mapParam = {};
-      var cacheKey = currFilterKey.get('searchableFieldId');
-      var value = textSearchModel.get('currentText');
-      
-      mapParam['fieldId'] = currFilterKey.get('searchableFieldId');
-      
+      var mapParam = {},
+          cacheKey = currFilterKey.get('searchableFieldId'),
+          value = textSearchModel.get('currentText'),
+          self = this;
+
+      mapParam.fieldId = currFilterKey.get('searchableFieldId');
+
       if(value){
-        mapParam['curr'] = value;
+        mapParam.curr = value;
         cacheKey += value;
       }
-      
+
       if(this.cacheMap[cacheKey]) {
         this.replaceTableCellContent(this.cacheMap[cacheKey]);
       }
       else{
-        var that = this;
-        var req = $.get('livesearch',mapParam)
+        $.get('livesearch',mapParam)
           .success(function(json){
-            that.replaceTableCellContent(json);
+            self.replaceTableCellContent(json);
             
-            if(that.cacheKeys.length == 10){
-              delete that.cacheMap[that.cacheKeys.shift()];
+            if(self.cacheKeys.length === 10){
+              delete self.cacheMap[self.cacheKeys.shift()];
             }
-            that.cacheKeys.push(cacheKey);
-            that.cacheMap[cacheKey] = json;
+            self.cacheKeys.push(cacheKey);
+            self.cacheMap[cacheKey] = json;
           })
            .error(function(jqXHR, textStatus, errorThrown){
              alert(textStatus);
@@ -202,35 +200,36 @@ EXPLORER.backbone = (function(){
       }
     },
     replaceTableCellContent : function(json){
-      var rows = json['rows'];
-      var lastRow=0;
-      var row;
-      var that = this;
+      var rows = json.rows,
+          lastRow=0,
+          row,
+          self = this;
+
       $.each(rows, function(key, val) {
-        row = $('#value_suggestions tr:nth-child('+(key+1)+')',that.$el);
-        row.find('td:nth-child(1)').html(val['value']);
-        row.find('td:nth-child(2)').html(val['occurrence_count']);
+        row = $('#value_suggestions tr:nth-child('+(key+1)+')',self.$el);
+        row.find('td:nth-child(1)').html(val.value);
+        row.find('td:nth-child(2)').html(val.occurrence_count);
         row.removeClass('hidden');
-        row.attr('id',val['id']);
+        row.attr('id',val.id);
         lastRow = key+1; //to match tr index (who starts at 1)
       });
-      
+
       //move to next row
-      lastRow++;
+      lastRow += 1;
       //clear remaining rows
       while(lastRow<=10){
-        row = $('#value_suggestions tr:nth-child('+lastRow+')',that.$el);
+        row = $('#value_suggestions tr:nth-child('+lastRow+')',self.$el);
         row.find('td:nth-child(1)').html(' ');
         row.find('td:nth-child(2)').html(' ');
         row.addClass('hidden');
         row.removeAttr('id');
-        lastRow++;
+        lastRow += 1;
       }
     },
-    createNewSuggestionFilter : function(evt) {
-      var value = [$(evt.currentTarget).find('td:nth-child(1)').text()];
-      var valueJSON = JSON.stringify(value);
-      
+    createNewSuggestionFilter : function(e) {
+      var value = [$(e.currentTarget).find('td:nth-child(1)').text()],
+          valueJSON = JSON.stringify(value);
+
       //ignore duplicate filter (ignore case)
       if(filterList.find(function(currFilter){ 
         return (currFilter.get('searchableFieldId') === currFilterKey.get('searchableFieldId') &&
@@ -238,7 +237,7 @@ EXPLORER.backbone = (function(){
         })){
         return;
       }
-      
+
       var newFilter = new FilterItem({
         searchableFieldId : currFilterKey.get('searchableFieldId'),
         searchableFieldName : currFilterKey.get('searchableFieldName'),
@@ -252,17 +251,17 @@ EXPLORER.backbone = (function(){
       filterList.add(newFilter);
     }
   });
-  
+
   //View that supports creation of a filter with the LIKE operator
   var PartialTextValueView = Backbone.View.extend({
     partialTextTemplate : _.template($('#filter_template_partial_match').html()),
     initialize : function() {
       currTextSearch.bind('change:currentText', this.onTextChanged, this);
       currTextSearch.bind('change:validate', this.onValidate, this);
-      
+
       //find the like operator
       this.likeOp = _.find(availableSearchFields[currFilterKey.get('searchableFieldId')].supportedOperator,
-          function(str){ return str.toLowerCase().search("^[s|e|c]like$") != -1; });
+          function(str){ return str.toLowerCase().search("^[s|e|c]like$") !== -1; });
     },
     destroy : function(){
       currTextSearch.unbind('change:currentText', this.onTextChanged);
@@ -285,14 +284,15 @@ EXPLORER.backbone = (function(){
         this.createNewLikeFilter();
       }
     },
-    createNewLikeFilter : function(evt) {
-      var value = [currTextSearch.get('currentText')];
-      var valueJSON = JSON.stringify(value);
+    createNewLikeFilter : function() {
+      var value = [currTextSearch.get('currentText')],
+          valueJSON = JSON.stringify(value);
+
       //skip empty filter
       if(!value || value.length === 0){
         return;
       }
-      
+
       //ignore duplicate filter (ignore case)
       if(filterList.find(function(currFilter){ 
         return (currFilter.get('searchableFieldId') === currFilterKey.get('searchableFieldId') &&
@@ -313,11 +313,9 @@ EXPLORER.backbone = (function(){
       filterList.add(newFilter);
     }
   });
-  
+
   var SelectionValueView = Backbone.View.extend({
     textSelectionTemplate : _.template($('#filter_template_select').html()),
-    initialize : function() {
-    },
     destroy : function(){
       this.remove();
     },
@@ -330,14 +328,13 @@ EXPLORER.backbone = (function(){
       "click button" : "createNewFilter"
     },
     loadContent : function(fieldId) {
-      var that = this;
+      var option = $('<option />');
       //could also be loaded with a model fetch
-      var req = $.get('getpossiblevalues',{fieldId:fieldId})
+      $.get('getpossiblevalues',{fieldId:fieldId})
         .success(function(json){
-          var $select = $("#value_select",this.$el);
-          for (var key in json) {
+          var $select = $("#value_select",this.$el), key;
+          for (key in json) {
             if (json.hasOwnProperty(key)) {
-              var option = $('<option />');
                 option.attr('value', json[key].value).text(json[key].value);
                 $select.append(option);
               }
@@ -347,18 +344,20 @@ EXPLORER.backbone = (function(){
            alert(textStatus);
         });
     },
-    createNewFilter : function(evt) {
-      var value = [$("#value_select",this.$el).val()];
-      var valueJSON = JSON.stringify(value);
+    createNewFilter : function() {
+      var value = [$("#value_select",this.$el).val()],
+          valueJSON = JSON.stringify(value),
+          newFilter;
+
       //skip empty filter
       if(!value || value.length === 0){
         return;
       }
-      
+
       if(filterList.where({searchableFieldId: currFilterKey.get('searchableFieldId'),valueJSON:valueJSON}).length !== 0){
         return;
       }
-      var newFilter = new FilterItem({
+      newFilter = new FilterItem({
         searchableFieldId : currFilterKey.get('searchableFieldId'),
         searchableFieldName : currFilterKey.get('searchableFieldName'),
         searchableFieldText : getAvailableFieldText(currFilterKey.get('searchableFieldName')),
@@ -371,13 +370,10 @@ EXPLORER.backbone = (function(){
       filterList.add(newFilter);
     }
   });
-  
+
   //View that supports creation of a filter with the LIKE operator
   var BooleanValueView = Backbone.View.extend({
     booleanValueTemplate : _.template($('#filter_template_boolean_value').html()),
-    initialize : function() {
-
-    },
     destroy : function(){
       this.remove();
     },
@@ -389,20 +385,22 @@ EXPLORER.backbone = (function(){
       //bound to the root element
       "click button" : "createNewLikeFilter"
     },
-    createNewLikeFilter : function(evt) {
-      var value =  [($('input[name=boolGroup]:checked',this.$el).val())];
-      var valueJSON = JSON.stringify(value);
+    createNewLikeFilter : function() {
+      var value =  [($('input[name=boolGroup]:checked',this.$el).val())],
+          valueJSON = JSON.stringify(value),
+          newFilter;
+
       //skip empty filter
       if(value.length === 0){
         return;
       }
-      
+
       //ignore duplicate filter, boolean filter must not be already included
       if(filterList.where({searchableFieldId: currFilterKey.get('searchableFieldId')}).length !== 0){
         return;
       }
-      
-      var newFilter = new FilterItem({
+
+      newFilter = new FilterItem({
         searchableFieldId : currFilterKey.get('searchableFieldId'),
         searchableFieldName : currFilterKey.get('searchableFieldName'),
         searchableFieldText : getAvailableFieldText(currFilterKey.get('searchableFieldName')),
@@ -415,7 +413,7 @@ EXPLORER.backbone = (function(){
       filterList.add(newFilter);
     }
   });
-  
+
   //Responsible to render the proper view based on the options of the searchable field.
   var TextValueView = Backbone.View.extend({
     textValueTemplate : _.template($('#filter_template_single').html()),
@@ -424,7 +422,7 @@ EXPLORER.backbone = (function(){
       this.supportSuggestion = availableSearchFields[currFilterKey.get('searchableFieldId')].supportSuggestion;
       this.supportPartialMatch = availableSearchFields[currFilterKey.get('searchableFieldId')].supportPartialMatch;
       this.supportSelectionList = availableSearchFields[currFilterKey.get('searchableFieldId')].supportSelectionList;
-      this.isBooleanFilter = (availableSearchFields[currFilterKey.get('searchableFieldId')].type.indexOf("Boolean") != -1);
+      this.isBooleanFilter = (availableSearchFields[currFilterKey.get('searchableFieldId')].type.indexOf("Boolean") !== -1);
       this.textValueSuggestionView = undefined;
       this.partialTextValueView = undefined;
       this.selectionValueView = undefined;
@@ -473,13 +471,9 @@ EXPLORER.backbone = (function(){
       this.remove();
     }
   });
-  
+
   var DateIntervalValueView = Backbone.View.extend({
     dateIntervalTemplate : _.template($('#filter_template_date').html()),
-    initialize : function() {
-    },
-    destroy : function(){
-    },
     render : function() {
       this.setElement(this.dateIntervalTemplate());
       //by default, this is hidden
@@ -492,10 +486,8 @@ EXPLORER.backbone = (function(){
       "blur input[type=text]" : "onBlur",
       "change input[type=checkbox]" : "onSearchIntervalChanged"
     },
-    onFocus : function(evt){
-    },
-    onBlur : function(evt){
-      var $el = $(evt.currentTarget);
+    onBlur : function(e){
+      var $el = $(e.currentTarget);
       //accept empty field
       if($el.val() && !EXPLORER.utils.isValidDateElement($el)){
         $el.addClass('error');
@@ -504,45 +496,45 @@ EXPLORER.backbone = (function(){
         $el.removeClass('error');
       }
     },
-    onSearchIntervalChanged : function(evt){
+    onSearchIntervalChanged : function(){
       $("#date_end",this.$el).toggle();
       $(".label_single",this.$el).toggleClass("hidden");
       $(".label_range",this.$el).toggleClass("hidden");
     },
-    createNewFilter : function(e) {
-      var syear = $.trim($("#date_start_y",this.$el).val());
-      var smonth = $.trim($("#date_start_m",this.$el).val());
-      var sday = $.trim($("#date_start_d",this.$el).val());
-      
-      var isInterval = $("#interval",this.$el).is(':checked');
-      var eyear = $.trim($("#date_end_y",this.$el).val());
-      var emonth = $.trim($("#date_end_m",this.$el).val());
-      var eday = $.trim($("#date_end_d",this.$el).val());
+    createNewFilter : function() {
+      var syear = $.trim($("#date_start_y",this.$el).val()),
+          smonth = $.trim($("#date_start_m",this.$el).val()),
+          sday = $.trim($("#date_start_d",this.$el).val()),
+          isInterval = $("#interval",this.$el).is(':checked'),
+          eyear = $.trim($("#date_end_y",this.$el).val()),
+          emonth = $.trim($("#date_end_m",this.$el).val()),
+          eday = $.trim($("#date_end_d",this.$el).val()),
+          valueJSON, searchValue, newFilter;
       
       if(!EXPLORER.utils.isValidPartialDate(syear,smonth,sday) || (isInterval && !EXPLORER.utils.isValidPartialDate(eyear,emonth,eday))){
         //TODO use language resources
         alert("This date is not valid");
         return;
       }
-      
+
       if(isInterval && !EXPLORER.utils.isValidDateInterval(syear,smonth,sday,eyear,emonth,eday)){
         //TODO use language resources
         alert("This is not valid date interval");
         return;
       }
-      
-      var searchValue = [syear+'-'+EXPLORER.utils.dateElementZeroPad(smonth)+'-'+EXPLORER.utils.dateElementZeroPad(sday)];
+
+      searchValue = [syear+'-'+EXPLORER.utils.dateElementZeroPad(smonth)+'-'+EXPLORER.utils.dateElementZeroPad(sday)];
       if(isInterval){
         searchValue.push(eyear+'-'+EXPLORER.utils.dateElementZeroPad(emonth)+'-'+EXPLORER.utils.dateElementZeroPad(eday));
       }
-      var valueJSON = JSON.stringify(searchValue);
-      
+      valueJSON = JSON.stringify(searchValue);
+
       //ignore duplicate filter
       if(filterList.where({searchableFieldId: currFilterKey.get('searchableFieldId'),valueJSON:valueJSON}).length !== 0){
         return;
       }
-      
-      var newFilter = new FilterItem({
+
+      newFilter = new FilterItem({
         searchableFieldId : currFilterKey.get('searchableFieldId'),
         searchableFieldName : currFilterKey.get('searchableFieldName'),
         searchableFieldText : getAvailableFieldText(currFilterKey.get('searchableFieldName')),
@@ -550,7 +542,7 @@ EXPLORER.backbone = (function(){
         valueJSON : valueJSON,
         valueText : safeGetValueText(searchValue)
       });
-      
+
       if(isInterval){
         newFilter.set('op','BETWEEN');
         newFilter.set('opText',getOperatorText('BETWEEN'));
@@ -565,10 +557,6 @@ EXPLORER.backbone = (function(){
   
   var MinMaxValueView = Backbone.View.extend({
     minMaxValueTemplate : _.template($('#filter_template_minmax').html()),
-    initialize : function() {
-    },
-    destroy : function(){
-    },
     render : function() {
       this.setElement(this.minMaxValueTemplate());
       //by default, this is hidden
@@ -581,11 +569,10 @@ EXPLORER.backbone = (function(){
       "blur input[type=text]" : "onBlur",
       "change input[type=checkbox]" : "onSearchIntervalChanged"
     },
-    onFocus : function(evt){
-    },
-    onBlur : function(evt){
-      var $el = $(evt.currentTarget);
-      var value = $.trim($el.val());
+    onBlur : function(e){
+      var $el = $(e.currentTarget),
+          value = $.trim($el.val());
+
       //accept empty field
       if(!EXPLORER.utils.isValidNumber(value)){
         $el.addClass('error');
@@ -594,40 +581,41 @@ EXPLORER.backbone = (function(){
         $el.removeClass('error');
       }
     },
-    onSearchIntervalChanged : function(evt){
+    onSearchIntervalChanged : function(){
       $("#interval_max",this.$el).toggle();
       $(".label_single",this.$el).toggleClass("hidden");
       $(".label_range",this.$el).toggleClass("hidden");
     },
-    createNewFilter : function(e) {
-      var minValue = $.trim($("#value_min",this.$el).val());
-      var isInterval = $("#interval",this.$el).is(':checked');
-      var maxValue = $.trim($("#value_max",this.$el).val());
+    createNewFilter : function() {
+      var minValue = $.trim($("#value_min",this.$el).val()),
+          isInterval = $("#interval",this.$el).is(':checked'),
+          maxValue = $.trim($("#value_max",this.$el).val()),
+          searchValue, valueJSON, newFilter;
 
       if(!EXPLORER.utils.isValidNumber(minValue)){
         //TODO use language resources
         alert("This number is not valid");
         return;
       }
-      
+
       if(isInterval && !EXPLORER.utils.isValidNumber(maxValue)){
         //TODO use language resources
         alert("This is not valid number interval");
         return;
       }
-      
-      var searchValue = [minValue];
+
+      searchValue = [minValue];
       if(isInterval){
         searchValue.push(maxValue);
       }
-      var valueJSON = JSON.stringify(searchValue);
-      
+      valueJSON = JSON.stringify(searchValue);
+
       //ignore duplicate filter
       if(filterList.where({searchableFieldId: currFilterKey.get('searchableFieldId'),valueJSON:valueJSON}).length !== 0){
         return;
       }
-      
-      var newFilter = new FilterItem({
+
+      newFilter = new FilterItem({
         searchableFieldId : currFilterKey.get('searchableFieldId'),
         searchableFieldName : currFilterKey.get('searchableFieldName'),
         searchableFieldText : getAvailableFieldText(currFilterKey.get('searchableFieldName')),
@@ -635,7 +623,7 @@ EXPLORER.backbone = (function(){
         valueJSON : valueJSON,
         valueText : safeGetValueText(searchValue)
       });
-      
+
       if(isInterval){
         newFilter.set('op','BETWEEN');
         newFilter.set('opText',getOperatorText('BETWEEN'));
@@ -647,7 +635,37 @@ EXPLORER.backbone = (function(){
       filterList.add(newFilter);
     }
   });
-  
+
+  var FilterGroupView = Backbone.View.extend({
+    tagName: 'li', // name of tag to be created
+    className: 'filter round',
+    render : function() {
+      $(this.el).html(this.model.get('searchableFieldText') + '<ul></ul>');
+      return this;
+    }
+  });
+
+  var FilterView = Backbone.View.extend({
+    tagName: 'li', // name of tag to be created
+    events: {
+      'click span.delete': 'remove'
+    },
+    initialize : function() {
+      this.model.bind('remove', this.unrender, this);
+    },
+    render : function() {
+      //compute from template
+      $(this.el).html(filterViewTemplate(this.model.toJSON()));
+      return this;
+    },
+    unrender: function(){
+      $(this.el).remove();
+    },
+    remove: function(){
+      this.model.destroy();
+    }
+  });
+
   var CurrentFiltersView = Backbone.View.extend({
     initialize : function() {
       filterList.bind('add', this.addFilter, this);
@@ -658,13 +676,13 @@ EXPLORER.backbone = (function(){
       //keep track of the grouping component
       this.filterGroupView = {};
     },
-    addFilter : function(filter) {    
+    addFilter : function(filter) {
       //remove empty filter element
       if(this.nbOfFilter === 0){
         $('#filter_current').find(':first-child').remove();
       }
-      
-      //group exists ?    
+
+      //group exists ?
       if(!this.filterGroupView[filter.get('searchableFieldId')]) {
         var view = new FilterGroupView({
           model : filter
@@ -730,7 +748,7 @@ EXPLORER.backbone = (function(){
       return this;
     }
   });
-  
+
   //Allows to select the specific value based on the field (previously selected)
   var FilterSelectionView = Backbone.View.extend({
     lastComponent: undefined,
@@ -738,23 +756,21 @@ EXPLORER.backbone = (function(){
       this.setElement('#filter_content');
       currFilterKey.bind('change:searchableFieldId', this.onFilterKeyChanged, this);
     },
-    events : {
-    },
-    onFilterKeyChanged : function(filterKey, fid) {
+    onFilterKeyChanged : function(filterKey) {
       var searchableFieldTypeEnum = availableSearchFields[filterKey.get('searchableFieldId')].searchableFieldTypeEnum;
-      
+
       //This is not necessary but it makes it clear that we create new element each time
       if(this.lastComponent){
         this.lastComponent.destroy();
       }
-      
-      if(searchableFieldTypeEnum == 'SINGLE_VALUE'){
+
+      if(searchableFieldTypeEnum === 'SINGLE_VALUE'){
         this.lastComponent = new TextValueView();
       }
-      else if(searchableFieldTypeEnum == 'START_END_DATE'){
-        this.lastComponent = new DateIntervalValueView();  
+      else if(searchableFieldTypeEnum === 'START_END_DATE'){
+        this.lastComponent = new DateIntervalValueView();
       }
-      else if(searchableFieldTypeEnum == 'MIN_MAX_NUMBER'){
+      else if(searchableFieldTypeEnum === 'MIN_MAX_NUMBER'){
         this.lastComponent = new MinMaxValueView();
       }
       this.$el.html(this.lastComponent.render().el);
@@ -763,40 +779,48 @@ EXPLORER.backbone = (function(){
       return this;
     }
   });
-  
-  var FilterGroupView = Backbone.View.extend({
-    tagName: 'li', // name of tag to be created
-    className: 'filter round',
+
+  var DownloadEmailView = Backbone.View.extend({
+    downloadEmailTemplate : _.template($('#download_template_email').html()),
+    events: {
+      'click button' : 'onAskForDownload'
+    },
     initialize : function() {
+      //el could be set through the caller
+      this.setElement(this.el);
     },
     render : function() {
-      $(this.el).html(this.model.get('searchableFieldText') + '<ul></ul>');
+      this.$el.html(this.downloadEmailTemplate());
+      this.$requestElement = $('#request',this.$el);
+      this.$statusElement = $('#status',this.$el);
       return this;
+    },
+    onAskForDownload : function(){
+      var self = this, email = $.trim($('#email',this.$el).val());
+
+      if(!EXPLORER.utils.isValidEmail(email)){
+        alert(EXPLORER.i18n.getLanguageResource('control.download.email.error'));
+        return;
+      }
+
+      this.paramMap = [];
+      _.extend(this.paramMap,initialFilterParamMap);
+      this.paramMap.push({name:'e',value:email});
+      this.$requestElement.hide();
+      $.get('downloadresult',this.paramMap)
+        .success(function(json){
+          if(json.status !== 'deferred'){
+            self.$statusElement.html(json.error);
+          }
+          self.$statusElement.show();
+        })
+         .error(function(jqXHR, textStatus, errorThrown){
+           self.showError();
+        });
     }
   });
-  
-  var FilterView = Backbone.View.extend({ 
-    tagName: 'li', // name of tag to be created
-      events: { 
-        'click span.delete': 'remove'
-      },    
-    initialize : function() {
-      this.model.bind('remove', this.unrender, this);
-    },
-    render : function() {
-      //compute from template
-      $(this.el).html(filterViewTemplate(this.model.toJSON()));
-      return this;
-    },
-    unrender: function(){
-        $(this.el).remove();
-      },
-    remove: function(){
-        this.model.destroy();
-      }
-  });
-  
-  var DownloadView = Backbone.View.extend({    
+
+  var DownloadView = Backbone.View.extend({
     initialize : function() {
       currSearchResult.bind('change:numberOfRecord', this.onNumberOfRecordChanged, this);
     },
@@ -809,82 +833,9 @@ EXPLORER.backbone = (function(){
       this.render();
     }
   });
-  
-  var DownloadEmailView = Backbone.View.extend({
-    downloadEmailTemplate : _.template($('#download_template_email').html()),
-    events: {
-      'click button' : 'onAskForDownload'
-    },    
-    initialize : function() {
-      //el could be set through the caller
-      this.setElement(this.el);
-    },
-    render : function() {
-      this.$el.html(this.downloadEmailTemplate());
-      this.$requestElement = $('#request',this.$el);
-      this.$statusElement = $('#status',this.$el);
-      return this;
-    },
-    onAskForDownload : function(){
-      var email = $.trim($('#email',this.$el).val());
-      if(!EXPLORER.utils.isValidEmail(email)){
-        alert(EXPLORER.i18n.getLanguageResource('control.download.email.error'));
-        return;
-      }
-
-      var that = this;
-      this.paramMap = [];
-      _.extend(this.paramMap,initialFilterParamMap);
-      this.paramMap.push({name:'e',value:email});
-      that.$requestElement.hide();
-      var req = $.get('downloadresult',this.paramMap)
-        .success(function(json){
-          if(json['status'] !== 'deferred'){
-            that.$statusElement.html(json['error']);
-          }
-          that.$statusElement.show();
-        })
-         .error(function(jqXHR, textStatus, errorThrown){
-           that.showError();
-        });
-    }
-  });
-  
-  var DisplayView = Backbone.View.extend({
-    initialize : function() {
-      this.render();
-    },
-    render : function() {
-      var currDisplayView;
-      var $form = $('form',$('#search'));
-      var currView = $('input[name=view]',$form).val();
-      if(currView === 'table'){
-        currDisplayView = new DisplayTableView({ el: $("#display") });
-      } else {
-        currDisplayView = new DisplayMapView({ el: $("#display") });
-      }
-      currDisplayView.render();
-      return this;
-    }
-  });
-  
-  var DisplayTableView = Backbone.View.extend({
-    displayTableTemplate : _.template($('#display_template_table').html()),
-      events: {
-      },    
-    initialize : function() {
-      //el could be set through the caller
-      this.setElement(this.el);
-    },
-    render : function() {
-      this.$el.html(this.displayTableTemplate());
-    }
-  });
 
   var DisplayMapView = Backbone.View.extend({
     displayMapTemplate : _.template($('#display_template_map').html()),
-      events: {
-      },    
     initialize : function() {
       //el could be set through the caller
       this.setElement(this.el);
@@ -894,20 +845,47 @@ EXPLORER.backbone = (function(){
     }
   });
 
-  //TODO init method
-  new CurrentFiltersView;
-  new FilterSelectionView;
-  new FilterFieldSelectionView({ el: $('#filter_select') });
-  new DownloadView();
-  new DisplayView();
+  var DisplayTableView = Backbone.View.extend({
+    displayTableTemplate : _.template($('#display_template_table').html()),
+    initialize : function() {
+      //el could be set through the caller
+      this.setElement(this.el);
+    },
+    render : function() {
+      this.$el.html(this.displayTableTemplate());
+    }
+  });
+
+  var DisplayView = Backbone.View.extend({
+    initialize : function() {
+      this.render();
+    },
+    render : function() {
+      var currDisplayView,
+          $form = $('form',$('#search')),
+          currView = $('input[name=view]',$form).val();
+
+      currDisplayView = (currView === 'table') ? new DisplayTableView({ el: $("#display") }) : new DisplayMapView({ el: $("#display") });
+      currDisplayView.render();
+      return this;
+    }
+  });
+
+  function init() {
+    new CurrentFiltersView();
+    new FilterSelectionView();
+    new FilterFieldSelectionView({ el: $('#filter_select') });
+    new DownloadView();
+    new DisplayView();
+  };
 
   //Public methods
-    return {
-      init: function() { return; },
-      setNumberOfResult : setNumberOfResult,
-      setAvailableSearchFields : setAvailableSearchFields,
-      loadFilter : loadFilter,
-      getInitialFilterParamMap : getInitialFilterParamMap
+  return {
+    init: init,
+    setNumberOfResult : setNumberOfResult,
+    setAvailableSearchFields : setAvailableSearchFields,
+    loadFilter : loadFilter,
+    getInitialFilterParamMap : getInitialFilterParamMap
   };
 
 }());

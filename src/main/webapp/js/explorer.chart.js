@@ -55,7 +55,9 @@ EXPLORER.chart = (function(){
 
   return {
     init: function() { return; },
-    createChart: function(a) { return _private.createChart(a); }
+    createChart: function(options) {
+      _private.createChart(options);
+    }
   };
 
 }());

@@ -70,8 +70,12 @@ EXPLORER.preview = (function() {
 
   return {
     init: function() { _private.init(); },
-    togglePreview : function(a,b) { _private.togglePreview(a,b); },
-    replacePreviewContent : function(a) { _private.replacePreviewContent(a); }
+    togglePreview : function(oldSelectionId, newSelectionId) {
+      _private.togglePreview(oldSelectionId, newSelectionId);
+    },
+    replacePreviewContent : function(htmlFragment) {
+      _private.replacePreviewContent(htmlFragment);
+    }
   };
 
 }());
@@ -256,7 +260,9 @@ EXPLORER.details = (function() {
 
   return {
     init: function() { _private.init(); },
-    setupSingleOccurrenceMap : function(a,b,c,d) { _private.setupSingleOccurrenceMap(a,b,c,d); }
+    setupSingleOccurrenceMap : function(mapCanvasId, lat, lng, uncertainty) {
+      _private.setupSingleOccurrenceMap(mapCanvasId, lat, lng, uncertainty);
+    }
   };
 
 }());

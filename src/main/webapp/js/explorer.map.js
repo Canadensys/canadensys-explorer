@@ -10,6 +10,8 @@ EXPLORER.map = (function() {
 
   var _private = {
 
+    center: new google.maps.LatLng(45.5,-73.5),
+
     init: function() {
       this.cartoDBsetBounds();
       this.cartoDBgenerateTile();
@@ -17,22 +19,19 @@ EXPLORER.map = (function() {
 
     cartoDBsetBounds: function() {
       CartoDBLayer.prototype.setBounds = function() {
-        var self = this, center, lon0, lat0;
-        // Zoom to your geometries
+        var self = this, lon0, lat0;
+
         $.ajax({
           method:'get',
           url: 'mapcenter?q='+(self.options.query|| ''),
           dataType: 'json',
           success: function(result) {
-            if(result[0]) {
+            if(result && result[0]) {
               lon0 = result[0];
               lat0 = result[1];
-              center = new google.maps.LatLng(lat0, lon0);
-              self.options.map.setCenter(center);
-            } else {
-              center = new google.maps.LatLng(45.5,-73.5);
-              self.options.map.map.setCenter(center);
+              self.center = new google.maps.LatLng(lat0, lon0);
             }
+            self.options.map.setCenter(self.center);
           }
         });
       };
@@ -86,7 +85,7 @@ EXPLORER.map = (function() {
     },
 
     setupMap: function(previewElementId, mapCanvasId, mapQuery) {
-      var lastAutoId = -1, map, marker, cartodb_gmapsv3, req;
+      var lastAutoId = -1, map, marker, cartodb_gmapsv3;
 
       map = new google.maps.Map($('#' + mapCanvasId)[0], {
         center: new google.maps.LatLng(45.5,-73.5),
@@ -100,6 +99,25 @@ EXPLORER.map = (function() {
         map: map
       });
 
+      function onMapClick(e, latlng, pos, data) {
+        if(lastAutoId === data.auto_id){
+          marker.setPosition(null);
+          EXPLORER.preview.togglePreview(this.lastAutoId,data.auto_id);
+          lastAutoId = -1;
+          return;
+        }
+        marker.setPosition(latlng);
+        $.get('occurrence-preview/'+data.auto_id,'context=map')
+          .success(function(htmlFragment){
+            EXPLORER.preview.replacePreviewContent(htmlFragment);
+            EXPLORER.preview.togglePreview(undefined,data.auto_id);
+          })
+           .error(function(jqXHR, textStatus, errorThrown){
+             console.log(textStatus+':'+errorThrown);
+          });
+        lastAutoId = data.auto_id;
+      }
+
       cartodb_gmapsv3 = new CartoDBLayer({
         map: map,
         table_name: 'occurrence',
@@ -110,7 +128,7 @@ EXPLORER.map = (function() {
         auto_bound: true,
         featureClick: onMapClick,
         tiler_domain:'tiles.canadensys.net',
-        featureOver: function(ev, latlng, pos, data) {
+        featureOver: function() {
           map.setOptions({draggableCursor: 'pointer'});
         },
         featureOut: function() {
@@ -118,31 +136,15 @@ EXPLORER.map = (function() {
         }
       });
 
-      function onMapClick(ev, latlng, pos, data) {
-        if(this.lastAutoId === data.auto_id){
-          marker.setPosition(null);
-          EXPLORER.preview.togglePreview(this.lastAutoId,data.auto_id);
-          this.lastAutoId = -1;
-          return;
-        }
-        marker.setPosition(latlng);
-        req = $.get('occurrence-preview/'+data.auto_id,'context=map')
-          .success(function(htmlFragment){
-            EXPLORER.preview.replacePreviewContent(htmlFragment);
-            EXPLORER.preview.togglePreview(undefined,data.auto_id);
-          })
-           .error(function(jqXHR, textStatus, errorThrown){
-             console.log(textStatus+':'+errorThrown);
-          });
-        this.lastAutoId = data.auto_id;
-      }
     }
 
   };
 
   return {
     init: function() { _private.init(); },
-    setupMap: function(a,b,c) { _private.setupMap(a,b,c); }
+    setupMap: function(previewElementId, mapCanvasId, mapQuery) { 
+      _private.setupMap(previewElementId, mapCanvasId, mapQuery);
+    }
   };
 
 }());

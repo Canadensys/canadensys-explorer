@@ -128,9 +128,9 @@ EXPLORER.utils = (function(){
 
     isValidPartialDate: function(year,month,day){
       //set the base of parseInt to 10 to accept int like 08
-      var yAsInt = parseInt(year,10);
-      var mAsInt = parseInt(month,10);
-      var dAsInt = parseInt(day,10);
+      var yAsInt = parseInt(year,10),
+          mAsInt = parseInt(month,10),
+          dAsInt = parseInt(day,10);
 
       //accept all partial dates for year alone and year/month if the day is not specified
       if(!isNaN(yAsInt) && isNaN(dAsInt)){
@@ -173,20 +173,48 @@ EXPLORER.utils = (function(){
   
   return {
     init: function() { return; },
-    dateElementZeroPad: function(a) { _private.dateElementZeroPad(a); },
-    formatDate: function(a,b,c) { _private.formatDate(a,b,c); },
-    isInteger: function(a) { _private.isInteger(a); },
-    createCookie: function(a,b,c) { _private.createCookie(a,b,c); },
-    readCookie: function(a) { _private.readCookie(a); },
-    getParameterByName: function(a) { _private.getParameterByName(a); },
-    isWithinYearLimit: function(a) { _private.isWithinYearLimit(a); },
-    isWithinMonthLimit: function(a) { _private.isWithinMonthLimit(a); },
-    isWithinDayLimit: function(a) { _private.isWithinDayLimit(a); },
-    isValidNumber: function(a) { _private.isValidNumber(a); },
-    isValidEmail: function(a) { _private.isValidEmail(a); },
-    isValidDateElement: function(a) { _private.isValidDateElement(a); },
-    isValidPartialDate: function(a) { _private.isValidPartialDate(a); },
-    isValidDateInterval: function(a,b,c,d,e,f) { _private.isValidDateInterval(a,b,c,d,e,f); }
+    dateElementZeroPad: function(intValue) {
+      return _private.dateElementZeroPad(intValue);
+    },
+    formatDate: function(year,month,day) {
+      return _private.formatDate(year,month,day);
+    },
+    isInteger: function(val) {
+      return _private.isInteger(val);
+    },
+    createCookie: function(name,value,days) {
+      return _private.createCookie(name,value,days);
+    },
+    readCookie: function(name) {
+      return _private.readCookie(name);
+    },
+    getParameterByName: function(name) {
+      return _private.getParameterByName(name);
+    },
+    isWithinYearLimit: function(year) {
+      return _private.isWithinYearLimit(year);
+    },
+    isWithinMonthLimit: function(month) {
+      return _private.isWithinMonthLimit(month);
+    },
+    isWithinDayLimit: function(day) {
+      return _private.isWithinDayLimit(day);
+    },
+    isValidNumber: function(number) {
+      return _private.isValidNumber(number);
+    },
+    isValidEmail: function(email) {
+      return _private.isValidEmail(email);
+    },
+    isValidDateElement: function(el) {
+      return _private.isValidDateElement(el);
+    },
+    isValidPartialDate: function(year,month,day) {
+      return _private.isValidPartialDate(year,month,day);
+    },
+    isValidDateInterval: function(syear,smonth,sday,eyear,emonth,eday) {
+      return _private.isValidDateInterval(syear,smonth,sday,eyear,emonth,eday);
+    }
   };
 
 }());
