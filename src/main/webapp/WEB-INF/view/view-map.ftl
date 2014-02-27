@@ -10,25 +10,27 @@
 <@i18nLanguageSwitch resourceName="search"/>
 </content>
 <div id="body" class="fullscreen full_height">
-	<#include "inc/control.ftl">
-	<div id="view" class="clear_fix">
-		<div class="nav_container">
-			<#if root.allRecordsTargeted >
-				<h1>${rc.getMessage("view.header.all")} ${root.occurrenceCount} ${rc.getMessage("view.header.records")}</h1>
-			<#else>
-				<h1>${root.occurrenceCount} ${rc.getMessage("view.header.results")}</h1>
-			</#if>
-			<p class="details">(${rc.getMessage("view.map.header.details")}: ${root.georeferencedOccurrenceCount})</p>
-			<ul class="buttons">
-				<li><a href="?${URLHelper.replaceCurrentQueryParam(Request,"view","map")}" class="selected">${rc.getMessage("view.map.header.button")}</a></li>
-				<li><a href="?${URLHelper.replaceCurrentQueryParam(Request,"view","table")}">${rc.getMessage("view.table.header.button")}</a></li>
-				<li><a href="?${URLHelper.replaceCurrentQueryParam(Request,"view","stats")}">${rc.getMessage("view.stats.header.button")}</a></li>
-			</ul>
-		</div>
-		<a id="main-content"></a>
-		<div id="map_canvas">
-		</div>
-	</div>
+  <#include "inc/control.ftl">
+  <div id="view" class="clear_fix">
+    <div class="nav_container">
+
+    <#if root.allRecordsTargeted >
+      <h1>${rc.getMessage("view.header.results.all", [root.occurrenceCount])}</h1>
+    <#else>
+      <h1>${rc.getMessage("view.header.results",[root.occurrenceCount])}</h1>
+    </#if>
+      
+      <p class="details">(${rc.getMessage("view.map.header.details")}: ${root.georeferencedOccurrenceCount})</p>
+      <ul class="buttons">
+        <li><a href="?${URLHelper.replaceCurrentQueryParam(Request,"view","map")}" class="selected">${rc.getMessage("view.map.header.button")}</a></li>
+        <li><a href="?${URLHelper.replaceCurrentQueryParam(Request,"view","table")}">${rc.getMessage("view.table.header.button")}</a></li>
+        <li><a href="?${URLHelper.replaceCurrentQueryParam(Request,"view","stats")}">${rc.getMessage("view.stats.header.button")}</a></li>
+      </ul>
+    </div>
+    <a id="main-content"></a>
+    <div id="map_canvas">
+    </div>
+  </div>
 </div><#-- body -->
 
 <content tag="local_script">
@@ -48,8 +50,8 @@
 
 <script>
 $(function() {
-	EXPLORER.map.setupMap('occ_preview','map_canvas','${tileServer}', "${root.embeddedMapQuery}");
-	<@controlJavaScriptInit/> 
+  EXPLORER.map.setupMap('occ_preview','map_canvas','${tileServer}', "${root.embeddedMapQuery}");
+  <@controlJavaScriptInit/> 
 });
 </script>
 </content>
