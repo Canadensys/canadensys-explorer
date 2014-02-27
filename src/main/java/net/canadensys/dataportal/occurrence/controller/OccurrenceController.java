@@ -1,7 +1,6 @@
 package net.canadensys.dataportal.occurrence.controller;
 
 import java.util.HashMap;
-import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
 /**
@@ -104,10 +102,8 @@ public class OccurrenceController {
 		else{
 			throw new ResourceNotFoundException();
 		}
-
-		Locale locale = RequestContextUtils.getLocale(request);
 		//Set common stuff
-		ControllerHelper.setPageHeaderVariables(locale, appConfig, modelRoot);
+		ControllerHelper.setPageHeaderVariables(appConfig, modelRoot);
 		
 		//handle view stuff
 		String view = request.getParameter(VIEW_PARAM);
@@ -134,10 +130,8 @@ public class OccurrenceController {
 		else{
 			throw new ResourceNotFoundException();
 		}
-		
-		Locale locale = RequestContextUtils.getLocale(request);
 		//Set common stuff
-		ControllerHelper.setPageHeaderVariables(locale, appConfig, modelRoot);
+		ControllerHelper.setPageHeaderVariables(appConfig, modelRoot);
 
 		return new ModelAndView("resource-contact","root",modelRoot);
 	}

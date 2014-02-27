@@ -171,7 +171,7 @@ public class SearchController {
 		Locale locale = RequestContextUtils.getLocale(request);
 		
 		//Set common stuff (GoogleAnalytics, language, ...)
-		ControllerHelper.setPageHeaderVariables(locale, appConfig, modelRoot);
+		ControllerHelper.setPageHeaderVariables(appConfig, modelRoot);
 		
 		modelRoot.put("languageResources", ObjectUtils.defaultIfNull(languageResourcesByLocale.get(locale),languageResourcesByLocale.get(Locale.ENGLISH)));
 		modelRoot.put("availableFilters", searchServiceConfig.getFreemarkerSearchableFieldMap());

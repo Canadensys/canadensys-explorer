@@ -1,7 +1,6 @@
 package net.canadensys.dataportal.occurrence.controller;
 
 import java.util.HashMap;
-import java.util.Locale;
 
 import net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig;
 
@@ -23,10 +22,7 @@ public class ControllerHelper {
 	 * @param appConfig
 	 * @param modelRoot
 	 */
-	public static void setPageHeaderVariables(Locale locale, OccurrencePortalConfig appConfig, HashMap<String,Object> modelRoot){
-
-		modelRoot.put("locale",appConfig.getResourceBundle(locale));
-		
+	public static void setPageHeaderVariables(OccurrencePortalConfig appConfig, HashMap<String,Object> modelRoot){
 		//Are we using versioning?
 		if(!StringUtils.isBlank(appConfig.getCurrentVersion())){
 			modelRoot.put("currentVersion", appConfig.getCurrentVersion());
