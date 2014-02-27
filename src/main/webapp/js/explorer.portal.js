@@ -227,7 +227,7 @@ EXPLORER.details = (function() {
 
       latlng = new google.maps.LatLng(lat,lng);
 
-      map = new google.maps.Map($(mapCanvasId)[0], {
+      map = new google.maps.Map($('#'+mapCanvasId)[0], {
         center: latlng,
         zoom: 12,
         scaleControl: true,

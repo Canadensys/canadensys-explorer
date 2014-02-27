@@ -132,7 +132,7 @@
 <@jsAsset fileName="explorer.portal" version=root.currentVersion! useMinified=root.useMinified/>
 <script>
 $(function() {
-  EXPLORER.occurrenceDetails.setupSingleOccurrenceMap('occpage_map',${safeNumber(root.occModel.decimallatitude!"","undefined")},${safeNumber(root.occModel.decimallongitude!"","undefined")},${coordinateuncertaintyinmeters?c});
+  EXPLORER.details.setupSingleOccurrenceMap('occpage_map',${safeNumber(root.occModel.decimallatitude!"","undefined")},${safeNumber(root.occModel.decimallongitude!"","undefined")},${coordinateuncertaintyinmeters?c});
 });
 </script>
 </content>
