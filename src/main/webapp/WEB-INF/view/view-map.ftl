@@ -50,7 +50,7 @@
 <script>
 $(function() {
   EXPLORER.map.setupMap('occ_preview','map_canvas','${tileServer}', "${root.embeddedMapQuery}");
-  <@controlJavaScriptInit/> 
+  <@controlJavaScriptInit/>
 });
 </script>
 </content>
