@@ -41,12 +41,12 @@
           <th class="view_1 sorttable_alpha"><a href="?${getTableHeaderSortingUrl("scientificname",root.sortBy!,root.sort!)}">${rc.getMessage("occ.scientificname")}</a></th>
           <th class="view_2 sorttable_alpha"><a href="?${getTableHeaderSortingUrl("family",root.sortBy!,root.sort!)}">${rc.getMessage("occ.family")}</a></th>
           <th class="view_1 sorttable_alpha"><a href="?${getTableHeaderSortingUrl("country",root.sortBy!,root.sort!)}">${rc.getMessage("occ.country")}</a></th>
-          <th class="view_1 sorttable_alpha"><a href="?$${getTableHeaderSortingUrl("stateprovince",root.sortBy!,root.sort!)}">${rc.getMessage("occ.stateprovince")}</a></th>
-          <th class="view_3 sorttable_alpha"><a href="?$${getTableHeaderSortingUrl("locality",root.sortBy!,root.sort!)}">${rc.getMessage("occ.locality")}</a></th>
-          <th class="view_3 sorttable_alpha"><a href="?$${getTableHeaderSortingUrl("habitat",root.sortBy!,root.sort!)}">${rc.getMessage("occ.habitat")}</a></th>
-          <th class="view_2 sorttable_numeric"><a href="?$${getTableHeaderSortingUrl("syear",root.sortBy!,root.sort!)}">${rc.getMessage("occ.syear")}</a></th>
-          <th class="view_1 sorttable_alpha"><a href="?$${getTableHeaderSortingUrl("collectioncode",root.sortBy!,root.sort!)}">${rc.getMessage("occ.collectioncode")}</a></th>
-          <th class="view_2 sorttable_numeric"><a href="?$${getTableHeaderSortingUrl("catalognumber",root.sortBy!,root.sort!)}">${rc.getMessage("occ.catalognumber")}</a></th>
+          <th class="view_1 sorttable_alpha"><a href="?${getTableHeaderSortingUrl("stateprovince",root.sortBy!,root.sort!)}">${rc.getMessage("occ.stateprovince")}</a></th>
+          <th class="view_3 sorttable_alpha"><a href="?${getTableHeaderSortingUrl("locality",root.sortBy!,root.sort!)}">${rc.getMessage("occ.locality")}</a></th>
+          <th class="view_3 sorttable_alpha"><a href="?${getTableHeaderSortingUrl("habitat",root.sortBy!,root.sort!)}">${rc.getMessage("occ.habitat")}</a></th>
+          <th class="view_2 sorttable_numeric"><a href="?${getTableHeaderSortingUrl("syear",root.sortBy!,root.sort!)}">${rc.getMessage("occ.syear")}</a></th>
+          <th class="view_1 sorttable_alpha"><a href="?${getTableHeaderSortingUrl("collectioncode",root.sortBy!,root.sort!)}">${rc.getMessage("occ.collectioncode")}</a></th>
+          <th class="view_2 sorttable_numeric"><a href="?${getTableHeaderSortingUrl("catalognumber",root.sortBy!,root.sort!)}">${rc.getMessage("occ.catalognumber")}</a></th>
           <th class="view_1 sorttable_numeric extra">${rc.getMessage("view.table.extra")}</th>
           <th class="view_1 persist last_column"></th>
         </tr>

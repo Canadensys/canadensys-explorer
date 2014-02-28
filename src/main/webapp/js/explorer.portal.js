@@ -109,19 +109,11 @@ EXPLORER.control = (function() {
     },
 
     restoreDisplay: function() {
-      var self = this, display = $('#display_columns');
+      var self = this,
+          display = $('#display_columns'),
+          settingsCookie = EXPLORER.utils.readCookie(self.COOKIE_NAME);
 
       if(display.length > 0){
-        display.on('click', 'input:checkbox', function() {
-          var selectedColumn = [];
-
-          $.each(display.find('input:checked'), function() {
-            selectedColumn.push($(this).val());
-          });
-          EXPLORER.utils.createCookie(self.COOKIE_NAME,selectedColumn.join('|'),7);
-        });
-
-        var settingsCookie = EXPLORER.utils.readCookie(self.COOKIE_NAME);
         if(settingsCookie){
           //we cannot store a ; in the cookie so use a pipe (|)
           var arrayOfSettings = settingsCookie.split('|');
@@ -133,6 +125,15 @@ EXPLORER.control = (function() {
             }
           });
         }
+        
+        display.on('click', 'input:checkbox', function() {
+          var selectedColumn = [];
+
+          $.each(display.find('input:checked'), function() {
+            selectedColumn.push($(this).val());
+          });
+          EXPLORER.utils.createCookie(self.COOKIE_NAME,selectedColumn.join('|'),7);
+        });
       }
     }
 

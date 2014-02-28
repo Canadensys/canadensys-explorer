@@ -59,7 +59,7 @@ EXPLORER.utils = (function(){
     readCookie: function(name) {
       var nameEQ = name + "=",
           ca = document.cookie.split(';'), c;
-      
+
       $.each(ca, function() {
         c = this;
         while(c.charAt(0) === ' ') { c = c.substring(1, c.length); }
