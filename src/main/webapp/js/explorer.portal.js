@@ -19,21 +19,19 @@ EXPLORER.preview = (function() {
       this.sideBar = $('#control_wrapper');
       this.occPreview = $('#occ_preview');
       this.closeElement = $('#preview_close');
-      this.sidebarTop = 0;
-
-      if(this.occPreview.length && this.closeElement.length){
-        this.sidebarTop = this.sideBar.offset().top - 36;
-        this.loadEvents();
-      }
+      this.sidebarTop = this.sideBar.offset().top - 36;
+      this.loadEvents();
     },
 
     loadEvents: function() {
+      var self = this;
+
       this.initClosePreview();
       $(window).scroll(function() {
-        if ($(this).scrollTop() >= this.sidebarTop) {
-          this.occPreview.addClass('fixed');
+        if ($(this).scrollTop() >= self.sidebarTop) {
+          self.occPreview.addClass('fixed');
         } else {
-          this.occPreview.removeClass('fixed');
+          self.occPreview.removeClass('fixed');
         }
       });
     },
