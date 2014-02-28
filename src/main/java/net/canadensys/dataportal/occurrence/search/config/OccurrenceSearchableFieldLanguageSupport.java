@@ -33,7 +33,7 @@ public class OccurrenceSearchableFieldLanguageSupport {
 	 * @param locale
 	 * @return
 	 */
-	public Map<String,String> getLanguageResources(ResourceBundle resourceBundle){
+	public Map<String,String> buildLanguageResourcesMap(ResourceBundle resourceBundle){
 		Map<String,String> languageResources = new HashMap<String, String>();
 		for(QueryOperatorEnum op : QueryOperatorEnum.values()){
 			String key = OPERATOR_PREFIX + op.toString().toLowerCase();

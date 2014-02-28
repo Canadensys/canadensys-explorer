@@ -138,7 +138,7 @@ public class SearchController {
 		languageResourcesByLocale = new HashMap<Locale, String>();
 		OccurrenceSearchableFieldLanguageSupport osfLangSupport = new OccurrenceSearchableFieldLanguageSupport();
 		for(Locale currLocale : appConfig.getSupportedLocale()){
-			languageResourcesByLocale.put(currLocale, beanAsJSONString(osfLangSupport.getLanguageResources(appConfig.getResourceBundle(currLocale))));
+			languageResourcesByLocale.put(currLocale, beanAsJSONString(osfLangSupport.buildLanguageResourcesMap(appConfig.getResourceBundle(currLocale))));
 		}
 	}
 	
