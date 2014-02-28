@@ -520,16 +520,14 @@ EXPLORER.backbone = (function(){
           emonth = $.trim($("#date_end_m",this.$el).val()),
           eday = $.trim($("#date_end_d",this.$el).val()),
           valueJSON, searchValue, newFilter;
-      
+
       if(!EXPLORER.utils.isValidPartialDate(syear,smonth,sday) || (isInterval && !EXPLORER.utils.isValidPartialDate(eyear,emonth,eday))){
-        //TODO use language resources
-        alert("This date is not valid");
+        alert(EXPLORER.i18n.getLanguageResource('control.invalid.date'));
         return;
       }
 
       if(isInterval && !EXPLORER.utils.isValidDateInterval(syear,smonth,sday,eyear,emonth,eday)){
-        //TODO use language resources
-        alert("This is not valid date interval");
+        alert(EXPLORER.i18n.getLanguageResource('control.invalid.dateinterval'));
         return;
       }
 
@@ -613,13 +611,13 @@ EXPLORER.backbone = (function(){
 
       if(!EXPLORER.utils.isValidNumber(minValue)){
         //TODO use language resources
-        alert("This number is not valid");
+        alert(EXPLORER.i18n.getLanguageResource('control.invalid.number'));
         return;
       }
 
       if(isInterval && !EXPLORER.utils.isValidNumber(maxValue)){
         //TODO use language resources
-        alert("This is not valid number interval");
+        alert(EXPLORER.i18n.getLanguageResource('control.invalid.numberinterval'));
         return;
       }
 
@@ -784,7 +782,7 @@ EXPLORER.backbone = (function(){
       var searchableFieldTypeEnum = availableSearchFields[filterKey.get('searchableFieldId')].searchableFieldTypeEnum;
 
       //This is not necessary but it makes it clear that we create new element each time
-      if(typeof this.lastComponent !== 'undefined'){
+      if(this.lastComponent){
         this.lastComponent.destroy();
       }
 
@@ -903,7 +901,7 @@ EXPLORER.backbone = (function(){
     new FilterFieldSelectionView({ el: $('#filter_select') });
     new DownloadView();
     new DisplayView();
-  };
+  }
 
   //Public methods
   return {

@@ -4,6 +4,9 @@ Explorer Portal
 ****************************/
 /*global EXPLORER, $, window, document, console, google, _*/
 
+/* Control the fly-out panel for occurrence record
+Dependency: jQuery-UI's "slide" method
+*/
 EXPLORER.preview = (function() {
 
   'use strict';
@@ -17,10 +20,13 @@ EXPLORER.preview = (function() {
 
     init: function() {
       this.sideBar = $('#control_wrapper');
-      this.occPreview = $('#occ_preview');
-      this.closeElement = $('#preview_close');
-      this.sidebarTop = this.sideBar.offset().top - 36;
-      this.loadEvents();
+
+      if(this.sideBar.length > 0) {
+        this.occPreview = $('#occ_preview');
+        this.closeElement = $('#preview_close');
+        this.sidebarTop = this.sideBar.offset().top - 36;
+        this.loadEvents();
+      }
     },
 
     loadEvents: function() {
@@ -94,20 +100,21 @@ EXPLORER.control = (function() {
     loadEvents: function() {
       var id = "";
 
-      $('#control_buttons').on('click', 'a', function() {
+      $('#control_buttons').on('click', 'a', function(e) {
+        e.preventDefault();
         id = $(this).attr("href");
         $(this).addClass("selected").parent().siblings().children().removeClass("selected");
         $(id).removeClass("hidden").siblings().addClass("hidden");
-        return false;
       });
     },
 
     restoreDisplay: function() {
       var self = this, display = $('#display_columns');
 
-      if(display.length){
+      if(display.length > 0){
         display.on('click', 'input:checkbox', function() {
           var selectedColumn = [];
+
           $.each(display.find('input:checked'), function() {
             selectedColumn.push($(this).val());
           });
@@ -160,7 +167,6 @@ EXPLORER.table = (function() {
       var oldSelection;
 
       this.results.on('click', 'tbody tr', function() {
-
         //do not send query to the server for the same element
         if(!oldSelection || oldSelection.attr('id') !== $(this).attr('id')){
 
@@ -214,7 +220,8 @@ EXPLORER.details = (function() {
     },
 
     loadEvents: function() {
-      $('#dwc_table_toggle').on('click', function() {
+      $('#dwc_table_toggle').on('click', function(e) {
+        e.preventDefault();
         $('tr.unused').toggle();
       });
     },
@@ -247,10 +254,6 @@ EXPLORER.details = (function() {
         center: latlng,
         radius: uncertainty,
         strokeWeight: 1
-        //strokeColor: 'white',
-        //strokeOpacity: 0.5,
-        //fillColor: '#2C48A6',
-        //fillOpacity: 0.2
       });
     }
 

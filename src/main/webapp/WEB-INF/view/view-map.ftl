@@ -35,9 +35,8 @@
 
 <content tag="local_script">
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 <script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
-<@jsLibAsset libName="json2.js"/>
+<@jsLibAsset libName="jquery-ui-1.10.4.custom.min.js"/>
 <@jsLibAsset libName="underscore-min.js"/>
 <@jsLibAsset libName="backbone-min.js"/>
 <@jsLibAsset libName="wax.g.min-6.2.0-touched.js"/>
@@ -51,7 +50,7 @@
 <script>
 $(function() {
   EXPLORER.map.setupMap('occ_preview','map_canvas','${tileServer}', "${root.embeddedMapQuery}");
-  <@controlJavaScriptInit/> 
+  <@controlJavaScriptInit/>
 });
 </script>
 </content>

@@ -26,12 +26,12 @@ DESIGN TEMPLATE FOR MODULES IN THE EXPLORER
   ex.i18n = {
 
     languageResources: {},
-    
+
     setLanguageResources: function(resources) {
       if(typeof resources !== 'object') { return false; }
       $.extend(true, this.languageResources, resources);
     },
-    
+
     getLanguageResource: function(resource) {
       if(this.languageResources.hasOwnProperty(resource)) {
         return this.languageResources[resource];

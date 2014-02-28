@@ -35,7 +35,7 @@
     </div>
     <a id="main-content"></a>
     <div id="table_wrapper">
-      <table id="results" class="sortable">
+      <table id="results">
       <thead>
         <tr>
           <th class="view_1 sorttable_alpha"><a href="?${getTableHeaderSortingUrl("scientificname",root.sortBy!,root.sort!)}">${rc.getMessage("occ.scientificname")}</a></th>
@@ -89,11 +89,9 @@
 
 <content tag="local_script">
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
-<@jsLibAsset libName="json2.js"/>
+<@jsLibAsset libName="jquery-ui-1.10.4.custom.min.js"/>
 <@jsLibAsset libName="underscore-min.js"/>
 <@jsLibAsset libName="backbone-min.js"/>
-<@jsLibAsset libName="sorttable.js"/>
 <@jsAsset fileName="explorer" version=root.currentVersion! useMinified=root.useMinified/>
 <@jsAsset fileName="explorer.utils" version=root.currentVersion! useMinified=root.useMinified/>
 <@jsAsset fileName="explorer.backbone" version=root.currentVersion! useMinified=root.useMinified/>
