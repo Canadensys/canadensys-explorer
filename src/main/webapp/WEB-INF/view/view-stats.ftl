@@ -69,7 +69,6 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 <script src="//www.google.com/jsapi"></script>
-<@jsLibAsset libName="json2.js"/>
 <@jsLibAsset libName="underscore-min.js"/>
 <@jsLibAsset libName="backbone-min.js"/>
 <@jsAsset fileName="explorer" version=root.currentVersion! useMinified=root.useMinified/>

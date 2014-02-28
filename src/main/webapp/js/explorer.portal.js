@@ -247,10 +247,6 @@ EXPLORER.details = (function() {
         center: latlng,
         radius: uncertainty,
         strokeWeight: 1
-        //strokeColor: 'white',
-        //strokeOpacity: 0.5,
-        //fillColor: '#2C48A6',
-        //fillOpacity: 0.2
       });
     }
 
