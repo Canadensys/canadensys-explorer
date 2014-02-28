@@ -4,6 +4,9 @@ Explorer Portal
 ****************************/
 /*global EXPLORER, $, window, document, console, google, _*/
 
+/* Control the fly-out panel for occurrence record
+Dependency: jQuery-UI's "slide" method
+*/
 EXPLORER.preview = (function() {
 
   'use strict';
@@ -17,10 +20,13 @@ EXPLORER.preview = (function() {
 
     init: function() {
       this.sideBar = $('#control_wrapper');
-      this.occPreview = $('#occ_preview');
-      this.closeElement = $('#preview_close');
-      this.sidebarTop = this.sideBar.offset().top - 36;
-      this.loadEvents();
+
+      if(this.sideBar.length > 0) {
+        this.occPreview = $('#occ_preview');
+        this.closeElement = $('#preview_close');
+        this.sidebarTop = this.sideBar.offset().top - 36;
+        this.loadEvents();
+      }
     },
 
     loadEvents: function() {
@@ -38,7 +44,8 @@ EXPLORER.preview = (function() {
 
     initClosePreview: function() {
       var self = this;
-      $('#preview_close').on('click', function(){
+      $('#preview_close').on('click', function(e){
+        e.preventDefault();
         self.occPreview.hide('slide',500);
       });
     },
@@ -94,11 +101,11 @@ EXPLORER.control = (function() {
     loadEvents: function() {
       var id = "";
 
-      $('#control_buttons').on('click', 'a', function() {
+      $('#control_buttons').on('click', 'a', function(e) {
+        e.preventDefault();
         id = $(this).attr("href");
         $(this).addClass("selected").parent().siblings().children().removeClass("selected");
         $(id).removeClass("hidden").siblings().addClass("hidden");
-        return false;
       });
     },
 
@@ -106,8 +113,10 @@ EXPLORER.control = (function() {
       var self = this, display = $('#display_columns');
 
       if(display.length){
-        display.on('click', 'input:checkbox', function() {
+        display.on('click', 'input:checkbox', function(e) {
           var selectedColumn = [];
+
+          e.preventDefault();
           $.each(display.find('input:checked'), function() {
             selectedColumn.push($(this).val());
           });
@@ -159,8 +168,8 @@ EXPLORER.table = (function() {
     loadEvents: function() {
       var oldSelection;
 
-      this.results.on('click', 'tbody tr', function() {
-
+      this.results.on('click', 'tbody tr', function(e) {
+        e.preventDefault();
         //do not send query to the server for the same element
         if(!oldSelection || oldSelection.attr('id') !== $(this).attr('id')){
 
@@ -214,7 +223,8 @@ EXPLORER.details = (function() {
     },
 
     loadEvents: function() {
-      $('#dwc_table_toggle').on('click', function() {
+      $('#dwc_table_toggle').on('click', function(e) {
+        e.preventDefault();
         $('tr.unused').toggle();
       });
     },

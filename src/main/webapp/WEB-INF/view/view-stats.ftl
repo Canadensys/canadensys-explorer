@@ -67,8 +67,8 @@
 
 <content tag="local_script">
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 <script src="//www.google.com/jsapi"></script>
+<@jsLibAsset libName="jquery-ui-1.10.4.custom.min.js"/>
 <@jsLibAsset libName="underscore-min.js"/>
 <@jsLibAsset libName="backbone-min.js"/>
 <@jsAsset fileName="explorer" version=root.currentVersion! useMinified=root.useMinified/>
@@ -80,29 +80,26 @@
 
 <script>
 $(function() {
+  EXPLORER.stats.initStatsView(EXPLORER.backbone.getInitialFilterParamMap());
+  EXPLORER.stats.loadFieldUniqueCount(${root.availableFilters.kingdom},"${rc.getMessage("view.stats.kingdom")}",'classification');
+  EXPLORER.stats.loadFieldUniqueCount(${root.availableFilters.phylum},"${rc.getMessage("view.stats.phylum")}",'classification');
+  EXPLORER.stats.loadFieldUniqueCount(${root.availableFilters._class},"${rc.getMessage("view.stats.class")}",'classification');
+  EXPLORER.stats.loadFieldUniqueCount(${root.availableFilters._order},"${rc.getMessage("view.stats.order")}",'classification');
+  EXPLORER.stats.loadFieldUniqueCount(${root.availableFilters.family},"${rc.getMessage("view.stats.family")}",'classification');
+  EXPLORER.stats.loadFieldUniqueCount(${root.availableFilters.genus},"${rc.getMessage("view.stats.genus")}",'classification');
+  EXPLORER.stats.loadFieldUniqueCount(${root.availableFilters.scientificname},"${rc.getMessage("view.stats.scientificname")}",'classification');
+  EXPLORER.stats.loadFieldUniqueCount(${root.availableFilters.continent},"${rc.getMessage("view.stats.continent")}",'location');
+  EXPLORER.stats.loadFieldUniqueCount(${root.availableFilters.country},"${rc.getMessage("view.stats.country")}",'location');
+  EXPLORER.stats.loadFieldUniqueCount(${root.availableFilters.stateprovince},"${rc.getMessage("view.stats.stateprovince")}",'location');
+  EXPLORER.stats.loadFieldUniqueCount(${root.availableFilters.county},"${rc.getMessage("view.stats.county")}",'location');
+  EXPLORER.stats.loadFieldUniqueCount(${root.availableFilters.municipality},"${rc.getMessage("view.stats.municipality")}",'location');
+  EXPLORER.stats.loadStaticChart(${root.availableFilters.decade},'decade',"${rc.getMessage("view.stats.chart.decade.title")}");
+  EXPLORER.stats.loadStaticChart(${root.availableFilters.averagealtituderounded},'altitude',"${rc.getMessage("view.stats.chart.altitude.title")}");
+  EXPLORER.stats.selectDefaultChart(${root.availableFilters.family});
+  EXPLORER.stats.selectDefaultChart(${root.availableFilters.stateprovince});
 
-EXPLORER.stats.initStatsView(EXPLORER.backbone.getInitialFilterParamMap());
-EXPLORER.stats.loadFieldUniqueCount(${root.availableFilters.kingdom},"${rc.getMessage("view.stats.kingdom")}",'classification');
-EXPLORER.stats.loadFieldUniqueCount(${root.availableFilters.phylum},"${rc.getMessage("view.stats.phylum")}",'classification');
-EXPLORER.stats.loadFieldUniqueCount(${root.availableFilters._class},"${rc.getMessage("view.stats.class")}",'classification');
-EXPLORER.stats.loadFieldUniqueCount(${root.availableFilters._order},"${rc.getMessage("view.stats.order")}",'classification');
-EXPLORER.stats.loadFieldUniqueCount(${root.availableFilters.family},"${rc.getMessage("view.stats.family")}",'classification');
-EXPLORER.stats.loadFieldUniqueCount(${root.availableFilters.genus},"${rc.getMessage("view.stats.genus")}",'classification');
-EXPLORER.stats.loadFieldUniqueCount(${root.availableFilters.scientificname},"${rc.getMessage("view.stats.scientificname")}",'classification');
-EXPLORER.stats.loadFieldUniqueCount(${root.availableFilters.continent},"${rc.getMessage("view.stats.continent")}",'location');
-EXPLORER.stats.loadFieldUniqueCount(${root.availableFilters.country},"${rc.getMessage("view.stats.country")}",'location');
-EXPLORER.stats.loadFieldUniqueCount(${root.availableFilters.stateprovince},"${rc.getMessage("view.stats.stateprovince")}",'location');
-EXPLORER.stats.loadFieldUniqueCount(${root.availableFilters.county},"${rc.getMessage("view.stats.county")}",'location');
-EXPLORER.stats.loadFieldUniqueCount(${root.availableFilters.municipality},"${rc.getMessage("view.stats.municipality")}",'location');
-EXPLORER.stats.loadStaticChart(${root.availableFilters.decade},'decade',"${rc.getMessage("view.stats.chart.decade.title")}");
-EXPLORER.stats.loadStaticChart(${root.availableFilters.averagealtituderounded},'altitude',"${rc.getMessage("view.stats.chart.altitude.title")}");
-EXPLORER.stats.selectDefaultChart(${root.availableFilters.family});
-EXPLORER.stats.selectDefaultChart(${root.availableFilters.stateprovince});
-
-<@controlJavaScriptInit/>
+  <@controlJavaScriptInit/>
 });
-
 google.load('visualization', '1', {'packages':['corechart']});
-
 </script>
 </content>
