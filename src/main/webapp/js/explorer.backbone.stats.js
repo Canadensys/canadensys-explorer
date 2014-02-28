@@ -2,12 +2,12 @@
 Copyright (c) 2013 Canadensys
 Explorer stats for charts
 ****************************/
-/*global EXPLORER, $, window, document, console, jQuery, Backbone, google*/
+/*global EXPLORER, $, window, document, console, jQuery, Backbone, google, _*/
 
 EXPLORER.stats = (function() {
 
   'use strict';
-  
+
   var UniqueCountModel = Backbone.Model.extend({
     defaults: {
       fieldId: -1,
@@ -16,44 +16,34 @@ EXPLORER.stats = (function() {
       groupId : undefined
     }
   }),
-  
+
   UniqueCountModelList = Backbone.Collection.extend({
     model: UniqueCountModel
   }),
-  
+
   StatsModel = Backbone.Model.extend({
     defaults: {
       fieldId: -1
     }
-  });
-  
-  var uniqueCountModelList = new UniqueCountModelList();
-  var currFieldKey = new StatsModel();
-  var searchQuery;
-  
-  var histogram = {};
-  
-  function initStatsView(_searchQuery){
-    searchQuery = _searchQuery;
-    
-    new PieChartView({groupId:'classification'});
-    new PieChartView({groupId:'location'});
-    
-    histogram['decade'] = new ColumnChartView({fieldIdText:'decade',transformDataFunction:transformDecadeData});
-    histogram['altitude'] = new ColumnChartView({fieldIdText:'altitude',transformDataFunction:transformAltitudeData});
-  }
-  
+  }),
+
+  uniqueCountModelList = new UniqueCountModelList(),
+  currFieldKey = new StatsModel(),
+  searchQuery,
+
+  histogram = {};
+
   // A static chart is always displayed
   function loadStaticChart(fieldId,fieldIdText,fieldText){
     google.setOnLoadCallback(function() {
         $(function() {
-        if(histogram[fieldIdText]){
-          histogram[fieldIdText].loadChart(fieldId,fieldIdText,fieldText);
-        }
+          if(histogram[fieldIdText]){
+            histogram[fieldIdText].loadChart(fieldId,fieldIdText,fieldText);
+          }
         });
       });
   }
-  
+
   function selectDefaultChart(fieldId){
     google.setOnLoadCallback(function() {
         $(function() {
@@ -61,7 +51,7 @@ EXPLORER.stats = (function() {
         });
       });
   }
-  
+
   // Loading the count a specific field
   function loadFieldUniqueCount(fieldId,fieldText,groupId){
     var countModel = new UniqueCountModel();
@@ -70,7 +60,7 @@ EXPLORER.stats = (function() {
     countModel.set('groupId',groupId);
     uniqueCountModelList.add(countModel);
 
-    var req = $.get('stats/unique/'+fieldId,searchQuery)
+    $.get('stats/unique/'+fieldId,searchQuery)
       .success(function(json){
         countModel.set('count',json.count);
       })
@@ -79,100 +69,12 @@ EXPLORER.stats = (function() {
       });
   }
 
-  var StatsSelectionView = Backbone.View.extend({
-    initialize : function(options) {
-      this.options = options || {};
-      uniqueCountModelList.bind('add', this.addStats, this);
-      //el could be set through the caller
-      this.setElement(this.el);
-    },
-    render : function() {
-      return this;
-    },
-    events : {
-      "click input[type=radio]" : "onSelection"
-    },
-    addStats : function(uniqueCountModel) {
-      //make sure this uniqueCountModel is in our group
-      var field = uniqueCountModelList.where({fieldId:uniqueCountModel.get('fieldId')});
-      if(field.length === 0 || field[0].get('groupId') !== this.options.groupId){
-        return;
-      }
-      var statsFieldTemplate = _.template($('#stats_field_template').html());
-      var $tr = $(statsFieldTemplate({fieldId : uniqueCountModel.get('fieldId'),fieldText : uniqueCountModel.get('fieldText'),groupId:uniqueCountModel.get('groupId')}));
-
-      uniqueCountModel.bind('change:count',
-        function(model){
-          $tr.find('td:nth-child(2)').html(uniqueCountModel.get('count'));
-        },
-        this);
-      $('tbody', this.$el).append($tr);
-    },
-    onSelection : function(evt) {
-      var value  = parseInt($(evt.currentTarget).val(),10);
-      currFieldKey.set('fieldId',value);
-    }
-  });
-
-  // PieChart view
-  var PieChartView = Backbone.View.extend({
-    initialize : function(options) {
-      var self = this;
-
-      this.options = options || {};
-      // Set a callback to run when the Google Visualization API is loaded.
-        google.setOnLoadCallback(function() {
-          $(function() {
-            self.googleChart = new google.visualization.PieChart(document.getElementById(self.options.groupId + '_chart_div'));
-          });
-        });
-        currFieldKey.bind('change:fieldId', this.onSelection, this);
-        this.$spinner = $('#spinner');
-    },
-    render : function() {
-      return this;
-    },
-    events : {
-    },
-    onSelection : function(_currFieldKey) {
-      //make sure this uniqueCountModel is in our group
-      var field = uniqueCountModelList.where({fieldId:_currFieldKey.get('fieldId')});
-      if(field.length === 0 || field[0].get('groupId') !== this.options.groupId){
-        return;
-      }
-      field = field[0];
-
-      this.paramMap = [];
-      _.extend(this.paramMap,searchQuery);
-      this.paramMap.push({name:'max',value:10});
-
-      var self = this;
-      self.$spinner.show();
-      var jsonData = $.ajax({
-                url: 'stats/chart/' + _currFieldKey.get('fieldId'),
-                dataType:"json",
-                data:this.paramMap,
-                async: false
-                })
-                .always(function() { self.$spinner.hide(); })
-                .responseText;
-      var jsonData = JSON.parse(jsonData);
-      var options = {
-        googleChart: self.googleChart,
-        title: EXPLORER.i18n.getLanguageResource('view.stats.chart.piechart.title') + ' ' + field.get('fieldText')
-      }
-
-      var columns = [{type:'string',text:field.get('fieldText')}, {type:'number',text:'count',interval:1}];
-      var chart = EXPLORER.chart.createChart(options);
-      chart.loadData(columns,jsonData.rows);
-    }
-  });
-
   // Method to prepare the Decade data before display
   function transformDecadeData(json){
     var START_DECADE = 1850;
-    json = _.sortBy(json, function(data){ 
-      if(isNaN(parseInt(data[0]))){
+
+    json = _.sortBy(json, function(data){
+      if(isNaN(parseInt(data[0], 10))){
         return 0;
       }
       return data[0];
@@ -186,9 +88,9 @@ EXPLORER.stats = (function() {
     var afterStartDecade = _.filter(json, function(data){ return data[0] >= START_DECADE; });
 
     var beforeStartDecadeCount = 0;
-    for(var i=0;i<beforeStartDecade.length;i++){
-      beforeStartDecadeCount = beforeStartDecadeCount + beforeStartDecade[i][1];
-    }
+    $.each(beforeStartDecade, function() {
+      beforeStartDecadeCount += this[1];
+    });
     if(beforeStartDecadeCount > 0){
       formattedJson.push([EXPLORER.i18n.getLanguageResource('view.stats.chart.decade.before') + ' ' + decade,beforeStartDecadeCount]);
     }
@@ -196,13 +98,12 @@ EXPLORER.stats = (function() {
     while(i < afterStartDecade.length && decade < currYear) {
       if(decade === afterStartDecade[i][0]){
         formattedJson.push(afterStartDecade[i]);
-        i++;
-      }
-      else{
+        i += 1;
+      } else {
         formattedJson.push([decade,0]);
       }
-      decade = decade+10;
-      }
+      decade += 10;
+    }
 
     json = _.map(formattedJson, function(data){ 
       data[0] = data[0].toString()+'s';
@@ -246,6 +147,97 @@ EXPLORER.stats = (function() {
     return formattedJson;
   }
 
+  var StatsSelectionView = Backbone.View.extend({
+    initialize : function(options) {
+      this.options = options || {};
+      uniqueCountModelList.bind('add', this.addStats, this);
+      //el could be set through the caller
+      this.setElement(this.el);
+    },
+    render : function() {
+      return this;
+    },
+    events : {
+      "click input[type=radio]" : "onSelection"
+    },
+    addStats : function(uniqueCountModel) {
+      //make sure this uniqueCountModel is in our group
+      var field = uniqueCountModelList.where({fieldId:uniqueCountModel.get('fieldId')});
+      if(field.length === 0 || field[0].get('groupId') !== this.options.groupId){
+        return;
+      }
+      var statsFieldTemplate = _.template($('#stats_field_template').html());
+      var $tr = $(statsFieldTemplate({fieldId : uniqueCountModel.get('fieldId'),fieldText : uniqueCountModel.get('fieldText'),groupId:uniqueCountModel.get('groupId')}));
+
+      uniqueCountModel.bind('change:count',
+        function() {
+          $tr.find('td:nth-child(2)').html(uniqueCountModel.get('count'));
+        },
+        this);
+      $('tbody', this.$el).append($tr);
+    },
+    onSelection : function(evt) {
+      var value  = parseInt($(evt.currentTarget).val(),10);
+      currFieldKey.set('fieldId',value);
+    }
+  });
+
+  // PieChart view
+  var PieChartView = Backbone.View.extend({
+    initialize : function(options) {
+      var self = this;
+
+      this.options = options || {};
+      // Set a callback to run when the Google Visualization API is loaded.
+        google.setOnLoadCallback(function() {
+          $(function() {
+            self.googleChart = new google.visualization.PieChart(document.getElementById(self.options.groupId + '_chart_div'));
+          });
+        });
+        currFieldKey.bind('change:fieldId', this.onSelection, this);
+        this.$spinner = $('#spinner');
+    },
+    render : function() {
+      return this;
+    },
+    events : {
+    },
+    onSelection : function(_currFieldKey) {
+      //make sure this uniqueCountModel is in our group
+      var self = this,
+          field = uniqueCountModelList.where({fieldId:_currFieldKey.get('fieldId')});
+      
+      if(field.length === 0 || field[0].get('groupId') !== this.options.groupId){
+        return;
+      }
+
+      this.paramMap = [];
+      _.extend(this.paramMap,searchQuery);
+      this.paramMap.push({name:'max',value:10});
+
+      this.$spinner.show();
+      $.ajax({
+        type: 'GET',
+        url: 'stats/chart/' + _currFieldKey.get('fieldId'),
+        dataType: 'json',
+        data: this.paramMap,
+        async: false,
+        complete: function() { self.$spinner.hide(); },
+        success: function(data) {
+          var options = {
+                googleChart: self.googleChart,
+                title: EXPLORER.i18n.getLanguageResource('view.stats.chart.piechart.title') + ' ' + field[0].get('fieldText')
+              },
+              columns = [{type:'string',text:field[0].get('fieldText')}, {type:'number',text:'count',interval:1}],
+              chart = EXPLORER.chart.createChart(options);
+
+          chart.loadData(columns,data.rows);
+        }
+      });
+
+    }
+  });
+
   // Column Chart view
   var ColumnChartView = Backbone.View.extend({
     initialize : function(options) {
@@ -269,40 +261,47 @@ EXPLORER.stats = (function() {
       }
 
       var self = this;
-      self.$spinner.show();
-      var jsonData = $.ajax({
-                url: 'stats/chart/' + fieldId,
-                dataType:"json",
-                data:searchQuery,
-                async: false
-                })
-                .always(function() { self.$spinner.hide(); })
-                .responseText;
+      this.$spinner.show();
+      $.ajax({
+        url: 'stats/chart/' + fieldId,
+        dataType: 'json',
+        data: searchQuery,
+        async: false,
+        complete: function() { self.$spinner.hide(); },
+        success: function(data) {
+          var maxCount = _.max(data.rows, function(r){
+              if(EXPLORER.utils.isInteger(r[0])){
+                return r[1];
+              }
+              return 0;
+            }),
+            gridlinesCount = (maxCount[1] >= 5) ? 5 : maxCount[1]+1,
+            options = {
+              type : 'column',
+              title : fieldText,
+              googleChart: self.googleChart,
+              googleChartOptions : {hAxis:{slantedText:true,slantedTextAngle:90},vAxis:{format:'#',gridlines:{count:gridlinesCount}},legend:{position: 'none'}},
+              transformData : self.options.transformDataFunction
+            },
+            columns = [{type:'string',text:fieldText}, {type:'number',text:'count'}],
+            chart = EXPLORER.chart.createChart(options);
 
-      //Create our data table out of JSON data loaded from server.
-        var jsonData = JSON.parse(jsonData);
-        var maxCount = _.max(jsonData.rows, function(data){
-          if(EXPLORER.utils.isInteger(data[0])){
-            return data[1];
-          }
-          return 0;
-        });
-        //Make sure we never have more grid line than max count
-        var gridlinesCount = maxCount[1] >= 5 ? 5 :maxCount[1]+1; 
+          chart.loadData(columns,data.rows);
+        }
+      });
 
-      var options = {
-        type : 'column',
-        title : fieldText,
-        googleChart: self.googleChart,
-        googleChartOptions : {hAxis:{slantedText:true,slantedTextAngle:90},vAxis:{format:'#',gridlines:{count:gridlinesCount}},legend:{position: 'none'}},
-        transformData : this.options.transformDataFunction
-      }
-
-      var columns = [{type:'string',text:fieldText}, {type:'number',text:'count'}];
-      var chart = EXPLORER.chart.createChart(options);
-      chart.loadData(columns,jsonData.rows);
     }
   });
+
+  function initStatsView(_searchQuery){
+    searchQuery = _searchQuery;
+
+    new PieChartView({groupId:'classification'});
+    new PieChartView({groupId:'location'});
+
+    histogram.decade = new ColumnChartView({fieldIdText:'decade',transformDataFunction:transformDecadeData});
+    histogram.altitude = new ColumnChartView({fieldIdText:'altitude',transformDataFunction:transformAltitudeData});
+  }
 
   // Instantiate stats selector
   new StatsSelectionView({ el: $('#classification_stats'), groupId:'classification' });

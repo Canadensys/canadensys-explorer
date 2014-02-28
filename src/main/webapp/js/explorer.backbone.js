@@ -784,7 +784,7 @@ EXPLORER.backbone = (function(){
       var searchableFieldTypeEnum = availableSearchFields[filterKey.get('searchableFieldId')].searchableFieldTypeEnum;
 
       //This is not necessary but it makes it clear that we create new element each time
-      if(typeof this.lastComponent !== 'undefined'){
+      if(this.lastComponent){
         this.lastComponent.destroy();
       }
 
@@ -903,7 +903,7 @@ EXPLORER.backbone = (function(){
     new FilterFieldSelectionView({ el: $('#filter_select') });
     new DownloadView();
     new DisplayView();
-  };
+  }
 
   //Public methods
   return {

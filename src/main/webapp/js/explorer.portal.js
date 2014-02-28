@@ -44,8 +44,7 @@ EXPLORER.preview = (function() {
 
     initClosePreview: function() {
       var self = this;
-      $('#preview_close').on('click', function(e){
-        e.preventDefault();
+      $('#preview_close').on('click', function(){
         self.occPreview.hide('slide',500);
       });
     },
@@ -112,11 +111,10 @@ EXPLORER.control = (function() {
     restoreDisplay: function() {
       var self = this, display = $('#display_columns');
 
-      if(display.length){
-        display.on('click', 'input:checkbox', function(e) {
+      if(display.length > 0){
+        display.on('click', 'input:checkbox', function() {
           var selectedColumn = [];
 
-          e.preventDefault();
           $.each(display.find('input:checked'), function() {
             selectedColumn.push($(this).val());
           });
@@ -168,8 +166,7 @@ EXPLORER.table = (function() {
     loadEvents: function() {
       var oldSelection;
 
-      this.results.on('click', 'tbody tr', function(e) {
-        e.preventDefault();
+      this.results.on('click', 'tbody tr', function() {
         //do not send query to the server for the same element
         if(!oldSelection || oldSelection.attr('id') !== $(this).attr('id')){
 
