@@ -1,7 +1,9 @@
 package net.canadensys.dataportal.occurrence.search.config;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -11,23 +13,23 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * This class contains configurations related to the language support on client side.
- * We only keep language strings that could be used in the view dynamic parts.
- * TODO : prefil the map with OccurrencePortalConfig.getSupportedLocale() to avoid Map creation on each call.
  * @author canadensys
  *
  */
 public class OccurrenceSearchableFieldLanguageSupport {
 	
 	private static final String OPERATOR_PREFIX = "operator.";
-	private static final String FILTER_PREFIX = "filter.";
-	private static final String INVALID_PREFIX = "control.invalid.";
-	private static final String DOWNLOAD_PREFIX = "control.download.";
-	private static final String CHART_PREFIX = "view.stats.chart.";
-	private static final String OCC_PAGE_MENU_PREFIX = "occpage.menu.";
+	private static final List<String> PREFIX_FILTER_LIST = new ArrayList<String>();
+	static{
+		PREFIX_FILTER_LIST.add("filter.");
+		PREFIX_FILTER_LIST.add("control.invalid.");
+		PREFIX_FILTER_LIST.add("control.download.");
+		PREFIX_FILTER_LIST.add("view.stats.chart.");
+		PREFIX_FILTER_LIST.add("occpage.menu.");
+	}
 	
 	/**
-	 * This is used for dynamic components only. It doesn't contain all the resources.
-	 * Contains language string for operators, filters, download and stats components.
+	 * This is used for dynamic components on client-side. It doesn't contain all the language resources.
 	 * @param locale
 	 * @return
 	 */
@@ -44,14 +46,24 @@ public class OccurrenceSearchableFieldLanguageSupport {
 		String currKey = null;
 		while(rbKeys.hasMoreElements()){
 			currKey = rbKeys.nextElement();
-			if(currKey.startsWith(FILTER_PREFIX) 
-			    || currKey.startsWith(INVALID_PREFIX) 
-	        || currKey.startsWith(DOWNLOAD_PREFIX) 
-					|| currKey.startsWith(CHART_PREFIX) 
-					|| currKey.startsWith(OCC_PAGE_MENU_PREFIX)){
+			if(shouldInclude(currKey)){
 				languageResources.put(currKey, resourceBundle.getString(currKey));
 			}
 		}
 		return languageResources;
+	}
+	
+	/**
+	 * Check if we should include this languageResource based on the PREFIX_FILTER_LIST.
+	 * @param languageResource
+	 * @return true if languageResource starts with a prefix in PREFIX_FILTER_LIST, otherwise, false.
+	 */
+	private boolean shouldInclude(String languageResource){
+		for(String curr:PREFIX_FILTER_LIST){
+			if(languageResource.startsWith(curr)){
+				return true;
+			}
+		}
+		return false;
 	}
 }
