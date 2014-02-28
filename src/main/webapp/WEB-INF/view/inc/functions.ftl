@@ -43,3 +43,14 @@ ${URLHelper.getLanguageSwitchPath(Request,rc.getLocale().getLanguage(),resourceN
 <#function isImageMimeType url>
 	<#return URLHelper.getMimeFileType(url)?contains("image")>
 </#function>
+
+<#function getTableHeaderSortingUrl sortBy currentSortBy currentSort>
+	<#local sortValue="asc">
+	<#-- check if the sort is already on this 'sortBy' -->
+	<#if currentSortBy?has_content && (currentSortBy == sortBy)>
+		<#if (!(currentSort?has_content)) || (currentSort?lower_case == "asc")>
+			<#local sortValue="desc">
+		</#if>
+	</#if>
+	<#return URLHelper.replaceCurrentQueryParams(Request, "sortby",sortBy,"sort",sortValue)>
+</#function>

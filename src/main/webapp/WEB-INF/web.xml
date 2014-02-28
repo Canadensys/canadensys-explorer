@@ -57,13 +57,15 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j
       <filter-name>sitemesh</filter-name>
     	<filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
 	</filter>
+
 	<filter-mapping>  
         <filter-name>sitemesh</filter-name>  
-        <url-pattern>/*</url-pattern>  
+        <url-pattern>/*</url-pattern>
+        <dispatcher>ERROR</dispatcher>
          <dispatcher>FORWARD</dispatcher>  
          <dispatcher>REQUEST</dispatcher>
          <dispatcher>INCLUDE</dispatcher>
-    </filter-mapping> 
+    </filter-mapping>
  
 	<servlet>
     	<servlet-name>sitemesh-freemarker</servlet-name>

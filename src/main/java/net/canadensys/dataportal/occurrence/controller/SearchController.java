@@ -244,6 +244,8 @@ public class SearchController {
 		
 		if(searchSortPart != null){
 			model.put("pageNumber", searchSortPart.getPageNumber());
+			model.put("sortBy", searchSortPart.getOrderByColumn());
+			model.put("sort", searchSortPart.getOrder());
 		}
 	}
 	
