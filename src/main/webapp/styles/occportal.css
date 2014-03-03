@@ -17,7 +17,7 @@
   min-height: 100%; /* other browsers */
 }
 #view .details, #content .details {
-  color: #666666;
+  color: #555;
   margin-top: -12px;
 }
 
@@ -207,12 +207,13 @@
 }
 
 .search_button { /* Mimic black menu */
-  background: linear-gradient(bottom, #0b0b09 20%, #32342b 60%);
-  background: -webkit-linear-gradient(bottom, #0b0b09 20%, #32342b 60%);
-  background: -moz-linear-gradient(bottom, #0b0b09 20%, #32342b 60%);
-  background: -ms-linear-gradient(bottom, #0b0b09 20%, #32342b 60%);
-  background: -o-linear-gradient(bottom, #0b0b09 20%, #32342b 60%);
-  background-color: #22241e;
+  background: #32342b; /* Old browsers */
+  background: -moz-linear-gradient(top,  #32342b 20%, #0b0b09 60%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(20%,#32342b), color-stop(60%,#0b0b09)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #32342b 20%,#0b0b09 60%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #32342b 20%,#0b0b09 60%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #32342b 20%,#0b0b09 60%); /* IE10+ */
+  background: linear-gradient(to bottom,  #32342b 20%,#0b0b09 60%); /* W3C */
   border: none;
   border-radius: 5px;
   color: white;
@@ -379,7 +380,7 @@
   text-align: right;
 }
 
-#occ_preview_control span { color: #666666; }
+#occ_preview_control span { color: #555; }
 #occ_preview_control span:hover {
   color: #22241e;
   cursor: pointer;
@@ -396,7 +397,7 @@
 }
 
 .occ_preview_classification, .occ_preview_links {
-  color: #666666;
+  color: #555;
   font-size: 12px;
 }
 
@@ -452,7 +453,7 @@
 #occpage_map.no_geo span { display: inline; }
 #occpage_map.no_geo {
   background-color: #d3d3d3;
-  color: #666666;
+  color: #444;
   display: table-cell;
   vertical-align: middle;
 }
@@ -478,7 +479,7 @@
   width: 180px;
 }
 .occpage_group .remark {
-  color: #666666;
+  color: #555;
   display: block;
 }
 
@@ -505,7 +506,7 @@
 
 #dwc_table tr.unused, #dwc_table td.unused {
   background-color: #e7e7e7;
-  color: #666666;
+  color: #444;
 }
-#dwc_table tr.unused a { color: #666666; }
+#dwc_table tr.unused a { color: #555; }
 #dwc_table tr.unused { display: none; }
