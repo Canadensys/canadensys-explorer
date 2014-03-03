@@ -40,39 +40,6 @@ EXPLORER.utils = (function(){
       return !isNaN(parseInt(val, 10));
     },
 
-    createCookie: function(name,value,days) {
-      var date, expires = "";
-
-      if(value.indexOf(';') >= 0){
-        console.log('Invalid cookie value. The value must not contains ; character');
-        return;
-      }
-
-      if(days) {
-        date = new Date();
-        date.setTime(date.getTime()+(days*24*60*60*1000));
-        expires = "; expires="+date.toGMTString();
-      }
-      document.cookie = name+"="+value+expires+"; path=/";
-    },
-
-    readCookie: function(name) {
-      var nameEQ = name + "=",
-          ca = document.cookie.split(';'), c;
-
-      $.each(ca, function() {
-        c = this;
-        while(c.charAt(0) === ' ') { c = c.substring(1, c.length); }
-        if (c.indexOf(nameEQ) === 0) { return c.substring(nameEQ.length,c.length); }
-      });
-
-      return null;
-    },
-
-    eraseCookie: function(name) {
-      this.createCookie(name,"",-1);
-    },
-
     getParameterByName: function(name) {
       var cname   = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]"),
           regexS  = "[\\?&]" + cname + "=([^&#]*)",
@@ -181,12 +148,6 @@ EXPLORER.utils = (function(){
     },
     isInteger: function(val) {
       return _private.isInteger(val);
-    },
-    createCookie: function(name,value,days) {
-      return _private.createCookie(name,value,days);
-    },
-    readCookie: function(name) {
-      return _private.readCookie(name);
     },
     getParameterByName: function(name) {
       return _private.getParameterByName(name);

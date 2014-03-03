@@ -92,6 +92,7 @@
 <@jsLibAsset libName="jquery-ui-1.10.4.custom.min.js"/>
 <@jsLibAsset libName="underscore-min.js"/>
 <@jsLibAsset libName="backbone-min.js"/>
+<@jsLibAsset libName="jquery.cookie.js"/>
 <@jsAsset fileName="explorer" version=root.currentVersion! useMinified=root.useMinified/>
 <@jsAsset fileName="explorer.utils" version=root.currentVersion! useMinified=root.useMinified/>
 <@jsAsset fileName="explorer.backbone" version=root.currentVersion! useMinified=root.useMinified/>
@@ -102,7 +103,7 @@
 <script>
 $(function() {
  EXPLORER.control.restoreDisplay();
- <@controlJavaScriptInit/> 
+ <@controlJavaScriptInit/>
 });
 </script>
 </content>

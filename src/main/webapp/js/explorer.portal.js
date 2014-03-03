@@ -5,7 +5,9 @@ Explorer Portal
 /*global EXPLORER, $, window, document, console, google, _*/
 
 /* Control the fly-out panel for occurrence record
-Dependency: jQuery-UI's "slide" method
+Dependencies:
+jQuery-UI: slide method
+jquery.cookie.js
 */
 EXPLORER.preview = (function() {
 
@@ -111,30 +113,28 @@ EXPLORER.control = (function() {
     restoreDisplay: function() {
       var self = this,
           display = $('#display_columns'),
-          settingsCookie = EXPLORER.utils.readCookie(self.COOKIE_NAME);
+          checkboxes = display.find('input:checkbox'),
+          settingsCookie = $.cookie(this.COOKIE_NAME);
 
-      if(display.length > 0){
-        if(settingsCookie){
-          //we cannot store a ; in the cookie so use a pipe (|)
-          var arrayOfSettings = settingsCookie.split('|');
-          $.each(display.find('input:checkbox'), function() {
-            var isSelected = _.include(arrayOfSettings, $(this).val());
-            if(isSelected !== this.checked){
-              //need to click to update the table display
-              this.trigger('click');
-            }
-          });
-        }
-        
-        display.on('click', 'input:checkbox', function() {
-          var selectedColumn = [];
-
-          $.each(display.find('input:checked'), function() {
-            selectedColumn.push($(this).val());
-          });
-          EXPLORER.utils.createCookie(self.COOKIE_NAME,selectedColumn.join('|'),7);
+      if(settingsCookie){
+        var arrayOfSettings = settingsCookie.split(',');
+        $.each(checkboxes, function() {
+          var isSelected = _.include(arrayOfSettings, $(this).val());
+          if((isSelected && !$(this).prop("checked")) || (!isSelected && $(this).prop("checked"))){
+            $(this).trigger('click');
+          }
         });
       }
+
+      display.on('click', 'input:checkbox', function() {
+        var selectedColumn = [];
+
+        $.each(checkboxes, function() {
+          if($(this).prop("checked")) { selectedColumn.push($(this).val()); }
+        });
+        $.cookie(self.COOKIE_NAME, selectedColumn, { expires: 7 });
+      });
+
     }
 
   };
