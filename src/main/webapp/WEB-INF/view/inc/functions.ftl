@@ -54,3 +54,15 @@ ${URLHelper.getLanguageSwitchPath(Request,rc.getLocale().getLanguage(),resourceN
 	</#if>
 	<#return URLHelper.replaceCurrentQueryParams(Request, "sortby",sortBy,"sort",sortValue)>
 </#function>
+
+<#function getTableHeaderSortingClass sortBy currentSortBy currentSort>
+  <#local sortSpan="">
+  <#if currentSortBy?has_content && (currentSortBy == sortBy)>
+    <#if currentSort?lower_case == "asc">
+      <#local sortSpan = "<span>&nbsp;&#x25B4;</span>">
+    <#elseif currentSort?lower_case == "desc">
+      <#local sortSpan = "<span>&nbsp;&#x25BE;</span>">
+    </#if>
+  </#if>
+  <#return sortSpan>
+</#function>
