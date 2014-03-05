@@ -82,8 +82,8 @@
 
 #results tbody tr:hover { background-color: #e7e7e7; }
 #results tbody tr.selected { background-color: #d3d3d3; }
-#results tbody tr.selected .last_column, #results tbody tr:hover .last_column { background: url("../images/arrow-right.png") top right no-repeat; }
-#results tbody tr.selected:hover .last_column { background: url("../images/arrow-left.png") top right no-repeat; }
+#results tbody tr.selected .last_column { background: url("../images/arrow-right.png") top right no-repeat; }
+#results tbody tr.selected .last_column_hide { background: url("../images/arrow-left.png") top right no-repeat; }
 
 /* Responsive table: http://filamentgroup.com/lab/responsive_design_approach_for_complex_multicolumn_data_tables/ */
 /* All CSS for the display control box has been removed */

@@ -46,24 +46,16 @@ EXPLORER.preview = (function() {
     initClosePreview: function() {
       var self = this;
       $('#preview_close').on('click', function(){
-        self.occPreview.hide('slide',500);
+        self.hide();
       });
     },
+    
+    hide: function() {
+      this.occPreview.hide("slide", 500);
+    },
 
-    togglePreview: function(oldSelectionId, newSelectionId) {
-      //check if the click is on the same element
-      if(oldSelectionId && (oldSelectionId === newSelectionId)){
-        if(this.occPreview.is(":visible")){
-          this.occPreview.hide("slide",500);
-        } else {
-          this.occPreview.show("slide",500);
-        }
-      } else {
-        //check if the component is not already shown
-        if(!this.occPreview.is(":visible")){
-          this.occPreview.show("slide",500);
-        }
-      }
+    show: function() {
+      this.occPreview.show("slide", 500);
     },
 
     replacePreviewContent: function(htmlFragment) {
@@ -75,11 +67,14 @@ EXPLORER.preview = (function() {
 
   return {
     init: function() { _private.init(); },
-    togglePreview : function(oldSelectionId, newSelectionId) {
-      _private.togglePreview(oldSelectionId, newSelectionId);
-    },
     replacePreviewContent : function(htmlFragment) {
       _private.replacePreviewContent(htmlFragment);
+    },
+    hide : function() {
+      _private.hide();
+    },
+    show : function() {
+      _private.show();
     }
   };
 
@@ -168,33 +163,44 @@ EXPLORER.table = (function() {
         this.loadEvents();
       }
     },
+    
+    getFragment: function(id) {
+      $.get("occurrence-preview/"+id, function(htmlFragment) {
+        EXPLORER.preview.replacePreviewContent(htmlFragment);
+      })
+      .fail(function(jqXHR, textStatus, errorThrown) {
+          console.log( textStatus );
+        });
+    },
+
+    buildResponse: function(element) {
+      this.getFragment(element.attr("id"));
+      EXPLORER.preview.show();
+      element.addClass('selected');
+      $('.last_column',element).addClass('last_column_hide');
+    },
 
     loadEvents: function() {
-      var oldSelection;
+      var self = this;
 
-      this.results.on('click', 'tbody tr', function() {
-        //do not send query to the server for the same element
-        if(!oldSelection || oldSelection.attr('id') !== $(this).attr('id')){
-
-          $.get("occurrence-preview/"+$(this).attr("id"), function(htmlFragment) {
-            EXPLORER.preview.replacePreviewContent(htmlFragment);
-          })
-          .fail(function(jqXHR, textStatus, errorThrown) {
-              console.log( textStatus );
-            });
+      $('tbody tr', this.results).on('click', function() {
+        self.buildResponse($(this));
+      })
+      .keynavigator({
+        activeClass: 'selected',
+        cycle: false,
+        keys: {
+          left_arrow : function(element) {
+            EXPLORER.preview.hide();
+            $('.last_column',element).removeClass('last_column_hide');
+          },
+          right_arrow : function(element) {
+            self.buildResponse($(element));
+          },
+          enter : function(element) {
+            self.buildResponse($(element));
+          }
         }
-
-        if(oldSelection){
-          EXPLORER.preview.togglePreview(oldSelection.attr('id'),$(this).attr('id'));
-        } else {
-          EXPLORER.preview.togglePreview(undefined,$(this).attr('id'));
-        }
-
-        if(oldSelection){
-          oldSelection.toggleClass('selected');
-        }
-        $(this).toggleClass('selected');
-        oldSelection = $(this); 
       });
 
       //responsive design
