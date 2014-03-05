@@ -262,7 +262,7 @@ public class OccurrenceSearchServiceImpl implements OccurrenceSearchService {
 		
 		int currCount = 0;
 		ChartModel cm = new ChartModel();
-		
+
 		for(SimpleImmutableEntry<String,Integer> currRow : results){
 			Object[] values = new Object[2];
 			if(!StringUtils.isBlank(currRow.getKey())){
@@ -303,15 +303,19 @@ public class OccurrenceSearchServiceImpl implements OccurrenceSearchService {
 	@Override
 	@Transactional(readOnly=true)
 	public Integer getDistinctValuesCount(Map<String, List<SearchQueryPart>> searchCriteria, OccurrenceSearchableField column){
-		addNonEmptyCriteria(column, searchCriteria);
-		return occurrenceDAO.getCountDistinct(searchCriteria,column.getRelatedField());
+		//copy(deep copy not needed) searchCriteria to not add the non-empty criteria in the provided object.
+		Map<String, List<SearchQueryPart>> innerSearchCriteria = new HashMap<String, List<SearchQueryPart>>();
+		innerSearchCriteria.putAll(searchCriteria);
+		addNonEmptyCriteria(column, innerSearchCriteria);
+		
+		return occurrenceDAO.getCountDistinct(innerSearchCriteria,column.getRelatedField());
 	}
 	
 	/**
 	 * This function will add a SearchQueryPart representing a non-empty value.
-	 * The column must not already be in the searchCriteria
+	 * The column must not already be in the searchCriteria.
 	 * @param column
-	 * @param searchCriteria
+	 * @param searchCriteria will be modified if 'column' is not already in the searchCriteria
 	 */
 	private void addNonEmptyCriteria(OccurrenceSearchableField column, Map<String, List<SearchQueryPart>> searchCriteria){
 		if(column.getType() == String.class && column.getSearchableFieldTypeEnum() == SearchableFieldTypeEnum.SINGLE_VALUE
