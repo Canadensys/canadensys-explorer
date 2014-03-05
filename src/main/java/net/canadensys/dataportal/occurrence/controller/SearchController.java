@@ -23,6 +23,7 @@ import net.canadensys.dataportal.occurrence.search.OccurrenceSearchService.Stats
 import net.canadensys.dataportal.occurrence.search.OccurrenceSearchableField;
 import net.canadensys.dataportal.occurrence.search.config.OccurrenceSearchableFieldLanguageSupport;
 import net.canadensys.dataportal.occurrence.search.config.SearchServiceConfig;
+import net.canadensys.dataportal.occurrence.search.config.SearchServiceConfig.SearchableFieldEnum;
 import net.canadensys.dataportal.occurrence.search.json.OccurrenceSearchableFieldMixIn;
 import net.canadensys.dataportal.occurrence.search.json.SearchQueryPartMixIn;
 import net.canadensys.dataportal.occurrence.search.parameter.SearchParamHandler;
@@ -206,6 +207,7 @@ public class SearchController {
 			//get regular count
 			occurrenceCount = occurrenceSearchService.getOccurrenceCount(searchCriteria);
 			modelRoot.put("occurrenceCount", occurrenceCount);
+			handleSearchStatsView(modelRoot,request,searchCriteria);
 		}
 		
 		//let the view know that we search on all record
@@ -247,6 +249,49 @@ public class SearchController {
 			model.put("sortBy", searchSortPart.getOrderByColumn());
 			model.put("sort", searchSortPart.getOrder());
 		}
+	}
+	
+	/**
+	 * Handle stats-view specific data.
+	 * @param model
+	 * @param request
+	 * @param searchCriteria
+	 */
+	private void handleSearchStatsView(HashMap<String,Object> model, HttpServletRequest request, Map<String,List<SearchQueryPart>> searchCriteria){
+
+		OccurrenceSearchableField osf = null;
+		Integer count = 0;
+		for(SearchableFieldEnum  currSf : SearchServiceConfig.CLASSIFICATON_SEARCH_FIELDS){
+			osf = searchServiceConfig.getSearchableField(currSf);
+			count = occurrenceSearchService.getDistinctValuesCount(searchCriteria, osf);
+			model.put(osf.getSearchableFieldName() + "_count", count);
+		}
+		
+		Locale locale = RequestContextUtils.getLocale(request);
+		Map<StatsPropertiesEnum,Object> extraProperties = new HashMap<OccurrenceSearchService.StatsPropertiesEnum, Object>();
+		extraProperties.put(StatsPropertiesEnum.RESOURCE_BUNDLE, appConfig.getResourceBundle(locale));
+		
+		String statSelection = request.getParameter("stat_sel");
+		
+		OccurrenceSearchableField searchableField = null;
+		if(!StringUtils.isBlank(statSelection)){
+			try{
+				Integer fieldId = Integer.parseInt(statSelection);
+				searchableField = searchServiceConfig.getSearchableFieldbyId(fieldId);
+			}
+			catch (Exception e) {/*nothing to do*/}
+		}
+		
+		if( searchableField == null){
+			//use default field
+			searchableField = searchServiceConfig.getSearchableField(SearchableFieldEnum.FAMILY);
+		}
+		
+		extraProperties.put(StatsPropertiesEnum.MAX_RESULT, 10);
+		ChartModel chartModel = occurrenceSearchService.getValuesFrequencyDistribution(searchCriteria, searchableField, extraProperties);
+		model.put("chartModel", chartModel);
+		model.put("statsFieldKey", searchableField.getSearchableFieldName());
+		model.put("chartRowsJSON",beanAsJSONString(chartModel.getRows()));
 	}
 	
 	/**

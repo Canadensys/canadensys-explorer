@@ -27,6 +27,28 @@ public class SearchServiceConfig {
 	
 	//get log4j handler
 	private static final Logger LOGGER = Logger.getLogger(SearchServiceConfig.class);
+	
+	public enum SearchableFieldEnum{
+		COUNTRY(1),FAMILY(2),CONTINENT(3),TAXONRANK(4),
+		DATE_RANGE(5),
+		
+		KINGDOM(14),
+		ORDER(15),
+		SCIENTIFIC_NAME(16),
+		CLASS(18),
+		PHYLUM(19),
+		
+		GENUS(24),
+		
+		SOURCE_FILE_ID(29),
+		START_YEAR(30)
+		;
+		
+		private int id;
+		private SearchableFieldEnum(int id){
+			this.id = id;
+		}
+	}
 		
 	private Map<Integer,OccurrenceSearchableField> SEARCHABLE_FIELD_MAP = new HashMap<Integer,OccurrenceSearchableField>();
 	//inverted map FieldName=>FieldID
@@ -100,17 +122,33 @@ public class SearchServiceConfig {
 		OCCURENCE_SUMMARY_FIELDS.add("dwcaid");
 	}
 	
+	/**
+	 * Classification related SearchableFieldEnum elements.
+	 */
+	public static final List<SearchableFieldEnum> CLASSIFICATON_SEARCH_FIELDS = new ArrayList<SearchableFieldEnum>();
+	static{
+		CLASSIFICATON_SEARCH_FIELDS.add(SearchableFieldEnum.KINGDOM);
+		CLASSIFICATON_SEARCH_FIELDS.add(SearchableFieldEnum.PHYLUM);
+		CLASSIFICATON_SEARCH_FIELDS.add(SearchableFieldEnum.CLASS);
+		CLASSIFICATON_SEARCH_FIELDS.add(SearchableFieldEnum.ORDER);
+		CLASSIFICATON_SEARCH_FIELDS.add(SearchableFieldEnum.FAMILY);
+		CLASSIFICATON_SEARCH_FIELDS.add(SearchableFieldEnum.GENUS);
+		CLASSIFICATON_SEARCH_FIELDS.add(SearchableFieldEnum.SCIENTIFIC_NAME);
+	}
+	
 	public SearchServiceConfig(){
-		SEARCHABLE_FIELD_MAP.put(1,
-				new OccurrenceSearchableFieldBuilder(1,"country").singleValue("country",String.class).supportSuggestion().eqOperator().toOccurrenceSearchableField());
-		SEARCHABLE_FIELD_MAP.put(2,
-			new OccurrenceSearchableFieldBuilder(2,"family").singleValue("family",String.class).supportSuggestion().eqOperator().toOccurrenceSearchableField());
-		SEARCHABLE_FIELD_MAP.put(3,
-				new OccurrenceSearchableFieldBuilder(3,"continent").singleValue("continent",String.class).supportSuggestion().eqOperator().toOccurrenceSearchableField());
-		SEARCHABLE_FIELD_MAP.put(4,
-				new OccurrenceSearchableFieldBuilder(4,"taxonrank").singleValue("taxonrank",String.class).supportSuggestion().eqOperator().toOccurrenceSearchableField());
-		SEARCHABLE_FIELD_MAP.put(5,
-				new OccurrenceSearchableFieldBuilder(5,"daterange").startEndDate(START_YEAR_PROPERTY,START_MONTH_PROPERTY,START_DAY_PROPERTY).eqOperator().betweenOperator().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.COUNTRY.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.COUNTRY.id,"country").singleValue("country",String.class).supportSuggestion().eqOperator().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.FAMILY.id,
+			new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.FAMILY.id,"family").singleValue("family",String.class).supportSuggestion().eqOperator().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.CONTINENT.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.CONTINENT.id,"continent").singleValue("continent",String.class).supportSuggestion().eqOperator().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.TAXONRANK.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.TAXONRANK.id,"taxonrank").singleValue("taxonrank",String.class).supportSuggestion().eqOperator().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.DATE_RANGE.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.DATE_RANGE.id,"daterange").startEndDate(START_YEAR_PROPERTY,START_MONTH_PROPERTY,START_DAY_PROPERTY).eqOperator().betweenOperator().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.START_YEAR.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.START_YEAR.id,"syear").singleValue("syear",Integer.class).eqOperator().betweenOperator().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(6,
 				new OccurrenceSearchableFieldBuilder(6,"catalognumber").singleValue("catalognumber",String.class).likeOperator(QueryOperatorEnum.ELIKE).toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(7,
@@ -127,18 +165,18 @@ public class SearchServiceConfig {
 				new OccurrenceSearchableFieldBuilder(12,"recordedby").singleValue("recordedby",String.class).likeOperator(QueryOperatorEnum.CLIKE).eqOperator().supportSuggestion().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(13,
 				new OccurrenceSearchableFieldBuilder(13,"recordnumber").singleValue("recordnumber",String.class).likeOperator(QueryOperatorEnum.ELIKE).toOccurrenceSearchableField());
-		SEARCHABLE_FIELD_MAP.put(14,
-				new OccurrenceSearchableFieldBuilder(14,"kingdom").singleValue("kingdom",String.class).eqOperator().supportSuggestion().toOccurrenceSearchableField());
-		SEARCHABLE_FIELD_MAP.put(15,
-				new OccurrenceSearchableFieldBuilder(15,"_order").singleValue("_order",String.class).eqOperator().supportSuggestion().toOccurrenceSearchableField());
-		SEARCHABLE_FIELD_MAP.put(16,
-				new OccurrenceSearchableFieldBuilder(16,"scientificname").singleValue("scientificname",String.class).eqOperator().likeOperator(QueryOperatorEnum.SLIKE).supportSuggestion().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.KINGDOM.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.KINGDOM.id,"kingdom").singleValue("kingdom",String.class).eqOperator().supportSuggestion().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.ORDER.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.ORDER.id,"_order").singleValue("_order",String.class).eqOperator().supportSuggestion().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.SCIENTIFIC_NAME.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.SCIENTIFIC_NAME.id,"scientificname").singleValue("scientificname",String.class).eqOperator().likeOperator(QueryOperatorEnum.SLIKE).supportSuggestion().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(17,
 				new OccurrenceSearchableFieldBuilder(17,"institutioncode").singleValue("institutioncode",String.class).eqOperator().supportSelectionList().toOccurrenceSearchableField());
-		SEARCHABLE_FIELD_MAP.put(18,
-				new OccurrenceSearchableFieldBuilder(18,"_class").singleValue("_class",String.class).eqOperator().supportSuggestion().toOccurrenceSearchableField());
-		SEARCHABLE_FIELD_MAP.put(19,
-				new OccurrenceSearchableFieldBuilder(19,"phylum").singleValue("phylum",String.class).eqOperator().supportSuggestion().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.CLASS.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.CLASS.id,"_class").singleValue("_class",String.class).eqOperator().supportSuggestion().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.PHYLUM.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.PHYLUM.id,"phylum").singleValue("phylum",String.class).eqOperator().supportSuggestion().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(20,
 				new OccurrenceSearchableFieldBuilder(20,"hascoordinates").singleValue("hascoordinates",Boolean.class).eqOperator().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(21,
@@ -149,12 +187,12 @@ public class SearchServiceConfig {
 				new OccurrenceSearchableFieldBuilder(23,"municipality").singleValue("municipality",String.class).eqOperator().supportSuggestion().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(28,
 				new OccurrenceSearchableFieldBuilder(28,"boundingbox").geoCoordinates("the_geom").inOperator().toOccurrenceSearchableField());
-		SEARCHABLE_FIELD_MAP.put(29,
-				new OccurrenceSearchableFieldBuilder(29,"sourcefileid").singleValue("sourcefileid",String.class).eqOperator().supportSelectionList().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.SOURCE_FILE_ID.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.SOURCE_FILE_ID.id,"sourcefileid").singleValue("sourcefileid",String.class).eqOperator().supportSelectionList().toOccurrenceSearchableField());
 		
 		//Those searchable fields are used for stats only
-		SEARCHABLE_FIELD_MAP.put(24,
-				new OccurrenceSearchableFieldBuilder(24,"genus").singleValue("genus",String.class).eqOperator().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.GENUS.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.GENUS.id,"genus").singleValue("genus",String.class).eqOperator().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(25,
 				new OccurrenceSearchableFieldBuilder(25,"species").singleValue("species",String.class).eqOperator().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(26,
@@ -198,6 +236,10 @@ public class SearchServiceConfig {
 	 */
 	public OccurrenceSearchableField getSearchableFieldbyId(Integer id) {
 		return SEARCHABLE_FIELD_MAP.get(id);
+	}
+	
+	public OccurrenceSearchableField getSearchableField(SearchableFieldEnum searchableField) {
+		return SEARCHABLE_FIELD_MAP.get(searchableField.id);
 	}
 
 	public SearchableField getSearchableFieldbyName(String name) {

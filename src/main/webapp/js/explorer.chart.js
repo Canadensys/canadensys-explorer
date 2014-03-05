@@ -1,5 +1,5 @@
 /****************************
-Copyright (c) 2013 Canadensys
+Copyright (c) 2013,2014 Canadensys
 Script to handle Google charts
 ****************************/
 /*global EXPLORER, $, window, _, google, console*/
@@ -9,54 +9,32 @@ EXPLORER.chart = (function(){
   'use strict';
 
   var _private = {
+    
+    loadPieChart : function(fieldKey,rows){
+		var options = {
+			type : 'pie',
+			title: EXPLORER.i18n.getLanguageResource('view.stats.chart.piechart.title') + ' ' + EXPLORER.i18n.getLanguageResource('filter.'+fieldKey)
+		},
+		googleChart = new google.visualization.ColumnChart(document.getElementById('classification_chart_div')),
+		chartData = new google.visualization.DataTable();
 
-    baseChart : {
-      type : 'pie',
-      title : '',
-      axis : { xtitle:'x', ytitle:'y' },
-      googleChart : undefined,
-      googleChartOptions : undefined,
-      transformData : function(json) { return json; },
-      loadData : function(columns, json){
-        var options, data = new google.visualization.DataTable();
+        chartData.addColumn('string', fieldKey);
+        chartData.addColumn('number', 'count');
 
-        $.each(columns, function() {
-          data.addColumn(this.type, this.text);
+        chartData.addRows(rows.length);
+        $.each(rows, function(i) {
+          chartData.setValue(i, 0, this[0]);
+          chartData.setValue(i, 1, this[1]);
         });
-
-        json = this.transformData(json);
-
-        data.addRows(json.length);
-        $.each(json, function(i) {
-          data.setValue(i, 0, this[0]);
-          data.setValue(i, 1, this[1]);
-        });
-
-        options = {
-          title: this.title,
-          width: 560,
-          height: 360,
-          bar:{ groupWidth:'98%' }
-        };
-
-        if(this.googleChartOptions){
-          _.extend(options, this.googleChartOptions);
-        }
-
-        this.googleChart.draw(data, options);
-      }
-    },
-
-    createChart : function(options) {
-      return _.extend({}, this.baseChart, options);
+		
+		googleChart.draw(chartData, options);
     }
-
   };
 
   return {
     init: function() { return; },
-    createChart: function(options) {
-      return _private.createChart(options);
+    loadPieChart: function(fieldKey,columns,rows) {
+      return _private.loadPieChart(fieldKey,columns,rows);
     }
   };
 
