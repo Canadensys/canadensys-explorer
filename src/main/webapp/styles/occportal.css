@@ -173,6 +173,7 @@
 .stats_container { /* table */
   float: left;
   width: 360px;
+  margin-top:2em;
 }
 .stats_container td { padding: 3px; }
 

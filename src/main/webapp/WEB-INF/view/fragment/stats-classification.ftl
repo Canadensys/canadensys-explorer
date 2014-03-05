@@ -8,8 +8,8 @@
 <a href="?${URLHelper.replaceCurrentQueryParam(Request,"stat_sel",root.availableFilters.scientificname?c)}">${rc.getMessage("view.stats.scientificname")} (${root.scientificname_count!0})</a>
 
 <div class="stats_group chart_pie">
-  <div class="chart_container" id="classification_chart_div"></div>
-  <table class="stats_container" id="classification_stats">
+  <div class="chart_container" id="chart_pie"></div>
+  <table class="stats_container" id="chart_table">
   <thead>
   	<tr>
      <th>${rc.getMessage("filter."+root.statsFieldKey)}</th>

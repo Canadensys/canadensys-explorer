@@ -7,7 +7,6 @@ Explorer Portal
 /* Control the fly-out panel for occurrence record
 Dependencies:
 jQuery-UI: slide method
-jquery.cookie.js
 */
 EXPLORER.preview = (function() {
 
@@ -86,7 +85,10 @@ EXPLORER.preview = (function() {
 
 }());
 
-
+/* Control the columns in table view
+Dependencies:
+jquery.cookie.js
+*/
 EXPLORER.control = (function() {
 
   'use strict';
@@ -146,7 +148,10 @@ EXPLORER.control = (function() {
 
 }());
 
-
+/* Initialize table row clicks
+Dependencies:
+None
+*/
 EXPLORER.table = (function() {
 
   'use strict';
@@ -207,7 +212,10 @@ EXPLORER.table = (function() {
 
 }());
 
-
+/* Display Google Map on occurrence view
+Dependencies:
+Google Maps
+*/
 EXPLORER.details = (function() {
 
   'use strict';

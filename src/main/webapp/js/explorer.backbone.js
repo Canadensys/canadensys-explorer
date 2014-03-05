@@ -110,7 +110,7 @@ EXPLORER.backbone = (function(){
         filterItem.set('valueText',safeGetValueText(json[key].valueList));
         filterList.add(filterItem);
         lastSearchableFieldId = json[key].searchableFieldId.toString();
-        }
+      }
     }
     //keep the initial state, the other solution could be to receive this from the server
     initialFilterParamMap = $('form',$('#search')).serializeArray();
