@@ -24,6 +24,7 @@ import net.canadensys.dataportal.occurrence.search.OccurrenceSearchableField;
 import net.canadensys.dataportal.occurrence.search.config.OccurrenceSearchableFieldLanguageSupport;
 import net.canadensys.dataportal.occurrence.search.config.SearchServiceConfig;
 import net.canadensys.dataportal.occurrence.search.config.SearchServiceConfig.SearchableFieldEnum;
+import net.canadensys.dataportal.occurrence.search.config.SearchServiceConfig.SearchableFieldGroupEnum;
 import net.canadensys.dataportal.occurrence.search.json.OccurrenceSearchableFieldMixIn;
 import net.canadensys.dataportal.occurrence.search.json.SearchQueryPartMixIn;
 import net.canadensys.dataportal.occurrence.search.parameter.SearchParamHandler;
@@ -77,6 +78,10 @@ public class SearchController {
 	public static final String DWCA_FILENAME_TAG = "dwcaFileName";
 	
 	public static final String STATS_MAX_URL_PARAMETER = "max";
+	
+	//stats view related
+	public static final String STATS_SELECTION_URL_PARAMETER = "stat_sel";
+	public static final String STATS_GROUP_URL_PARAMETER = "stat_group";
 	
 	public static final ObjectMapper JACKSON_MAPPER = new ObjectMapper();
 	static{
@@ -258,20 +263,15 @@ public class SearchController {
 	 * @param searchCriteria
 	 */
 	private void handleSearchStatsView(HashMap<String,Object> model, HttpServletRequest request, Map<String,List<SearchQueryPart>> searchCriteria){
-
-		OccurrenceSearchableField osf = null;
-		Integer count = 0;
-		for(SearchableFieldEnum  currSf : SearchServiceConfig.CLASSIFICATON_SEARCH_FIELDS){
-			osf = searchServiceConfig.getSearchableField(currSf);
-			count = occurrenceSearchService.getDistinctValuesCount(searchCriteria, osf);
-			model.put(osf.getSearchableFieldName() + "_count", count);
+		//extract parameters
+		String statsGroupParameter = request.getParameter(STATS_GROUP_URL_PARAMETER);
+		String statSelection = request.getParameter(STATS_SELECTION_URL_PARAMETER);
+		
+		SearchableFieldGroupEnum statsGroup = SearchableFieldGroupEnum.fromIdentifier(statsGroupParameter);
+		//set default stats group
+		if(statsGroup == null){
+			statsGroup = SearchableFieldGroupEnum.CLASSIFICATION;
 		}
-		
-		Locale locale = RequestContextUtils.getLocale(request);
-		Map<StatsPropertiesEnum,Object> extraProperties = new HashMap<OccurrenceSearchService.StatsPropertiesEnum, Object>();
-		extraProperties.put(StatsPropertiesEnum.RESOURCE_BUNDLE, appConfig.getResourceBundle(locale));
-		
-		String statSelection = request.getParameter("stat_sel");
 		
 		OccurrenceSearchableField searchableField = null;
 		if(!StringUtils.isBlank(statSelection)){
@@ -282,15 +282,38 @@ public class SearchController {
 			catch (Exception e) {/*nothing to do*/}
 		}
 		
-		if( searchableField == null){
-			//use default field
-			searchableField = searchServiceConfig.getSearchableField(SearchableFieldEnum.FAMILY);
+		OccurrenceSearchableField osf = null;
+		Integer count = 0;
+		for(SearchableFieldEnum  currSf : statsGroup.getContent()){
+			osf = searchServiceConfig.getSearchableField(currSf);
+			count = occurrenceSearchService.getDistinctValuesCount(searchCriteria, osf);
+			model.put(osf.getSearchableFieldName() + "_count", count);
+		}
+		
+		Locale locale = RequestContextUtils.getLocale(request);
+		Map<StatsPropertiesEnum,Object> extraProperties = new HashMap<OccurrenceSearchService.StatsPropertiesEnum, Object>();
+		extraProperties.put(StatsPropertiesEnum.RESOURCE_BUNDLE, appConfig.getResourceBundle(locale));
+
+		//ensure that the searchableField is within the current statsGroup
+		if( searchableField == null || !statsGroup.getContent().contains(searchableField)){
+			//set default searchableField
+			switch(statsGroup){
+				case CLASSIFICATION :
+					searchableField = searchServiceConfig.getSearchableField(SearchableFieldEnum.FAMILY);
+					break;
+				case LOCATION : 
+					searchableField = searchServiceConfig.getSearchableField(SearchableFieldEnum.COUNTRY);
+					break;
+				default:
+					searchableField = searchServiceConfig.getSearchableField(SearchableFieldEnum.FAMILY);
+			}
 		}
 		
 		extraProperties.put(StatsPropertiesEnum.MAX_RESULT, 10);
 		ChartModel chartModel = occurrenceSearchService.getValuesFrequencyDistribution(searchCriteria, searchableField, extraProperties);
 		model.put("chartModel", chartModel);
 		model.put("statsFieldKey", searchableField.getSearchableFieldName());
+		model.put("statsGroupKey", statsGroup.toString());
 		model.put("chartRowsJSON",beanAsJSONString(chartModel.getRows()));
 	}
 	

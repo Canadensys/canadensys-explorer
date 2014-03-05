@@ -1,6 +1,7 @@
 package net.canadensys.dataportal.occurrence.search.config;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -32,13 +33,12 @@ public class SearchServiceConfig {
 		COUNTRY(1),FAMILY(2),CONTINENT(3),TAXONRANK(4),
 		DATE_RANGE(5),
 		
-		KINGDOM(14),
-		ORDER(15),
-		SCIENTIFIC_NAME(16),
-		CLASS(18),
-		PHYLUM(19),
+		STATE_PROVINCE(9),
+		KINGDOM(14),ORDER(15),SCIENTIFIC_NAME(16),
 		
-		GENUS(24),
+		CLASS(18),PHYLUM(19),
+		
+		COUNTY(22),MUNICIPALITY(23),GENUS(24),
 		
 		SOURCE_FILE_ID(29),
 		START_YEAR(30)
@@ -47,6 +47,51 @@ public class SearchServiceConfig {
 		private int id;
 		private SearchableFieldEnum(int id){
 			this.id = id;
+		}
+	}
+	
+
+	/**
+	 * Enum that includes groups of different SearchableField.
+	 * @author cgendreau
+	 *
+	 */
+	public enum SearchableFieldGroupEnum{
+		CLASSIFICATION(SearchableFieldEnum.KINGDOM,
+			SearchableFieldEnum.PHYLUM,SearchableFieldEnum.CLASS,
+			SearchableFieldEnum.ORDER,SearchableFieldEnum.FAMILY,
+			SearchableFieldEnum.GENUS,SearchableFieldEnum.SCIENTIFIC_NAME),
+		LOCATION(SearchableFieldEnum.CONTINENT,
+			SearchableFieldEnum.COUNTRY,SearchableFieldEnum.STATE_PROVINCE,
+			SearchableFieldEnum.COUNTY,SearchableFieldEnum.MUNICIPALITY);
+		
+		private List<SearchableFieldEnum> content;
+		private SearchableFieldGroupEnum(SearchableFieldEnum ... groupContent){
+			content = Arrays.asList(groupContent);
+		}
+		
+		/**
+		 * Return the content of this SearchableField group
+		 * @return
+		 */
+		public List<SearchableFieldEnum> getContent(){
+			return content;
+		}
+		
+		/**
+		 * Get a SearchableFieldGroupEnum from a String representation.
+		 * Matching is done against the name of the declared enum element.
+		 * Case-insensitive, null safe.
+		 * @param str
+		 * @return SearchableFieldGroupEnum or null is str can not be found within the enum.
+		 */
+		public static SearchableFieldGroupEnum fromIdentifier(String str){
+			for(SearchableFieldGroupEnum curr : SearchableFieldGroupEnum.values()){
+				if(curr.toString().equalsIgnoreCase(str)){
+					return curr;
+				}
+			}
+			return null;
 		}
 	}
 		
@@ -122,20 +167,6 @@ public class SearchServiceConfig {
 		OCCURENCE_SUMMARY_FIELDS.add("dwcaid");
 	}
 	
-	/**
-	 * Classification related SearchableFieldEnum elements.
-	 */
-	public static final List<SearchableFieldEnum> CLASSIFICATON_SEARCH_FIELDS = new ArrayList<SearchableFieldEnum>();
-	static{
-		CLASSIFICATON_SEARCH_FIELDS.add(SearchableFieldEnum.KINGDOM);
-		CLASSIFICATON_SEARCH_FIELDS.add(SearchableFieldEnum.PHYLUM);
-		CLASSIFICATON_SEARCH_FIELDS.add(SearchableFieldEnum.CLASS);
-		CLASSIFICATON_SEARCH_FIELDS.add(SearchableFieldEnum.ORDER);
-		CLASSIFICATON_SEARCH_FIELDS.add(SearchableFieldEnum.FAMILY);
-		CLASSIFICATON_SEARCH_FIELDS.add(SearchableFieldEnum.GENUS);
-		CLASSIFICATON_SEARCH_FIELDS.add(SearchableFieldEnum.SCIENTIFIC_NAME);
-	}
-	
 	public SearchServiceConfig(){
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.COUNTRY.id,
 				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.COUNTRY.id,"country").singleValue("country",String.class).supportSuggestion().eqOperator().toOccurrenceSearchableField());
@@ -155,8 +186,8 @@ public class SearchServiceConfig {
 				new OccurrenceSearchableFieldBuilder(7,"collectioncode").singleValue("collectioncode",String.class).eqOperator().supportSelectionList().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(8,
 				new OccurrenceSearchableFieldBuilder(8,"datasetname").singleValue("datasetname",String.class).eqOperator().supportSelectionList().toOccurrenceSearchableField());
-		SEARCHABLE_FIELD_MAP.put(9,
-				new OccurrenceSearchableFieldBuilder(9,"stateprovince").singleValue("stateprovince",String.class).eqOperator().supportSuggestion().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.STATE_PROVINCE.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.STATE_PROVINCE.id,"stateprovince").singleValue("stateprovince",String.class).eqOperator().supportSuggestion().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(10,
 				new OccurrenceSearchableFieldBuilder(10,"altituderange").minMaxNumber("minimumelevationinmeters", "maximumelevationinmeters", Double.class).eqOperator().betweenOperator().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(11,
@@ -181,10 +212,10 @@ public class SearchServiceConfig {
 				new OccurrenceSearchableFieldBuilder(20,"hascoordinates").singleValue("hascoordinates",Boolean.class).eqOperator().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(21,
 				new OccurrenceSearchableFieldBuilder(21,"hasmedia").singleValue("hasmedia",Boolean.class).eqOperator().toOccurrenceSearchableField());
-		SEARCHABLE_FIELD_MAP.put(22,
-				new OccurrenceSearchableFieldBuilder(22,"county").singleValue("county",String.class).eqOperator().supportSuggestion().toOccurrenceSearchableField());
-		SEARCHABLE_FIELD_MAP.put(23,
-				new OccurrenceSearchableFieldBuilder(23,"municipality").singleValue("municipality",String.class).eqOperator().supportSuggestion().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.COUNTY.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.COUNTY.id,"county").singleValue("county",String.class).eqOperator().supportSuggestion().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.MUNICIPALITY.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.MUNICIPALITY.id,"municipality").singleValue("municipality",String.class).eqOperator().supportSuggestion().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(28,
 				new OccurrenceSearchableFieldBuilder(28,"boundingbox").geoCoordinates("the_geom").inOperator().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.SOURCE_FILE_ID.id,

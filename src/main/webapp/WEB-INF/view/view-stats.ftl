@@ -25,8 +25,16 @@
       </ul>
     </div>
     <a id="main-content"></a>
-    <#-- TODO includes the right fragment based on ? -->
-    <#include "fragment/stats-classification.ftl">
+    <#switch root.statsGroupKey?lower_case>
+	    <#case "classification">
+			<#include "fragment/stats-classification.ftl">
+	    	<#break>
+	    <#case "location">
+			<#include "fragment/stats-location.ftl">
+	    	<#break>
+	    <#default>
+	    	<#include "fragment/stats-classification.ftl">
+    </#switch>
   </div>
 </div><#-- body -->
 
