@@ -248,6 +248,19 @@
 }
 .filter_info { background-color: #d3d3d3; }
 
+#filter_content fieldset {
+  border:0px;
+  padding:0px;
+  float:left;
+}
+
+#filter_content legend {
+  float:left;
+  margin-right:5px;
+}
+
+#filter_boolean { margin-top:20px; }
+
 /*-- Filter single value --*/
 
 #filter_text input[type=text] { width: 318px; } /* text input */

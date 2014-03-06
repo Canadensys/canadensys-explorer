@@ -94,47 +94,64 @@
 <script type="text/template" id="filter_template_single">
 	<div id="filter_text"></div>
 </script>
-	<!-- Partial match -->
-	<script type="text/template" id="filter_template_partial_match">
-	<p id="partial_match" class="clear_fix"><button type="button">${rc.getMessage("control.search.button.add")}</button> ${rc.getMessage("control.search.partial.operatorprefix")} <%= opText %>: <span id="partial_match_value"></span></p>
-	</script>
-	<!-- Text input -->
-	<script type="text/template" id="filter_template_text_input">
-	<p><input id="value_search" type="text"/></p>
-	</script>
-	<!-- Select box -->
-	<script type="text/template" id="filter_template_select">
-	<div>
-		<p><select id="value_select"></select></p>
-		<p class="clear_fix"><button type="button">${rc.getMessage("control.search.button.add")}</button></p>
-	</div>
-	</script>
-	<!-- Suggestions -->
-	<script type="text/template" id="filter_template_suggestions">
-	<div id="filter_suggestions" class="round">
-		<table id="value_suggestions">
-		<tbody>
-		<#list 1..10 as i>
-		 	<tr class="hidden">
-				<td></td>
-				<td class="right"></td>
-			</tr>
-		</#list>
-		</tbody> 
-		</table>
-	</div>
-	</script>
+
+<!-- Partial match -->
+<script type="text/template" id="filter_template_partial_match">
+<p id="partial_match" class="clear_fix">
+<button type="button">${rc.getMessage("control.search.button.add")}</button> ${rc.getMessage("control.search.partial.operatorprefix")} <%= opText %>: <span id="partial_match_value"></span>
+</p>
+</script>
+
+<!-- Text input -->
+<script type="text/template" id="filter_template_text_input">
+<p><input id="value_search" type="text"/></p>
+</script>
+
+<!-- Select box -->
+<script type="text/template" id="filter_template_select">
+<div>
+	<p><select id="value_select"></select></p>
+	<p class="clear_fix"><button type="button">${rc.getMessage("control.search.button.add")}</button></p>
+</div>
+</script>
+
+<!-- Suggestions -->
+<script type="text/template" id="filter_template_suggestions">
+<div id="filter_suggestions" class="round">
+	<table id="value_suggestions">
+	<tbody>
+	<#list 1..10 as i>
+	 	<tr class="hidden">
+			<td></td>
+			<td class="right"></td>
+		</tr>
+	</#list>
+	</tbody> 
+	</table>
+</div>
+</script>
 	
-	<!-- Boolean input -->
-	<script type="text/template" id="filter_template_boolean_value">
-	<p><button type="button">${rc.getMessage("control.search.button.add")}</button> <%= fieldText %>: <input type="radio" name="boolGroup" value="true" checked /> ${rc.getMessage("filter.value.true")} <input type="radio" name="boolGroup" value="false" /> ${rc.getMessage("filter.value.false")}</p>
-	</script>
+<!-- Boolean input -->
+<script type="text/template" id="filter_template_boolean_value">
+<div id="filter_boolean" class="clear_fix">
+  <fieldset>
+    <legend><%= fieldText %>:</legend>
+    <input type="radio" id="filter_template_boolean_true" name="boolGroup" value="true" checked />
+    <label for="filter_template_boolean_true">${rc.getMessage("filter.value.true")}</label>
+    <input type="radio" id="filter_template_boolean_false" name="boolGroup" value="false" />
+    <label for="filter_template_boolean_false">${rc.getMessage("filter.value.false")}</label>
+  </fieldset>
+  <button type="button">${rc.getMessage("control.search.button.add")}</button>
+</div>
+</script>
 
 <!-- Date template -->
 <script type="text/template" id="filter_template_date">
 <div id="filter_date">
 	<p class="clear_fix">
-		<span id="date_start"><label for="date_start_y" class="label_single">${rc.getMessage("control.search.date.singledate")}</label><label for="date_start_y" class="label_range hidden">${rc.getMessage("control.search.date.startdate")}</label>
+		<span id="date_start">
+		<label for="date_start_y" class="label_single">${rc.getMessage("control.search.date.singledate")}</label>
+		<label for="date_start_y" class="label_range hidden">${rc.getMessage("control.search.date.startdate")}</label>
 			<input id="date_start_y" class="validationYear" type="text" maxlength="4" placeholder="yyyy"/>
 			<input id="date_start_m" class="validationMonth" type="text" maxlength="2" placeholder="mm"/>
 			<input id="date_start_d" class="validationDay" type="text" maxlength="2" placeholder="dd"/> 
