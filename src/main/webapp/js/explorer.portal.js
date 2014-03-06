@@ -49,12 +49,13 @@ EXPLORER.preview = (function() {
         self.hide();
       });
     },
-    
+
     hide: function() {
       this.occPreview.hide("slide", 500);
     },
 
     show: function() {
+      if($(window).scrollTop() >= this.sidebarTop) { this.occPreview.addClass('fixed'); }
       this.occPreview.show("slide", 500);
     },
 
@@ -145,7 +146,7 @@ EXPLORER.control = (function() {
 
 /* Initialize table row clicks
 Dependencies:
-None
+keynavigator.js
 */
 EXPLORER.table = (function() {
 
@@ -163,13 +164,13 @@ EXPLORER.table = (function() {
         this.loadEvents();
       }
     },
-    
+
     getFragment: function(id) {
       $.get("occurrence-preview/"+id, function(htmlFragment) {
         EXPLORER.preview.replacePreviewContent(htmlFragment);
       })
       .fail(function(jqXHR, textStatus, errorThrown) {
-          console.log( textStatus );
+          console.log(textStatus);
         });
     },
 
@@ -180,11 +181,21 @@ EXPLORER.table = (function() {
       $('.last_column',element).addClass('last_column_hide');
     },
 
+    scrollWindow: function(element) {
+      $('html,body').animate({scrollTop: element.offset().top + parseInt(element.css('padding-top'),10) },'fast');
+    },
+
     loadEvents: function() {
-      var self = this;
+      var self = this, previousSelection;
 
       $('tbody tr', this.results).on('click', function() {
-        self.buildResponse($(this));
+        if(previousSelection && previousSelection === this && self.occPreview.is(":visible")) {
+          EXPLORER.preview.hide();
+          $('.last_column',$(this)).removeClass('last_column_hide');
+        } else {
+          self.buildResponse($(this));
+        }
+        previousSelection = this;
       })
       .keynavigator({
         activeClass: 'selected',
@@ -194,12 +205,27 @@ EXPLORER.table = (function() {
             EXPLORER.preview.hide();
             $('.last_column',element).removeClass('last_column_hide');
           },
+          escape : function(element) {
+            EXPLORER.preview.hide();
+            $('.last_column',element).removeClass('last_column_hide');
+          },
           right_arrow : function(element) {
             self.buildResponse($(element));
           },
           enter : function(element) {
             self.buildResponse($(element));
           }
+        }
+      })
+      .on('down', function() {
+        if(!EXPLORER.utils.isScrolledIntoView($(this))) {
+          self.scrollWindow($(this));
+        }
+      })
+      .on('up', function() {
+        var previousRow = $(this).prev().prev();
+        if(previousRow.length > 0 && !EXPLORER.utils.isScrolledIntoView(previousRow)) {
+          self.scrollWindow(previousRow);
         }
       });
 

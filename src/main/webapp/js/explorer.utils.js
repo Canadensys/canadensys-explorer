@@ -134,6 +134,16 @@ EXPLORER.utils = (function(){
       return (isNaN(parseInt(syear, 10)) === isNaN(parseInt(eyear, 10)) &&
           isNaN(parseInt(smonth, 10)) === isNaN(parseInt(emonth, 10)) &&
           isNaN(parseInt(sday, 10)) === isNaN(parseInt(eday, 10)));
+    },
+    
+    isScrolledIntoView: function($el) {
+      var docViewTop = $(window).scrollTop(),
+          docViewBottom = docViewTop + $(window).height(),
+          elemTop = $el.offset().top,
+          elemBottom = elemTop + $el.height();
+
+      return ((elemBottom >= docViewTop) && (elemTop <= docViewBottom)
+        && (elemBottom <= docViewBottom) &&  (elemTop >= docViewTop) );
     }
 
   };
@@ -175,6 +185,9 @@ EXPLORER.utils = (function(){
     },
     isValidDateInterval: function(syear,smonth,sday,eyear,emonth,eday) {
       return _private.isValidDateInterval(syear,smonth,sday,eyear,emonth,eday);
+    },
+    isScrolledIntoView: function(element) {
+      return _private.isScrolledIntoView(element);
     }
   };
 
