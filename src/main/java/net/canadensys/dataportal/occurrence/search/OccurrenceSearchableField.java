@@ -9,8 +9,11 @@ import net.canadensys.query.QueryOperatorEnum;
 import net.canadensys.query.SearchableField;
 import net.canadensys.query.SearchableFieldTypeEnum;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 /**
- * SearchableField implementation for the Occurrence Portal search
+ * SearchableField implementation for the Occurrence Portal search.
  * @author canandesys
  *
  */
@@ -56,6 +59,45 @@ public class OccurrenceSearchableField implements SearchableField{
 		if(toCopy.extraProperties != null){
 			this.extraProperties = new HashMap<String, String>(toCopy.extraProperties);
 		}
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) { return false; }
+		if (obj == this) { return true; }
+		if (obj.getClass() != getClass()) {
+		     return false;
+		}
+		
+		OccurrenceSearchableField osf = (OccurrenceSearchableField) obj;
+		return new EqualsBuilder()
+			.append(searchableFieldId, osf.searchableFieldId)
+			.append(searchableFieldName, osf.searchableFieldName)
+			.append(type, osf.type)
+			.append(searchableFieldTypeEnum, osf.searchableFieldTypeEnum)
+			.append(supportSuggestion, osf.supportSuggestion)
+			.append(supportPartialMatch, osf.supportPartialMatch)
+			.append(supportSelectionList, osf.supportSelectionList)
+			.append(supportedOperator, osf.supportedOperator)
+			.append(relatedFields, osf.relatedFields)
+			.append(extraProperties, osf.extraProperties)
+			.isEquals();
+	}
+	
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder(17, 37)
+				.append(searchableFieldId)
+				.append(searchableFieldName)
+				.append(type)
+				.append(searchableFieldTypeEnum)
+				.append(supportSuggestion)
+				.append(supportPartialMatch)
+				.append(supportSelectionList)
+				.append(supportedOperator)
+				.append(relatedFields)
+				.append(extraProperties)
+			    .toHashCode();
 	}
 	
 	@Override

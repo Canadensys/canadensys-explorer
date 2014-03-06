@@ -48,6 +48,20 @@ public class SearchServiceConfig {
 		private SearchableFieldEnum(int id){
 			this.id = id;
 		}
+		
+		/**
+		 * Get a SearchableFieldEnum from its identifier.
+		 * @param id
+		 * @return SearchableFieldEnum or null if id can not be found within the enum.
+		 */
+		public static SearchableFieldEnum fromIdentifier(int id){
+			for(SearchableFieldEnum curr : SearchableFieldEnum.values()){
+				if(curr.id == id){
+					return curr;
+				}
+			}
+			return null;
+		}
 	}
 	
 
@@ -83,7 +97,7 @@ public class SearchServiceConfig {
 		 * Matching is done against the name of the declared enum element.
 		 * Case-insensitive, null safe.
 		 * @param str
-		 * @return SearchableFieldGroupEnum or null is str can not be found within the enum.
+		 * @return SearchableFieldGroupEnum or null if str can not be found within the enum.
 		 */
 		public static SearchableFieldGroupEnum fromIdentifier(String str){
 			for(SearchableFieldGroupEnum curr : SearchableFieldGroupEnum.values()){

@@ -295,7 +295,8 @@ public class SearchController {
 		extraProperties.put(StatsPropertiesEnum.RESOURCE_BUNDLE, appConfig.getResourceBundle(locale));
 
 		//ensure that the searchableField is within the current statsGroup
-		if( searchableField == null || !statsGroup.getContent().contains(searchableField)){
+		//TODO OccurrenceSearchableField should encapsulate SearchableFieldEnum
+		if( searchableField == null || !statsGroup.getContent().contains(SearchableFieldEnum.fromIdentifier(searchableField.getSearchableFieldId()))){
 			//set default searchableField
 			switch(statsGroup){
 				case CLASSIFICATION :
