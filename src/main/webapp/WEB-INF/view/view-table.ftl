@@ -93,6 +93,7 @@
 <@jsLibAsset libName="underscore-min.js"/>
 <@jsLibAsset libName="backbone-min.js"/>
 <@jsLibAsset libName="jquery.cookie.js"/>
+<@jsLibAsset libName="keynavigator.min.js"/>
 <@jsAsset fileName="explorer" version=root.currentVersion! useMinified=root.useMinified/>
 <@jsAsset fileName="explorer.utils" version=root.currentVersion! useMinified=root.useMinified/>
 <@jsAsset fileName="explorer.backbone" version=root.currentVersion! useMinified=root.useMinified/>

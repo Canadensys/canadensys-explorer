@@ -11,23 +11,23 @@ EXPLORER.chart = (function(){
   var _private = {
     
     loadPieChart : function(fieldKey,rows){
-    var options = {
-      type : 'pie',
-      title: EXPLORER.i18n.getLanguageResource('view.stats.chart.piechart.title') + ' ' + EXPLORER.i18n.getLanguageResource('filter.'+fieldKey)
-    },
-    googleChart = new google.visualization.ColumnChart($('#chart_pie')[0]),
-    chartData = new google.visualization.DataTable();
+      var options = {
+        type : 'pie',
+        title: EXPLORER.i18n.getLanguageResource('view.stats.chart.piechart.title') + ' ' + EXPLORER.i18n.getLanguageResource('filter.'+fieldKey)
+      },
+      googleChart = new google.visualization.ColumnChart($('#chart_pie')[0]),
+      chartData = new google.visualization.DataTable();
 
-    chartData.addColumn('string', fieldKey);
-    chartData.addColumn('number', 'count');
-    chartData.addRows(rows.length);
+      chartData.addColumn('string', fieldKey);
+      chartData.addColumn('number', 'count');
+      chartData.addRows(rows.length);
 
-    $.each(rows, function(i) {
-      chartData.setValue(i, 0, this[0]);
-      chartData.setValue(i, 1, this[1]);
-    });
+      $.each(rows, function(i) {
+        chartData.setValue(i, 0, this[0]);
+        chartData.setValue(i, 1, this[1]);
+      });
     
-    googleChart.draw(chartData, options);
+      googleChart.draw(chartData, options);
     }
   };
 
