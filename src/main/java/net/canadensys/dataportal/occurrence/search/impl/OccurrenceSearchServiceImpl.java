@@ -44,6 +44,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -300,8 +301,16 @@ public class OccurrenceSearchServiceImpl implements OccurrenceSearchService {
 		return cm;
 	}
 	
+	/**
+	 * Get the number of distinct values for a specific column.
+	 * If the column is String based(column.getType()), NULL and empty rows are excluded from the count.
+	 * Caching is used ONLY when searchCriteria.isEmpty().
+	 * @param searchCriteria
+	 * @param column
+	 */
 	@Override
 	@Transactional(readOnly=true)
+	@Cacheable(value="distinctValuesCountCache", key="#column.searchableFieldId", condition="#searchCriteria.isEmpty()")
 	public Integer getDistinctValuesCount(Map<String, List<SearchQueryPart>> searchCriteria, OccurrenceSearchableField column){
 		//copy(deep copy not needed) searchCriteria to not add the non-empty criteria in the provided object.
 		Map<String, List<SearchQueryPart>> innerSearchCriteria = new HashMap<String, List<SearchQueryPart>>();

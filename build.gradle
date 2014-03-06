@@ -19,12 +19,14 @@ ext {
 	sourceCompatibility = JavaVersion.VERSION_1_6
 	sourceEncoding = 'UTF-8'
 	
-	springVersion = '3.2.8.RELEASE'
-	hibernateVersion = '4.2.8.Final'
+	springVersion = '4.0.2.RELEASE'
+	hibernateVersion = '4.3.2.Final'
 	freemarkerVersion = '2.3.20'
 	rewriteVersion = '2.0.10.Final'
+	ehCacheVersion = '2.6.8'
 	//sitemeshVersion = '3.0.0-SNAPSHOT'
 	sitemeshVersion = '2.4.2'
+	//sitemeshVersion = '2.5'
 	
 	dataAccessVersion = '2.4.0-SNAPSHOT'
 	webCoreVersion = '0.1-SNAPSHOT'
@@ -67,8 +69,10 @@ dependencies {
 	compile group: 'org.hibernate', name: 'hibernate-c3p0', version: hibernateVersion
 	compile group: 'org.freemarker', name: 'freemarker', version: freemarkerVersion
 	compile group: 'org.ocpsoft.rewrite', name: 'rewrite-servlet', version: rewriteVersion
+	compile group: 'net.sf.ehcache', name: 'ehcache-core', version: ehCacheVersion
 	//compile group: 'org.sitemesh', name: 'sitemesh', version: sitemeshVersion
 	compile group: 'opensymphony', name: 'sitemesh', version: sitemeshVersion
+	//compile files('./lib/sitemesh-2.5.jar')
 
 	//h2 is included to allow integration testing using a mock database
     compile group: 'com.h2database', name: 'h2', version: h2Version

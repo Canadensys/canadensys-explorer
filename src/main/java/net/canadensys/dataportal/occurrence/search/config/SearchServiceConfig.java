@@ -31,9 +31,10 @@ public class SearchServiceConfig {
 	
 	public enum SearchableFieldEnum{
 		COUNTRY(1),FAMILY(2),CONTINENT(3),TAXONRANK(4),
-		DATE_RANGE(5),
+		DATE_RANGE(5),CATALOG_NUMBER(6),COLLECTION_CODE(7),
+		DATASET_NAME(8),STATE_PROVINCE(9),ALTITUDE_RANGE(10),
+		LOCALITY(11),
 		
-		STATE_PROVINCE(9),
 		KINGDOM(14),ORDER(15),SCIENTIFIC_NAME(16),
 		
 		CLASS(18),PHYLUM(19),
@@ -194,18 +195,18 @@ public class SearchServiceConfig {
 				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.DATE_RANGE.id,"daterange").startEndDate(START_YEAR_PROPERTY,START_MONTH_PROPERTY,START_DAY_PROPERTY).eqOperator().betweenOperator().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.START_YEAR.id,
 				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.START_YEAR.id,"syear").singleValue("syear",Integer.class).eqOperator().betweenOperator().toOccurrenceSearchableField());
-		SEARCHABLE_FIELD_MAP.put(6,
-				new OccurrenceSearchableFieldBuilder(6,"catalognumber").singleValue("catalognumber",String.class).likeOperator(QueryOperatorEnum.ELIKE).toOccurrenceSearchableField());
-		SEARCHABLE_FIELD_MAP.put(7,
-				new OccurrenceSearchableFieldBuilder(7,"collectioncode").singleValue("collectioncode",String.class).eqOperator().supportSelectionList().toOccurrenceSearchableField());
-		SEARCHABLE_FIELD_MAP.put(8,
-				new OccurrenceSearchableFieldBuilder(8,"datasetname").singleValue("datasetname",String.class).eqOperator().supportSelectionList().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.CATALOG_NUMBER.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.CATALOG_NUMBER.id,"catalognumber").singleValue("catalognumber",String.class).likeOperator(QueryOperatorEnum.ELIKE).toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.COLLECTION_CODE.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.COLLECTION_CODE.id,"collectioncode").singleValue("collectioncode",String.class).eqOperator().supportSelectionList().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.DATASET_NAME.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.DATASET_NAME.id,"datasetname").singleValue("datasetname",String.class).eqOperator().supportSelectionList().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.STATE_PROVINCE.id,
 				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.STATE_PROVINCE.id,"stateprovince").singleValue("stateprovince",String.class).eqOperator().supportSuggestion().toOccurrenceSearchableField());
-		SEARCHABLE_FIELD_MAP.put(10,
-				new OccurrenceSearchableFieldBuilder(10,"altituderange").minMaxNumber("minimumelevationinmeters", "maximumelevationinmeters", Double.class).eqOperator().betweenOperator().toOccurrenceSearchableField());
-		SEARCHABLE_FIELD_MAP.put(11,
-				new OccurrenceSearchableFieldBuilder(11,"locality").singleValue("locality",String.class).likeOperator(QueryOperatorEnum.CLIKE).toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.ALTITUDE_RANGE.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.ALTITUDE_RANGE.id,"altituderange").minMaxNumber("minimumelevationinmeters", "maximumelevationinmeters", Double.class).eqOperator().betweenOperator().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.LOCALITY.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.LOCALITY.id,"locality").singleValue("locality",String.class).likeOperator(QueryOperatorEnum.CLIKE).toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(12,
 				new OccurrenceSearchableFieldBuilder(12,"recordedby").singleValue("recordedby",String.class).likeOperator(QueryOperatorEnum.CLIKE).eqOperator().supportSuggestion().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(13,

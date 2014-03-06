@@ -14,6 +14,7 @@ import net.canadensys.chart.ChartModel;
 import net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig;
 import net.canadensys.dataportal.occurrence.search.OccurrenceSearchService.StatsPropertiesEnum;
 import net.canadensys.dataportal.occurrence.search.config.SearchServiceConfig;
+import net.canadensys.dataportal.occurrence.search.config.SearchServiceConfig.SearchableFieldEnum;
 import net.canadensys.query.QueryOperatorEnum;
 import net.canadensys.query.SearchQueryPart;
 import net.canadensys.query.SearchableField;
@@ -119,8 +120,8 @@ public class OccurrenceSearchServiceTest extends AbstractTransactionalJUnit4Spri
     	Map<String,List<SearchQueryPart>> searchCriteria = new HashMap<String, List<SearchQueryPart>>();
     	List<SearchQueryPart> searchCriteriaList = new ArrayList<SearchQueryPart>();
     	
-		SearchableField countrySearchableField = searchServiceConfig.getSearchableFieldbyName("country");
-		SearchableField localitySearchableField = searchServiceConfig.getSearchableFieldbyName("locality");
+		SearchableField countrySearchableField = searchServiceConfig.getSearchableField(SearchableFieldEnum.COUNTRY);
+		SearchableField localitySearchableField = searchServiceConfig.getSearchableField(SearchableFieldEnum.LOCALITY);
 		
     	//Mock a search for all country = USA or Sweden
     	SearchQueryPart sqp1 = new SearchQueryPart();
@@ -146,8 +147,8 @@ public class OccurrenceSearchServiceTest extends AbstractTransactionalJUnit4Spri
     @Test
     public void testGetValuesFrequencyDistribution(){
     	OccurrenceSearchService searchService = (OccurrenceSearchService)applicationContext.getBean("occurrenceSearchService");
-		SearchableField countrySearchableField = searchServiceConfig.getSearchableFieldbyName("country");
-		SearchableField localitySearchableField = searchServiceConfig.getSearchableFieldbyName("locality");
+		SearchableField countrySearchableField = searchServiceConfig.getSearchableField(SearchableFieldEnum.COUNTRY);
+		SearchableField localitySearchableField = searchServiceConfig.getSearchableField(SearchableFieldEnum.LOCALITY);
 		Map<String,List<SearchQueryPart>> searchCriteria = new HashMap<String, List<SearchQueryPart>>();
 		List<SearchQueryPart> searchCriteriaList = new ArrayList<SearchQueryPart>();
 		
