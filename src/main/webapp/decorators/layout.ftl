@@ -1,11 +1,14 @@
+<#-- some /WEB-INF/view/inc/.ftl can come from canadensys-web-core project -->
 <#include "/WEB-INF/view/inc/global-functions.ftl">
 <!DOCTYPE html>
 <html lang="${rc.getLocale().getLanguage()}">
 <head>
 <meta charset="UTF-8">
 <title>${title}</title>
+<link rel="stylesheet" href="http://data.canadensys.net/common/styles/common-1.0.min.css" media="screen,print"/>
+<link rel="shortcut icon" href="http://data.canadensys.net/common/images/favicon.png"/>
 ${head}
-<#include "include/header.ftl">
+<#include "/WEB-INF/view/inc/ga.ftl">
 </head>
 <body>
 	<div id="skip-link">
