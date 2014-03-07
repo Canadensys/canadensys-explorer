@@ -296,12 +296,18 @@
 }
 
 /*-- Filter date / Filter min-max --*/
-
+#filter_date label, #filter_minmax label {
+  margin-left:5px;
+}
 #filter_date label, #filter_minmax label, #download_content label {
-  display: block;
+  display:inline;
   font-weight: bold;
   padding-bottom: 6px;
 }
+#date_start label, #date_end label, #interval_min label, #interval_max label {
+  display:block;
+  margin-left:0px;
+} 
 #filter_date label.hidden, #filter_minmax label.hidden { display: none!important; }
 #filter_date .error, #filter_minmax .error { border-color: red; }
 

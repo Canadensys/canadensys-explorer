@@ -162,7 +162,8 @@
 			<input id="date_end_d" class="validationDay" type="text" maxlength="2" placeholder="dd"/>
 		</span>
 	</p>
-	<p class="clear_fix"><button type="button">${rc.getMessage("control.search.button.add")}</button> <input id="interval" type="checkbox" value="interval"/> ${rc.getMessage("control.search.date.range")}</p>
+	<p class="clear_fix"><button type="button">${rc.getMessage("control.search.button.add")}</button>
+	<input id="interval" type="checkbox" value="interval"/><label for="interval">${rc.getMessage("control.search.date.range")}</label></p>
 	<div class="filter_info round">
 	<table>
 		<tr><td>${rc.getMessage("control.search.date.example1.title")}</td><td>${rc.getMessage("control.search.date.example1")}</td></tr>
@@ -179,10 +180,17 @@
 <script type="text/template" id="filter_template_minmax">
 <div id="filter_minmax">
 	<p class="clear_fix">
-		<span id="interval_min"><label for="value_min" class="label_single">${rc.getMessage("control.search.minmax.single")}</label><label for="value_min" class="label_range hidden">${rc.getMessage("control.search.minmax.min")}</label> <input id="value_min" class="validationNumber" type="text"/></span>
-		<span id="interval_max"><label for="value_max">${rc.getMessage("control.search.minmax.max")}</label> <input id="value_max" class="validationNumber" type="text"/></span>
+		<span id="interval_min">
+		<label for="value_min" class="label_single">${rc.getMessage("control.search.minmax.single")}</label>
+		<label for="value_min" class="label_range hidden">${rc.getMessage("control.search.minmax.min")}</label>
+		<input id="value_min" class="validationNumber" type="text"/></span>
+		<span id="interval_max">
+		  <label for="value_max">${rc.getMessage("control.search.minmax.max")}</label>
+		  <input id="value_max" class="validationNumber" type="text"/>
+		</span>
 	</p>
-	<p class="clear_fix"><button type="button">${rc.getMessage("control.search.button.add")}</button> <input id="interval" type="checkbox" value="interval" /> ${rc.getMessage("control.search.minmax.range")}</p>
+	<p class="clear_fix"><button type="button">${rc.getMessage("control.search.button.add")}</button>
+	<input id="interval" type="checkbox" value="interval" /><label for="interval">${rc.getMessage("control.search.minmax.range")}</label></p>
 </div>
 </script>
 
