@@ -25,8 +25,8 @@
       </ul>
     </div>
     <a id="main-content"></a>
-    <a href="?${URLHelper.replaceCurrentQueryParam(Request,"stat_group","classification")}">${rc.getMessage("view.stats.group.classification")}</a>
-    <a href="?${URLHelper.replaceCurrentQueryParam(Request,"stat_group","location")}">${rc.getMessage("view.stats.group.location")}</a>
+    <a href="?${URLHelper.replaceCurrentQueryParams(Request,["stat_group","classification","stat_sel",""])}">${rc.getMessage("view.stats.group.classification")}</a>
+    <a href="?${URLHelper.replaceCurrentQueryParams(Request,["stat_group","location","stat_sel",""])}">${rc.getMessage("view.stats.group.location")}</a>
     <#switch root.statsGroupKey?lower_case>
 	    <#case "classification">
 			<#include "fragment/stats-classification.ftl">
