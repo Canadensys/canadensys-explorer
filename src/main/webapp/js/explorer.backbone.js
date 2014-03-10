@@ -118,9 +118,11 @@ EXPLORER.backbone = (function(){
     if(!lastSearchableFieldId){
       lastSearchableFieldId = DEFAULT_SEARCHABLE_FIELD_ID;
     }
+
     currFilterKey.set({searchableFieldId:lastSearchableFieldId,
       searchableFieldName:availableSearchFields[lastSearchableFieldId].searchableFieldName,
       searchableFieldText:getAvailableFieldText(availableSearchFields[lastSearchableFieldId].searchableFieldName)});
+
   }
 
   //View that supports the text entry
@@ -166,6 +168,7 @@ EXPLORER.backbone = (function(){
     },
     events : {
       "click #value_suggestions tr" : "createNewSuggestionFilter"
+  
     },
     onTextChanged : function(textSearchModel) {
       var mapParam = {},
@@ -610,13 +613,11 @@ EXPLORER.backbone = (function(){
           searchValue, valueJSON, newFilter;
 
       if(!EXPLORER.utils.isValidNumber(minValue)){
-        //TODO use language resources
         alert(EXPLORER.i18n.getLanguageResource('control.invalid.number'));
         return;
       }
 
       if(isInterval && !EXPLORER.utils.isValidNumber(maxValue)){
-        //TODO use language resources
         alert(EXPLORER.i18n.getLanguageResource('control.invalid.numberinterval'));
         return;
       }

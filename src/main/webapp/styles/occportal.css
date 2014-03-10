@@ -248,6 +248,19 @@
 }
 .filter_info { background-color: #d3d3d3; }
 
+#filter_content fieldset {
+  border:0px;
+  padding:0px;
+  float:left;
+}
+
+#filter_content legend {
+  float:left;
+  margin-right:5px;
+}
+
+#filter_boolean { margin-top:20px; }
+
 /*-- Filter single value --*/
 
 #filter_text input[type=text] { width: 318px; } /* text input */
@@ -283,12 +296,18 @@
 }
 
 /*-- Filter date / Filter min-max --*/
-
+#filter_date label, #filter_minmax label {
+  margin-left:5px;
+}
 #filter_date label, #filter_minmax label, #download_content label {
-  display: block;
+  display:inline;
   font-weight: bold;
   padding-bottom: 6px;
 }
+#date_start label, #date_end label, #interval_min label, #interval_max label {
+  display:block;
+  margin-left:0px;
+} 
 #filter_date label.hidden, #filter_minmax label.hidden { display: none!important; }
 #filter_date .error, #filter_minmax .error { border-color: red; }
 
@@ -428,7 +447,7 @@
   width: 60%;
 }
 
-#occ_preview_media img {
+.occ_preview_data dd img {
   border: none;
   max-width: 32%;
   max-height: 120px;
