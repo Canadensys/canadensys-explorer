@@ -447,7 +447,7 @@
   width: 60%;
 }
 
-#occ_preview_media img {
+.occ_preview_data dd img {
   border: none;
   max-width: 32%;
   max-height: 120px;

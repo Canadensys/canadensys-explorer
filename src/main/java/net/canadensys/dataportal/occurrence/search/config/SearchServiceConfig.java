@@ -153,6 +153,7 @@ public class SearchServiceConfig {
 		OCCURENCE_SUMMARY_FIELDS.add("decimallatitude");
 		OCCURENCE_SUMMARY_FIELDS.add("decimallongitude");
 		OCCURENCE_SUMMARY_FIELDS.add("catalognumber");
+		OCCURENCE_SUMMARY_FIELDS.add("collectioncode");
 		OCCURENCE_SUMMARY_FIELDS.add("country");
 		OCCURENCE_SUMMARY_FIELDS.add("_class");
 		OCCURENCE_SUMMARY_FIELDS.add("eday");

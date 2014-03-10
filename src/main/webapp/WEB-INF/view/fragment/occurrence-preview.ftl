@@ -53,7 +53,7 @@
 	<dt>${rc.getMessage("occ.associatedmedia")}</dt>
 	<dd>
 		<#if root.occViewModel.imageList?has_content>
-			<a href="${root.occViewModel.imageList[0]}"><img src="${root.occViewModel.imageList[0]}" alt="" target="_blank"</img></a>
+			<a href="${root.occViewModel.imageList[0]}"><img src="${root.occViewModel.imageList[0]}" alt="${root.occModel.scientificname!} (${root.occModel.collectioncode!} ${root.occModel.catalognumber!})" target="_blank"/></a>
 		<#elseif root.occViewModel.otherMediaList?has_content>
 			<a href="${root.occViewModel.otherMediaList[0]}">${rc.getMessage("occpage.menu.associatedmedia")}</a>
 		</#if>

@@ -25,7 +25,7 @@
 		<#if root.occViewModel.imageList?has_content>
 			<div id="occpage_image">
 				<#list root.occViewModel.imageList as currImg>
-				<a class="round" href="${currImg}" target="_blank"><span><img src="${currImg}" alt="Image"/></span></a>
+				<a class="round" href="${currImg}"><span><img src="${currImg}" alt="${root.occModel.scientificname?if_exists} (${root.occModel.collectioncode?if_exists} ${root.occModel.catalognumber?if_exists})"/></span></a>
 				</#list>
 			</div>
 		</#if>

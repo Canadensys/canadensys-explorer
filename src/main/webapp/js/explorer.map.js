@@ -85,7 +85,7 @@ EXPLORER.map = (function() {
     },
 
     setupMap: function(previewElementId, mapCanvasId, tileServer, mapQuery) {
-      var lastAutoId = -1, map, marker, cartodb_gmapsv3;
+      var map, marker, cartodb_gmapsv3;
 
       map = new google.maps.Map($('#' + mapCanvasId)[0], {
         center: new google.maps.LatLng(45.5,-73.5),
@@ -100,22 +100,15 @@ EXPLORER.map = (function() {
       });
 
       function onMapClick(e, latlng, pos, data) {
-        if(lastAutoId === data.auto_id){
-          marker.setPosition(null);
-          EXPLORER.preview.togglePreview(this.lastAutoId,data.auto_id);
-          lastAutoId = -1;
-          return;
-        }
         marker.setPosition(latlng);
         $.get('occurrence-preview/'+data.auto_id,'context=map')
           .success(function(htmlFragment){
             EXPLORER.preview.replacePreviewContent(htmlFragment);
-            EXPLORER.preview.togglePreview(undefined,data.auto_id);
+            EXPLORER.preview.show();
           })
            .error(function(jqXHR, textStatus, errorThrown){
              console.log(textStatus+':'+errorThrown);
           });
-        lastAutoId = data.auto_id;
       }
 
       cartodb_gmapsv3 = new CartoDBLayer({
