@@ -66,3 +66,11 @@ ${URLHelper.getLanguageSwitchPath(Request,rc.getLocale().getLanguage(),resourceN
   </#if>
   <#return sortSpan>
 </#function>
+
+<#function getStatsViewButtonClass stat currentStat>
+  <#local selected="">
+  <#if currentStat?has_content && (currentStat?lower_case == stat)>
+    <#local selected="class=\"selected\"">
+  </#if>
+  <#return selected>
+</#function>

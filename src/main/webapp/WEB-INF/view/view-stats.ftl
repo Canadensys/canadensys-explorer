@@ -24,9 +24,14 @@
         <li><a href="?${URLHelper.replaceCurrentQueryParam(Request,"view","stats")}" class="selected">${rc.getMessage("view.stats.header.button")}</a></li>
       </ul>
     </div>
+
     <a id="main-content"></a>
-    <a href="?${URLHelper.replaceCurrentQueryParams(Request,["stat_group","classification","stat_sel",""])}">${rc.getMessage("view.stats.group.classification")}</a>
-    <a href="?${URLHelper.replaceCurrentQueryParams(Request,["stat_group","location","stat_sel",""])}">${rc.getMessage("view.stats.group.location")}</a>
+
+    <ul class="buttons sub_heading">
+      <li><a ${getStatsViewButtonClass("classification", root.statsGroupKey)} href="?${URLHelper.replaceCurrentQueryParams(Request,["stat_group","classification","stat_sel",""])}">${rc.getMessage("view.stats.group.classification")}</a></li>
+      <li><a ${getStatsViewButtonClass("location", root.statsGroupKey)} href="?${URLHelper.replaceCurrentQueryParams(Request,["stat_group","location","stat_sel",""])}">${rc.getMessage("view.stats.group.location")}</a></li>
+      </ul>
+
     <#switch root.statsGroupKey?lower_case>
 	    <#case "classification">
 			<#include "fragment/stats-classification.ftl">

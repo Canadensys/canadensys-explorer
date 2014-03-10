@@ -39,6 +39,10 @@
   top: 0px;
 }
 
+.sub_heading {
+  height:45px;
+}
+
 .skipnav { text-align: left; }
 .skipnav {
   position: absolute;
