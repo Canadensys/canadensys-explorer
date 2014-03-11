@@ -13,7 +13,7 @@ apply from: "http://dl.bintray.com/scalding/generic/waroverlay.gradle"
 //Make sure tomcat will run with the right encoding
 System.setProperty('file.encoding', 'UTF-8')
 
-def group = 'canadensys.net'
+def group = 'net.canadensys'
 
 ext {
 	sourceCompatibility = JavaVersion.VERSION_1_6
@@ -25,8 +25,7 @@ ext {
 	rewriteVersion = '2.0.10.Final'
 	ehCacheVersion = '2.6.8'
 	//sitemeshVersion = '3.0.0-SNAPSHOT'
-	sitemeshVersion = '2.4.2'
-	//sitemeshVersion = '2.5'
+	//sitemeshVersion = '2.4.2'
 	
 	dataAccessVersion = '2.4.0-SNAPSHOT'
 	webCoreVersion = '0.1-SNAPSHOT'
