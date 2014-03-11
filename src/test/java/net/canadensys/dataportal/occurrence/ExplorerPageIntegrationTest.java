@@ -45,6 +45,9 @@ public class ExplorerPageIntegrationTest extends AbstractIntegrationTest {
 		
 		WebElement h1 = browser.findElement(By.cssSelector("h1"));
 		assertTrue(h1.getText().contains("404"));
+		
+		//make sure footer is there
+		assertEquals("div",footerDiv.getTagName());
 	}
 	
 	@Test
