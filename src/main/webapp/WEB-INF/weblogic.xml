@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<weblogic-web-app xmlns="http://xmlns.oracle.com/weblogic/weblogic-web-app">
+<prefer-application-packages>
+	<package-name>org.springframework.*</package-name>
+	<package-name>org.hibernate.*</package-name>
+	<package-name>javax.persistence.*</package-name>
+</prefer-application-packages>
+</weblogic-web-app>
