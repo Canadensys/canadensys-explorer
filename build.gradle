@@ -73,8 +73,8 @@ dependencies {
 	compile group: 'org.ocpsoft.rewrite', name: 'rewrite-servlet', version: rewriteVersion
 	compile group: 'net.sf.ehcache', name: 'ehcache-core', version: ehCacheVersion
 	//compile group: 'org.sitemesh', name: 'sitemesh', version: sitemeshVersion
-	compile group: 'opensymphony', name: 'sitemesh', version: sitemeshVersion
-	//compile files('./lib/sitemesh-2.5.jar')
+	//compile group: 'opensymphony', name: 'sitemesh', version: sitemeshVersion
+	compile files('./lib/sitemesh/sitemesh-2.5.jar')
 
 	//h2 is included to allow integration testing using a mock database
     compile group: 'com.h2database', name: 'h2', version: h2Version

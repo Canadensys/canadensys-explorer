@@ -5,7 +5,6 @@ gradle.properties
 .DS_Store
 tomcat.log
 
-*.jar
 *.war
 *.class
 *.classpath
