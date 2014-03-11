@@ -5,6 +5,7 @@ import javax.servlet.ServletContext;
 import org.ocpsoft.rewrite.annotation.RewriteConfiguration;
 import org.ocpsoft.rewrite.config.Configuration;
 import org.ocpsoft.rewrite.config.ConfigurationBuilder;
+import org.ocpsoft.rewrite.config.Direction;
 import org.ocpsoft.rewrite.servlet.config.HttpConfigurationProvider;
 import org.ocpsoft.rewrite.servlet.config.Path;
 import org.ocpsoft.rewrite.servlet.config.rule.Join;
@@ -46,22 +47,22 @@ public class RewriteConfigurationProvider extends HttpConfigurationProvider{
 //               .where("tail").matches(".*")
 		 
 			 .addRule()
-			 	.when(Path.matches("/{lang}/{path}"))
+			 	.when(Path.matches("/{lang}/{path}").and(Direction.isInbound()))
 			 	.perform(Join.path("/{lang}/{path}").to("/{path}"))
 			 	.where("lang").matches("fr|en")
 	           	.where("path").transposedBy(LocaleTransposition.bundle("urlResource","lang"))
 	         .addRule()
-			 	.when(Path.matches("/{lang}/{path1}/{id1}"))
+			 	.when(Path.matches("/{lang}/{path1}/{id1}").and(Direction.isInbound()))
 			 	.perform(Join.path("/{lang}/{path1}/{id1}").to("/{path1}/{id1}"))
 			 	.where("lang").matches("fr|en")
 	           	.where("path1").transposedBy(LocaleTransposition.bundle("urlResource","lang"))
 	         .addRule()
-			 	.when(Path.matches("/{lang}/{path1}/{id1}/{path2}"))
+			 	.when(Path.matches("/{lang}/{path1}/{id1}/{path2}").and(Direction.isInbound()))
 			 	.perform(Join.path("/{lang}/{path1}/{id1}").to("/{path1}/{id1}/{path2}"))
 			 	.where("lang").matches("fr|en")
 	           	.where("path1").transposedBy(LocaleTransposition.bundle("urlResource","lang"))
 	         .addRule()
-			 	.when(Path.matches("/{lang}/{path1}/{id1}/{path2}/{id2}"))
+			 	.when(Path.matches("/{lang}/{path1}/{id1}/{path2}/{id2}").and(Direction.isInbound()))
 			 	.perform(Join.path("/{lang}/{path1}/{id1}/{path2}/{id2}").to("/{path1}/{id1}/{path2}/{id2}"))
 			 	.where("lang").matches("fr|en")
 	           	.where("path1").transposedBy(LocaleTransposition.bundle("urlResource","lang"))

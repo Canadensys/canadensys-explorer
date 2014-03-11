@@ -18,6 +18,7 @@ import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
 
 import net.canadensys.chart.ChartModel;
+import net.canadensys.dataportal.occurrence.cache.CacheManagementServiceIF;
 import net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig;
 import net.canadensys.dataportal.occurrence.dao.OccurrenceDAO;
 import net.canadensys.dataportal.occurrence.map.MapServerAccess;
@@ -310,7 +311,7 @@ public class OccurrenceSearchServiceImpl implements OccurrenceSearchService {
 	 */
 	@Override
 	@Transactional(readOnly=true)
-	@Cacheable(value="distinctValuesCountCache", key="#column.searchableFieldId", condition="#searchCriteria.isEmpty()")
+	@Cacheable(value=CacheManagementServiceIF.CACHE_NAME_DISTINCT_VALUES_COUNT, key="#column.searchableFieldId", condition="#searchCriteria.isEmpty()")
 	public Integer getDistinctValuesCount(Map<String, List<SearchQueryPart>> searchCriteria, OccurrenceSearchableField column){
 		//copy(deep copy not needed) searchCriteria to not add the non-empty criteria in the provided object.
 		Map<String, List<SearchQueryPart>> innerSearchCriteria = new HashMap<String, List<SearchQueryPart>>();

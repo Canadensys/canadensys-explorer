@@ -4,13 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.canadensys.dataportal.occurrence.cache.CacheManagementService;
+import net.canadensys.dataportal.occurrence.cache.CacheManagementServiceIF;
 import net.canadensys.dataportal.occurrence.search.OccurrenceSearchService;
 import net.canadensys.dataportal.occurrence.search.OccurrenceSearchableField;
 import net.canadensys.dataportal.occurrence.search.config.SearchServiceConfig;
 import net.canadensys.dataportal.occurrence.search.config.SearchServiceConfig.SearchableFieldEnum;
 import net.canadensys.dataportal.occurrence.search.config.SearchServiceConfig.SearchableFieldGroupEnum;
 import net.canadensys.query.SearchQueryPart;
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,7 +25,7 @@ import org.springframework.stereotype.Service;
  *
  */
 @Service
-public class CacheManagementServiceImpl implements CacheManagementService{
+public class CacheManagementServiceImpl implements CacheManagementServiceIF{
 	
 	@Autowired
 	private OccurrenceSearchService occurrenceSearchService;
@@ -46,5 +48,16 @@ public class CacheManagementServiceImpl implements CacheManagementService{
 			osf = searchServiceConfig.getSearchableField(currSf);
 			occurrenceSearchService.getDistinctValuesCount(emptySearchCriteria, osf);
 		}
+	}
+	
+	public void reloadPreLoadedCache(){
+		
+		//clear cache
+		Cache cache = CacheManager.getCacheManager(CacheManager.DEFAULT_NAME).getCache(CACHE_NAME_DISTINCT_VALUES_COUNT);
+		if(cache != null){
+			cache.removeAll();
+		}
+		//reload
+		preLoadCache();
 	}
 }
