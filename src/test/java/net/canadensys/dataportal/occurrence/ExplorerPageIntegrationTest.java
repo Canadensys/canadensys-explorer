@@ -1,7 +1,10 @@
 package net.canadensys.dataportal.occurrence;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -42,9 +45,6 @@ public class ExplorerPageIntegrationTest extends AbstractIntegrationTest {
 		
 		WebElement h1 = browser.findElement(By.cssSelector("h1"));
 		assertTrue(h1.getText().contains("404"));
-		
-		//make sure footer is there
-		assertEquals("div",footerDiv.getTagName());
 	}
 	
 	@Test
@@ -59,5 +59,27 @@ public class ExplorerPageIntegrationTest extends AbstractIntegrationTest {
 		
 		//make sure footer is there
 		assertEquals("div",footerDiv.getTagName());
+	}
+
+	@Test
+	public void testCookie() {
+		browser.get(TESTING_SERVER_URL+"search?view=table");
+		
+		//bind the WebElement to the current page
+		PageFactory.initElements(browser, this);
+		
+		WebElement display_button = browser.findElement(By.linkText("Display"));
+		display_button.click();
+		
+		WebElement toggle_scientific = browser.findElement(By.id("toggle-col-0"));
+		toggle_scientific.click();
+		
+		List<WebElement> column_headers = browser.findElements(By.cssSelector("table#results thead tr th"));
+		assertFalse(column_headers.get(0).isDisplayed());
+
+		browser.navigate().refresh();
+		
+		List<WebElement> column_headers_refreshed = browser.findElements(By.cssSelector("table#results thead tr th"));
+		assertFalse(column_headers_refreshed.get(0).isDisplayed());
 	}
 }
