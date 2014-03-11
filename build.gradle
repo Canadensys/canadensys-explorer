@@ -30,6 +30,7 @@ ext {
 	
 	dataAccessVersion = '2.4.0-SNAPSHOT'
 	webCoreVersion = '0.1-SNAPSHOT'
+	canadensysWebThemeVersion = '0.1-SNAPSHOT'
 
 	tomcatVersion = '6.0.29'
 	seleniumVersion = '2.39.0'
@@ -57,6 +58,7 @@ dependencies {
 	compile group: 'net.canadensys', name: 'canadensys-data-access', version: dataAccessVersion
 	compile group: 'net.canadensys', name: 'canadensys-web-core', version: webCoreVersion
 	compile("net.canadensys:canadensys-webapp-core:${webCoreVersion}@war")
+	compile("net.canadensys:canadensys-web-theme:${canadensysWebThemeVersion}@war")
 	
 	compile group: 'log4j', name: 'log4j', version: '1.2.17'
 	compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.2'
@@ -100,7 +102,6 @@ war {
         include ("*.css")
 	}
 	webInf { from "${buildDir}/config" }
-	//webInf { from "../canadensys-view-includes/WEB-INF" }
 }
 
 tomcatRunWar {

@@ -2,7 +2,7 @@
 <#include "../inc/functions.ftl">
 <#include "../inc/global-functions.ftl">
 <head>
-<title>${rc.getMessage("viewinclude.http404.title")}</title>
+<title>${rc.getMessage("cwt.http404.title")}</title>
 <@cssAsset fileName="occportal" version=root.currentVersion! useMinified=false/>
 </head>
 <content tag="lang_switch">
@@ -10,7 +10,7 @@
 </content>
 <div id="body">
 	<div id="content" class="no_side_bar">
-		<h1>${rc.getMessage("viewinclude.http404.title")}</h1>
-		<p>${rc.getMessage("viewinclude.http404.message")}</p>
+		<h1>${rc.getMessage("cwt.http404.title")}</h1>
+		<p>${rc.getMessage("cwt.http404.message")}</p>
 	</div>
 </div>
