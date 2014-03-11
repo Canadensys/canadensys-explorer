@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<weblogic-web-app xmlns="http://xmlns.oracle.com/weblogic/weblogic-web-app">
-<prefer-application-packages>
-	<package-name>org.springframework.*</package-name>
-	<package-name>org.hibernate.*</package-name>
-	<package-name>javax.persistence.*</package-name>
-</prefer-application-packages>
-</weblogic-web-app>
+<wls:weblogic-web-app
+xmlns:wls="http://xmlns.oracle.com/weblogic/weblogic-web-app"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd
+http://xmlns.oracle.com/weblogic/weblogic-web-app
+http://xmlns.oracle.com/weblogic/weblogic-web-app/1.4/weblogic-web-app.xsd">
+
+<wls:weblogic-version>12.1.1</wls:weblogic-version>
+     <wls:context-root>explorer</wls:context-root>
+     <wls:container-descriptor>
+     <wls:prefer-web-inf-classes>false</wls:prefer-web-inf-classes>
+         <wls:prefer-application-packages>
+             <wls:package-name>javax.persistence.*</wls:package-name>
+         </wls:prefer-application-packages>
+     </wls:container-descriptor>
+</wls:weblogic-web-app>
