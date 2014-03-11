@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class CacheInitializationService implements InitializingBean{
 	
 	@Autowired
-	private CacheManagementService cacheManagementService;
+	private CacheManagementServiceIF cacheManagementService;
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
