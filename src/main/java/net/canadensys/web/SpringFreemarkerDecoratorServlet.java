@@ -8,9 +8,8 @@ import javax.servlet.ServletException;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.opensymphony.module.sitemesh.freemarker.FreemarkerDecoratorServlet;
-
 import freemarker.ext.beans.BeansWrapper;
+import freemarker.ext.servlet.FreemarkerServlet;
 import freemarker.template.TemplateModelException;
 
 /**
@@ -36,7 +35,7 @@ import freemarker.template.TemplateModelException;
  * @author canadensys
  *
  */
-public class SpringFreemarkerDecoratorServlet extends FreemarkerDecoratorServlet {
+public class SpringFreemarkerDecoratorServlet extends FreemarkerServlet {
 
 	private static final long serialVersionUID = 1942463095708194219L;
 
