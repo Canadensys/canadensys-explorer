@@ -3,7 +3,7 @@
 <#include "../inc/global-functions.ftl">
 <head>
 <title>${rc.getMessage("cwt.http404.title")}</title>
-<@cssAsset fileName="occportal" version=root.currentVersion! useMinified=false/>
+<@cssAsset fileName="occportal" version=(root.currentVersion)! useMinified=false/>
 </head>
 <content tag="lang_switch">
 <@i18nLanguageSwitch resourceName="search"/>

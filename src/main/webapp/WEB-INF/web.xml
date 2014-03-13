@@ -55,7 +55,6 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j
 	
 	<filter>
 		<filter-name>sitemesh</filter-name>
-<!-- 		<filter-class>net.canadensys.dataportal.occurrence.config.SiteMeshFilterOverride</filter-class> -->
 		<filter-class>org.sitemesh.config.ConfigurableSiteMeshFilter</filter-class>
 	</filter>
 
