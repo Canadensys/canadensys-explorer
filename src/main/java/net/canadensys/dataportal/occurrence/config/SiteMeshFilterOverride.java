@@ -43,9 +43,7 @@ public class SiteMeshFilterOverride extends SiteMeshFilter{
 		
 		public ContainerTweaksOverride(String serverInfo){
 			isTomcat = (serverInfo.toLowerCase().contains("tomcat"));
-			System.out.println("isTomcat??" + isTomcat);
 			isWebLogic = (serverInfo.toLowerCase().contains("weblogic"));
-			System.out.println("isWebLogic??" + isWebLogic);
 		}
 		
 		@Override
