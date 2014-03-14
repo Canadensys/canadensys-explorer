@@ -1,9 +1,9 @@
 INSERT INTO occurrence(
-auto_id,datasetname,sourcefileid,dwcaid,associatedmedia,scientificname,taxonrank,country,stateprovince,collectioncode,catalognumber,minimumelevationinmeters,maximumelevationinmeters,syear,habitat)
+auto_id,datasetname,sourcefileid,dwcaid,associatedmedia,scientificname,taxonrank,country,stateprovince,collectioncode,catalognumber,minimumelevationinmeters,maximumelevationinmeters,syear,habitat,_class,_order)
 VALUES (
 1,'E. C. Smith Herbarium (ACAD)','acad-specimens',
 'ACAD-1','http://procyon.acadiau.ca/ecsmith/cgi-bin/image.cgi?ECS019597,jpeg; http://procyon.acadiau.ca/ecsmith/cgi-bin/image.cgi?ECS019597.jpeg',
-'Acer pseudoplatanus','species','Canada','Nova Scotia','ACAD','ECS019597',100,200,1980,'Under rocks'
+'Acer pseudoplatanus','species','Canada','Nova Scotia','ACAD','ECS019597',100,200,1980,'Under rocks','Magnoliopsida','Sapindales'
 );
 INSERT INTO occurrence_raw(
 auto_id,datasetname,sourcefileid,dwcaid,associatedmedia,scientificname,taxonrank,country,stateprovince,collectioncode,catalognumber,year,habitat)
@@ -26,9 +26,14 @@ VALUES (
 'ACAD-2','Myosotis arvensis','species','Canada','Nova Scotia','ACAD','10440',2013, 'On a lobster claw'
 );
 
-
 INSERT INTO resource_contact(
             id, sourcefileid, resource_name, name, position_name, organization_name, 
             address, city, administrative_area, country, postal_code, 
             email)
 VALUES (1, 'acad-specimens', 'E. C. Smith Herbarium (ACAD)', 'Greedo', 'Manager', 'Sith', '1212 Death Star Road', 'Jawas County', 'Dunes', 'Tatooine', 'R1-D2', 'greedo@tatooine.org');
+
+INSERT INTO unique_values(id,key,occurrence_count,value,unaccented_value)
+VALUES (1,'_class',1,'Magnoliopsida','magnoliopsida');
+
+INSERT INTO unique_values(id,key,occurrence_count,value,unaccented_value)
+VALUES (2,'_order',1,'Sapindales','sapindales');
