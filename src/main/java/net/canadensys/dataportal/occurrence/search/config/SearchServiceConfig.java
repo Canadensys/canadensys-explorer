@@ -40,7 +40,7 @@ public class SearchServiceConfig {
 		CLASS(18),PHYLUM(19),
 		
 		COUNTY(22),MUNICIPALITY(23),GENUS(24),
-		
+		DECADE(26),
 		SOURCE_FILE_ID(29),
 		START_YEAR(30)
 		;
@@ -78,7 +78,8 @@ public class SearchServiceConfig {
 			SearchableFieldEnum.GENUS,SearchableFieldEnum.SCIENTIFIC_NAME),
 		LOCATION(SearchableFieldEnum.CONTINENT,
 			SearchableFieldEnum.COUNTRY,SearchableFieldEnum.STATE_PROVINCE,
-			SearchableFieldEnum.COUNTY,SearchableFieldEnum.MUNICIPALITY);
+			SearchableFieldEnum.COUNTY,SearchableFieldEnum.MUNICIPALITY),
+		DATE(SearchableFieldEnum.DECADE);
 		
 		private List<SearchableFieldEnum> content;
 		private SearchableFieldGroupEnum(SearchableFieldEnum ... groupContent){
@@ -242,8 +243,8 @@ public class SearchServiceConfig {
 				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.GENUS.id,"genus").singleValue("genus",String.class).eqOperator().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(25,
 				new OccurrenceSearchableFieldBuilder(25,"species").singleValue("species",String.class).eqOperator().toOccurrenceSearchableField());
-		SEARCHABLE_FIELD_MAP.put(26,
-				new OccurrenceSearchableFieldBuilder(26,"decade").singleValue("decade",Integer.class).eqOperator().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.DECADE.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.DECADE.id,"decade").singleValue("decade",Integer.class).eqOperator().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(27,
 				new OccurrenceSearchableFieldBuilder(27,"averagealtituderounded").singleValue("averagealtituderounded",Integer.class).eqOperator().toOccurrenceSearchableField());
 		

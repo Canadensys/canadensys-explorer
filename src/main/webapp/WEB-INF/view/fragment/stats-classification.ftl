@@ -26,3 +26,8 @@
   </tbody> 
   </table>
 </div>
+
+<!-- JavaScript init call related to this statistic view -->
+<#macro statsJavaScriptInit>
+	EXPLORER.chart.loadPieChart('${root.statsFieldKey}',${root.chartRowsJSON});
+</#macro>

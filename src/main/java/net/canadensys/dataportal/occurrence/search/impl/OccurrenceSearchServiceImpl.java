@@ -303,6 +303,63 @@ public class OccurrenceSearchServiceImpl implements OccurrenceSearchService {
 	}
 	
 	/**
+	 * Get all values and their count for a specific searchCriteria/column.
+	 * @param searchCriteria
+	 * @param column
+	 * @param extraProperties StatsPropertiesEnum.RESOURCE_BUNDLE, StatsPropertiesEnum.MAX_RESULT
+	 * @return 
+	 */
+	@Override
+	@Transactional(readOnly=true)
+	public Map<Object,Integer> getValuesFrequencyDistributionAsMap(Map<String, List<SearchQueryPart>> searchCriteria, OccurrenceSearchableField column, Map<StatsPropertiesEnum,Object> extraProperties){
+		ResourceBundle resourceBundle = (ResourceBundle)extraProperties.get(StatsPropertiesEnum.RESOURCE_BUNDLE);
+		Integer maxResult = (Integer)extraProperties.get(StatsPropertiesEnum.MAX_RESULT);
+		
+		//compute the total before we add the non empty criteria
+		int total = occurrenceDAO.getOccurrenceCount(searchCriteria);
+		
+		addNonEmptyCriteria(column, searchCriteria);
+		List<SimpleImmutableEntry<String,Integer>> results = occurrenceDAO.getValueCount(searchCriteria, column.getRelatedField(), maxResult);
+		
+		int currCount = 0;
+
+		Map<Object,Integer> statsData = new HashMap<Object, Integer>();
+		for(SimpleImmutableEntry<String,Integer> currRow : results){
+			Object key = null;
+			if(!StringUtils.isBlank(currRow.getKey())){
+				if(column.getType().equals(String.class)){
+					key = currRow.getKey();
+				}
+				else{
+					key = NumberUtils.parseNumber(currRow.getKey(), column.getType());
+					if(key == null){
+						LOGGER.fatal("Unparsable column type");
+					}
+				}
+				statsData.put(key, currRow.getValue());
+				currCount += currRow.getValue();
+			}
+			else{
+				LOGGER.error("Empty value found! Column:"+currRow.getKey());
+			}
+		}
+		
+		//create an other/no value row (if necessary)
+		if(currCount != total){
+			String key;
+			//if the number of row is lower than maxResult, it means that the remaining rows are null or empty.
+			if(maxResult != null && statsData.size() < maxResult){
+				key = resourceBundle.getString("view.stats.novalue");
+			}
+			else{// here, the remaining rows contain other value including null or empty value
+				key = resourceBundle.getString("view.stats.other");
+			}
+			statsData.put(key, total - currCount);
+		}
+		return statsData;
+	}
+	
+	/**
 	 * Get the number of distinct values for a specific column.
 	 * If the column is String based(column.getType()), NULL and empty rows are excluded from the count.
 	 * Caching is used ONLY when searchCriteria.isEmpty().

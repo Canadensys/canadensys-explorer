@@ -81,6 +81,14 @@ public interface OccurrenceSearchService {
 	 */
 	public ChartModel getValuesFrequencyDistribution(Map<String, List<SearchQueryPart>> searchCriteria, OccurrenceSearchableField column, Map<StatsPropertiesEnum,Object> extraProperties);
 	
+	/**
+	 * Get all values and their count for a specific searchCriteria/column.
+	 * @param searchCriteria
+	 * @param column
+	 * @param extraProperties (see implementation)
+	 * @return 
+	 */
+	public Map<Object,Integer> getValuesFrequencyDistributionAsMap (Map<String, List<SearchQueryPart>> searchCriteria, OccurrenceSearchableField column, Map<StatsPropertiesEnum,Object> extraProperties);
 	
 	/**
 	 * Returns the number of distinct values for a specific searchCriteria/field.

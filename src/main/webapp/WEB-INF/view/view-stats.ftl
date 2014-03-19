@@ -30,7 +30,8 @@
     <ul class="buttons sub_heading">
       <li><a ${getStatsViewButtonClass("classification", root.statsGroupKey)} href="?${URLHelper.replaceCurrentQueryParams(Request,["stat_group","classification","stat_sel",""])}">${rc.getMessage("view.stats.group.classification")}</a></li>
       <li><a ${getStatsViewButtonClass("location", root.statsGroupKey)} href="?${URLHelper.replaceCurrentQueryParams(Request,["stat_group","location","stat_sel",""])}">${rc.getMessage("view.stats.group.location")}</a></li>
-      </ul>
+      <li><a ${getStatsViewButtonClass("date", root.statsGroupKey)} href="?${URLHelper.replaceCurrentQueryParams(Request,["stat_group","date","stat_sel",""])}">${rc.getMessage("view.stats.group.date")}</a></li>
+    </ul>
 
     <#switch root.statsGroupKey?lower_case>
 	    <#case "classification">
@@ -38,6 +39,9 @@
 	    	<#break>
 	    <#case "location">
 			<#include "fragment/stats-location.ftl">
+	    	<#break>
+	    <#case "date">
+			<#include "fragment/stats-date.ftl">
 	    	<#break>
 	    <#default>
 	    	<#include "fragment/stats-classification.ftl">
@@ -60,7 +64,7 @@
 <script>
 $(function() {
   <@controlJavaScriptInit/>
-  EXPLORER.chart.loadPieChart('${root.statsFieldKey}',${root.chartRowsJSON});
+  <@statsJavaScriptInit/>
 });
 google.load('visualization', '1', {'packages':['corechart']});
 </script>
