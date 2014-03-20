@@ -3,6 +3,7 @@ package net.canadensys.dataportal.occurrence.cache.impl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 import net.canadensys.dataportal.occurrence.cache.CacheManagementServiceIF;
 import net.canadensys.dataportal.occurrence.search.OccurrenceSearchService;
@@ -30,11 +31,13 @@ public class CacheManagementServiceImpl implements CacheManagementServiceIF{
 	@Autowired
 	private OccurrenceSearchService occurrenceSearchService;
 	
-	//Configuration
 	@Autowired
 	@Qualifier("searchServiceConfig")
 	private SearchServiceConfig searchServiceConfig;
 	
+	private AtomicLong preLoadedCacheTimestamp = new AtomicLong(0);
+	
+	@Override
 	@Async
 	public void preLoadCache(){
 		//to avoid any issue with the cache, simply call the service directly.
@@ -48,8 +51,10 @@ public class CacheManagementServiceImpl implements CacheManagementServiceIF{
 			osf = searchServiceConfig.getSearchableField(currSf);
 			occurrenceSearchService.getDistinctValuesCount(emptySearchCriteria, osf);
 		}
+		preLoadedCacheTimestamp.set(System.currentTimeMillis());
 	}
 	
+	@Override
 	public void reloadPreLoadedCache(){
 		
 		//clear cache
@@ -59,5 +64,10 @@ public class CacheManagementServiceImpl implements CacheManagementServiceIF{
 		}
 		//reload
 		preLoadCache();
+	}
+	
+	@Override
+	public long getPreLoadedCacheTimestamp() {
+		return preLoadedCacheTimestamp.get();
 	}
 }

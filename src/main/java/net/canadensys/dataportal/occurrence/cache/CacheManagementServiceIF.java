@@ -18,5 +18,11 @@ public interface CacheManagementServiceIF {
 	 * Reload elements in cache that are expensive in time to create but cheap in memory to hold.
 	 */
 	public void reloadPreLoadedCache();
+	
+	/**
+	 * Get the timestamp of the current preloaded cache content.
+	 * @return
+	 */
+	public long getPreLoadedCacheTimestamp();
 
 }
