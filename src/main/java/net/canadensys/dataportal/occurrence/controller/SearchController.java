@@ -284,11 +284,13 @@ public class SearchController {
 		
 		OccurrenceSearchableField osf = null;
 		Integer count = 0;
-		//TODO we should not compute that for date and altitude
-		for(SearchableFieldEnum  currSf : statsGroup.getContent()){
-			osf = searchServiceConfig.getSearchableField(currSf);
-			count = occurrenceSearchService.getDistinctValuesCount(searchCriteria, osf);
-			model.put(osf.getSearchableFieldName() + "_count", count);
+		//Only computes count for the entire group when there is more than one element in the group
+		if(statsGroup.getContent().size() > 1){
+			for(SearchableFieldEnum  currSf : statsGroup.getContent()){
+				osf = searchServiceConfig.getSearchableField(currSf);
+				count = occurrenceSearchService.getDistinctValuesCount(searchCriteria, osf);
+				model.put(osf.getSearchableFieldName() + "_count", count);
+			}
 		}
 		
 		Locale locale = RequestContextUtils.getLocale(request);
@@ -313,6 +315,9 @@ public class SearchController {
 				case DATE :
 					searchableField = searchServiceConfig.getSearchableField(SearchableFieldEnum.DECADE);
 					break;
+				case ALTITUDE :
+					searchableField = searchServiceConfig.getSearchableField(SearchableFieldEnum.AVERAGE_ALTITUDE_ROUNDED);
+					break;
 				default:
 					searchableField = searchServiceConfig.getSearchableField(SearchableFieldEnum.FAMILY);
 			}
@@ -320,32 +325,52 @@ public class SearchController {
 			searchableFieldEnum = SearchableFieldEnum.fromIdentifier(searchableField.getSearchableFieldId());
 		}
 		
-		if(searchableFieldEnum == SearchableFieldEnum.DECADE){
-			Map<Object,Integer> statsData = occurrenceSearchService.getValuesFrequencyDistributionAsMap(searchCriteria, searchableField, extraProperties);
-			Map<Integer,Integer> statsDataCorrectedKey = new HashMap<Integer, Integer>(statsData.size());
-			
-			for(Object currKey :statsData.keySet()){
-				if(NumberUtils.isNumber(currKey.toString())){
-					statsDataCorrectedKey.put(Integer.valueOf(currKey.toString()), statsData.get(currKey));
-				}
-			}
-			
-			Map<String,Integer> formatedStatsData = StatsTransformation.transformDecadeData(statsDataCorrectedKey, appConfig.getResourceBundle(locale));
-			model.put("statsData", formatedStatsData);
-			model.put("statsFieldKey", searchableField.getSearchableFieldName());
-			model.put("statsGroupKey", statsGroup.toString());
-			model.put("statsDataJSON",beanAsJSONString(formatedStatsData));
+		Map<?,Integer> statsData = null;
+		if(searchableFieldEnum == SearchableFieldEnum.DECADE || searchableFieldEnum == SearchableFieldEnum.AVERAGE_ALTITUDE_ROUNDED){
+			Map<Object,Integer> histogramData = occurrenceSearchService.getValuesFrequencyDistributionAsMap(searchCriteria, searchableField, extraProperties);
+			statsData = applyHistogramDataTransformation(searchableFieldEnum,locale,histogramData);
 		}
 		else{
-			// TODO use statsData for other charts too
 			extraProperties.put(StatsPropertiesEnum.MAX_RESULT, 10);
-			ChartModel chartModel = occurrenceSearchService.getValuesFrequencyDistribution(searchCriteria, searchableField, extraProperties);
-			
-			model.put("chartModel", chartModel);
-			model.put("statsFieldKey", searchableField.getSearchableFieldName());
-			model.put("statsGroupKey", statsGroup.toString());
-			model.put("chartRowsJSON",beanAsJSONString(chartModel.getRows()));
+			statsData = occurrenceSearchService.getValuesFrequencyDistributionAsMap(searchCriteria, searchableField, extraProperties);
 		}
+		model.put("statsData", statsData);
+		model.put("statsFieldKey", searchableField.getSearchableFieldName());
+		model.put("statsGroupKey", statsGroup.toString());
+		model.put("statsDataJSON",beanAsJSONString(statsData));
+	}
+	
+	/**
+	 * For histogram display, data transformation is required.
+	 * @param searchableFieldEnum
+	 * @param locale
+	 * @param statsData
+	 * @return
+	 */
+	private Map<String,Integer> applyHistogramDataTransformation(SearchableFieldEnum searchableFieldEnum, Locale locale, Map<Object,Integer> statsData){
+		Map<String,Integer> formatedStatsData = null;
+		//We only support histogram with Integer as key (decade, altitude)
+		Map<Integer,Integer> statsDataCorrectedKey = new HashMap<Integer, Integer>(statsData.size());
+		for(Object currKey :statsData.keySet()){
+			if(NumberUtils.isNumber(currKey.toString())){
+				statsDataCorrectedKey.put(Integer.valueOf(currKey.toString()), statsData.get(currKey));
+			}
+		}
+		switch (searchableFieldEnum) {
+			case DECADE:
+				formatedStatsData = StatsTransformation.transformDecadeData(statsDataCorrectedKey, appConfig.getResourceBundle(locale));
+				break;
+			case AVERAGE_ALTITUDE_ROUNDED:
+				formatedStatsData = StatsTransformation.transformAltitudeData(statsDataCorrectedKey, appConfig.getResourceBundle(locale));
+				break;
+			default:
+				break;
+		}
+		
+		if(formatedStatsData == null){
+			LOGGER.error("No data transformation found for SearchableFieldEnum " + searchableFieldEnum);
+		}
+		return formatedStatsData;
 	}
 	
 	/**

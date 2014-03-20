@@ -31,6 +31,7 @@
       <li><a ${getStatsViewButtonClass("classification", root.statsGroupKey)} href="?${URLHelper.replaceCurrentQueryParams(Request,["stat_group","classification","stat_sel",""])}">${rc.getMessage("view.stats.group.classification")}</a></li>
       <li><a ${getStatsViewButtonClass("location", root.statsGroupKey)} href="?${URLHelper.replaceCurrentQueryParams(Request,["stat_group","location","stat_sel",""])}">${rc.getMessage("view.stats.group.location")}</a></li>
       <li><a ${getStatsViewButtonClass("date", root.statsGroupKey)} href="?${URLHelper.replaceCurrentQueryParams(Request,["stat_group","date","stat_sel",""])}">${rc.getMessage("view.stats.group.date")}</a></li>
+      <li><a ${getStatsViewButtonClass("altitude", root.statsGroupKey)} href="?${URLHelper.replaceCurrentQueryParams(Request,["stat_group","altitude","stat_sel",""])}">${rc.getMessage("view.stats.group.altitude")}</a></li>
     </ul>
 
     <#switch root.statsGroupKey?lower_case>
@@ -42,6 +43,9 @@
 	    	<#break>
 	    <#case "date">
 			<#include "fragment/stats-date.ftl">
+	    	<#break>
+	    <#case "altitude">
+			<#include "fragment/stats-altitude.ftl">
 	    	<#break>
 	    <#default>
 	    	<#include "fragment/stats-classification.ftl">

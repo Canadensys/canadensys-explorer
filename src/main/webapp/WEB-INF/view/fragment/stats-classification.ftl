@@ -17,17 +17,17 @@
   	</tr>
   </thead>
   <tbody>
-  <#list root.chartModel.rows as chartItem>
-  	<tr>
-  	<td>${chartItem[0]}</td>
-  	<td>${chartItem[1]}</td>
-  	</tr>
-	</#list>
+   <#list root.statsData?keys as currKey>
+     <tr>
+  	   <td>${currKey}</td>
+  	   <td>${root.statsData[currKey]}</td>
+  	  </tr>
+    </#list>
   </tbody> 
   </table>
 </div>
 
 <!-- JavaScript init call related to this statistic view -->
 <#macro statsJavaScriptInit>
-	EXPLORER.chart.loadPieChart('${root.statsFieldKey}',${root.chartRowsJSON});
+	EXPLORER.chart.loadPieChart('${rc.getMessage("view.stats.chart.piechart.title")+ " " + rc.getMessage("filter."+root.statsFieldKey) }','${root.statsFieldKey}',${root.statsDataJSON});
 </#macro>

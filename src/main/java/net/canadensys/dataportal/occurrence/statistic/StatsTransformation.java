@@ -14,17 +14,24 @@ import java.util.ResourceBundle;
  */
 public class StatsTransformation {
 	private static final int START_DECADE = 1850;
+	private static final int DECADE_STEP = 10;
+	private static final String DECADE_SUFFIX = "s";
+	
+	private static final int MIN_ALTITUDE = 0;
+	private static final int MAX_ALTITUDE = 2000;
+	private static final int ALTITUDE_STEP = 100;
+	private static final String ALTITUDE_SUFFIX = "m";
 	
 	/**
 	 * Transform decadeData for display purpose.
-	 * @param data key:decade, value:count
+	 * @param data key=decade, value=count
 	 * @return ordered (by decade) map containing all decades from 1850 to the last decade provided with their matching count.
 	 */
 	public static Map<String,Integer> transformDecadeData(Map<Integer,Integer> decadeData, ResourceBundle resourceBundle){
 		Map<String,Integer> formatedData = new LinkedHashMap<String, Integer>();
 		int decade = START_DECADE;
 		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-		int recordBeforeStartingDecade  = handleBeforeDecade(START_DECADE, decadeData);
+		int recordBeforeStartingDecade  = handleLowerThan(START_DECADE, decadeData);
 		
 		if(recordBeforeStartingDecade > 0){
 			formatedData.put(resourceBundle.getString("view.stats.chart.decade.before") + " " + START_DECADE, recordBeforeStartingDecade);
@@ -33,75 +40,95 @@ public class StatsTransformation {
 		int i = 0;
 		while(i < decadeData.size() && decade < currentYear) {
 			if(decadeData.containsKey(decade)){
-				formatedData.put(decade+"s", decadeData.get(decade));
+				formatedData.put(decade+DECADE_SUFFIX, decadeData.get(decade));
 				i++;
 			}
 			else{
-				//if we have no data for this decade recode it with 0
-				formatedData.put(decade+"s",0);
+				//if we have no data for this decade record it with 0
+				formatedData.put(decade+DECADE_SUFFIX,0);
 			}
-			decade = decade+10;
+			decade += DECADE_STEP;
 	    }
 		return formatedData;
 	}
 	
 	/**
-	 * Remove element from decadeData where the decade is lower than lowestAcceptedDecade.
-	 * @param lowestAcceptedDecade
-	 * @param data
-	 * @return sum of the counts of the removed element
+	 * Transform altitudeData for display purpose.
+	 * @param data key=altitude, value=count
+	 * @return ordered (by altitude) map containing all altitude from 0m to the last altitude provided or 2000m.
 	 */
-	private static int handleBeforeDecade(final int lowestAcceptedDecade, Map<Integer,Integer> decadeData){
-		int beforeLowestAcceptedDecadeCount = 0;
+	public static Map<String,Integer> transformAltitudeData(Map<Integer,Integer> altitudeData, ResourceBundle resourceBundle){
+		Map<String,Integer> formatedData = new LinkedHashMap<String, Integer>();
+		
+		int recordsBelowMinAltitude  = handleLowerThan(MIN_ALTITUDE, altitudeData);
+		int recordsAboveMinAltitude  = handleHigherThan(MAX_ALTITUDE, altitudeData);
+		
+		formatedData.put(resourceBundle.getString("view.stats.chart.altitude.below") + " " + MIN_ALTITUDE + ALTITUDE_SUFFIX, recordsBelowMinAltitude);
+		
+		int currAltitude = MIN_ALTITUDE;
+		int idx=0;
+		while(idx < altitudeData.size() && currAltitude < MAX_ALTITUDE) {
+			if(altitudeData.containsKey(currAltitude)){
+				formatedData.put(currAltitude+ALTITUDE_SUFFIX, altitudeData.get(currAltitude));
+				idx++;
+			}
+			else{
+				//if we have no data for this altitude record it with 0
+				formatedData.put(currAltitude+ALTITUDE_SUFFIX,0);
+			}
+			currAltitude += ALTITUDE_STEP;
+	    }
+		
+		if(recordsAboveMinAltitude > 0){
+			formatedData.put(resourceBundle.getString("view.stats.chart.altitude.above") + " " + MAX_ALTITUDE + ALTITUDE_SUFFIX, recordsAboveMinAltitude);
+		}
+		
+		return formatedData;
+	}
+	
+	/**
+	 * Remove element from data where the Integer key is lower than lowestAcceptedKey.
+	 * e.g. used when data contains decade:count.
+	 * @param lowestAcceptedKey
+	 * @param data
+	 * @return sum of the value of the removed elements
+	 */
+	private static int handleLowerThan(final int lowestAcceptedKey, Map<Integer,Integer> data){
+		int lowerThanAcceptedKeyCount = 0;
 
-		Iterator<Map.Entry<Integer,Integer>> it = decadeData.entrySet().iterator();
+		Iterator<Map.Entry<Integer,Integer>> it = data.entrySet().iterator();
 		Map.Entry<Integer,Integer> entry = null;
 		
 		while(it.hasNext()){
 			entry = it.next();
-			if(entry.getKey() < lowestAcceptedDecade){
-				beforeLowestAcceptedDecadeCount += entry.getValue();
+			if(entry.getKey() < lowestAcceptedKey){
+				lowerThanAcceptedKeyCount += entry.getValue();
 				it.remove();
 			}
 		}
-		return beforeLowestAcceptedDecadeCount;
+		return lowerThanAcceptedKeyCount;
 	}
-
-//	
-//	// Method to prepare the Altitude data before display
-//	function transformAltitudeData(json){
-//		var MAX_ALTITUDE = 2000;
-//		var formattedJson = [];
-//		json = _.sortBy(json, function(data){ 
-//			if(isNaN(parseInt(data[0]))){
-//				return 0;
-//			}
-//			return data[0];
-//		});
-//		
-//		var aboveMaxMetersCount = 0;
-//		formattedJson.push([languageResources.getLanguageResource('view.stats.chart.altitude.below') +" 0",0]);
-//		for(i=0;i < json.length;i++) {
-//			if(canadensysUtils.isInteger(json[i][0])){
-//				if(json[i][0] < 0){
-//					formattedJson[0][1] = formattedJson[0][1] + json[i][1];
-//				}
-//				else if(json[i][0] >= MAX_ALTITUDE){
-//					aboveMaxMetersCount = aboveMaxMetersCount + json[i][1];
-//				}
-//				else{
-//					formattedJson.push(json[i]);
-//				}
-//			}
-//	    }
-//		formattedJson.push([languageResources.getLanguageResource('view.stats.chart.altitude.above')+" 2000",aboveMaxMetersCount]);
-//		
-//		formattedJson = _.map(formattedJson, function(data){ 
-//			data[0] = data[0].toString()+' m';
-//			return data; 
-//		});
-//		return formattedJson;
-//	}
 	
+	/**
+	 * Remove element from data where the Integer key is higher than highestAcceptedKey.
+	 * e.g. used when data contains decade:count.
+	 * @param highestAcceptedKey
+	 * @param data
+	 * @return sum of the value of the removed elements
+	 */
+	private static int handleHigherThan(final int highestAcceptedKey, Map<Integer,Integer> data){
+		int higherThanAcceptedKeyCount = 0;
 
+		Iterator<Map.Entry<Integer,Integer>> it = data.entrySet().iterator();
+		Map.Entry<Integer,Integer> entry = null;
+		
+		while(it.hasNext()){
+			entry = it.next();
+			if(entry.getKey() > highestAcceptedKey){
+				higherThanAcceptedKeyCount += entry.getValue();
+				it.remove();
+			}
+		}
+		return higherThanAcceptedKeyCount;
+	}
 }

@@ -10,24 +10,24 @@ EXPLORER.chart = (function(){
 
   var _private = {
     
-    loadPieChart : function(fieldKey,rows){
+    loadPieChart : function(chartTitle,fieldKey,rows){
       var options = {
-        type : 'pie',
-        title: EXPLORER.i18n.getLanguageResource('view.stats.chart.piechart.title') + ' ' + EXPLORER.i18n.getLanguageResource('filter.'+fieldKey)
+		title: chartTitle,
+        type : 'pie'
       },
       googleChart = new google.visualization.PieChart($('#chart_pie')[0]),
       chartData = new google.visualization.DataTable();
 
       chartData.addColumn('string', fieldKey);
       chartData.addColumn('number', 'count');
-      chartData.addRows(rows.length);
-
-	//TODO move to object like loadBarChart
-      $.each(rows, function(i) {
-        chartData.setValue(i, 0, this[0]);
-        chartData.setValue(i, 1, this[1]);
+      
+      chartData.addRows(_.size(rows));
+      var rowIdx = 0;
+      $.each(rows, function(key,value) {
+      	chartData.setValue(rowIdx, 0, key);
+      	chartData.setValue(rowIdx, 1, value);
+      	rowIdx++;
       });
-    
       googleChart.draw(chartData, options);
     },
     
@@ -65,8 +65,8 @@ EXPLORER.chart = (function(){
 
   return {
     init: function() { return; },
-    loadPieChart: function(fieldKey,rows) {
-      return _private.loadPieChart(fieldKey,rows);
+    loadPieChart: function(chartTitle,fieldKey,rows) {
+      return _private.loadPieChart(chartTitle,fieldKey,rows);
     },
     loadBarChart: function(chartTitle,fieldKey,rows) {
       return _private.loadBarChart(chartTitle,fieldKey,rows);
