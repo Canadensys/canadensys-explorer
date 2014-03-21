@@ -17,7 +17,6 @@ import net.sf.ehcache.CacheManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 /**
@@ -37,8 +36,10 @@ public class CacheManagementServiceImpl implements CacheManagementServiceIF{
 	
 	private AtomicLong preLoadedCacheTimestamp = new AtomicLong(0);
 	
+	/**
+	 * Blocking function, caller is responsible to run this in a thread if needed.
+	 */
 	@Override
-	@Async
 	public void preLoadCache(){
 		//to avoid any issue with the cache, simply call the service directly.
 		Map<String,List<SearchQueryPart>> emptySearchCriteria = new HashMap<String, List<SearchQueryPart>>();
