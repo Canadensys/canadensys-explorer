@@ -4,6 +4,7 @@ log4j.properties
 gradle.properties
 .DS_Store
 tomcat.log
+tomcat.log.lck
 
 *.war
 *.class
