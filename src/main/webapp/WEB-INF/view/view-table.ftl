@@ -38,17 +38,17 @@
       <table id="results">
       <thead>
         <tr>
-          <th class="view_1 sorttable_alpha"><a href="?${getTableHeaderSortingUrl("scientificname",root.sortBy!,root.sort!)}">${rc.getMessage("occ.scientificname")}${getTableHeaderSortingClass("scientificname",root.sortBy!,root.sort!)}</a></th>
-          <th class="view_2 sorttable_alpha"><a href="?${getTableHeaderSortingUrl("family",root.sortBy!,root.sort!)}">${rc.getMessage("occ.family")}${getTableHeaderSortingClass("family",root.sortBy!,root.sort!)}</a></th>
-          <th class="view_1 sorttable_alpha"><a href="?${getTableHeaderSortingUrl("country",root.sortBy!,root.sort!)}">${rc.getMessage("occ.country")}${getTableHeaderSortingClass("country",root.sortBy!,root.sort!)}</a></th>
-          <th class="view_1 sorttable_alpha"><a href="?${getTableHeaderSortingUrl("stateprovince",root.sortBy!,root.sort!)}">${rc.getMessage("occ.stateprovince")}${getTableHeaderSortingClass("stateprovince",root.sortBy!,root.sort!)}</a></th>
-          <th class="view_3 sorttable_alpha"><a href="?${getTableHeaderSortingUrl("locality",root.sortBy!,root.sort!)}">${rc.getMessage("occ.locality")}${getTableHeaderSortingClass("locality",root.sortBy!,root.sort!)}</a></th>
-          <th class="view_3 sorttable_alpha">${rc.getMessage("occ.habitat")}</th>
-          <th class="view_2 sorttable_numeric"><a href="?${getTableHeaderSortingUrl("syear",root.sortBy!,root.sort!)}">${rc.getMessage("occ.syear")}${getTableHeaderSortingClass("syear",root.sortBy!,root.sort!)}</a></th>
-          <th class="view_1 sorttable_alpha"><a href="?${getTableHeaderSortingUrl("collectioncode",root.sortBy!,root.sort!)}">${rc.getMessage("occ.collectioncode")}${getTableHeaderSortingClass("collectioncode",root.sortBy!,root.sort!)}</a></th>
-          <th class="view_2 sorttable_numeric"><a href="?${getTableHeaderSortingUrl("catalognumber",root.sortBy!,root.sort!)}">${rc.getMessage("occ.catalognumber")}${getTableHeaderSortingClass("catalognumber",root.sortBy!,root.sort!)}</a></th>
-          <th class="view_1 sorttable_numeric extra">${rc.getMessage("view.table.extra")}</th>
-          <th class="view_1 persist last_column"></th>
+          <th class="view_1 sorttable_alpha" scope="col"><a href="?${getTableHeaderSortingUrl("scientificname",root.sortBy!,root.sort!)}">${rc.getMessage("occ.scientificname")}${getTableHeaderSortingClass("scientificname",root.sortBy!,root.sort!)}</a></th>
+          <th class="view_2 sorttable_alpha" scope="col"><a href="?${getTableHeaderSortingUrl("family",root.sortBy!,root.sort!)}">${rc.getMessage("occ.family")}${getTableHeaderSortingClass("family",root.sortBy!,root.sort!)}</a></th>
+          <th class="view_1 sorttable_alpha" scope="col"><a href="?${getTableHeaderSortingUrl("country",root.sortBy!,root.sort!)}">${rc.getMessage("occ.country")}${getTableHeaderSortingClass("country",root.sortBy!,root.sort!)}</a></th>
+          <th class="view_1 sorttable_alpha" scope="col"><a href="?${getTableHeaderSortingUrl("stateprovince",root.sortBy!,root.sort!)}">${rc.getMessage("occ.stateprovince")}${getTableHeaderSortingClass("stateprovince",root.sortBy!,root.sort!)}</a></th>
+          <th class="view_3 sorttable_alpha" scope="col"><a href="?${getTableHeaderSortingUrl("locality",root.sortBy!,root.sort!)}">${rc.getMessage("occ.locality")}${getTableHeaderSortingClass("locality",root.sortBy!,root.sort!)}</a></th>
+          <th class="view_3 sorttable_alpha" scope="col">${rc.getMessage("occ.habitat")}</th>
+          <th class="view_2 sorttable_numeric" scope="col"><a href="?${getTableHeaderSortingUrl("syear",root.sortBy!,root.sort!)}">${rc.getMessage("occ.syear")}${getTableHeaderSortingClass("syear",root.sortBy!,root.sort!)}</a></th>
+          <th class="view_1 sorttable_alpha" scope="col"><a href="?${getTableHeaderSortingUrl("collectioncode",root.sortBy!,root.sort!)}">${rc.getMessage("occ.collectioncode")}${getTableHeaderSortingClass("collectioncode",root.sortBy!,root.sort!)}</a></th>
+          <th class="view_2 sorttable_numeric" scope="col"><a href="?${getTableHeaderSortingUrl("catalognumber",root.sortBy!,root.sort!)}">${rc.getMessage("occ.catalognumber")}${getTableHeaderSortingClass("catalognumber",root.sortBy!,root.sort!)}</a></th>
+          <th class="view_1 sorttable_numeric extra" scope="col">${rc.getMessage("view.table.extra")}</th>
+          <th class="view_1 persist last_column" scope="col"></th>
         </tr>
       </thead>
       <tbody>
