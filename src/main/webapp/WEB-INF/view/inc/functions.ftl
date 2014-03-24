@@ -18,7 +18,7 @@
 	<#return formattedDate>
 </#function>
 
-<#-- Safely return the full number or the defaut value if NULL (NULL is defined as an empty string)-->
+<#-- Safely return the full number or the default value if NULL (NULL is defined as an empty string)-->
 <#-- numvalue must be a number or NULL -->
  <#function safeNumber numvalue defaultvalue>
 	<#local value=defaultvalue>
