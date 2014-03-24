@@ -56,6 +56,9 @@ public class SpringFreemarkerDecoratorServlet extends FreemarkerServlet {
 
 			getConfiguration().setSharedVariable("gaSiteVerification", StringUtils.defaultString(prop.getProperty("googleanalytics.siteVerification")));
 			getConfiguration().setSharedVariable("gaAccount", StringUtils.defaultString(prop.getProperty("googleanalytics.account")));
+			if(prop.getProperty("feedback.url") != null){
+				getConfiguration().setSharedVariable("feedbackURL", StringUtils.defaultString(prop.getProperty("feedback.url")));
+			}
 		} catch (TemplateModelException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

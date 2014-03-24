@@ -12,6 +12,7 @@ email.smtpServer=smtp.mydomain.com
 email.port=25
 
 tileServer.url=http://tiles.canadensys.net
+feedback.url=http://code.google.com/p/canadensys/issues/entry?template=Explorer%20-%20Interface%20issue
 
 searchServiceConfig.generatedContentFolder=/tmp/explorer-test
 searchServiceConfig.publicDownloadURL=http://data.canadensys.net/downloads/explorer/

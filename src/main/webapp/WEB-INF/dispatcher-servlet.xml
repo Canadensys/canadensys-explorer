@@ -64,7 +64,7 @@
         </property>
 	    <property name="defaultEncoding" value="UTF-8"/>
 	</bean>
-	
+
 	<!-- Wrap the URLHelper -->
 	<bean id="freemarkerDefaultBeansWrapper" class="freemarker.ext.beans.BeansWrapper"
 		factory-method="getDefaultInstance"/>
@@ -81,6 +81,7 @@
   		<property name="freemarkerVariables">
         <map>
           <entry key="tileServer" value="${tileServer.url:}"/>
+          <entry key="feedbackURL" value="${feedback.url:}"/>
           <entry key="URLHelper" value-ref="URLHelper"/>
         </map>
 		</property>

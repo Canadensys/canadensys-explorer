@@ -14,7 +14,9 @@
 	<div id="skip-link">
 		<a href="#main-content" class="skipnav">${rc.getMessage("header.skip")}</a>
 	</div>
-	<div id="feedback_bar"><a href="http://code.google.com/p/canadensys/issues/entry?template=Explorer%20-%20Interface%20issue" target="_blank" title="${rc.getMessage("feedback.hover")}">&nbsp;</a></div>
+	<#if feedbackURL?? && feedbackURL?has_content>
+	<div id="feedback_bar"><a href="${feedbackURL}" target="_blank" title="${rc.getMessage("feedback.hover")}">&nbsp;</a></div>
+	</#if>
 	<#include "include/header-div.ftl">
 	
 	<sitemesh:write property='body'/>

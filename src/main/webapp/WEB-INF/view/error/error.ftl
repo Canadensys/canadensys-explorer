@@ -11,6 +11,12 @@
 <div id="body">
 	<div id="content" class="no_side_bar">
 		<h1>${rc.getMessage("cwt.error.title")}</h1>
-		<p>${rc.getMessage("cwt.error.message")} <a href="http://code.google.com/p/canadensys/issues/entry?template=Explorer%20-%20Interface%20issue\" target="_blank">${rc.getMessage("cwt.error.message.linkpart")}</a>.</p>
+		<p>${rc.getMessage("cwt.error.message")}
+		<#if feedbackURL?? && feedbackURL?has_content>
+			<a href="${feedbackURL}" target="_blank">${rc.getMessage("cwt.error.message.linkpart")}</a>
+		<#else>
+			${rc.getMessage("cwt.error.message.linkpart")}
+		</#if>
+		.</p>
 	</div>
 </div>

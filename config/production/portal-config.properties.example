@@ -22,6 +22,9 @@ email.port=25
 #The URL of the tile server
 tileServer.url=http://tiles.canadensys.net
 
+#The URL of your feedback system. Could also be a mailto or can be removed if no feedback is required.
+feedback.url=http://code.google.com/p/canadensys/issues/entry?template=Explorer%20-%20Interface%20issue
+
 #The path of the folder to store the generated content. Must ends with a slash. Make sure Tomcat can read/write in this folder.
 searchServiceConfig.generatedContentFolder=YOUR_VALUE
 #The public URL to reach the generated content. Must ends with a slash.
