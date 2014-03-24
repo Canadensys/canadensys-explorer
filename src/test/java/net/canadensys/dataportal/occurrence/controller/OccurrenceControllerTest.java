@@ -29,6 +29,22 @@ import org.springframework.web.servlet.view.RedirectView;
 
 /**
  * Testing the Occurrence controller routing and make sure URLs are working.
+ * TODO move to new testing framework
+ * @WebAppConfiguration()
+ * 
+ *  @Autowired
+ *  private WebApplicationContext wac;
+ *  @Before
+ *   public void setup() {
+ *   mockMvc = MockMvcBuilders.webAppContextSetup(this.wac)
+ *   .build();
+ *    }
+ *     @Test
+ *      public void test404HttpErrorPage() throws Exception {
+ *        mockMvc.perform(get("/not_found"))
+ *                .andExpect(status().isNotFound())
+ *                          .andExpect(content().string("handleNotFound"));
+ *      }
  * @author canadensys
  *
  */
