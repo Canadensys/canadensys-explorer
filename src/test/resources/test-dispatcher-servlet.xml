@@ -26,7 +26,7 @@
 
 	<jdbc:initialize-database data-source="dataSource">
 		<!-- loaded from canadensys-data-access jar file -->
-    	<jdbc:script location="/script/occurrence/create_occurrence_tables.sql" />
+    	<jdbc:script location="classpath:script/occurrence/create_occurrence_tables.sql" />
   	</jdbc:initialize-database>
   	
 	<task:annotation-driven executor="executor"/>

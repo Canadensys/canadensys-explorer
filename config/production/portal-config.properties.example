@@ -1,5 +1,5 @@
-#Do we use the minified version of JavaScript and CSS files
-url.useMinified=false
+#Do we use the minified version of JavaScript and CSS files. Always use minified when using versioning.
+url.useMinified=true
 
 #GoogleAnalytics variables, if you don't want to use it, just remove the next 2 lines
 googleanalytics.siteVerification=YOUR_VALUE
