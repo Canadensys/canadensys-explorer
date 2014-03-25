@@ -14,6 +14,7 @@
   	<tr>
      <th>${rc.getMessage("filter."+root.statsFieldKey)}</th>
      <th>${rc.getMessage("view.stats.count")}</th>
+     <th>%</th>
   	</tr>
   </thead>
   <tbody>
@@ -21,6 +22,7 @@
      <tr>
   	   <td>${currKey}</td>
   	   <td>${root.statsData[currKey]}</td>
+  	   <td>${(root.statsData[currKey]/root.occurrenceCount)?string.percent}</td>
   	  </tr>
     </#list>
   </tbody> 
