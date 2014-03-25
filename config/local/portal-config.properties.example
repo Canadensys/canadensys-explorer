@@ -11,7 +11,10 @@ database.idleConnectionTestPeriod=60
 email.smtpServer=smtp.mydomain.com
 email.port=25
 
-tileServer.url=http://tiles.canadensys.net
+tiler.protocol=http
+tiler.domain=tiles.canadensys.net
+tiler.port=80
+
 feedback.url=http://code.google.com/p/canadensys/issues/entry?template=Explorer%20-%20Interface%20issue
 
 searchServiceConfig.generatedContentFolder=/tmp/explorer-test

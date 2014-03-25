@@ -3,8 +3,8 @@
 <head>
 <title>${rc.getMessage("page.search.title")}</title>
 <@cssAsset fileName="occportal" version=root.currentVersion! useMinified=false/>
-<link rel="dns-prefetch" href="${tileServer}"/>
-<link rel="prefetch" href="${tileServer}"/>
+<link rel="dns-prefetch" href="${tilerProtocol}://${tilerDomain}"/>
+<link rel="prefetch" href="${tilerProtocol}://${tilerDomain}"/>
 </head>
 <content tag="lang_switch">
 <@i18nLanguageSwitch resourceName="search"/>
@@ -49,7 +49,13 @@
 
 <script>
 $(function() {
-  EXPLORER.map.setupMap('occ_preview','map_canvas','${tileServer}', "${root.embeddedMapQuery}");
+  EXPLORER.map.setupMap({
+    mapCanvasId : "map_canvas",
+    tilerProtocol : "${tilerProtocol}",
+    tilerDomain : "${tilerDomain}",
+    tilerPort : ${tilerPort},
+    mapQuery : "${root.embeddedMapQuery}"
+  });
   <@controlJavaScriptInit/>
 });
 </script>

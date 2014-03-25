@@ -36,7 +36,7 @@ EXPLORER.map = (function() {
         });
       };
     },
-    
+
     cartoDBgenerateTile: function() {
       CartoDBLayer.prototype._generateTileJson = function() {
         var core_url = this._generateUrl("tiler"),
@@ -84,10 +84,18 @@ EXPLORER.map = (function() {
       };
     },
 
-    setupMap: function(previewElementId, mapCanvasId, tileServer, mapQuery) {
+    setupMap: function(obj) {
       var map, marker, cartodb_gmapsv3;
 
-      map = new google.maps.Map($('#' + mapCanvasId)[0], {
+      _.defaults(obj, {
+        mapCanvasId : "map_canvas",
+        tilerDomain : "tiles.example.com",
+        tilerProtocol : "http",
+        tilerPort : 80,
+        mapQuery : ""
+      });
+
+      map = new google.maps.Map($('#' + obj.mapCanvasId)[0], {
         center: new google.maps.LatLng(45.5,-73.5),
         zoom: 3,
         mapTypeId: google.maps.MapTypeId.TERRAIN,
@@ -114,13 +122,15 @@ EXPLORER.map = (function() {
       cartodb_gmapsv3 = new CartoDBLayer({
         map: map,
         table_name: 'occurrence',
-        interactivity:'auto_id',
-        query: mapQuery,
+        interactivity: 'auto_id',
+        query: obj.mapQuery,
         map_style: false,
         infowindow: true,
         auto_bound: true,
         featureClick: onMapClick,
-        tiler_domain: tileServer.substr(tileServer.indexOf('://')+3),
+        tiler_domain: obj.tilerDomain,
+        tiler_port: parseInt(obj.tilerPort,10),
+        tiler_protocol: obj.tilerProtocol,
         featureOver: function() {
           map.setOptions({draggableCursor: 'pointer'});
         },
@@ -135,8 +145,8 @@ EXPLORER.map = (function() {
 
   return {
     init: function() { _private.init(); },
-    setupMap: function(previewElementId, mapCanvasId, tileServer, mapQuery) {
-      _private.setupMap(previewElementId, mapCanvasId, tileServer, mapQuery);
+    setupMap: function(obj) {
+      _private.setupMap(obj);
     }
   };
 
