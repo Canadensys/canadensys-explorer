@@ -39,6 +39,7 @@ import net.canadensys.query.sort.SearchSortPart;
 import net.canadensys.utils.NumberUtils;
 import net.canadensys.utils.ZipUtils;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -57,12 +58,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("occurrenceSearchService")
 public class OccurrenceSearchServiceImpl implements OccurrenceSearchService {
 	
+	//TODO should be set in config
+	private static final String EMAIL_SALT = "5SFDW$PTkp04yogq>wyEfku";
+	
 	//get log4j handler
 	private static final Logger LOGGER = Logger.getLogger(OccurrenceSearchServiceImpl.class);
 	private static final Map<Locale,String> DOWNLOAD_EMAIL_TEMPLATE_PER_LOCALE = new HashMap<Locale,String>();
 	private static final String EMAIL_DATE_FORMAT = "EEEE, yyyy-MM-dd HH:mm:ss z";
 	private static final int MAX_STATS_PER_FIELD = 10;
 	
+	//TODO allow to customize this through configuration
 	static{
 		DOWNLOAD_EMAIL_TEMPLATE_PER_LOCALE.put(Locale.ENGLISH, "download-email-en.ftl");
 		DOWNLOAD_EMAIL_TEMPLATE_PER_LOCALE.put(Locale.FRENCH, "download-email-fr.ftl");
@@ -96,6 +101,10 @@ public class OccurrenceSearchServiceImpl implements OccurrenceSearchService {
 	@Autowired
 	@Qualifier("templateMailSender")
 	private TemplateMailSender mailSender;
+	
+	//Should we store a hash of the email or the email directly
+	//note that if an issue occurred, the email will be printed to the log file even if hashEmail is set to true.
+	private boolean hashEmail = true;
 	
 	@PostConstruct
 	protected void init(){
@@ -207,8 +216,11 @@ public class OccurrenceSearchServiceImpl implements OccurrenceSearchService {
 				String fullPath = FilenameUtils.concat(searchServiceConfig.getGeneratedContentFolder(), fileName);
 				String fullFilePath = fullPath + ZipUtils.ZIP_EXT;
 				String email = (String)extraProperties.get(DownloadPropertiesEnum.EMAIL);
+				
+				String md5email = hashEmail?DigestUtils.md5Hex( email + EMAIL_SALT ):email;
+				
 				//log the download model prior the dwca generation
-				DownloadLogModel downloadLogModel = dwcaBuilder.logDownload(email,searchCriteria.toString());
+				DownloadLogModel downloadLogModel = dwcaBuilder.logDownload(md5email,searchCriteria.toString());
 				
 				File dwcaFile = dwcaBuilder.generatesDarwinCoreArchive(DWCA_HEADERS,searchCriteria, fullPath, fullFilePath);
 				if(dwcaFile != null && dwcaFile.exists()){					

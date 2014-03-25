@@ -41,6 +41,7 @@ public class FilterIntegrationTest extends AbstractIntegrationTest{
 		filterInput.sendKeys("canad");
 		
 		List<WebElement> suggestionList = filterContent.findElements(By.cssSelector("table#value_suggestions tbody tr td"));
+		//TODO add wait
 		suggestionList.get(0).click();
 		
 		//validate current filter

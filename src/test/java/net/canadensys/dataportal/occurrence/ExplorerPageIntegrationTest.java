@@ -1,10 +1,10 @@
 package net.canadensys.dataportal.occurrence;
 
-import java.util.List;
-
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -52,7 +52,7 @@ public class ExplorerPageIntegrationTest extends AbstractIntegrationTest {
 	
 	@Test
 	public void testFrenchPageEncoding() {
-		browser.get(TESTING_SERVER_URL+"search?view=table&lang=fr");
+		browser.get(TESTING_SERVER_URL_FR+"rechercher?view=table");
 		
 		//bind the WebElement to the current page
 		PageFactory.initElements(browser, this);

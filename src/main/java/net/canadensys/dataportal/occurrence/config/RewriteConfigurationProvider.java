@@ -3,7 +3,6 @@ package net.canadensys.dataportal.occurrence.config;
 import javax.servlet.ServletContext;
 
 import net.canadensys.web.i18n.I18nUrlBuilder;
-import net.canadensys.web.i18n.annotation.I18nTranslationHandler;
 
 import org.ocpsoft.rewrite.annotation.RewriteConfiguration;
 import org.ocpsoft.rewrite.config.Configuration;
@@ -29,8 +28,6 @@ import org.springframework.stereotype.Component;
 @RewriteConfiguration
 public class RewriteConfigurationProvider extends HttpConfigurationProvider{
 
-	private static final I18nTranslationHandler I18N_TRANSLATION_HANDLER = new I18nTranslationHandler("net.canadensys.dataportal.occurrence.controller");
-	
 	@Override
 	public Configuration getConfiguration(final ServletContext context) {
 		 return ConfigurationBuilder.begin()
@@ -41,7 +38,7 @@ public class RewriteConfigurationProvider extends HttpConfigurationProvider{
 						@Override
 						public void performHttp(HttpServletRewrite event, EvaluationContext context) {
 							String lang = event.getRequest().getLocale().getLanguage();
-							String landingUrl = I18nUrlBuilder.generateI18nResourcePath(lang,I18N_TRANSLATION_HANDLER.getTranslationFormat("search"),(String)null);
+							String landingUrl = I18nUrlBuilder.generateI18nResourcePath(lang,OccurrencePortalConfig.I18N_TRANSLATION_HANDLER.getTranslationFormat("search"),(String)null);
 							Redirect.permanent(event.getContextPath()+landingUrl).perform(event, context);
 						}
 					})

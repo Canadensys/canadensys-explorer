@@ -22,6 +22,7 @@ ext {
 	springVersion = '4.0.2.RELEASE'
 	hibernateVersion = '4.3.2.Final'
 	freemarkerVersion = '2.3.20'
+	apacheCodecVersion = '1.9'
 	rewriteVersion = '2.0.10.Final'
 	ehCacheVersion = '2.6.8'
 	sitemeshVersion = '3.0.0-SNAPSHOT'
@@ -68,6 +69,7 @@ dependencies {
 	compile group: 'postgresql', name: 'postgresql', version: '9.1-901.jdbc4'
 	compile group: 'org.hibernate', name: 'hibernate-c3p0', version: hibernateVersion
 	compile group: 'org.freemarker', name: 'freemarker', version: freemarkerVersion
+	compile group: 'commons-codec', name: 'commons-codec', version: apacheCodecVersion
 	compile group: 'org.ocpsoft.rewrite', name: 'rewrite-servlet', version: rewriteVersion
 	compile group: 'net.sf.ehcache', name: 'ehcache-core', version: ehCacheVersion
 	compile group: 'org.sitemesh', name: 'sitemesh', version: sitemeshVersion

@@ -35,6 +35,8 @@ import net.canadensys.exception.web.ResourceNotFoundException;
 import net.canadensys.query.LimitedResult;
 import net.canadensys.query.SearchQueryPart;
 import net.canadensys.query.sort.SearchSortPart;
+import net.canadensys.web.QueryStringBuilder;
+import net.canadensys.web.i18n.I18nUrlBuilder;
 import net.canadensys.web.i18n.annotation.I18nTranslation;
 
 import org.apache.commons.lang3.ObjectUtils;
@@ -449,7 +451,6 @@ public class SearchController {
 	 * Handling the request for a download of the result of a query.
 	 * For the moment, only DarwinCore archive format can be returned.
 	 * The service will only return when the archive will be generated.
-	 * TODO : option to received the link by email instead of waiting
 	 * @param request
 	 * @return
 	 */
@@ -469,9 +470,12 @@ public class SearchController {
 		}
 		extraProperties.put(DownloadPropertiesEnum.LOCALE, locale);
 		
-		//is this better than appConfig.getRootURL()?
 		String baseURL = request.getScheme() + "://" + request.getServerName()+request.getContextPath();
-		extraProperties.put(DownloadPropertiesEnum.SEARCH_URL, SearchURLHelper.createSearchTableViewURL(baseURL, request.getParameterMap()));
+		String searchBaseUrlString = baseURL + I18nUrlBuilder.generateI18nResourcePath(locale.getLanguage(),OccurrencePortalConfig.I18N_TRANSLATION_HANDLER.getTranslationFormat("search"),(String)null);
+		QueryStringBuilder qsb = new QueryStringBuilder();
+		qsb.add(searchParamHandler.getSearchQueryRelatedParameters(request.getParameterMap())).add(SearchURLHelper.VIEW_PARAM, SearchURLHelper.ViewNameEnum.TABLE_VIEW_NAME.getViewName());
+		searchBaseUrlString += qsb.toQueryString();
+		extraProperties.put(DownloadPropertiesEnum.SEARCH_URL, searchBaseUrlString);
 		
 		DownloadResultStatus downloadStatus = occurrenceSearchService.searchAsDwca(searchCriteria, fileName, extraProperties);
 		switch(downloadStatus.getMode()){
