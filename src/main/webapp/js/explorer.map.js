@@ -2,7 +2,7 @@
 Copyright (c) 2013 Canadensys
 Explorer Map
 ****************************/
-/*global EXPLORER, $, window, document, console, jQuery, CartoDBLayer, google*/
+/*global EXPLORER, $, window, document, console, jQuery, CartoDBLayer, google, _*/
 
 EXPLORER.map = (function() {
 

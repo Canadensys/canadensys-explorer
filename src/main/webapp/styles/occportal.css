@@ -1,4 +1,16 @@
 /*-- Containers --*/
+#body {
+  height: 90%; /* old IE */
+  margin: 36px auto;
+  min-width: 1024px;
+  position: relative;
+  width: 1024px; /* 36 + 616 (width of content) + 36 + 300 + 36 */
+}
+body > #body {
+  height: auto;
+  min-height: 90%; /* other browsers */
+}
+.fullscreen { width: 100% !important; }
 
 #body.full_height { height: 90%!important; /* overwrite default min-height. Don't use for body with variable content. */ }
 
@@ -27,6 +39,12 @@
   padding-right: 36px;
   position: relative;
   width: 360px;
+}
+
+ul.buttons { padding: 0; } /* add to <ul> */
+ul.buttons li {
+	display: inline;
+	list-style: none;
 }
 
 .nav_container {
@@ -58,6 +76,18 @@
   overflow: inherit;
   clip: rect(auto, auto, auto, auto);
  }
+
+.clear_fix:after {
+    clear: both;
+    content: "";
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+
+.hidden {
+    display: none;
+}
 
 /*-- Table view --*/
 
@@ -97,6 +127,7 @@
 .enhanced th.view_1, .enhanced td.view_1 { display: table-cell; }
 
 /* Pagination */
+
 .pagination {
   margin:1.5em 0;
   cursor: default;
@@ -300,6 +331,7 @@
 }
 
 /*-- Filter date / Filter min-max --*/
+
 #filter_date label, #filter_minmax label {
   margin-left:5px;
 }
