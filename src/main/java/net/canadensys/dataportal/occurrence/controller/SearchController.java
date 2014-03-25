@@ -333,7 +333,8 @@ public class SearchController {
 		}
 		else{
 			extraProperties.put(StatsPropertiesEnum.MAX_RESULT, 10);
-			statsData = occurrenceSearchService.getValuesFrequencyDistributionAsMap(searchCriteria, searchableField, extraProperties);
+			//sort by count desc
+			statsData = StatsTransformation.sortByValue(occurrenceSearchService.getValuesFrequencyDistributionAsMap(searchCriteria, searchableField, extraProperties));
 		}
 		model.put("statsData", statsData);
 		model.put("statsFieldKey", searchableField.getSearchableFieldName());

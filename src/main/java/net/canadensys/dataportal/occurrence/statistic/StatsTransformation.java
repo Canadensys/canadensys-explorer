@@ -1,10 +1,13 @@
 package net.canadensys.dataportal.occurrence.statistic;
 
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.TreeSet;
 
 /**
  * Collection of functions used to transform occurrence statistic data.
@@ -21,6 +24,45 @@ public class StatsTransformation {
 	private static final int MAX_ALTITUDE = 2000;
 	private static final int ALTITUDE_STEP = 100;
 	private static final String ALTITUDE_SUFFIX = "m";
+	
+	private static final Comparator<Integer> INTEGER_REVERSE_COMPARATOR = Collections.reverseOrder();
+	
+	/**
+	 * Sort a map based on its Integer value.
+	 * TODO move it to canadensys-core
+	 * @param statsData
+	 * @return
+	 */
+	public static Map<?,Integer> sortByValue(Map<Object,Integer> statsData){
+		Map<Object,Integer> sortedStatsData = new LinkedHashMap<Object, Integer>();
+
+		TreeSet<Integer> sortedCounts = new TreeSet<Integer>(INTEGER_REVERSE_COMPARATOR);
+		sortedCounts.addAll(statsData.values());
+		
+		for(Integer currCount : sortedCounts){
+			moveBasedOnValue(currCount,statsData,sortedStatsData);
+		}
+		
+		return sortedStatsData;
+	}
+	
+	/**
+	 * Move record(s) from one map to the other based on the value.
+	 * @param value
+	 * @param source
+	 * @param destination
+	 */
+	private static void moveBasedOnValue(Integer value, Map<Object,Integer> source, Map<Object,Integer> destination){
+		Iterator<Object> keyIt = source.keySet().iterator();
+		Object currKey;
+		while(keyIt.hasNext()){
+			currKey = keyIt.next();
+			if(value.equals(source.get(currKey))){
+				destination.put(currKey, value);
+				keyIt.remove();
+			}
+		}
+	}
 	
 	/**
 	 * Transform decadeData for display purpose.
