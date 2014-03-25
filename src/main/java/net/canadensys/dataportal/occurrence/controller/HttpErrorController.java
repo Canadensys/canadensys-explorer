@@ -10,8 +10,10 @@ import net.canadensys.exception.web.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -22,6 +24,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
  *
  */
 @ControllerAdvice
+@Controller
 public class HttpErrorController {
 	
 	@Autowired
@@ -30,6 +33,14 @@ public class HttpErrorController {
 
 	@ExceptionHandler({NoHandlerFoundException.class, ResourceNotFoundException.class})
 	@ResponseStatus(value=HttpStatus.NOT_FOUND)
+	public ModelAndView handleNotFoundException(HttpServletRequest req){
+		HashMap<String,Object> modelRoot = new HashMap<String,Object>();
+		//Set common stuff (GoogleAnalytics, language, ...)
+		ControllerHelper.setPageHeaderVariables(appConfig, modelRoot);
+        return new ModelAndView("error/404","root",modelRoot);
+	}
+	
+	@RequestMapping(value="/404")
 	public ModelAndView handleNotFound(HttpServletRequest req){
 		HashMap<String,Object> modelRoot = new HashMap<String,Object>();
 		//Set common stuff (GoogleAnalytics, language, ...)
