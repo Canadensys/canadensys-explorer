@@ -17,16 +17,14 @@
     <#else>
       <h1>${rc.getMessage("view.header.results",[root.occurrenceCount])}</h1>
     </#if>
-
       <ul class="buttons">
-        <li><a href="?${URLHelper.replaceCurrentQueryParam(Request,"view","map")}">${rc.getMessage("view.map.header.button")}</a></li>
-        <li><a href="?${URLHelper.replaceCurrentQueryParam(Request,"view","table")}">${rc.getMessage("view.table.header.button")}</a></li>
-        <li><a href="?${URLHelper.replaceCurrentQueryParam(Request,"view","stats")}" class="selected">${rc.getMessage("view.stats.header.button")}</a></li>
+        <li><a href="<@searchViewUrl view="map"/>">${rc.getMessage("view.map.header.button")}</a></li>
+        <li><a href="<@searchViewUrl view="table"/>">${rc.getMessage("view.table.header.button")}</a></li>
+        <li><a href="<@searchViewUrl view="stats"/>" class="selected">${rc.getMessage("view.stats.header.button")}</a></li>
       </ul>
     </div>
 
     <a id="main-content"></a>
-
     <ul class="buttons sub_heading">
       <li><a ${getStatsViewButtonClass("classification", root.statsGroupKey)} href="?${URLHelper.replaceCurrentQueryParams(Request,["stat_group","classification","stat_sel",""])}">${rc.getMessage("view.stats.group.classification")}</a></li>
       <li><a ${getStatsViewButtonClass("location", root.statsGroupKey)} href="?${URLHelper.replaceCurrentQueryParams(Request,["stat_group","location","stat_sel",""])}">${rc.getMessage("view.stats.group.location")}</a></li>

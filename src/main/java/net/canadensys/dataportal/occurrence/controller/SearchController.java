@@ -187,6 +187,7 @@ public class SearchController {
 		
 		//handle search related parameters
 		Collection<SearchQueryPart> searchRelatedParams= searchParamHandler.getSearchQueryPartCollection(request.getParameterMap());
+		modelRoot.put("searchParameters",searchParamHandler.getSearchQueryRelatedParameters(request.getParameterMap()));
 		
 		//handle special parameters 'dataset','iptresource'
 		handleDatasetParam(request.getParameter(SearchURLHelper.DATASET_PARAM),searchRelatedParams);

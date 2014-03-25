@@ -22,9 +22,9 @@
       
       <p class="details">(${rc.getMessage("view.map.header.details")}: ${root.georeferencedOccurrenceCount})</p>
       <ul class="buttons">
-        <li><a href="?${URLHelper.replaceCurrentQueryParam(Request,"view","map")}" class="selected">${rc.getMessage("view.map.header.button")}</a></li>
-        <li><a href="?${URLHelper.replaceCurrentQueryParam(Request,"view","table")}">${rc.getMessage("view.table.header.button")}</a></li>
-        <li><a href="?${URLHelper.replaceCurrentQueryParam(Request,"view","stats")}">${rc.getMessage("view.stats.header.button")}</a></li>
+        <li><a href="<@searchViewUrl view="map"/>" class="selected">${rc.getMessage("view.map.header.button")}</a></li>
+        <li><a href="<@searchViewUrl view="table"/>">${rc.getMessage("view.table.header.button")}</a></li>
+        <li><a href="<@searchViewUrl view="stats"/>" class="selected">${rc.getMessage("view.stats.header.button")}</a></li>
       </ul>
     </div>
     <a id="main-content"></a>

@@ -40,6 +40,11 @@ ${rc.getContextUrl(URLHelper.toI18nResource(rc.getLocale().getLanguage(),resourc
 ${URLHelper.getLanguageSwitchPath(Request,rc.getLocale().getLanguage(),resourceName,params)}
 </#macro>
 
+<#-- root.searchParameters should exists-->
+<#macro searchViewUrl view>
+${URLHelper.newQueryStringBuilder().add("view",view).add(root.searchParameters!).toQueryString()}
+</#macro>
+
 <#function isImageMimeType url>
 	<#return URLHelper.getMimeFileType(url)?contains("image")>
 </#function>

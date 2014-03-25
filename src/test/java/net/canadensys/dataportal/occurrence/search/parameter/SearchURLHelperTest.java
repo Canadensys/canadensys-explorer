@@ -1,8 +1,6 @@
 package net.canadensys.dataportal.occurrence.search.parameter;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import net.canadensys.dataportal.occurrence.search.parameter.SearchURLHelper.ViewNameEnum;
 
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -14,31 +12,6 @@ import org.springframework.mock.web.MockHttpServletRequest;
  */
 public class SearchURLHelperTest {
 	
-	@Test
-	public void testSearchURLHandler(){
-		MockHttpServletRequest request = new MockHttpServletRequest();
-		request.setMethod("GET");
-		request.setServerName("canadensys.net");
-    	request.setRequestURI("/search");
-    	request.setQueryString("view=table");
-    	assertTrue("search?view=table give "+SearchURLHelper.getViewURL(request, ViewNameEnum.MAP_VIEW_NAME),
-    			"http://canadensys.net/search?view=map".equals(SearchURLHelper.getViewURL(request, ViewNameEnum.MAP_VIEW_NAME)));
-    	
-    	request = new MockHttpServletRequest();
-    	request.setMethod("GET");
-    	request.setServerName("canadensys.net");
-    	request.setRequestURI("/search");
-    	request.setQueryString("testparam=test");
-    	assertTrue("search?testparam=test give "+SearchURLHelper.getViewURL(request,ViewNameEnum.MAP_VIEW_NAME),
-    			"http://canadensys.net/search?testparam=test&view=map".equals(SearchURLHelper.getViewURL(request,ViewNameEnum.MAP_VIEW_NAME)));
-    	
-    	request = new MockHttpServletRequest();
-    	request.setMethod("GET");
-    	request.setServerName("canadensys.net");
-    	request.setRequestURI("/search");
-    	assertTrue("search give "+SearchURLHelper.getViewURL(request,ViewNameEnum.MAP_VIEW_NAME),
-    			"http://canadensys.net/search?view=map".equals(SearchURLHelper.getViewURL(request,ViewNameEnum.MAP_VIEW_NAME)));
-	}
 	
 	@Test
 	public void testCreateSearchTableViewURL(){

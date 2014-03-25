@@ -75,4 +75,24 @@ public class SearchParamHandlerTest {
 		assertEquals(OrderEnum.DESC, sortPart.getOrder());
 		assertNull(sortPart.getOrderByColumn());
 	}
+	
+	@Test
+	public void testGetSearchQueryRelatedParameters(){
+		Map<String,String[]> parametersMap = new HashMap<String, String[]>();
+		//Group #1 (valid)
+		parametersMap.put("1_f", new String[]{"3"});
+		parametersMap.put("1_o", new String[]{"eq"});
+		parametersMap.put("1_v", new String[]{"Laval"});
+		parametersMap.put("view", new String[]{"stats"});
+		
+		SearchParamHandler paramHandler = new SearchParamHandler();
+		paramHandler.setSearchServiceConfig(new SearchServiceConfig());
+		paramHandler.initialize();
+		
+		Map<String,String> queryRelatedParams = paramHandler.getSearchQueryRelatedParameters(parametersMap);
+		assertEquals(3, queryRelatedParams.size());
+		assertTrue(queryRelatedParams.containsKey("1_f"));
+		assertTrue(queryRelatedParams.containsKey("1_o"));
+		assertTrue(queryRelatedParams.containsKey("1_v"));
+	}
 }

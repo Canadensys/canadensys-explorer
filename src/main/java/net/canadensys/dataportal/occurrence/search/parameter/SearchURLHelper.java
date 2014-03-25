@@ -3,8 +3,6 @@ package net.canadensys.dataportal.occurrence.search.parameter;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import net.canadensys.dataportal.occurrence.search.parameter.parser.SearchParamParser;
 
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -51,19 +49,6 @@ public class SearchURLHelper {
 	 */
 	public static boolean isKnowViewName(String viewName){
 		return ViewNameEnum.contains(viewName);
-	}
-	
-	/**
-	 * This method return a generated URL for the Map view of the search.
-	 * It only changes (adds) the view parameter.
-	 * @param request
-	 * @param viewName
-	 * @return
-	 */
-	public static String getViewURL(HttpServletRequest request, ViewNameEnum viewName){
-		ServletUriComponentsBuilder compBuilder = ServletUriComponentsBuilder.fromRequest(request);
-		compBuilder.replaceQueryParam(VIEW_PARAM, viewName.getViewName());
-		return compBuilder.build().toUriString();
 	}
 	
 	/**

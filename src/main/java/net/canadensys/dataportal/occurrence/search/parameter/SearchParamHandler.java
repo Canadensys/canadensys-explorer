@@ -65,6 +65,21 @@ public class SearchParamHandler {
 		return searchRelatedParams;
 	}
 	
+	/**
+	 * Get the parameters that are related to a search query.
+	 * @param parametersMap
+	 * @return empty map or map containing the parameters(and the value) related to a search query.
+	 */
+	public Map<String,String> getSearchQueryRelatedParameters(Map<String,String[]> parametersMap){
+		Map<String,String> queryParameters = new HashMap<String, String>();
+		for(String currParamKey : parametersMap.keySet()){
+			if(SearchParamParser.isSearchParam(currParamKey)){
+				queryParameters.put(currParamKey, parametersMap.get(currParamKey)[0]);
+			}
+		}
+		return queryParameters;
+	}
+	
 	public SearchSortPart getSearchQuerySort(Map<String,String[]> parametersMap){
 		return sortParser.parse(parametersMap);
 	}
