@@ -24,7 +24,7 @@
       <ul class="buttons">
         <li><a href="<@searchViewUrl view="map"/>" class="selected">${rc.getMessage("view.map.header.button")}</a></li>
         <li><a href="<@searchViewUrl view="table"/>">${rc.getMessage("view.table.header.button")}</a></li>
-        <li><a href="<@searchViewUrl view="stats"/>" class="selected">${rc.getMessage("view.stats.header.button")}</a></li>
+        <li><a href="<@searchViewUrl view="stats"/>">${rc.getMessage("view.stats.header.button")}</a></li>
       </ul>
     </div>
     <a id="main-content"></a>
