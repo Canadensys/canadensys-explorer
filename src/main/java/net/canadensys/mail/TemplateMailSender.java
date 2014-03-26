@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.log4j.Logger;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
@@ -51,6 +52,10 @@ public class TemplateMailSender {
 		     };
 		     mailSender.send(preparator);
 		} catch (IOException e) {
+			LOGGER.fatal("Email sending error",e);
+			return false;
+		}
+		catch (MailException e) {
 			LOGGER.fatal("Email sending error",e);
 			return false;
 		}

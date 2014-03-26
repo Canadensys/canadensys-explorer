@@ -57,10 +57,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service("occurrenceSearchService")
 public class OccurrenceSearchServiceImpl implements OccurrenceSearchService {
-	
-	//TODO should be set in config
-	private static final String EMAIL_SALT = "5SFDW$PTkp04yogq>wyEfku";
-	
+		
 	//get log4j handler
 	private static final Logger LOGGER = Logger.getLogger(OccurrenceSearchServiceImpl.class);
 	private static final Map<Locale,String> DOWNLOAD_EMAIL_TEMPLATE_PER_LOCALE = new HashMap<Locale,String>();
@@ -101,10 +98,6 @@ public class OccurrenceSearchServiceImpl implements OccurrenceSearchService {
 	@Autowired
 	@Qualifier("templateMailSender")
 	private TemplateMailSender mailSender;
-	
-	//Should we store a hash of the email or the email directly
-	//note that if an issue occurred, the email will be printed to the log file even if hashEmail is set to true.
-	private boolean hashEmail = true;
 	
 	@PostConstruct
 	protected void init(){
@@ -215,12 +208,16 @@ public class OccurrenceSearchServiceImpl implements OccurrenceSearchService {
 				
 				String fullPath = FilenameUtils.concat(searchServiceConfig.getGeneratedContentFolder(), fileName);
 				String fullFilePath = fullPath + ZipUtils.ZIP_EXT;
-				String email = (String)extraProperties.get(DownloadPropertiesEnum.EMAIL);
+				String emailAddress = (String)extraProperties.get(DownloadPropertiesEnum.EMAIL);
 				
-				String md5email = hashEmail?DigestUtils.md5Hex( email + EMAIL_SALT ):email;
+				String md5emailAddress = emailAddress;
+				//should we hash the email address?
+				if(appConfig.isHashEmailAddress()){
+					md5emailAddress = DigestUtils.md5Hex( emailAddress + StringUtils.defaultString(appConfig.getEmailSalt()) );
+				}
 				
 				//log the download model prior the dwca generation
-				DownloadLogModel downloadLogModel = dwcaBuilder.logDownload(md5email,searchCriteria.toString());
+				DownloadLogModel downloadLogModel = dwcaBuilder.logDownload(md5emailAddress,searchCriteria.toString());
 				
 				File dwcaFile = dwcaBuilder.generatesDarwinCoreArchive(DWCA_HEADERS,searchCriteria, fullPath, fullFilePath);
 				if(dwcaFile != null && dwcaFile.exists()){					
@@ -237,8 +234,8 @@ public class OccurrenceSearchServiceImpl implements OccurrenceSearchService {
 					templateData.put("requestURL", extraProperties.get(DownloadPropertiesEnum.SEARCH_URL));
 					
 					String templateName = DOWNLOAD_EMAIL_TEMPLATE_PER_LOCALE.get(locale);
-					if(!mailSender.sendMessage(email, bundle.getString("download.dwca.email.subject"), templateData, templateName)){
-						LOGGER.fatal("Supposed to send DarwinCore archive by email to " + email + " but it failed");
+					if(!mailSender.sendMessage(emailAddress, bundle.getString("download.dwca.email.subject"), templateData, templateName)){
+						LOGGER.fatal("Supposed to send DarwinCore archive by email to " + md5emailAddress + " but it failed.");
 					}
 					else{
 						int occurrenceCount = dwcaBuilder.getOccurrenceCount(searchCriteria);
@@ -248,7 +245,7 @@ public class OccurrenceSearchServiceImpl implements OccurrenceSearchService {
 					}
 				}
 				else{
-					LOGGER.fatal("Supposed to send DarwinCore archive by email to " + email + " but it failed");
+					LOGGER.fatal("Supposed to send DarwinCore archive by email to " + md5emailAddress + " but it failed.");
 				}
 			}
 		});

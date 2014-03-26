@@ -2,15 +2,14 @@ package net.canadensys.dataportal.occurrence.config;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
-import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
+import net.canadensys.bundle.UTF8PropertyResourceBundle;
 import net.canadensys.web.i18n.annotation.I18nTranslationHandler;
 
 /**
@@ -28,17 +27,16 @@ public class OccurrencePortalConfig {
 	private ResourceBundle enBundle;
 	private ResourceBundle frBundle;
 	
-	private String googleAnalyticsSiteVerification;
-	private String googleAnalyticsAccount;
-	
 	//List of all terms to use in our DarwinCore archive
 	private String dwcaTermUsed;
+	
+	private boolean hashEmailAddress = false;
+	private String emailSalt;
 	
 	//Unique key that is managed by the portal
 	public static final String OCCURRENCE_MANAGED_ID_FIELD = "auto_id";
 	
 	public static final I18nTranslationHandler I18N_TRANSLATION_HANDLER = new I18nTranslationHandler("net.canadensys.dataportal.occurrence.controller");
-	
 
 	private static List<Locale> supportedLocale = new ArrayList<Locale>(2);
 	static{
@@ -49,9 +47,8 @@ public class OccurrencePortalConfig {
 	public OccurrencePortalConfig(){
 		try{
 			try {
-				//TODO : move this to canadensys-core as class UTF8ResourceBundle
-				enBundle = new PropertyResourceBundle(new InputStreamReader(OccurrencePortalConfig.class.getResourceAsStream("/"+BUNDLE_NAME+"_en.properties"), "UTF-8"));
-				frBundle = new PropertyResourceBundle(new InputStreamReader(OccurrencePortalConfig.class.getResourceAsStream("/"+BUNDLE_NAME+"_fr.properties"), "UTF-8"));
+				enBundle = UTF8PropertyResourceBundle.getBundle(BUNDLE_NAME, Locale.ENGLISH);
+				frBundle = UTF8PropertyResourceBundle.getBundle(BUNDLE_NAME, Locale.FRENCH);
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			} catch (FileNotFoundException e) {
@@ -78,22 +75,6 @@ public class OccurrencePortalConfig {
 		return null;
 	}
 
-	public String getGoogleAnalyticsAccount() {
-		return googleAnalyticsAccount;
-	}
-	public void setGoogleAnalyticsAccount(String googleAnalyticsAccount) {
-		this.googleAnalyticsAccount = googleAnalyticsAccount;
-	}
-
-	public String getGoogleAnalyticsSiteVerification() {
-		return googleAnalyticsSiteVerification;
-	}
-
-	public void setGoogleAnalyticsSiteVerification(
-			String googleAnalyticsSiteVerification) {
-		this.googleAnalyticsSiteVerification = googleAnalyticsSiteVerification;
-	}
-
 	public String getDwcaTermUsed() {
 		return dwcaTermUsed;
 	}
@@ -113,5 +94,19 @@ public class OccurrencePortalConfig {
 	}
 	public void setUseMinified(Boolean useMinified) {
 		this.useMinified = useMinified;
+	}
+
+	public boolean isHashEmailAddress() {
+		return hashEmailAddress;
+	}
+	public void setHashEmailAddress(boolean hashEmailAddress) {
+		this.hashEmailAddress = hashEmailAddress;
+	}
+
+	public String getEmailSalt() {
+		return emailSalt;
+	}
+	public void setEmailSalt(String emailSalt) {
+		this.emailSalt = emailSalt;
 	}
 }

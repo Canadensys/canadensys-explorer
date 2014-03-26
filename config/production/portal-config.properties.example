@@ -15,12 +15,16 @@ hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 hibernate.show_sql=false
 hibernate.jdbc.fetch_size=1000
 
-#Your SMTP server address to send email
+#Email sender configurations
 email.smtpServer=YOUR_VALUE
 email.port=25
+email.hashAddress=true
+email.salt=6SFDW$PTkp04yogq>vyEfku
 
 #The URL of the tile server
-tileServer.url=http://tiles.canadensys.net
+tiler.protocol=http
+tiler.domain=tiles.canadensys.net
+tiler.port=80
 
 #The URL of your feedback system. Could also be a mailto or can be removed if no feedback is required.
 feedback.url=http://code.google.com/p/canadensys/issues/entry?template=Explorer%20-%20Interface%20issue
