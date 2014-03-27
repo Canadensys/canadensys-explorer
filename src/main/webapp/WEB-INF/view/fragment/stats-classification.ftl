@@ -1,11 +1,12 @@
 <h2>${rc.getMessage("view.stats.group.classification")}</h2>
-<a href="?${URLHelper.replaceCurrentQueryParam(Request,"stat_sel",root.availableFilters.kingdom?c)?html}">${rc.getMessage("view.stats.kingdom")} (${root.kingdom_count!0}) </a>|
-<a href="?${URLHelper.replaceCurrentQueryParam(Request,"stat_sel",root.availableFilters.phylum?c)?html}">${rc.getMessage("view.stats.phylum")} (${root.phylum_count!0}) </a>|
-<a href="?${URLHelper.replaceCurrentQueryParam(Request,"stat_sel",root.availableFilters._class?c)?html}">${rc.getMessage("view.stats.class")} (${root._class_count!0}) </a>|
-<a href="?${URLHelper.replaceCurrentQueryParam(Request,"stat_sel",root.availableFilters._order?c)?html}">${rc.getMessage("view.stats.order")} (${root._order_count!0}) </a>|
-<a href="?${URLHelper.replaceCurrentQueryParam(Request,"stat_sel",root.availableFilters.family?c)?html}">${rc.getMessage("view.stats.family")} (${root.family_count!0}) </a>|
-<a href="?${URLHelper.replaceCurrentQueryParam(Request,"stat_sel",root.availableFilters.genus?c)?html}">${rc.getMessage("view.stats.genus")} (${root.genus_count!0}) </a>|
-<a href="?${URLHelper.replaceCurrentQueryParam(Request,"stat_sel",root.availableFilters.scientificname?c)?html}">${rc.getMessage("view.stats.scientificname")} (${root.scientificname_count!0})</a>
+
+${getStatsFieldTag("kingdom", root.kingdom_count!0, root.availableFilters.kingdom?c, root.statsFieldKey)} |
+${getStatsFieldTag("phylum", root.phylum_count!0, root.availableFilters.phylum?c, root.statsFieldKey)} |
+${getStatsFieldTag("_class", root._class_count!0, root.availableFilters._class?c, root.statsFieldKey)} |
+${getStatsFieldTag("_order", root._order_count!0, root.availableFilters._order?c, root.statsFieldKey)} |
+${getStatsFieldTag("family", root.family_count!0, root.availableFilters.family?c, root.statsFieldKey)} |
+${getStatsFieldTag("genus", root.genus_count!0, root.availableFilters.genus?c, root.statsFieldKey)} |
+${getStatsFieldTag("scientificname", root.scientificname_count!0, root.availableFilters.scientificname?c, root.statsFieldKey)}
 
 <div class="stats_group chart_pie">
   <div class="chart_container" id="chart_pie"></div>
