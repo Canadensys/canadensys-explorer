@@ -12,9 +12,9 @@
   <table class="stats_container" id="chart_table">
   <thead>
   	<tr>
-     <th>${rc.getMessage("filter."+root.statsFieldKey)}</th>
-     <th>${rc.getMessage("view.stats.count")}</th>
-     <th>%</th>
+     <th scope="col">${rc.getMessage("filter."+root.statsFieldKey)}</th>
+     <th scope="col">${rc.getMessage("view.stats.count")}</th>
+     <th scope="col">%</th>
   	</tr>
   </thead>
   <tbody>

@@ -4,8 +4,8 @@
   <table class="stats_container" id="chart_table">
   <thead>
   	<tr>
-     <th>${rc.getMessage("view.stats."+root.statsFieldKey)}</th>
-     <th>${rc.getMessage("view.stats.count")}</th>
+     <th scope="col">${rc.getMessage("view.stats."+root.statsFieldKey)}</th>
+     <th scope="col">${rc.getMessage("view.stats.count")}</th>
   	</tr>
   </thead>
   <tbody>
