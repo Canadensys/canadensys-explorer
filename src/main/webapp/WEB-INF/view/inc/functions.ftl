@@ -81,11 +81,9 @@ ${URLHelper.newQueryStringBuilder().add("view",view).add(root.searchParameters!)
 </#function>
 
 <#function getStatsFieldTag statFieldName statFieldCount statFieldId currentStatField>
-  <#local tag="">
-  <#if currentStatField?has_content && (currentStatField?lower_case == statFieldName)>
-     <#local tag = rc.getMessage("view.stats." + statFieldName) + " (" + statFieldCount + ")">
-  <#else>
-     <#local tag = "<a href=\"?" + URLHelper.replaceCurrentQueryParam(Request,"stat_sel",statFieldId)?html + "\">" + rc.getMessage("view.stats." + statFieldName) + " (" + statFieldCount + ")</a>">
+  <#local tag = rc.getMessage("view.stats." + statFieldName) + " (" + statFieldCount + ")">
+  <#if currentStatField?lower_case != statFieldName>
+     <#local tag = "<a href=\"?" + URLHelper.replaceCurrentQueryParam(Request,"stat_sel",statFieldId)?html + "\">" + tag + "</a>">
   </#if>
   <#return tag>
 </#function>
