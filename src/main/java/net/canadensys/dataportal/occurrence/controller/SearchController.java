@@ -55,7 +55,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.RequestContextUtils;
-import org.springframework.web.servlet.view.RedirectView;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -150,19 +149,6 @@ public class SearchController {
 		for(Locale currLocale : appConfig.getSupportedLocale()){
 			languageResourcesByLocale.put(currLocale, beanAsJSONString(osfLangSupport.buildLanguageResourcesMap(appConfig.getResourceBundle(currLocale))));
 		}
-	}
-	
-	/**
-	 * Redirect the root to the search page
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(value="/", method=RequestMethod.GET)
-	public ModelAndView handleRoot(HttpServletRequest request){
-		RedirectView rv = new RedirectView(request.getContextPath()+"/search");
-		rv.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
-		ModelAndView mv = new ModelAndView(rv);
-		return mv;
 	}
 	
 	@RequestMapping(value="/search", method=RequestMethod.GET)
