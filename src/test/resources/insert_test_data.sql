@@ -37,3 +37,6 @@ VALUES (1,'_class',1,'Magnoliopsida','magnoliopsida');
 
 INSERT INTO unique_values(id,key,occurrence_count,value,unaccented_value)
 VALUES (2,'_order',1,'Sapindales','sapindales');
+
+INSERT INTO unique_values(id,key,occurrence_count,value,unaccented_value)
+VALUES (3,'country',1,'Canada','canada');

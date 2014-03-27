@@ -36,30 +36,11 @@ public class RewriteConfigurationProvider extends HttpConfigurationProvider{
 			 //handle root path
 			 .addRule()
 					.when(Path.matches("/").and(Direction.isInbound()).andNot(DispatchType.isForward()))
-					.perform(new HttpOperation() {
-						@Override
-						public void performHttp(HttpServletRewrite event, EvaluationContext context) {
-							String reqLanguage = event.getRequest().getLocale().getLanguage();
-							if(!OccurrencePortalConfig.isSupportedLanguage(reqLanguage)){
-								reqLanguage = Locale.ENGLISH.getLanguage();
-							}
-							String landingUrl = I18nUrlBuilder.generateI18nResourcePath(reqLanguage, OccurrencePortalConfig.I18N_TRANSLATION_HANDLER.getTranslationFormat("search"), (String)null);
-							Redirect.permanent(event.getContextPath()+landingUrl).perform(event, context);
-						}
-					})
+					.perform(new RedirectHomePage())
+			//some containers (e.g. Weblogic send nothing as web-app root
 			.addRule()
 					.when(Path.matches("").and(Direction.isInbound()).andNot(DispatchType.isForward()))
-					.perform(new HttpOperation() {
-						@Override
-						public void performHttp(HttpServletRewrite event, EvaluationContext context) {
-							String reqLanguage = event.getRequest().getLocale().getLanguage();
-							if(!OccurrencePortalConfig.isSupportedLanguage(reqLanguage)){
-								reqLanguage = Locale.ENGLISH.getLanguage();
-							}
-							String landingUrl = I18nUrlBuilder.generateI18nResourcePath(reqLanguage, OccurrencePortalConfig.I18N_TRANSLATION_HANDLER.getTranslationFormat("search"), (String)null);
-							Redirect.permanent(event.getContextPath()+landingUrl).perform(event, context);
-						}
-					})
+					.perform(new RedirectHomePage())
 			  //only resolve path that begins with fr|en|assets
 			 .addRule()
 				.when(Path.matches("/{tail}").and(Direction.isInbound()).andNot(DispatchType.isForward()))
@@ -91,5 +72,21 @@ public class RewriteConfigurationProvider extends HttpConfigurationProvider{
 	@Override
 	public int priority() {
 		return 10;
+	}
+	
+	/**
+	 * HttpOperation to redirect to Explorer home page.
+	 * @author cgendreau
+	 *
+	 */
+	private class RedirectHomePage extends HttpOperation{
+		public void performHttp(HttpServletRewrite event, EvaluationContext context) {
+			String reqLanguage = event.getRequest().getLocale().getLanguage();
+			if(!OccurrencePortalConfig.isSupportedLanguage(reqLanguage)){
+				reqLanguage = Locale.ENGLISH.getLanguage();
+			}
+			String landingUrl = I18nUrlBuilder.generateI18nResourcePath(reqLanguage, OccurrencePortalConfig.I18N_TRANSLATION_HANDLER.getTranslationFormat("search"), (String)null);
+			Redirect.permanent(event.getContextPath()+landingUrl).perform(event, context);
+		}
 	}
 }
