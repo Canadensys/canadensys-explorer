@@ -47,6 +47,19 @@ public class RewriteConfigurationProvider extends HttpConfigurationProvider{
 							Redirect.permanent(event.getContextPath()+landingUrl).perform(event, context);
 						}
 					})
+			.addRule()
+					.when(Path.matches("").and(Direction.isInbound()).andNot(DispatchType.isForward()))
+					.perform(new HttpOperation() {
+						@Override
+						public void performHttp(HttpServletRewrite event, EvaluationContext context) {
+							String reqLanguage = event.getRequest().getLocale().getLanguage();
+							if(!OccurrencePortalConfig.isSupportedLanguage(reqLanguage)){
+								reqLanguage = Locale.ENGLISH.getLanguage();
+							}
+							String landingUrl = I18nUrlBuilder.generateI18nResourcePath(reqLanguage, OccurrencePortalConfig.I18N_TRANSLATION_HANDLER.getTranslationFormat("search"), (String)null);
+							Redirect.permanent(event.getContextPath()+landingUrl).perform(event, context);
+						}
+					})
 			  //only resolve path that begins with fr|en|assets
 			 .addRule()
 				.when(Path.matches("/{tail}").and(Direction.isInbound()).andNot(DispatchType.isForward()))
