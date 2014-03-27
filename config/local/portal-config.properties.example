@@ -4,6 +4,13 @@ database.driver=org.h2.Driver
 database.url=jdbc:h2:mem:postgresql;DB_CLOSE_DELAY=-1;MODE=PostgreSQL;
 database.user=
 database.password=
+
+#database.driver=org.postgresql.Driver
+#database.url=jdbc:postgresql://domain/database
+#database.user=username
+#database.password=password
+#database.idleConnectionTestPeriod=60
+
 hibernate.dialect=org.hibernate.dialect.H2Dialect
 hibernate.show_sql=false
 database.idleConnectionTestPeriod=60
