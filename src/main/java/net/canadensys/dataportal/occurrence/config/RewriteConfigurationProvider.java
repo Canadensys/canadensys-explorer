@@ -1,5 +1,7 @@
 package net.canadensys.dataportal.occurrence.config;
 
+import java.util.Locale;
+
 import javax.servlet.ServletContext;
 
 import net.canadensys.web.i18n.I18nUrlBuilder;
@@ -37,8 +39,11 @@ public class RewriteConfigurationProvider extends HttpConfigurationProvider{
 					.perform(new HttpOperation() {
 						@Override
 						public void performHttp(HttpServletRewrite event, EvaluationContext context) {
-							String lang = event.getRequest().getLocale().getLanguage();
-							String landingUrl = I18nUrlBuilder.generateI18nResourcePath(lang,OccurrencePortalConfig.I18N_TRANSLATION_HANDLER.getTranslationFormat("search"),(String)null);
+							String reqLanguage = event.getRequest().getLocale().getLanguage();
+							if(!OccurrencePortalConfig.isSupportedLanguage(reqLanguage)){
+								reqLanguage = Locale.ENGLISH.getLanguage();
+							}
+							String landingUrl = I18nUrlBuilder.generateI18nResourcePath(reqLanguage, OccurrencePortalConfig.I18N_TRANSLATION_HANDLER.getTranslationFormat("search"), (String)null);
 							Redirect.permanent(event.getContextPath()+landingUrl).perform(event, context);
 						}
 					})

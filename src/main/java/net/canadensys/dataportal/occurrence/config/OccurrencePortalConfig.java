@@ -43,6 +43,12 @@ public class OccurrencePortalConfig {
 		supportedLocale.add(Locale.ENGLISH);
 		supportedLocale.add(Locale.FRENCH);
 	}
+	private static List<String> supportedLanguage = new ArrayList<String>(supportedLocale.size());
+	static{
+		for(Locale currLocale : supportedLocale){
+			supportedLanguage.add(currLocale.getLanguage().toLowerCase());
+		}
+	}
 
 	public OccurrencePortalConfig(){
 		try{
@@ -59,6 +65,10 @@ public class OccurrencePortalConfig {
 		}catch(MissingResourceException e){
 		    System.out.println(e);
 		}
+	}
+	
+	public static boolean isSupportedLanguage(String lang){
+		return supportedLanguage.contains(lang.toLowerCase());
 	}
 	
 	public List<Locale> getSupportedLocale(){
