@@ -32,6 +32,19 @@ public class OccurrencePageIntegrationTest extends AbstractIntegrationTest {
 	}
 	
 	@Test
+	public void testOccurrencePageWithSpaceChar() {
+		browser.get(TESTING_SERVER_URL+"resources/acad-specimens/occurrences/ACAD%203");
+		
+		//bind the WebElement to the current page
+		PageFactory.initElements(browser, this);
+		
+		WebElement h1 = browser.findElement(By.cssSelector("h1"));
+		assertEquals("Myosotis arvensis (ACAD z10441)", h1.getText());
+		//make sure footer is there
+		assertEquals("div",footerDiv.getTagName().toLowerCase());
+	}
+	
+	@Test
 	public void testOccurrencePageDwcView() {
 		browser.get(TESTING_SERVER_URL+"resources/acad-specimens/occurrences/ACAD-1?view=dwc");
 		

@@ -23,11 +23,11 @@ ext {
 	hibernateVersion = '4.3.2.Final'
 	freemarkerVersion = '2.3.20'
 	apacheCodecVersion = '1.9'
-	rewriteVersion = '2.0.11.Final'
+	rewriteVersion = '2.0.12-SNAPSHOT'
 	ehCacheVersion = '2.6.8'
 	sitemeshVersion = '3.0.0-SNAPSHOT'
 	
-	dataAccessVersion = '2.4.0-SNAPSHOT'
+	dataAccessVersion = '2.4.0'
 	webCoreVersion = '0.1'
 	canadensysWebThemeVersion = '0.1'
 
