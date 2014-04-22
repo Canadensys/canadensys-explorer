@@ -12,12 +12,12 @@ EXPLORER.wkt = (function() {
 
     init: function() {
       //console.log(EXPLORER.map.GMap);
-    },
+    }
 
   };
 
   return {
-    init: function() { _private.init(); },
+    init: function() { _private.init(); }
   };
 
 }());
