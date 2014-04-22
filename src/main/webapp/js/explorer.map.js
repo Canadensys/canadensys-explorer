@@ -10,6 +10,9 @@ EXPLORER.map = (function() {
 
   var _private = {
 
+    map : {},
+    cartodb_gmapsv3 : {},
+
     center: new google.maps.LatLng(45.5,-73.5),
 
     init: function() {
@@ -85,7 +88,7 @@ EXPLORER.map = (function() {
     },
 
     setupMap: function(obj) {
-      var map, marker, cartodb_gmapsv3;
+      var marker, cartodb_gmapsv3;
 
       _.defaults(obj, {
         mapCanvasId : "map_canvas",
@@ -95,7 +98,7 @@ EXPLORER.map = (function() {
         mapQuery : ""
       });
 
-      map = new google.maps.Map($('#' + obj.mapCanvasId)[0], {
+      this.map = new google.maps.Map($('#' + obj.mapCanvasId)[0], {
         center: new google.maps.LatLng(45.5,-73.5),
         zoom: 3,
         mapTypeId: google.maps.MapTypeId.TERRAIN,
@@ -104,7 +107,7 @@ EXPLORER.map = (function() {
 
       marker = new google.maps.Marker({
         position: null,
-        map: map
+        map: this.map
       });
 
       function onMapClick(e, latlng, pos, data) {
@@ -119,8 +122,8 @@ EXPLORER.map = (function() {
           });
       }
 
-      cartodb_gmapsv3 = new CartoDBLayer({
-        map: map,
+      this.cartodb_gmapsv3 = new CartoDBLayer({
+        map: this.map,
         table_name: 'occurrence',
         interactivity: 'auto_id',
         query: obj.mapQuery,
@@ -147,6 +150,12 @@ EXPLORER.map = (function() {
     init: function() { _private.init(); },
     setupMap: function(obj) {
       _private.setupMap(obj);
+    },
+    GMap: function() {
+      return _private.map;
+    },
+    CartoDBGMap: function() {
+      return _private.cartodb_gmapsv3;
     }
   };
 

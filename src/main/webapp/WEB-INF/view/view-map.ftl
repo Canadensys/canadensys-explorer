@@ -46,6 +46,7 @@
 <@jsAsset fileName="explorer.portal" version=root.currentVersion! useMinified=root.useMinified/>
 <@jsAsset fileName="explorer.backbone" version=root.currentVersion! useMinified=root.useMinified/>
 <@jsAsset fileName="explorer.map" version=root.currentVersion! useMinified=root.useMinified/>
+<@jsAsset filename="explorer.wkt" version=root.currentVersion! useMinified=root.useMinified/>
 
 <script>
 $(function() {
