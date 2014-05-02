@@ -10,7 +10,8 @@ EXPLORER.map = (function() {
 
   var _private = {
 
-    map : {},
+    map: {},
+    marker: {},
     cartodb_gmapsv3: {},
     drawing_manager: {},
     overlays: [],
@@ -105,10 +106,16 @@ EXPLORER.map = (function() {
         mapTypeControl: true
       });
 
+      this.marker = new google.maps.Marker({
+        position: null,
+        map: this.map
+      });
+
       this.createDrawingManager();
 
       this.cartodb_gmapsv3 = new CartoDBLayer({
         map: this.map,
+        marker: this.marker,
         overlays: this.overlays,
         table_name: 'occurrence',
         interactivity: 'auto_id',
@@ -131,12 +138,7 @@ EXPLORER.map = (function() {
     },
 
     onMapClick: function(e, latlng, pos, data) {
-      var marker = new google.maps.Marker({
-        position: null,
-        map: this.map
-      });
-      marker.setPosition(latlng);
-      this.overlays.push(marker);
+      this.marker.setPosition(latlng);
       $.get('occurrence-preview/'+data.auto_id,'context=map')
         .success(function(htmlFragment){
           EXPLORER.preview.replacePreviewContent(htmlFragment);
