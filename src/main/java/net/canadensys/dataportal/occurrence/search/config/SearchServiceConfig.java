@@ -41,7 +41,7 @@ public class SearchServiceConfig {
 		DECADE(26),
 		AVERAGE_ALTITUDE_ROUNDED(27),BOUNDING_BOX(28),
 		SOURCE_FILE_ID(29),
-		START_YEAR(30)
+		START_YEAR(30),HAS_TYPES(31),HAS_WKT(32),HAS_ELLIPSE(33)
 		;
 		
 		private int id;
@@ -237,7 +237,13 @@ public class SearchServiceConfig {
 				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.BOUNDING_BOX.id,"boundingbox").geoCoordinates("the_geom").inOperator().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.SOURCE_FILE_ID.id,
 				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.SOURCE_FILE_ID.id,"sourcefileid").singleValue("sourcefileid",String.class).eqOperator().supportSelectionList().toOccurrenceSearchableField());
-		
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.HAS_TYPES.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.HAS_TYPES.id,"hastypes").singleValue("hastypes",Boolean.class).eqOperator().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.HAS_WKT.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.HAS_WKT.id,"haswkt").singleValue("haswkt",Boolean.class).eqOperator().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.HAS_ELLIPSE.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.HAS_ELLIPSE.id,"hasellipse").singleValue("hasellipse",Boolean.class).eqOperator().toOccurrenceSearchableField());
+
 		//Those searchable fields are used for stats only
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.GENUS.id,
 				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.GENUS.id,"genus").singleValue("genus",String.class).eqOperator().likeOperator(QueryOperatorEnum.CLIKE).eqOperator().toOccurrenceSearchableField());

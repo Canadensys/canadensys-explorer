@@ -229,19 +229,23 @@ EXPLORER.map = (function() {
     createFilter: function(type) {
       switch(type) {
         case 'ellipse':
+          $.each(EXPLORER.backbone.getAvailableSearchFields(), function(k,v) {
+            if(v.searchableFieldName === "hasellipse") {
+              EXPLORER.backbone.loadFilter([{"op":"EQ","searchableFieldName":"hasellipse","searchableFieldId":k,"valueList":["true"],"singleValue":"true"}]);
+              return;
+            }
+          });
         break;
         
         case 'polygon':
+          $.each(EXPLORER.backbone.getAvailableSearchFields(), function(k,v) {
+            if(v.searchableFieldName === "haswkt") {
+              EXPLORER.backbone.loadFilter([{"op":"EQ","searchableFieldName":"haswkt","searchableFieldId":k,"valueList":["true"],"singleValue":"true"}]);
+              return;
+            }
+          });
         break;
       }
-/*
-      EXPLORER.backbone.loadFilter([{"op":"EQ","searchableFieldName":"haswkt","searchableFieldId":31,"valueList":["true"],"singleValue":"true"}]);
-      EXPLORER.backbone.filterList.find(function(currFilter) {
-        if(currFilter.get('searchableFieldName') === "haswkt") {
-
-        }
-      });
-*/
     }
 
   };

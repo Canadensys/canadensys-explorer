@@ -66,6 +66,10 @@ EXPLORER.backbone = (function(){
     availableSearchFields = _availableSearchFields;
   }
 
+  function getAvailableSearchFields() {
+    return availableSearchFields;
+  }
+
   function getInitialFilterParamMap(){
     return initialFilterParamMap;
   }
@@ -168,7 +172,6 @@ EXPLORER.backbone = (function(){
     },
     events : {
       "click #value_suggestions tr" : "createNewSuggestionFilter"
-  
     },
     onTextChanged : function(textSearchModel) {
       var mapParam = {},
@@ -909,6 +912,7 @@ EXPLORER.backbone = (function(){
     init: init,
     setNumberOfResult : setNumberOfResult,
     setAvailableSearchFields : setAvailableSearchFields,
+    getAvailableSearchFields : getAvailableSearchFields,
     loadFilter : loadFilter,
     filterList : filterList,
     getInitialFilterParamMap : getInitialFilterParamMap
