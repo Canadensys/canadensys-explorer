@@ -910,6 +910,7 @@ EXPLORER.backbone = (function(){
     setNumberOfResult : setNumberOfResult,
     setAvailableSearchFields : setAvailableSearchFields,
     loadFilter : loadFilter,
+    filterList : filterList,
     getInitialFilterParamMap : getInitialFilterParamMap
   };
 
