@@ -39,6 +39,8 @@ public class SearchServiceConfig {
 		
 		CLASS(18),PHYLUM(19),
 		
+		HAS_COORDINATES(20),HAS_MEDIA(21),HAS_TYPE_STATUS(31),
+		
 		COUNTY(22),MUNICIPALITY(23),GENUS(24),
 		DECADE(26),
 		AVERAGE_ALTITUDE_ROUNDED(27),
@@ -227,10 +229,12 @@ public class SearchServiceConfig {
 				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.CLASS.id,"_class").singleValue("_class",String.class).eqOperator().supportSuggestion().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.PHYLUM.id,
 				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.PHYLUM.id,"phylum").singleValue("phylum",String.class).eqOperator().supportSuggestion().toOccurrenceSearchableField());
-		SEARCHABLE_FIELD_MAP.put(20,
-				new OccurrenceSearchableFieldBuilder(20,"hascoordinates").singleValue("hascoordinates",Boolean.class).eqOperator().toOccurrenceSearchableField());
-		SEARCHABLE_FIELD_MAP.put(21,
-				new OccurrenceSearchableFieldBuilder(21,"hasmedia").singleValue("hasmedia",Boolean.class).eqOperator().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.HAS_COORDINATES.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.HAS_COORDINATES.id,"hascoordinates").singleValue("hascoordinates",Boolean.class).eqOperator().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.HAS_MEDIA.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.HAS_MEDIA.id,"hasmedia").singleValue("hasmedia",Boolean.class).eqOperator().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.HAS_TYPE_STATUS.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.HAS_TYPE_STATUS.id,"hastypestatus").singleValue("hastypestatus",Boolean.class).eqOperator().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.COUNTY.id,
 				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.COUNTY.id,"county").singleValue("county",String.class).eqOperator().supportSuggestion().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.MUNICIPALITY.id,
