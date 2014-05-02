@@ -28,7 +28,7 @@ ext {
 	sitemeshVersion = '3.0.0-SNAPSHOT'
 	
 	dataAccessVersion = '2.4.0'
-	webCoreVersion = '0.1'
+	webCoreVersion = '0.1.1'
 	canadensysWebThemeVersion = '0.1'
 
 	tomcatVersion = '6.0.29'
