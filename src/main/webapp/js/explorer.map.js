@@ -89,7 +89,6 @@ EXPLORER.map = (function() {
     },
 
     setupMap: function(obj) {
-      var self = this;
 
       _.defaults(obj, {
         mapCanvasId : "map_canvas",
@@ -197,28 +196,30 @@ EXPLORER.map = (function() {
     },
 
     drawingDone: function(e, scope) {
+      var center, radius, bounds, polygon;
+
       scope.drawing_manager.setOptions({ drawingMode: null });
       scope.overlays.push(e);
 
 //      $('#geo_type').val(e.type);
       switch(e.type) {
         case 'circle':
-          var center = e.overlay.getCenter().toUrlValue(),
-              radius = e.overlay.radius/1000;
+          center = e.overlay.getCenter().toUrlValue();
+          radius = e.overlay.radius/1000;
           console.log(center, radius);
           this.createFilter('ellipse');
         break;
 
         case 'rectangle':
-          var bounds = e.overlay.getBounds().toUrlValue();
+          bounds = e.overlay.getBounds().toUrlValue();
           console.log(bounds);
           this.createFilter('polygon');
         break;
 
         case 'polygon':
-          var polygon = "[" + e.overlay.getPath().getArray().toString().replace(/\(/g,"[").replace(/\)/g, "]") + "]";
-           console.log(polygon);
-           this.createFilter('polygon');
+          polygon = "[" + e.overlay.getPath().getArray().toString().replace(/\(/g,"[").replace(/\)/g, "]") + "]";
+          console.log(polygon);
+          this.createFilter('polygon');
         break;
       }
     },
