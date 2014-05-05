@@ -1,6 +1,7 @@
 package net.canadensys.dataportal.occurrence.controller;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,6 +11,7 @@ import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
 import net.canadensys.dataportal.occurrence.model.OccurrenceViewModel;
 import net.canadensys.dataportal.occurrence.model.ResourceContactModel;
 import net.canadensys.exception.web.ResourceNotFoundException;
+import net.canadensys.web.i18n.I18nUrlBuilder;
 import net.canadensys.web.i18n.annotation.I18nTranslation;
 
 import org.apache.commons.lang3.StringUtils;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
 /**
@@ -48,45 +51,6 @@ public class OccurrenceController {
 	@Autowired
 	@Qualifier("occurrencePortalConfig")
 	private OccurrencePortalConfig appConfig;
-	
-	/**
-	 * Redirect this URL to a search on this dataset with a fallback to iptresource (for legacy reason).
-	 * We support this to have a clean URL to the dataset.
-	 * @param dataset
-	 * @return
-	 */
-	@Deprecated
-	@RequestMapping(value="/d/{dataset}", method=RequestMethod.GET)
-	public ModelAndView handleDataset(@PathVariable String dataset, HttpServletRequest request){
-		if(!occurrenceService.datasetExists(dataset)){
-			//some links might refer to an IPT resource with a dataset name (used until version 1.2.4)
-			if(occurrenceService.resourceExists(dataset)){
-				return handleIptResource(dataset, request);
-			}
-			
-			throw new ResourceNotFoundException();
-		}
-		RedirectView rv = new RedirectView(request.getContextPath()+"/search?dataset="+dataset);
-		rv.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
-		ModelAndView mv = new ModelAndView(rv);
-		return mv;
-	}
-	
-	/**
-	 * We keep this URL for legacy reason. /d/{dataset}/ was misused as sourcefileid.
-	 * @param dataset
-	 * @param dwcaId
-	 * @param request needs to get some parameters and Locale
-	 * @return
-	 */
-	@Deprecated
-	@RequestMapping(value="/d/{dataset}/{dwcaId:.+}", method=RequestMethod.GET)
-	public ModelAndView handleOccurrence(@PathVariable String dataset,@PathVariable String dwcaId, HttpServletRequest request){
-		RedirectView rv = new RedirectView(request.getContextPath()+"/r/" + dataset + "/"+dwcaId);
-		rv.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
-		ModelAndView mv = new ModelAndView(rv);
-		return mv;
-	}
 	
 	@RequestMapping(value="/resources/{iptResource}/occurrences/{dwcaId:.+}", method=RequestMethod.GET)
 	@I18nTranslation(resourceName="occurrence", translateFormat = "/resources/{}/occurrences/{}")
@@ -143,11 +107,14 @@ public class OccurrenceController {
 	 * @return
 	 */
 	@RequestMapping(value="/resources/{iptResource}", method=RequestMethod.GET)
+	@I18nTranslation(resourceName="resource", translateFormat = "/resources/{}")
 	public ModelAndView handleIptResource(@PathVariable String iptResource, HttpServletRequest request){
 		if(!occurrenceService.resourceExists(iptResource)){
 			throw new ResourceNotFoundException();
 		}
-		RedirectView rv = new RedirectView(request.getContextPath()+"/search?iptresource="+iptResource);
+		Locale locale = RequestContextUtils.getLocale(request);
+		String searchUrl = I18nUrlBuilder.generateI18nResourcePath(locale.getLanguage(), OccurrencePortalConfig.I18N_TRANSLATION_HANDLER.getTranslationFormat("search"), (String)null);
+		RedirectView rv = new RedirectView(request.getContextPath()+searchUrl+"?iptresource="+iptResource);
 		rv.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
 		ModelAndView mv = new ModelAndView(rv);
 		return mv;

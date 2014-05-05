@@ -18,7 +18,7 @@ Dependencies
 ### Libraries
 * [Apache Maven 3](http://maven.apache.org/)
 * [Spring Framework 4.0.2](http://www.springsource.org/spring-framework)
-* [Canadensys Data Access 2.4.0](https://github.com/Canadensys/canadensys-data-access)
+* [Canadensys Data Access 2.7.0](https://github.com/Canadensys/canadensys-data-access)
 * [Hibernate 4.3.2](http://www.hibernate.org/)
 * [Freemarker 2.3.20](http://freemarker.sourceforge.net/)
 * [SiteMesh 3.0.0](https://github.com/sitemesh/sitemesh2/)
