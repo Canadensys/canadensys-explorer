@@ -48,7 +48,12 @@
 			<li><a href="?view=dwc">${rc.getMessage("occpage.header.button.dwc")}</a></li>
 		</ul>
 		</div>
-		
+
+		<#if root.occModel.hastypestatus?? && root.occModel.hastypestatus>
+			<h2>${rc.getMessage("occpage.group.typestatus")}</h2>
+			<p>${root.occModel.typestatus!}</p>
+		</#if>
+
 		<h2>${rc.getMessage("occpage.group.classification")}</h2>
 		<table class="occpage_group">
 		<tbody>
@@ -62,7 +67,7 @@
 			<tr><th scope="row">${rc.getMessage("occ.scientificnameauthorship")}</th><td>${root.occModel.scientificnameauthorship?if_exists}</td></tr>
 		</tbody>
 		</table>
-		
+
 		<h2>${rc.getMessage("occpage.group.location")}</h2>
 		<table class="occpage_group">
 		<tbody>

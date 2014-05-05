@@ -16,6 +16,7 @@ public abstract class AbstractIntegrationTest {
 	//TODO : read from a config file or set with DI
 	protected static final String TESTING_SERVER_URL = "http://localhost:9966/explorer/en/";
 	protected static final String TESTING_SERVER_URL_FR = "http://localhost:9966/explorer/fr/";
+	protected static final String TESTING_SERVER_URL_LEGACY = "http://localhost:9966/explorer/";
 	protected WebDriver browser;
 
 	@Before

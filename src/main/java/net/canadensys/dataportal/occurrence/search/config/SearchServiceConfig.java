@@ -41,7 +41,7 @@ public class SearchServiceConfig {
 		DECADE(26),
 		AVERAGE_ALTITUDE_ROUNDED(27),BOUNDING_BOX(28),
 		SOURCE_FILE_ID(29),
-		START_YEAR(30),HAS_TYPES(31),HAS_WKT(32),HAS_ELLIPSE(33)
+		START_YEAR(30),HAS_TYPE_STATUS(31),HAS_WKT(32),HAS_ELLIPSE(33)
 		;
 		
 		private int id;
@@ -182,6 +182,7 @@ public class SearchServiceConfig {
 		OCCURENCE_SUMMARY_FIELDS.add("_references");
 		OCCURENCE_SUMMARY_FIELDS.add("sourcefileid");
 		OCCURENCE_SUMMARY_FIELDS.add("dwcaid");
+		OCCURENCE_SUMMARY_FIELDS.add("typestatus");
 	}
 	
 	public SearchServiceConfig(){
@@ -229,6 +230,8 @@ public class SearchServiceConfig {
 				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.HAS_COORDINATES.id,"hascoordinates").singleValue("hascoordinates",Boolean.class).eqOperator().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.HAS_MEDIA.id,
 				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.HAS_MEDIA.id,"hasmedia").singleValue("hasmedia",Boolean.class).eqOperator().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.HAS_TYPE_STATUS.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.HAS_TYPE_STATUS.id,"hastypestatus").singleValue("hastypestatus",Boolean.class).eqOperator().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.COUNTY.id,
 				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.COUNTY.id,"county").singleValue("county",String.class).eqOperator().supportSuggestion().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.MUNICIPALITY.id,
@@ -237,8 +240,6 @@ public class SearchServiceConfig {
 				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.BOUNDING_BOX.id,"boundingbox").geoCoordinates("the_geom").inOperator().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.SOURCE_FILE_ID.id,
 				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.SOURCE_FILE_ID.id,"sourcefileid").singleValue("sourcefileid",String.class).eqOperator().supportSelectionList().toOccurrenceSearchableField());
-		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.HAS_TYPES.id,
-				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.HAS_TYPES.id,"hastypes").singleValue("hastypes",Boolean.class).eqOperator().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.HAS_WKT.id,
 				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.HAS_WKT.id,"haswkt").singleValue("haswkt",Boolean.class).eqOperator().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.HAS_ELLIPSE.id,

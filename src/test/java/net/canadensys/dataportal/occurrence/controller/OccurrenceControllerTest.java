@@ -89,28 +89,6 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
     	Object handler = handlerMapping.getHandler(request).getHandler();    
     	ModelAndView mav = handlerAdapter.handle(request, response, handler);
     	assertTrue(((RedirectView)mav.getView()).getUrl().contains("search?iptresource=uom-occurrence"));
-    	
-    	//Test legacy support
-    	response = new MockHttpServletResponse();
-    	request = new MockHttpServletRequest();
-    	request.setMethod("GET");
-    	request.setRequestURI("/d/uom-occurrence");
-    	//test default view
-    	handler = handlerMapping.getHandler(request).getHandler();    
-    	mav = handlerAdapter.handle(request, response, handler);
-    	assertTrue(((RedirectView)mav.getView()).getUrl().contains("search?iptresource=uom-occurrence"));
-    }
-    
-    @Test
-    public void testDatasetURL() throws Exception {
-    	MockHttpServletResponse response = new MockHttpServletResponse();
-    	MockHttpServletRequest request = new MockHttpServletRequest();
-    	request.setMethod("GET");
-    	request.setRequestURI("/d/University of Mexico (UOM)");
-    	//test default view
-    	Object handler = handlerMapping.getHandler(request).getHandler();    
-    	ModelAndView mav = handlerAdapter.handle(request, response, handler);
-    	assertTrue(((RedirectView)mav.getView()).getUrl().contains("search?dataset=University of Mexico (UOM)"));
     }
 
     @Test
@@ -139,15 +117,6 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
         HashMap<String,Object> modelRoot = (HashMap<String,Object>)mav.getModel().get("root");
         OccurrenceModel occModel = (OccurrenceModel)modelRoot.get("occModel");
         assertEquals("2.2", occModel.getDwcaid());
-        
-        //test redirect for legacy support where /d/ was misused as a resource identifier
-        response = new MockHttpServletResponse();
-    	request = new MockHttpServletRequest();
-    	request.setMethod("GET");
-    	request.setRequestURI("/d/uom-occurrence/2");
-    	handler = handlerMapping.getHandler(request).getHandler();    
-    	mav = handlerAdapter.handle(request, response, handler);
-    	assertTrue(((RedirectView)mav.getView()).getUrl().equals("/r/uom-occurrence/2"));
     }
     
     @Test

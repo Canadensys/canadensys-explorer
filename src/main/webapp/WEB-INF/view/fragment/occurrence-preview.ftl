@@ -1,8 +1,13 @@
 <#include "../inc/functions.ftl">
+
 <div id="occ_preview_control"><span id="preview_close">${rc.getMessage("view.preview.close")} &times;</span></div>
 <div id="occ_preview_content">
 
 <h2>${root.occModel.scientificname!}</h2>
+
+<#if root.occModel.typestatus?has_content>
+	<p><strong>${rc.getMessage("occ.typestatus")}</strong>: ${root.occModel.typestatus!}</p>
+</#if>
 
 <dl class="occ_preview_classification clear_fix">
 	<dt>${rc.getMessage("occ.kingdom")}: </dt><dd>${root.occModel.kingdom!}</dd>
