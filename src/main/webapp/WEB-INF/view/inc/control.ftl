@@ -57,6 +57,7 @@
 						<optgroup label="${rc.getMessage("filter.group.extra")}">
 							<option value="${root.availableFilters.hascoordinates}">${rc.getMessage("filter.hascoordinates")}</option>
 							<option value="${root.availableFilters.hasmedia}">${rc.getMessage("filter.hasmedia")}</option>
+							<option value="${root.availableFilters.hastypestatus}">${rc.getMessage("filter.hastypestatus")}</option>
 						</optgroup>
 					</select>
 				</div>

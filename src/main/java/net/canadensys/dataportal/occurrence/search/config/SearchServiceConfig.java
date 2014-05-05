@@ -186,6 +186,7 @@ public class SearchServiceConfig {
 		OCCURENCE_SUMMARY_FIELDS.add("_references");
 		OCCURENCE_SUMMARY_FIELDS.add("sourcefileid");
 		OCCURENCE_SUMMARY_FIELDS.add("dwcaid");
+		OCCURENCE_SUMMARY_FIELDS.add("typestatus");
 	}
 	
 	public SearchServiceConfig(){
