@@ -1,10 +1,11 @@
 Version History
 ===============
-Version 2.0.0 2014-05-?
+Version 2.0.0 2014-05-06
 * Full i18n urls
 * Paging on search table view
 * New search filters 'ipt resource' and 'type specimen'
 * Updated stats view
+* Bump to Spring 4
 
 Version 1.2.5 2014-01-31
 * Fixed issues [#8](https://github.com/Canadensys/canadensys-explorer/issues/8) and [#10](https://github.com/Canadensys/canadensys-explorer/issues/10).
