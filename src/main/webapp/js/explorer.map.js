@@ -2,7 +2,7 @@
 Copyright (c) 2013 Canadensys
 Explorer Map
 ****************************/
-/*global EXPLORER, $, window, document, console, jQuery, CartoDBLayer, google, _*/
+/*global EXPLORER, $, window, document, console, jQuery, CartoDBLayer, google, _, Wkt */
 
 EXPLORER.map = (function() {
 
@@ -10,6 +10,11 @@ EXPLORER.map = (function() {
 
   var _private = {
 
+    map: {},
+    marker: {},
+    cartodb_gmapsv3: {},
+    drawing_manager: {},
+    overlays: [],
     center: new google.maps.LatLng(45.5,-73.5),
 
     init: function() {
@@ -85,7 +90,6 @@ EXPLORER.map = (function() {
     },
 
     setupMap: function(obj) {
-      var map, marker, cartodb_gmapsv3;
 
       _.defaults(obj, {
         mapCanvasId : "map_canvas",
@@ -95,50 +99,146 @@ EXPLORER.map = (function() {
         mapQuery : ""
       });
 
-      map = new google.maps.Map($('#' + obj.mapCanvasId)[0], {
+      this.map = new google.maps.Map($('#' + obj.mapCanvasId)[0], {
         center: new google.maps.LatLng(45.5,-73.5),
         zoom: 3,
         mapTypeId: google.maps.MapTypeId.TERRAIN,
         mapTypeControl: true
       });
 
-      marker = new google.maps.Marker({
+      this.marker = new google.maps.Marker({
         position: null,
-        map: map
+        map: this.map
       });
 
-      function onMapClick(e, latlng, pos, data) {
-        marker.setPosition(latlng);
-        $.get('occurrence-preview/'+data.auto_id,'context=map')
-          .success(function(htmlFragment){
-            EXPLORER.preview.replacePreviewContent(htmlFragment);
-            EXPLORER.preview.show();
-          })
-           .error(function(jqXHR, textStatus, errorThrown){
-             console.log(textStatus+':'+errorThrown);
-          });
-      }
+      this.createDrawingManager();
 
-      cartodb_gmapsv3 = new CartoDBLayer({
-        map: map,
+      this.cartodb_gmapsv3 = new CartoDBLayer({
+        map: this.map,
+        marker: this.marker,
+        overlays: this.overlays,
         table_name: 'occurrence',
         interactivity: 'auto_id',
         query: obj.mapQuery,
         map_style: false,
         infowindow: true,
         auto_bound: true,
-        featureClick: onMapClick,
+        featureClick: this.onMapClick,
         tiler_domain: obj.tilerDomain,
         tiler_port: parseInt(obj.tilerPort,10),
         tiler_protocol: obj.tilerProtocol,
         featureOver: function() {
-          map.setOptions({draggableCursor: 'pointer'});
+          this.map.setOptions({draggableCursor: 'pointer'});
         },
         featureOut: function() {
-          map.setOptions({draggableCursor: 'default'});
+          this.map.setOptions({draggableCursor: 'default'});
         }
       });
 
+    },
+
+    onMapClick: function(e, latlng, pos, data) {
+      this.marker.setPosition(latlng);
+      $.get('occurrence-preview/'+data.auto_id,'context=map')
+        .success(function(htmlFragment){
+          EXPLORER.preview.replacePreviewContent(htmlFragment);
+          EXPLORER.preview.show();
+        })
+         .error(function(jqXHR, textStatus, errorThrown){
+           console.log(textStatus+':'+errorThrown);
+        });
+    },
+
+    createDrawingManager: function() {
+      var self = this;
+
+      this.drawing_manager = new google.maps.drawing.DrawingManager({
+        drawingControl: true,
+        drawingControlOptions: {
+          position: google.maps.ControlPosition.TOP_CENTER,
+          drawingModes: [
+            google.maps.drawing.OverlayType.CIRCLE,
+            google.maps.drawing.OverlayType.RECTANGLE,
+            google.maps.drawing.OverlayType.POLYGON
+          ]
+        }
+      });
+
+      this.drawing_manager.setMap(this.map);
+
+      google.maps.event.addListener(this.drawing_manager, 'drawingmode_changed', function() {
+        if(self.overlays.length > 0 && self.drawing_manager.drawingMode) {
+          self.clearOverlays();
+          self.removeSpatialFilters();
+          self.cartodb_gmapsv3.setInteraction(false);
+        }
+      });
+      google.maps.event.addListener(this.drawing_manager, "overlaycomplete", function(e) {
+        self.drawingDone(e, self);
+        self.cartodb_gmapsv3.setInteraction(true);
+      });
+    },
+
+    clearOverlays: function() {
+      $.each(this.overlays, function() {
+        if(this.hasOwnProperty('overlay')) {
+          this.overlay.setMap(null);
+        } else {
+          this.setMap(null);
+        }
+      });
+      this.overlays = [];
+    },
+
+    removeSpatialFilters: function() {
+      EXPLORER.backbone.removeFilter({searchableFieldName: 'ellipse'});
+      EXPLORER.backbone.removeFilter({searchableFieldName: 'wkt'});
+    },
+
+    drawingDone: function(e, scope) {
+      var center, radius;
+
+      scope.drawing_manager.setOptions({ drawingMode: null });
+      scope.overlays.push(e);
+
+      switch(e.type) {
+        case 'circle':
+          center = e.overlay.getCenter().toUrlValue();
+          radius = e.overlay.radius/1000; //radius in km
+          scope.createFilter({ searchableFieldName : 'ellipse', data : { center : center, radius : radius } });
+        break;
+
+        case 'rectangle':
+          scope.createFilter({ searchableFieldName : 'wkt', data : { wkt : scope.createWKT(e.overlay) } });
+        break;
+
+        case 'polygon':
+          scope.createFilter({ searchableFieldName : 'wkt', data : { wkt : scope.createWKT(e.overlay) } });
+        break;
+      }
+    },
+
+    createWKT: function(obj) {
+      var wkt = new Wkt.Wkt();
+      wkt.fromObject(obj);
+      return wkt.write();
+    },
+
+    createFilter: function(json) {
+      var self = this, fieldId;
+
+      $.each(EXPLORER.backbone.getAvailableSearchFields(), function(k,v) {
+        if(v.searchableFieldName === json.searchableFieldName) {
+          EXPLORER.backbone.loadFilter([{
+            "op":"EQ",
+            "searchableFieldName":v.searchableFieldName,
+            "searchableFieldId":v.searchableFieldId,
+            "valueList":["true"],
+            "singleValue":"true"
+          }]);
+          return;
+        }
+      });
     }
 
   };

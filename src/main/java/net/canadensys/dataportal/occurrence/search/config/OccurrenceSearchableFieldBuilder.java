@@ -71,12 +71,13 @@ public class OccurrenceSearchableFieldBuilder {
 		return this;
 	}
 	
-	public OccurrenceSearchableFieldBuilder geoCoordinates(String theGeomField){
-		searchableField.setSearchableFieldTypeEnum(SearchableFieldTypeEnum.GEO_COORDINATES);
+	public OccurrenceSearchableFieldBuilder geoValue(String theGeomField, Class<?> type){
+		searchableField.setSearchableFieldTypeEnum(SearchableFieldTypeEnum.GEO_PREDEFINED_AREA);
 		searchableField.addRelatedField(theGeomField);
+		searchableField.setType(type);
 		return this;
 	}
-	
+
 	/**
 	 * Chainable method to enable the LIKE operator and the supportPartialMatch on the OccurrenceSearchableField
 	 * @param likeOp

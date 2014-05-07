@@ -35,12 +35,14 @@
 
 <content tag="local_script">
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script src="//maps.googleapis.com/maps/api/js?sensor=false&libraries=drawing"></script>
 <@jsLibAsset libName="jquery-ui-1.10.4.custom.min.js"/>
 <@jsLibAsset libName="underscore-min.js"/>
 <@jsLibAsset libName="backbone-min.js"/>
 <@jsLibAsset libName="wax.g.min-6.2.0-touched.js"/>
 <@jsLibAsset libName="cartodb-gmapsv3-min.js"/>
+<@jsLibAsset libName="wicket.min.js"/>
+<@jsLibAsset libName="wicket-gmap3.min.js"/>
 <@jsAsset fileName="explorer" version=root.currentVersion! useMinified=root.useMinified/>
 <@jsAsset fileName="explorer.utils" version=root.currentVersion! useMinified=root.useMinified/>
 <@jsAsset fileName="explorer.portal" version=root.currentVersion! useMinified=root.useMinified/>

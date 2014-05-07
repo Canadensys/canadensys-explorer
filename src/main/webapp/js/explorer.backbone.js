@@ -66,6 +66,10 @@ EXPLORER.backbone = (function(){
     availableSearchFields = _availableSearchFields;
   }
 
+  function getAvailableSearchFields() {
+    return availableSearchFields;
+  }
+
   function getInitialFilterParamMap(){
     return initialFilterParamMap;
   }
@@ -125,6 +129,17 @@ EXPLORER.backbone = (function(){
 
   }
 
+  function removeFilter(json) {
+    var filter = filterList.where(json);
+    if(filter.length !== 0) {
+      filterList.remove(filter);
+    }
+  }
+
+  function getFilter(json) {
+    return filterList.where(json);
+  }
+
   //View that supports the text entry
   var TextEntryView = Backbone.View.extend({
     textValueTemplate : _.template($('#filter_template_text_input').html()),
@@ -168,7 +183,6 @@ EXPLORER.backbone = (function(){
     },
     events : {
       "click #value_suggestions tr" : "createNewSuggestionFilter"
-  
     },
     onTextChanged : function(textSearchModel) {
       var mapParam = {},
@@ -909,7 +923,10 @@ EXPLORER.backbone = (function(){
     init: init,
     setNumberOfResult : setNumberOfResult,
     setAvailableSearchFields : setAvailableSearchFields,
+    getAvailableSearchFields : getAvailableSearchFields,
+    getFilter : getFilter,
     loadFilter : loadFilter,
+    removeFilter : removeFilter,
     getInitialFilterParamMap : getInitialFilterParamMap
   };
 
