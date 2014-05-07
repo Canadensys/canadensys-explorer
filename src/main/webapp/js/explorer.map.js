@@ -2,7 +2,7 @@
 Copyright (c) 2013 Canadensys
 Explorer Map
 ****************************/
-/*global EXPLORER, $, window, document, console, jQuery, CartoDBLayer, google, _*/
+/*global EXPLORER, $, window, document, console, jQuery, CartoDBLayer, google, _, Wkt */
 
 EXPLORER.map = (function() {
 
@@ -169,8 +169,8 @@ EXPLORER.map = (function() {
       google.maps.event.addListener(this.drawing_manager, 'drawingmode_changed', function() {
         if(self.overlays.length > 0 && self.drawing_manager.drawingMode) {
           self.clearOverlays();
+          self.removeSpatialFilters();
           self.cartodb_gmapsv3.setInteraction(false);
-          //TODO: also remove filter here
         }
       });
       google.maps.event.addListener(this.drawing_manager, "overlaycomplete", function(e) {
@@ -188,64 +188,57 @@ EXPLORER.map = (function() {
         }
       });
       this.overlays = [];
-/*
-      $('#geo_type').val('');
-      $('#geo_center').val('');
-      $('#geo_radius').val('');
-      $('#geo_bounds').val('');
-      $('#geo_polygon').val('');
-*/
+    },
+
+    removeSpatialFilters: function() {
+      EXPLORER.backbone.removeFilter({searchableFieldName: 'ellipse'});
+      EXPLORER.backbone.removeFilter({searchableFieldName: 'wkt'});
     },
 
     drawingDone: function(e, scope) {
-      var center, radius, bounds, polygon;
+      var center, radius;
 
       scope.drawing_manager.setOptions({ drawingMode: null });
       scope.overlays.push(e);
 
-//      $('#geo_type').val(e.type);
       switch(e.type) {
         case 'circle':
           center = e.overlay.getCenter().toUrlValue();
-          radius = e.overlay.radius/1000;
-          console.log(center, radius);
-          this.createFilter('ellipse');
+          radius = e.overlay.radius/1000; //radius in km
+          scope.createFilter({ searchableFieldName : 'ellipse', data : { center : center, radius : radius } });
         break;
 
         case 'rectangle':
-          bounds = e.overlay.getBounds().toUrlValue();
-          console.log(bounds);
-          this.createFilter('polygon');
+          scope.createFilter({ searchableFieldName : 'wkt', data : { wkt : scope.createWKT(e.overlay) } });
         break;
 
         case 'polygon':
-          polygon = "[" + e.overlay.getPath().getArray().toString().replace(/\(/g,"[").replace(/\)/g, "]") + "]";
-          console.log(polygon);
-          this.createFilter('polygon');
+          scope.createFilter({ searchableFieldName : 'wkt', data : { wkt : scope.createWKT(e.overlay) } });
         break;
       }
     },
 
-    createFilter: function(type) {
-      switch(type) {
-        case 'ellipse':
-          $.each(EXPLORER.backbone.getAvailableSearchFields(), function(k,v) {
-            if(v.searchableFieldName === "hasellipse") {
-              EXPLORER.backbone.loadFilter([{"op":"EQ","searchableFieldName":"hasellipse","searchableFieldId":k,"valueList":["true"],"singleValue":"true"}]);
-              return;
-            }
-          });
-        break;
-        
-        case 'polygon':
-          $.each(EXPLORER.backbone.getAvailableSearchFields(), function(k,v) {
-            if(v.searchableFieldName === "haswkt") {
-              EXPLORER.backbone.loadFilter([{"op":"EQ","searchableFieldName":"haswkt","searchableFieldId":k,"valueList":["true"],"singleValue":"true"}]);
-              return;
-            }
-          });
-        break;
-      }
+    createWKT: function(obj) {
+      var wkt = new Wkt.Wkt();
+      wkt.fromObject(obj);
+      return wkt.write();
+    },
+
+    createFilter: function(json) {
+      var self = this, fieldId;
+
+      $.each(EXPLORER.backbone.getAvailableSearchFields(), function(k,v) {
+        if(v.searchableFieldName === json.searchableFieldName) {
+          EXPLORER.backbone.loadFilter([{
+            "op":"EQ",
+            "searchableFieldName":v.searchableFieldName,
+            "searchableFieldId":v.searchableFieldId,
+            "valueList":["true"],
+            "singleValue":"true"
+          }]);
+          return;
+        }
+      });
     }
 
   };

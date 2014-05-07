@@ -129,6 +129,17 @@ EXPLORER.backbone = (function(){
 
   }
 
+  function removeFilter(json) {
+    var filter = filterList.where(json);
+    if(filter.length !== 0) {
+      filterList.remove(filter);
+    }
+  }
+
+  function getFilter(json) {
+    return filterList.where(json);
+  }
+
   //View that supports the text entry
   var TextEntryView = Backbone.View.extend({
     textValueTemplate : _.template($('#filter_template_text_input').html()),
@@ -913,8 +924,9 @@ EXPLORER.backbone = (function(){
     setNumberOfResult : setNumberOfResult,
     setAvailableSearchFields : setAvailableSearchFields,
     getAvailableSearchFields : getAvailableSearchFields,
+    getFilter : getFilter,
     loadFilter : loadFilter,
-    filterList : filterList,
+    removeFilter : removeFilter,
     getInitialFilterParamMap : getInitialFilterParamMap
   };
 

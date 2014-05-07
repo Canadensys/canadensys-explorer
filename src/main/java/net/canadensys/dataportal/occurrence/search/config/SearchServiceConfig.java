@@ -39,9 +39,9 @@ public class SearchServiceConfig {
 		CLASS(18),PHYLUM(19),HAS_COORDINATES(20),HAS_MEDIA(21),
 		COUNTY(22),MUNICIPALITY(23),GENUS(24),SPECIES(25),
 		DECADE(26),
-		AVERAGE_ALTITUDE_ROUNDED(27),BOUNDING_BOX(28),
+		AVERAGE_ALTITUDE_ROUNDED(27),
 		SOURCE_FILE_ID(29),
-		START_YEAR(30),HAS_TYPE_STATUS(31),HAS_WKT(32),HAS_ELLIPSE(33)
+		START_YEAR(30),HAS_TYPE_STATUS(31),WKT(32),ELLIPSE(33)
 		;
 		
 		private int id;
@@ -236,14 +236,12 @@ public class SearchServiceConfig {
 				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.COUNTY.id,"county").singleValue("county",String.class).eqOperator().supportSuggestion().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.MUNICIPALITY.id,
 				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.MUNICIPALITY.id,"municipality").singleValue("municipality",String.class).eqOperator().likeOperator(QueryOperatorEnum.CLIKE).eqOperator().supportSuggestion().toOccurrenceSearchableField());
-		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.BOUNDING_BOX.id,
-				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.BOUNDING_BOX.id,"boundingbox").geoCoordinates("the_geom").inOperator().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.SOURCE_FILE_ID.id,
 				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.SOURCE_FILE_ID.id,"sourcefileid").singleValue("sourcefileid",String.class).eqOperator().supportSelectionList().toOccurrenceSearchableField());
-		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.HAS_WKT.id,
-				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.HAS_WKT.id,"haswkt").singleValue("haswkt",Boolean.class).eqOperator().toOccurrenceSearchableField());
-		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.HAS_ELLIPSE.id,
-				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.HAS_ELLIPSE.id,"hasellipse").singleValue("hasellipse",Boolean.class).eqOperator().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.WKT.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.WKT.id,"wkt").geoValue("the_geom", Boolean.class).eqOperator().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.ELLIPSE.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.ELLIPSE.id,"ellipse").geoValue("the_geom", Boolean.class).eqOperator().toOccurrenceSearchableField());
 
 		//Those searchable fields are used for stats only
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.GENUS.id,
