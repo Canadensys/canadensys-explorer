@@ -28,7 +28,7 @@ EXPLORER.map = (function() {
 
         $.ajax({
           method:'get',
-          url: 'mapcenter?q='+(self.options.query|| ''),
+          url: 'mapcenter?q='+encodeURIComponent(self.options.query|| ''),
           dataType: 'json',
           success: function(result) {
             if(result && result[0]) {
