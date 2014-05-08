@@ -196,7 +196,7 @@ EXPLORER.map = (function() {
     },
 
     drawingDone: function(e, scope) {
-      var center, radius;
+      var center, radius, searchValue;
 
       scope.drawing_manager.setOptions({ drawingMode: null });
       scope.overlays.push(e);
@@ -209,10 +209,10 @@ EXPLORER.map = (function() {
         break;
 
         case 'rectangle':
-			//example, searchValue must be ["minLat,minLong","maxLat,maxLong"]
-	        var searchValue = [e.overlay.getBounds().getNorthEast().lat() +','+e.overlay.getBounds().getNorthEast().lng(),
-			e.overlay.getBounds().getSouthWest().lat() +','+e.overlay.getBounds().getSouthWest().lng()];
-			EXPLORER.backbone.addActiveFilter('georectangle', searchValue);
+          //example, searchValue must be ["minLat,minLong","maxLat,maxLong"]
+          searchValue = [e.overlay.getBounds().getNorthEast().lat() +','+e.overlay.getBounds().getNorthEast().lng(),
+      e.overlay.getBounds().getSouthWest().lat() +','+e.overlay.getBounds().getSouthWest().lng()];
+          EXPLORER.backbone.addActiveFilter('georectangle', searchValue);
         break;
 
         case 'polygon':
@@ -229,7 +229,7 @@ EXPLORER.map = (function() {
 
     createFilter: function(json) {
       var self = this, fieldId;
-	  
+
       $.each(EXPLORER.backbone.getAvailableSearchFields(), function(k,v) {
         if(v.searchableFieldName === json.searchableFieldName) {
           EXPLORER.backbone.loadFilter([{
