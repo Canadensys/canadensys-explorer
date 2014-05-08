@@ -205,15 +205,18 @@ EXPLORER.map = (function() {
         case 'circle':
           center = e.overlay.getCenter().toUrlValue();
           radius = e.overlay.radius/1000; //radius in km
-          scope.createFilter({ searchableFieldName : 'ellipse', data : { center : center, radius : radius } });
+          //scope.createFilter({ searchableFieldName : 'ellipse', data : { center : center, radius : radius } });
         break;
 
         case 'rectangle':
-          scope.createFilter({ searchableFieldName : 'wkt', data : { wkt : scope.createWKT(e.overlay) } });
+			//example, searchValue must be ["minLat,minLong","maxLat,maxLong"]
+	        var searchValue = [e.overlay.getBounds().getNorthEast().lat() +','+e.overlay.getBounds().getNorthEast().lng(),
+			e.overlay.getBounds().getSouthWest().lat() +','+e.overlay.getBounds().getSouthWest().lng()];
+			EXPLORER.backbone.addActiveFilter('georectangle', searchValue);
         break;
 
         case 'polygon':
-          scope.createFilter({ searchableFieldName : 'wkt', data : { wkt : scope.createWKT(e.overlay) } });
+          //scope.createFilter({ searchableFieldName : 'wkt', data : { wkt : scope.createWKT(e.overlay) } });
         break;
       }
     },
@@ -226,7 +229,7 @@ EXPLORER.map = (function() {
 
     createFilter: function(json) {
       var self = this, fieldId;
-
+	  
       $.each(EXPLORER.backbone.getAvailableSearchFields(), function(k,v) {
         if(v.searchableFieldName === json.searchableFieldName) {
           EXPLORER.backbone.loadFilter([{

@@ -1,5 +1,5 @@
 /****************************
-Copyright (c) 2013 Canadensys
+Copyright (c) 2014 Canadensys
 Explorer backbone
 ****************************/
 /*global EXPLORER, $, window, _, Backbone, google, alert*/
@@ -95,6 +95,31 @@ EXPLORER.backbone = (function(){
       }
     });
     return parsedValueText.join();
+  }
+  
+  //The searchable field must have only one available operator
+  function addActiveFilter(searchableFieldName,value){
+	//retrieve searchable field
+    var searchableField = _.find(availableSearchFields,
+        function(sf){ return sf.searchableFieldName === searchableFieldName;});
+
+    if(!searchableField || searchableField.supportedOperator.length != 1){
+        return;
+    }
+	
+	var operator = searchableField.supportedOperator[0];
+	var valueJSON = JSON.stringify(value);
+    var newFilter = new FilterItem({
+      searchableFieldId : searchableField.searchableFieldId,
+      searchableFieldName : searchableField.searchableFieldName,
+      searchableFieldText : getAvailableFieldText(searchableField.searchableFieldName),
+      op:operator,
+      opText : getOperatorText(operator),
+      value : value,
+      valueJSON : valueJSON,
+      valueText : safeGetValueText(value)
+    });
+    filterList.add(newFilter);
   }
 
   //load filter form outer source
@@ -668,6 +693,7 @@ EXPLORER.backbone = (function(){
     }
   });
 
+  //View of a group of active filters of the same type.
   var FilterGroupView = Backbone.View.extend({
     tagName: 'li', // name of tag to be created
     className: 'filter round',
@@ -680,6 +706,7 @@ EXPLORER.backbone = (function(){
     }
   });
 
+  //View of a single active filter
   var FilterView = Backbone.View.extend({
     tagName: 'li', // name of tag to be created
     events: {
@@ -701,6 +728,7 @@ EXPLORER.backbone = (function(){
     }
   });
 
+  //View of all the current active filters
   var CurrentFiltersView = Backbone.View.extend({
     initialize : function() {
       filterList.bind('add', this.addFilter, this);
@@ -810,7 +838,12 @@ EXPLORER.backbone = (function(){
       else if(searchableFieldTypeEnum === 'MIN_MAX_NUMBER'){
         this.lastComponent = new MinMaxValueView();
       }
-      this.$el.html(this.lastComponent.render().el);
+      else if(searchableFieldTypeEnum === 'MIN_MAX_NUMBER'){
+        this.lastComponent = new MinMaxValueView();
+      }
+	  else{
+	  	this.lastComponent = new TextValueView();
+	  }
     },
     render : function() {
       return this;
@@ -926,6 +959,7 @@ EXPLORER.backbone = (function(){
     getAvailableSearchFields : getAvailableSearchFields,
     getFilter : getFilter,
     loadFilter : loadFilter,
+	addActiveFilter : addActiveFilter,
     removeFilter : removeFilter,
     getInitialFilterParamMap : getInitialFilterParamMap
   };

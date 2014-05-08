@@ -130,7 +130,9 @@ public class SearchParamParser {
 						break;
 					case START_END_DATE : parseStartEndDate(currSearchQueryPart);
 						break;
-					case GEO_COORDINATES : parseGeoCoordinates(currSearchQueryPart);
+					case INSIDE_ENVELOPE_GEO : parseInsidePolygon(currSearchQueryPart);
+						break;
+					case INSIDE_POLYGON_GEO : parseInsidePolygon(currSearchQueryPart);
 						break;
 					default : LOGGER.error("Unknown SearchableFieldTypeEnum value");
 				}
@@ -208,7 +210,7 @@ public class SearchParamParser {
 		}
 	}
 	
-	protected void parseGeoCoordinates(SearchQueryPart currSearchQueryPart){
+	protected void parseInsidePolygon(SearchQueryPart currSearchQueryPart){
 		//Geo coordinates are received as -125.3,34.88 but the Interpreter wants this in a Pair object
 		List<String> valueList = currSearchQueryPart.getValueList();
 		for(int i=0;i<valueList.size();i++){
@@ -216,11 +218,11 @@ public class SearchParamParser {
 			Matcher m = GEO_COORDINATES_PARAM_PATTERN.matcher(value);
 			if(m.find()){
 				currSearchQueryPart.addParsedValue(value, currSearchQueryPart.getSearchableField().getRelatedField(),
-						Pair.of(m.group(1),m.group(2))); //lon,lat
+						Pair.of(m.group(1),m.group(2))); //lat,long
 			}
 			else{//simply clear the value to make this query part invalid
 				currSearchQueryPart.clearValues();
-				LOGGER.error("Couldn't parse value["+value+"] into a valid date query. QueryPart dropped.");
+				LOGGER.error("Couldn't parse value["+value+"] into a valid polygon query. QueryPart dropped.");
 			}
 		}
 	}

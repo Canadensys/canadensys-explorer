@@ -41,7 +41,7 @@ public class SearchServiceConfig {
 		DECADE(26),
 		AVERAGE_ALTITUDE_ROUNDED(27),
 		SOURCE_FILE_ID(29),
-		START_YEAR(30),HAS_TYPE_STATUS(31),WKT(32),ELLIPSE(33)
+		START_YEAR(30),HAS_TYPE_STATUS(31),GEO_RECTANGLE(32),GEO_POLYGON(33)
 		;
 		
 		private int id;
@@ -238,10 +238,14 @@ public class SearchServiceConfig {
 				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.MUNICIPALITY.id,"municipality").singleValue("municipality",String.class).eqOperator().likeOperator(QueryOperatorEnum.CLIKE).eqOperator().supportSuggestion().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.SOURCE_FILE_ID.id,
 				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.SOURCE_FILE_ID.id,"sourcefileid").singleValue("sourcefileid",String.class).eqOperator().supportSelectionList().toOccurrenceSearchableField());
-		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.WKT.id,
-				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.WKT.id,"wkt").geoValue("the_geom", Boolean.class).eqOperator().toOccurrenceSearchableField());
-		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.ELLIPSE.id,
-				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.ELLIPSE.id,"ellipse").geoValue("the_geom", Boolean.class).eqOperator().toOccurrenceSearchableField());
+		
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.GEO_RECTANGLE.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.GEO_RECTANGLE.id,"georectangle").insideEnvelope("the_geom").inOperator().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.GEO_POLYGON.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.GEO_POLYGON.id,"geopolygon").insidePolygon("the_geom").inOperator().toOccurrenceSearchableField());
+		
+//		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.ELLIPSE.id,
+//				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.ELLIPSE.id,"ellipse").geoValue("the_geom", Boolean.class).eqOperator().toOccurrenceSearchableField());
 
 		//Those searchable fields are used for stats only
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.GENUS.id,
