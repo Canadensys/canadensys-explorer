@@ -73,15 +73,18 @@ public class OccurrenceSearchableFieldBuilder {
 	
 	public OccurrenceSearchableFieldBuilder insideEnvelope(String theGeomField){
 		searchableField.setSearchableFieldTypeEnum(SearchableFieldTypeEnum.INSIDE_ENVELOPE_GEO);
-		//type should be removed
-		searchableField.setType(String.class);
 		searchableField.addRelatedField(theGeomField);
 		return this;
 	}
 	
 	public OccurrenceSearchableFieldBuilder insidePolygon(String theGeomField){
 		searchableField.setSearchableFieldTypeEnum(SearchableFieldTypeEnum.INSIDE_POLYGON_GEO);
-		searchableField.setType(String.class);
+		searchableField.addRelatedField(theGeomField);
+		return this;
+	}
+	
+	public OccurrenceSearchableFieldBuilder withinRadius(String theGeomField){
+		searchableField.setSearchableFieldTypeEnum(SearchableFieldTypeEnum.WITHIN_RADIUS_GEO);
 		searchableField.addRelatedField(theGeomField);
 		return this;
 	}

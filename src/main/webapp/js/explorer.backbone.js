@@ -468,7 +468,8 @@ EXPLORER.backbone = (function(){
       this.supportSuggestion = availableSearchFields[currFilterKey.get('searchableFieldId')].supportSuggestion;
       this.supportPartialMatch = availableSearchFields[currFilterKey.get('searchableFieldId')].supportPartialMatch;
       this.supportSelectionList = availableSearchFields[currFilterKey.get('searchableFieldId')].supportSelectionList;
-      this.isBooleanFilter = (availableSearchFields[currFilterKey.get('searchableFieldId')].type.indexOf("Boolean") !== -1);
+      this.isBooleanFilter = (availableSearchFields[currFilterKey.get('searchableFieldId')].type || 
+	  	availableSearchFields[currFilterKey.get('searchableFieldId')].type.indexOf("Boolean") !== -1);
       this.textValueSuggestionView = undefined;
       this.partialTextValueView = undefined;
       this.selectionValueView = undefined;

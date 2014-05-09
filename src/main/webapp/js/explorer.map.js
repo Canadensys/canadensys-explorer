@@ -196,21 +196,20 @@ EXPLORER.map = (function() {
     },
 
     drawingDone: function(e, scope) {
-      var center, radius;
+      var searchValue;
 
       scope.drawing_manager.setOptions({ drawingMode: null });
       scope.overlays.push(e);
 
       switch(e.type) {
         case 'circle':
-          center = e.overlay.getCenter().toUrlValue();
-          radius = e.overlay.radius/1000; //radius in km
-          //scope.createFilter({ searchableFieldName : 'ellipse', data : { center : center, radius : radius } });
+		  searchValue = [e.overlay.getCenter().lat() +','+e.overlay.getCenter().lng(),e.overlay.getRadius()];
+          EXPLORER.backbone.addActiveFilter('geoellipse', searchValue);
         break;
 
         case 'rectangle':
 			//example, searchValue must be ["minLat,minLong","maxLat,maxLong"]
-	        var searchValue = [e.overlay.getBounds().getNorthEast().lat() +','+e.overlay.getBounds().getNorthEast().lng(),
+	        searchValue = [e.overlay.getBounds().getNorthEast().lat() +','+e.overlay.getBounds().getNorthEast().lng(),
 			e.overlay.getBounds().getSouthWest().lat() +','+e.overlay.getBounds().getSouthWest().lng()];
 			EXPLORER.backbone.addActiveFilter('georectangle', searchValue);
         break;

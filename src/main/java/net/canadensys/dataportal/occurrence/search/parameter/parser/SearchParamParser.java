@@ -134,6 +134,8 @@ public class SearchParamParser {
 						break;
 					case INSIDE_POLYGON_GEO : parseInsidePolygon(currSearchQueryPart);
 						break;
+					case WITHIN_RADIUS_GEO : parseWithinRadius(currSearchQueryPart);
+						break;
 					default : LOGGER.error("Unknown SearchableFieldTypeEnum value");
 				}
 			}
@@ -224,6 +226,38 @@ public class SearchParamParser {
 				currSearchQueryPart.clearValues();
 				LOGGER.error("Couldn't parse value["+value+"] into a valid polygon query. QueryPart dropped.");
 			}
+		}
+	}
+	
+	protected void parseWithinRadius(SearchQueryPart currSearchQueryPart){
+		List<String> valueList = currSearchQueryPart.getValueList();
+		boolean parsed = true;
+		
+		//parse coordinates, Interpreter wants this in a Pair object
+		String value = valueList.get(0);
+		Matcher m = GEO_COORDINATES_PARAM_PATTERN.matcher(value);
+		if(m.find()){
+			currSearchQueryPart.addParsedValue(value, currSearchQueryPart.getSearchableField().getRelatedField(),
+				Pair.of(m.group(1),m.group(2))); //lat,long
+		}
+		else{
+			parsed = false;
+		}
+		
+		//parse radius
+		value = valueList.get(1);
+		try{
+			currSearchQueryPart.addParsedValue(value, currSearchQueryPart.getSearchableField().getRelatedField(),
+					Double.valueOf(value).intValue());
+		}
+		catch (NumberFormatException e) {
+			parsed = false;
+		}
+		
+		if(!parsed){
+			//simply clear the value to make this query part invalid
+			currSearchQueryPart.clearValues();
+			LOGGER.error("Couldn't parse value["+value+"] into a valid within radius query. QueryPart dropped.");
 		}
 	}
 }
