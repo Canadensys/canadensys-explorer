@@ -228,7 +228,7 @@ EXPLORER.map = (function() {
 
     createFilter: function(json) {
       var self = this, fieldId;
-	  
+
       $.each(EXPLORER.backbone.getAvailableSearchFields(), function(k,v) {
         if(v.searchableFieldName === json.searchableFieldName) {
           EXPLORER.backbone.loadFilter([{

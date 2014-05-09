@@ -1,0 +1,222 @@
+apply plugin: com.eriwen.gradle.js.JsPlugin
+apply plugin: com.eriwen.gradle.css.CssPlugin
+apply plugin: org.gradle.api.plugins.tomcat.TomcatPlugin
+
+//Local variables
+def versionedOutputDir = "${buildDir}/versioned-files"
+def minifyOutputDir = "${buildDir}/minified-files"
+
+//Shared variables
+ext {
+	jsSourceDir = "src/main/webapp/js"
+	cssSourceDir = "src/main/webapp/styles"
+	additionalWebFilesDir = "${versionedOutputDir}"
+	appVersion = ""
+	
+	tomcatHttpPort = 9966
+	tomcatStopPort = 8081
+	tomcatStopKey = 'stopKey'
+}
+
+buildscript {
+    repositories {	
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.eriwen:gradle-js-plugin:1.8.0'
+        classpath 'com.eriwen:gradle-css-plugin:1.8.0'
+        classpath 'org.gradle.api.plugins:gradle-tomcat-plugin:1.0'
+    }
+}
+
+//Configuration files copy tasks
+task copyLocalConfig(type:Copy){
+    from "config/local"
+    into "${buildDir}/config"
+}
+task copyProductionConfig(type:Copy){
+    from "config/production"
+    into "${buildDir}/config"
+}
+
+test {
+    systemProperties 'file.encoding': 'UTF-8'
+    exclude '**/*IntegrationTest.*'
+}
+
+task integrationTomcatRunWar(type: org.gradle.api.plugins.tomcat.TomcatRunWar) {
+    stopPort = tomcatStopPort
+    stopKey = tomcatStopKey
+    httpPort = tomcatHttpPort
+    contextPath = tomcatContextPath
+    daemon = true
+}
+
+task integrationTomcatStop(type: org.gradle.api.plugins.tomcat.TomcatStop) {
+    stopPort = tomcatStopPort
+    stopKey = tomcatStopKey
+}
+
+task integrationTest(type: Test) {
+    include '**/*IntegrationTest.*'
+	
+	dependsOn integrationTomcatRunWar
+	finalizedBy integrationTomcatStop
+}
+integrationTest.dependsOn war
+
+//JavaScript and CSS Sources
+javascript.source {
+	custom {
+		 js {
+		     srcDir jsSourceDir
+		     include "**/*.js"
+		     exclude "*.min.js"
+		     exclude "lib/"
+		 }
+	 }
+}
+css.source {
+    custom {
+        css {
+            srcDir cssSourceDir
+            include "*.css"
+            exclude "*.min.css"
+        }
+    }
+}
+
+//Call dynamically created tasks (for each JavaScript file)
+task individualJSMinify(dependsOn: tasks.matching { Task task -> task.name.startsWith("dominify")})
+
+//--not used yet--
+//Combine CSS
+//task combineMyCss(type: com.eriwen.gradle.css.tasks.CombineCssTask) {
+//    source = css.source.custom.css.files
+//    dest = "${buildDir}/explorer-style.css"
+//}
+// Minify CSS
+//task minifyMyCss(type: com.eriwen.gradle.css.tasks.MinifyCssTask) {
+//    source = combineMyCss
+//    dest = file("${minifyOutputDir}/explorer-style.min.css")
+//    yuicompressor {
+//        lineBreakPos = -1
+//    }
+//}
+
+//Dynamically create a task for each JavaScript files
+javascript.source.custom.js.files.eachWithIndex { jsFile, idx ->
+    tasks.add(name: "dominify${idx}", type: com.eriwen.gradle.js.tasks.MinifyJsTask) {
+    	if(jsFile.getParentFile().getName() != "js"){
+    		source = jsFile
+	        dest = "${minifyOutputDir}/"+jsFile.getParentFile().getName() +"/${jsFile.name}".replaceFirst("\\.js",".min.js")
+	    	closure {
+	        	//warningLevel = 'VERBOSE'
+	        	compilationLevel = 'SIMPLE_OPTIMIZATIONS'
+	    	}
+    	}
+    	else{
+    		source = jsFile
+	        dest = "${minifyOutputDir}/${jsFile.name}".replaceFirst("\\.js",".min.js")
+	    	//outputs.dir "${buildDir}"
+	    	closure {
+	        	//warningLevel = 'VERBOSE'
+	        	compilationLevel = 'SIMPLE_OPTIMIZATIONS'
+	    	}
+    	}
+    }
+}
+
+task validateVersion()<<{
+	while(!askYesNoQuestion("Is this the correct version name? : ${appVersion}")){
+		def inputReader = System.in.newReader()
+		println "> Enter the correct version name :"
+		project.ext.appVersion = inputReader.readLine()
+	}
+	versionFile.write "version.current=${appVersion}"
+}
+
+task useLocalVersionFile()<<{
+	project.ext.appVersion = ''
+	if(file("config/local/version.properties").exists()){
+		project.ext.versionFile = project.file("config/local/version.properties")
+		project.ext.appVersion = versionFile.getText().replace("version.current=","")
+	}
+	
+	if(!appVersion){
+		println 'Information:No version provided in local/version.properties.'
+	}
+}
+
+//add versioning to JavaScript files
+task addJSVersioning(type:Copy){
+	from minifyOutputDir
+	into "${versionedOutputDir}/js"
+	
+	rename { String fileName ->
+		if(appVersion){
+			fileName.replaceFirst("\\.min\\.js","-${appVersion}.min.js")
+		}
+	}
+}
+//if we want to use versioning and minified files, make sure we minify first
+addJSVersioning.mustRunAfter individualJSMinify
+
+//add versioning to CSS files
+task addCSSVersioning(type:Copy){
+	from css.source.custom.css.files
+	into "${versionedOutputDir}/css"
+	
+	rename { String fileName ->
+		if(appVersion){
+			fileName.replaceFirst("\\.css","-${appVersion}.css")
+		}
+	}
+}
+
+task useVersionedFiles (dependsOn:[addJSVersioning,addCSSVersioning]) << {
+	//from "${versionedOutputDir}"
+	//into minifyOutputDir
+	
+	//doLast{
+	//	project.file("${minifyOutputDir}/versioned")deleteDir();
+	//}
+}
+//if we want to use versioning, make sure we asked for it first
+useVersionedFiles.mustRunAfter validateVersion
+//or, use the local file if this task is set
+useVersionedFiles.mustRunAfter useLocalVersionFile
+
+def askYesNoQuestion(question) {
+	println '>'+question + '(y/n)'
+	def inputReader = System.in.newReader()
+	def answer = inputReader.readLine()
+	while(!answer.equalsIgnoreCase("y") && !answer.equalsIgnoreCase("n")){
+		println '>'+question + '(y/n)'
+		answer = inputReader.readLine()
+	}
+	return answer.equalsIgnoreCase("y")
+}
+
+tomcatRunWar.dependsOn 'useLocalVersionFile','copyLocalConfig','individualJSMinify','useVersionedFiles'
+
+//Task to run the web app locally using embedded tomcat
+task runLocal(dependsOn: 'tomcatRunWar') << {
+	println 'runLocal ...'
+}
+
+war.mustRunAfter copyLocalConfig
+task runIntegrationTest(dependsOn: ['copyLocalConfig','integrationTest']) << {
+	println 'runIntegrationTest ...'
+}
+
+build.dependsOn 'validateVersion','copyProductionConfig','individualJSMinify','useVersionedFiles'
+copyProductionConfig.mustRunAfter validateVersion
+war.mustRunAfter copyProductionConfig
+war.mustRunAfter useVersionedFiles
+
+task buildProduction(dependsOn: ['build']) << {
+	println 'buildProduction ...'
+}

@@ -1,0 +1,9 @@
+Spring/SiteMesh/Freemarker
+
+http://forum.spring.io/forum/spring-projects/web/29042-spring-freemarker-sitemesh
+http://developer24hours.blogspot.ca/2013/01/using-spring-with-velocity-and-sitemesh.html
+http://forum.spring.io/forum/spring-projects/web/45140-howto-use-freemarker-sitemesh-and-spring-mvc-together
+
+
+
+http://www.chartjs.org

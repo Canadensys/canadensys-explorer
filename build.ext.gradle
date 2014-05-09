@@ -1,0 +1,162 @@
+
+
+dependencies {
+	sshAntTask 'org.apache.ant:ant-jsch:1.8.4'
+}
+
+task gitTest(dependsOn:gitFetch) << {
+	if(!checkCurrentBranch()){
+		throw new GradleException(
+			"Aborting '${name}' You need to deploy from the dev branch.")
+	}
+	if(!checkGitStatus()){
+		throw new GradleException(
+			"Aborting '${name}' due to uncommited files.")
+	}
+	if(!checkGitCherry()){
+		throw new GradleException(
+            "Aborting '${name}' due to local commits that were NOT pushed.")
+	}
+	if(!checkRemoteDiff()){
+		throw new GradleException(
+            "Aborting '${name}' due to missing changes from the server.")
+	}
+}
+
+def checkCurrentBranch(){
+	ext.gitCurrentBranch="git rev-parse --abbrev-ref HEAD".execute().text
+    if(!gitCurrentBranch.trim().equals("dev")){
+        println "You need to deploy from the dev branch"
+        println "Your are on branch:"
+        println gitCurrentBranch
+        return false
+    }
+    return true
+}
+
+def checkGitStatus() {
+    ext.gitCommitStatus="git status --porcelain".execute().text
+    if(gitCommitStatus != ""){
+        println "You have uncommited files."
+        println "Your git status:"
+        println gitCommitStatus
+        return false
+    }
+    return true
+}
+
+//Make sure everything is pushed to origin
+def checkGitCherry() {
+    ext.gitPushStatus="git cherry -v".execute().text
+    if(gitPushStatus != ""){
+        println "You have local commits that were NOT pushed."
+        println "Your 'git cherry -v' status:"
+        println gitPushStatus
+        return false
+    }
+    return true
+}
+
+def checkRemoteDiff() {
+    ext.gitRemoteDiff="git diff origin/dev".execute().text
+    if(gitPushStatus != ""){
+        println "Need to pull some changes from the server."
+        println "Your 'git diff origin/dev':"
+        println gitRemoteDiff
+        return false
+    }
+    return true
+}
+
+def acceptChangeLog() {
+    println "This is changelog since last deploy."
+    lastTags = "git show-ref --tags -s | tail -n 2".execute().text.readLines().join("...")
+    println "git log --pretty=oneline --no-merges --abbrev-commit  $lastTags".execute().text
+    
+    def console = System.console()
+	if (console) {
+		wantToContinue = console.readLine('> Is this correct? (y/n)')
+	} else {
+		logger.error "Cannot get console."
+	}
+    
+    return wantToContinue.equalsIgnoreCase("y")
+}
+
+def mergeToMaster() {
+   println "Switching to master branch..."
+   if(!runVerboseCommand("git checkout master")){
+		return false;
+   }
+   println "Pulling master..."
+   if(!runVerboseCommand("git pull")){
+		return false;
+   }
+   println "Merging master and dev..."
+   if(!runVerboseCommand("git merge dev")){
+		return false;
+   }
+   println "Push to origin ..."
+   if(!runVerboseCommand("git push origin master")){
+		return false;
+   }
+   println "Tagging Version ${explorerVersion} ..."
+   //alternative syntax to allow space
+   if(!runVerboseCommand(["git","tag","-a","${explorerVersion}","-m","Version ${explorerVersion}"])){
+		return false;
+   }
+   println "Pushing tag to origin"
+    if(!runVerboseCommand("git push --tags")){
+		return false;
+   }
+   println "Switching back to dev branch"
+   if(!runVerboseCommand("git checkout dev")){
+		return false;
+   }
+   return true
+}
+
+task gitMerge()<<{
+	if(!mergeToMaster()){
+		throw new GradleException(
+			"Aborting '${name}' An error occurred while merging master and dev")
+	}
+}
+
+configurations {
+    sshAntTask
+}
+
+task scp << {
+    ant.taskdef(name: 'scp2', classname:'org.apache.tools.ant.taskdefs.optional.ssh.Scp', classpath:configurations.sshAntTask.asPath)
+    ant.scp2(file: war.archivePath, remoteToDir: "${ssh_username}@${ssh_host}:${deploy_remotedir}", password:"${ssh_password}", port:'9741', trust: 'true')
+}
+
+task sshexec << {
+    ant.taskdef(name: 'sshexec', classname:'org.apache.tools.ant.taskdefs.optional.ssh.SSHExec', classpath:configurations.sshAntTask.asPath)
+    ant.sshexec(host: ssh_host, username: ssh_username, password: ssh_password, port:'9741',command: "cd ${deploy_remotedir};./deploy-explorer.sh",trust: 'true')
+}
+
+def runVerboseCommand(command){
+	proc = command.execute()
+	proc.waitFor()
+	if (proc.exitValue()){
+	    println proc.err.text
+	    return false;
+	}
+	else{
+	    println proc.text
+	    return true
+	}
+}
+
+
+task areYouSure()<<{
+	if(!askYesNoQuestion("Are you sure you want to deploy a new version of the Canadensys Explorer?")){
+		throw new GradleException("Aborted by user")
+	}
+}
+
+task deploy(type: GradleBuild){
+	tasks=["areYouSure","gitTest","validateVersion","individualMinify","useVersionedFiles","copyProductionConfig","build","gitMerge","scp","sshexec"]
+}

@@ -105,18 +105,20 @@ EXPLORER.backbone = (function(){
   
   //The searchable field must have only one available operator
   function addActiveFilter(searchableFieldName,value){
-	  
-	//retrieve searchable field
-    var searchableField = _.find(availableSearchFields,
+
+    //retrieve searchable field
+    var searchableField, operator, valueJSON, newFilter;
+    
+    searchableField = _.find(availableSearchFields,
         function(sf){ return sf.searchableFieldName === searchableFieldName;});
 
-    if(!searchableField || searchableField.supportedOperator.length != 1){
-        return;
+    if(!searchableField || searchableField.supportedOperator.length !== 1) {
+      return;
     }
-	
-	var operator = searchableField.supportedOperator[0];
-	var valueJSON = JSON.stringify(value);
-    var newFilter = new FilterItem({
+
+    operator = searchableField.supportedOperator[0];
+    valueJSON = JSON.stringify(value);
+    newFilter = new FilterItem({
       searchableFieldId : searchableField.searchableFieldId,
       searchableFieldName : searchableField.searchableFieldName,
       searchableFieldText : getAvailableFieldText(searchableField.searchableFieldName),
@@ -615,7 +617,7 @@ EXPLORER.backbone = (function(){
       filterList.add(newFilter);
     }
   });
-  
+
   var MinMaxValueView = Backbone.View.extend({
     minMaxValueTemplate : _.template($('#filter_template_minmax').html()),
     initialize: function() {
@@ -852,9 +854,9 @@ EXPLORER.backbone = (function(){
       else if(searchableFieldTypeEnum === 'MIN_MAX_NUMBER'){
         this.lastComponent = new MinMaxValueView();
       }
-	  else{
-	  	this.lastComponent = new TextValueView();
-	  }
+      else{
+        this.lastComponent = new TextValueView();
+      }
     },
     render : function() {
       return this;
@@ -970,7 +972,7 @@ EXPLORER.backbone = (function(){
     getAvailableSearchFields : getAvailableSearchFields,
     getFilter : getFilter,
     loadFilter : loadFilter,
-	addActiveFilter : addActiveFilter,
+    addActiveFilter : addActiveFilter,
     removeFilter : removeFilter,
     getInitialFilterParamMap : getInitialFilterParamMap
   };
