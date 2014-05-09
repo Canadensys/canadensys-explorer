@@ -203,15 +203,15 @@ EXPLORER.map = (function() {
 
       switch(e.type) {
         case 'circle':
-		  searchValue = [e.overlay.getCenter().lat() +','+e.overlay.getCenter().lng(),e.overlay.getRadius()];
-          EXPLORER.backbone.addActiveFilter('geoellipse', searchValue);
+          searchValue = [e.overlay.getCenter().lat() +','+e.overlay.getCenter().lng(),e.overlay.getRadius()];
+          EXPLORER.backbone.addActiveFilter('geoellipse', searchValue,{valueText:'map'});
         break;
 
         case 'rectangle':
-			//example, searchValue must be ["minLat,minLong","maxLat,maxLong"]
-	        searchValue = [e.overlay.getBounds().getNorthEast().lat() +','+e.overlay.getBounds().getNorthEast().lng(),
-			e.overlay.getBounds().getSouthWest().lat() +','+e.overlay.getBounds().getSouthWest().lng()];
-			EXPLORER.backbone.addActiveFilter('georectangle', searchValue);
+          //example, searchValue must be ["minLat,minLong","maxLat,maxLong"]
+          searchValue = [e.overlay.getBounds().getNorthEast().lat() +','+e.overlay.getBounds().getNorthEast().lng(),
+          e.overlay.getBounds().getSouthWest().lat() +','+e.overlay.getBounds().getSouthWest().lng()];
+          EXPLORER.backbone.addActiveFilter('georectangle', searchValue);
         break;
 
         case 'polygon':
