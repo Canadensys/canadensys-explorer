@@ -66,8 +66,14 @@ EXPLORER.backbone = (function(){
     availableSearchFields = _availableSearchFields;
   }
 
+  //object of all available search fields
   function getAvailableSearchFields() {
     return availableSearchFields;
+  }
+  
+  //Get the searchableFieldTypeEnum(e.g. SINGLE_VALUE) of a searchableFieldId
+  function getSearchableFieldTypeEnum(searchableFieldId) {
+    return availableSearchFields[searchableFieldId].searchableFieldTypeEnum;;
   }
 
   function getInitialFilterParamMap(){
@@ -99,6 +105,7 @@ EXPLORER.backbone = (function(){
   
   //The searchable field must have only one available operator
   function addActiveFilter(searchableFieldName,value){
+	  
 	//retrieve searchable field
     var searchableField = _.find(availableSearchFields,
         function(sf){ return sf.searchableFieldName === searchableFieldName;});
@@ -124,7 +131,7 @@ EXPLORER.backbone = (function(){
 
   //load filter form outer source
   function loadFilter(json){
-    var filterItem, lastSearchableFieldId, key;
+    var filterItem, lastSearchableFieldId, key, searchableFieldTypeEnum;
 
     for (key in json) {
       if (json.hasOwnProperty(key)) {
@@ -132,6 +139,8 @@ EXPLORER.backbone = (function(){
         filterItem.set(json[key]);
         //make sure the id is a String
         filterItem.set('searchableFieldId',json[key].searchableFieldId.toString());
+		//for future use, maybe
+		searchableFieldTypeEnum = getSearchableFieldTypeEnum(json[key].searchableFieldId.toString());
         filterItem.set('searchableFieldText', getAvailableFieldText(json[key].searchableFieldName));
         filterItem.set('value',json[key].valueList);
         filterItem.set('valueJSON',JSON.stringify(json[key].valueList));
@@ -468,7 +477,8 @@ EXPLORER.backbone = (function(){
       this.supportSuggestion = availableSearchFields[currFilterKey.get('searchableFieldId')].supportSuggestion;
       this.supportPartialMatch = availableSearchFields[currFilterKey.get('searchableFieldId')].supportPartialMatch;
       this.supportSelectionList = availableSearchFields[currFilterKey.get('searchableFieldId')].supportSelectionList;
-      this.isBooleanFilter = (availableSearchFields[currFilterKey.get('searchableFieldId')].type || 
+	  //FIX me, availableSearchFields[currFilterKey.get('searchableFieldId')].type === 'null', this is wrong, FTL should not add it.
+      this.isBooleanFilter = (typeof availableSearchFields[currFilterKey.get('searchableFieldId')].type !== 'undefined' && 
 	  	availableSearchFields[currFilterKey.get('searchableFieldId')].type.indexOf("Boolean") !== -1);
       this.textValueSuggestionView = undefined;
       this.partialTextValueView = undefined;
