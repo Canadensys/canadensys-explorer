@@ -179,46 +179,48 @@ EXPLORER.map = (function() {
     },
 
     createDrawingOverlay: function(json) {
+      var coord, center, options, circle, bbox, bounds, rectangle, paths, vertices, polygon;
+
       switch(json.type) {
         case 'geoellipse':
-          var coord = json.data.coords,
-              center = new google.maps.LatLng(coord[0], coord[1]),
-              options = {
-                center : center,
-                radius : json.data.radius,
-                fillOpacity : 0.25
-              },
-              circle = new google.maps.Circle(options);
+          coord = json.data.coords;
+          center = new google.maps.LatLng(coord[0], coord[1]);
+          options = {
+            center : center,
+            radius : json.data.radius,
+            fillOpacity : 0.25
+          };
+          circle = new google.maps.Circle(options);
 
           circle.setMap(this.map);
           this.drawing_overlays.push(circle);
         break;
 
         case 'georectangle':
-          //coords is an array of vertices eg [[lat0,lng0], [lat1,lng1]] expressed as [SW, NE]
-          var bbox = json.data.coords,
-              bounds = new google.maps.LatLngBounds(
-                new google.maps.LatLng(bbox[0][0], bbox[0][1]),
-                new google.maps.LatLng(bbox[1][0], bbox[1][1])
-              ),
-              options = {
-                bounds : bounds,
-                fillOpacity : 0.25
-              },
-              rectangle = new google.maps.Rectangle(options);
+          //bbox is an array of vertices eg [[lat0,lng0], [lat1,lng1]] expressed as [SW, NE]
+          bbox = json.data.coords;
+          bounds = new google.maps.LatLngBounds(
+            new google.maps.LatLng(bbox[0][0], bbox[0][1]),
+            new google.maps.LatLng(bbox[1][0], bbox[1][1])
+          );
+          options = {
+            bounds : bounds,
+            fillOpacity : 0.25
+          };
+          rectangle = new google.maps.Rectangle(options);
 
           rectangle.setMap(this.map);
           this.drawing_overlays.push(rectangle);
         break;
 
         case 'geopolygon':
-         //coords is an array of vertices & last member is same as first eg [[lat0,lng0], [lat1,lng1], [lat0,lng0]]
-          var vertices = json.data.coords,
-              paths = $.map(vertices, function(n) { return new google.maps.LatLng(n[0], n[1]); }),
-              polygon = new google.maps.Polygon({
-                paths: paths,
-                fillOpacity : 0.25
-              });
+          //vertices is an array of arrays where last member is identical to first eg [[lat0,lng0], [lat1,lng1], [lat0,lng0]]
+          vertices = json.data.coords;
+          paths = $.map(vertices, function(n) { return new google.maps.LatLng(n[0], n[1]); });
+          polygon = new google.maps.Polygon({
+            paths: paths,
+            fillOpacity : 0.25
+          });
 
           polygon.setMap(this.map);
           this.drawing_overlays.push(polygon);
@@ -258,8 +260,8 @@ EXPLORER.map = (function() {
 
         case 'rectangle':
           //searchValue must be ["minLat,minLong","maxLat,maxLong"]
-          searchValue = [e.overlay.getBounds().getNorthEast().lat() +', '+e.overlay.getBounds().getNorthEast().lng(),
-          e.overlay.getBounds().getSouthWest().lat() +', '+e.overlay.getBounds().getSouthWest().lng()];
+          searchValue = [e.overlay.getBounds().getNorthEast().lat() + ', ' + e.overlay.getBounds().getNorthEast().lng(),
+          e.overlay.getBounds().getSouthWest().lat() + ', ' + e.overlay.getBounds().getSouthWest().lng()];
           EXPLORER.backbone.addActiveFilter('georectangle', searchValue, {valueText:'map'});
         break;
 
