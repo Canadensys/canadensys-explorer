@@ -14,7 +14,7 @@ EXPLORER.map = (function() {
     marker: {},
     cartodb_gmapsv3: {},
     drawing_manager: {},
-    overlays: [],
+    drawing_overlays: [],
     center: new google.maps.LatLng(45.5,-73.5),
 
     init: function() {
@@ -116,7 +116,7 @@ EXPLORER.map = (function() {
       this.cartodb_gmapsv3 = new CartoDBLayer({
         map: this.map,
         marker: this.marker,
-        overlays: this.overlays,
+        drawing_overlays: this.drawing_overlays,
         table_name: 'occurrence',
         interactivity: 'auto_id',
         query: obj.mapQuery,
@@ -134,7 +134,6 @@ EXPLORER.map = (function() {
           this.map.setOptions({draggableCursor: 'default'});
         }
       });
-
     },
 
     onMapClick: function(e, latlng, pos, data) {
@@ -167,8 +166,8 @@ EXPLORER.map = (function() {
       this.drawing_manager.setMap(this.map);
 
       google.maps.event.addListener(this.drawing_manager, 'drawingmode_changed', function() {
-        if(self.overlays.length > 0 && self.drawing_manager.drawingMode) {
-          self.clearOverlays();
+        if(self.drawing_overlays.length > 0 && self.drawing_manager.drawingMode) {
+          self.clearDrawingOverlays();
           self.removeSpatialFilters();
           self.cartodb_gmapsv3.setInteraction(false);
         }
@@ -179,68 +178,97 @@ EXPLORER.map = (function() {
       });
     },
 
-    clearOverlays: function() {
-      $.each(this.overlays, function() {
+    createDrawingOverlay: function(json) {
+      switch(json.type) {
+        case 'geoellipse':
+          var coord = json.data.coords,
+              center = new google.maps.LatLng(coord[0], coord[1]),
+              options = {
+                center : center,
+                radius : json.data.radius,
+                fillOpacity : 0.25
+              },
+              circle = new google.maps.Circle(options);
+
+          circle.setMap(this.map);
+          this.drawing_overlays.push(circle);
+        break;
+
+        case 'georectangle':
+          //coords is an array of vertices eg [[lat0,lng0], [lat1,lng1]] expressed as [SW, NE]
+          var bbox = json.data.coords,
+              bounds = new google.maps.LatLngBounds(
+                new google.maps.LatLng(bbox[0][0], bbox[0][1]),
+                new google.maps.LatLng(bbox[1][0], bbox[1][1])
+              ),
+              options = {
+                bounds : bounds,
+                fillOpacity : 0.25
+              },
+              rectangle = new google.maps.Rectangle(options);
+
+          rectangle.setMap(this.map);
+          this.drawing_overlays.push(rectangle);
+        break;
+
+        case 'geopolygon':
+         //coords is an array of vertices & last member is same as first eg [[lat0,lng0], [lat1,lng1], [lat0,lng0]]
+          var vertices = json.data.coords,
+              paths = $.map(vertices, function(n) { return new google.maps.LatLng(n[0], n[1]); }),
+              polygon = new google.maps.Polygon({
+                paths: paths,
+                fillOpacity : 0.25
+              });
+
+          polygon.setMap(this.map);
+          this.drawing_overlays.push(polygon);
+        break;
+
+      }
+    },
+
+    clearDrawingOverlays: function() {
+      $.each(this.drawing_overlays, function() {
         if(this.hasOwnProperty('overlay')) {
           this.overlay.setMap(null);
         } else {
           this.setMap(null);
         }
       });
-      this.overlays = [];
+      this.drawing_overlays = [];
     },
 
     removeSpatialFilters: function() {
-      EXPLORER.backbone.removeFilter({searchableFieldName: 'ellipse'});
-      EXPLORER.backbone.removeFilter({searchableFieldName: 'wkt'});
+      $.each(["geoellipse", "georectangle", "geopolygon"], function() {
+        EXPLORER.backbone.removeFilter({ searchableFieldName: this });
+      });
     },
 
     drawingDone: function(e, scope) {
-      var searchValue;
+      var searchValue = [];
 
       scope.drawing_manager.setOptions({ drawingMode: null });
-      scope.overlays.push(e);
+      scope.drawing_overlays.push(e);
 
       switch(e.type) {
         case 'circle':
           searchValue = [e.overlay.getCenter().lat() +','+e.overlay.getCenter().lng(),e.overlay.getRadius()];
-          EXPLORER.backbone.addActiveFilter('geoellipse', searchValue,{valueText:'map'});
+          EXPLORER.backbone.addActiveFilter('geoellipse', searchValue, {valueText:'map'});
         break;
 
         case 'rectangle':
-          //example, searchValue must be ["minLat,minLong","maxLat,maxLong"]
-          searchValue = [e.overlay.getBounds().getNorthEast().lat() +','+e.overlay.getBounds().getNorthEast().lng(),
-          e.overlay.getBounds().getSouthWest().lat() +','+e.overlay.getBounds().getSouthWest().lng()];
-          EXPLORER.backbone.addActiveFilter('georectangle', searchValue);
+          //searchValue must be ["minLat,minLong","maxLat,maxLong"]
+          searchValue = [e.overlay.getBounds().getNorthEast().lat() +', '+e.overlay.getBounds().getNorthEast().lng(),
+          e.overlay.getBounds().getSouthWest().lat() +', '+e.overlay.getBounds().getSouthWest().lng()];
+          EXPLORER.backbone.addActiveFilter('georectangle', searchValue, {valueText:'map'});
         break;
 
         case 'polygon':
-          //scope.createFilter({ searchableFieldName : 'wkt', data : { wkt : scope.createWKT(e.overlay) } });
+          searchValue = $.map(e.overlay.getPath().getArray(), function(n) { return [n.lat()+', '+n.lng()]; });
+          searchValue.push(searchValue[0]);
+          EXPLORER.backbone.addActiveFilter('geopolygon', searchValue, {valueText:'map'});
         break;
       }
-    },
-
-    createWKT: function(obj) {
-      var wkt = new Wkt.Wkt();
-      wkt.fromObject(obj);
-      return wkt.write();
-    },
-
-    createFilter: function(json) {
-      var self = this, fieldId;
-
-      $.each(EXPLORER.backbone.getAvailableSearchFields(), function(k,v) {
-        if(v.searchableFieldName === json.searchableFieldName) {
-          EXPLORER.backbone.loadFilter([{
-            "op":"EQ",
-            "searchableFieldName":v.searchableFieldName,
-            "searchableFieldId":v.searchableFieldId,
-            "valueList":["true"],
-            "singleValue":"true"
-          }]);
-          return;
-        }
-      });
     }
 
   };
@@ -249,6 +277,9 @@ EXPLORER.map = (function() {
     init: function() { _private.init(); },
     setupMap: function(obj) {
       _private.setupMap(obj);
+    },
+    createDrawingOverlay: function(json) {
+      _private.createDrawingOverlay(json);
     }
   };
 

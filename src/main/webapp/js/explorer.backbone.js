@@ -66,11 +66,6 @@ EXPLORER.backbone = (function(){
     availableSearchFields = _availableSearchFields;
   }
 
-  //object of all available search fields
-  function getAvailableSearchFields() {
-    return availableSearchFields;
-  }
-  
   //Get the searchableFieldTypeEnum(e.g. SINGLE_VALUE) of a searchableFieldId
   function getSearchableFieldTypeEnum(searchableFieldId) {
     return availableSearchFields[searchableFieldId].searchableFieldTypeEnum;;
@@ -104,11 +99,10 @@ EXPLORER.backbone = (function(){
   }
   
   //The searchable field must have only one available operator
-  function addActiveFilter(searchableFieldName,value){
+  function addActiveFilter(searchableFieldName, value){
+    var searchableField, operator, valueJSON, newFilter;
 
     //retrieve searchable field
-    var searchableField, operator, valueJSON, newFilter;
-    
     searchableField = _.find(availableSearchFields,
         function(sf){ return sf.searchableFieldName === searchableFieldName;});
 
@@ -122,7 +116,7 @@ EXPLORER.backbone = (function(){
       searchableFieldId : searchableField.searchableFieldId,
       searchableFieldName : searchableField.searchableFieldName,
       searchableFieldText : getAvailableFieldText(searchableField.searchableFieldName),
-      op:operator,
+      op : operator,
       opText : getOperatorText(operator),
       value : value,
       valueJSON : valueJSON,
@@ -141,8 +135,8 @@ EXPLORER.backbone = (function(){
         filterItem.set(json[key]);
         //make sure the id is a String
         filterItem.set('searchableFieldId',json[key].searchableFieldId.toString());
-		//for future use, maybe
-		searchableFieldTypeEnum = getSearchableFieldTypeEnum(json[key].searchableFieldId.toString());
+        //for future use, maybe
+        searchableFieldTypeEnum = getSearchableFieldTypeEnum(json[key].searchableFieldId.toString());
         filterItem.set('searchableFieldText', getAvailableFieldText(json[key].searchableFieldName));
         filterItem.set('value',json[key].valueList);
         filterItem.set('valueJSON',JSON.stringify(json[key].valueList));
@@ -479,9 +473,9 @@ EXPLORER.backbone = (function(){
       this.supportSuggestion = availableSearchFields[currFilterKey.get('searchableFieldId')].supportSuggestion;
       this.supportPartialMatch = availableSearchFields[currFilterKey.get('searchableFieldId')].supportPartialMatch;
       this.supportSelectionList = availableSearchFields[currFilterKey.get('searchableFieldId')].supportSelectionList;
-	  //FIX me, availableSearchFields[currFilterKey.get('searchableFieldId')].type === 'null', this is wrong, FTL should not add it.
+      //FIX me, availableSearchFields[currFilterKey.get('searchableFieldId')].type === 'null', this is wrong, FTL should not add it.
       this.isBooleanFilter = (typeof availableSearchFields[currFilterKey.get('searchableFieldId')].type !== 'undefined' && 
-	  	availableSearchFields[currFilterKey.get('searchableFieldId')].type.indexOf("Boolean") !== -1);
+      availableSearchFields[currFilterKey.get('searchableFieldId')].type.indexOf("Boolean") !== -1);
       this.textValueSuggestionView = undefined;
       this.partialTextValueView = undefined;
       this.selectionValueView = undefined;
@@ -969,7 +963,6 @@ EXPLORER.backbone = (function(){
     init: init,
     setNumberOfResult : setNumberOfResult,
     setAvailableSearchFields : setAvailableSearchFields,
-    getAvailableSearchFields : getAvailableSearchFields,
     getFilter : getFilter,
     loadFilter : loadFilter,
     addActiveFilter : addActiveFilter,
