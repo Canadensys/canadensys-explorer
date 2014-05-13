@@ -41,6 +41,8 @@ DESIGN TEMPLATE FOR MODULES IN THE EXPLORER
 
   };
 
+  ex.EventBus = _.extend({}, Backbone.Events);
+
   //global initializer
   $(function() {
     $.each(ex, function() {

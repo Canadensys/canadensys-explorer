@@ -188,6 +188,7 @@
 <content tag="local_script">
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
+<@jsLibAsset libName="underscore-min.js"/>
 <@jsAsset fileName="explorer" version=root.currentVersion! useMinified=root.useMinified/>
 <@jsAsset fileName="explorer.portal" version=root.currentVersion! useMinified=root.useMinified/>
 <script>

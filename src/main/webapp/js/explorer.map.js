@@ -15,11 +15,19 @@ EXPLORER.map = (function() {
     cartodb_gmapsv3: {},
     drawing_manager: {},
     drawing_overlays: [],
+    drawing_types: ["geoellipse", "georectangle", "geopolygon"],
     center: new google.maps.LatLng(45.5,-73.5),
 
     init: function() {
       this.cartoDBsetBounds();
       this.cartoDBgenerateTile();
+      EXPLORER.EventBus.on("filterRemove", this.removeFilterListener, this);
+    },
+
+    removeFilterListener: function(data) {
+      if($.inArray(data.model.attributes.searchableFieldName, this.drawing_types) !== -1) {
+        this.clearDrawingOverlays();
+      }
     },
 
     cartoDBsetBounds: function() {
@@ -181,7 +189,7 @@ EXPLORER.map = (function() {
       var coord, center, options, circle, bbox, bounds, rectangle, paths, vertices, polygon;
 
       switch(json.type) {
-        case 'geoellipse':
+        case this.drawing_types[0]:
           coord = json.data.coords;
           center = new google.maps.LatLng(coord[0], coord[1]);
           options = {
@@ -195,7 +203,7 @@ EXPLORER.map = (function() {
           this.drawing_overlays.push(circle);
         break;
 
-        case 'georectangle':
+        case this.drawing_types[1]:
           //bbox is an array of vertices eg [[lat0,lng0], [lat1,lng1]] expressed as [SW, NE]
           bbox = json.data.coords;
           bounds = new google.maps.LatLngBounds(
@@ -212,7 +220,7 @@ EXPLORER.map = (function() {
           this.drawing_overlays.push(rectangle);
         break;
 
-        case 'geopolygon':
+        case this.drawing_types[2]:
           //vertices is an array of arrays where last member is identical to first eg [[lat0,lng0], [lat1,lng1], [lat0,lng0]]
           vertices = json.data.coords;
           paths = $.map(vertices, function(n) { return new google.maps.LatLng(n[0], n[1]); });
@@ -240,7 +248,7 @@ EXPLORER.map = (function() {
     },
 
     removeSpatialFilters: function() {
-      $.each(["geoellipse", "georectangle", "geopolygon"], function() {
+      $.each(this.drawing_types, function() {
         EXPLORER.backbone.removeFilter({ searchableFieldName: this });
       });
     },
@@ -258,7 +266,6 @@ EXPLORER.map = (function() {
         break;
 
         case 'rectangle':
-          //searchValue must be ["minLat,minLong","maxLat,maxLong"]
           searchValue = [e.overlay.getBounds().getNorthEast().lat() + ',' + e.overlay.getBounds().getNorthEast().lng(),
           e.overlay.getBounds().getSouthWest().lat() + ',' + e.overlay.getBounds().getSouthWest().lng()];
           EXPLORER.backbone.addActiveFilter('georectangle', searchValue, {valueText:'map'});

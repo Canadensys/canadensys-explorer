@@ -127,7 +127,7 @@ EXPLORER.backbone = (function(){
 
   //load filter form outer source
   function loadFilter(json){
-    var filterItem, lastSearchableFieldId, key;
+    var filterItem, lastSearchableFieldId, key, searchableFieldTypeEnum;
 
     for (key in json) {
       if (json.hasOwnProperty(key)) {
@@ -136,7 +136,7 @@ EXPLORER.backbone = (function(){
         //make sure the id is a String
         filterItem.set('searchableFieldId',json[key].searchableFieldId.toString());
         //for future use, maybe
-//        searchableFieldTypeEnum = getSearchableFieldTypeEnum(json[key].searchableFieldId.toString());
+        searchableFieldTypeEnum = getSearchableFieldTypeEnum(json[key].searchableFieldId.toString());
         filterItem.set('searchableFieldText', getAvailableFieldText(json[key].searchableFieldName));
         filterItem.set('value',json[key].valueList);
         filterItem.set('valueJSON',JSON.stringify(json[key].valueList));
@@ -725,13 +725,13 @@ EXPLORER.backbone = (function(){
     },
     unrender: function(){
       $(this.el).remove();
+      EXPLORER.EventBus.trigger("filterRemove", this);
     },
     remove: function(){
       this.model.destroy();
     }
   });
 
-  //View of all the current active filters
   var CurrentFiltersView = Backbone.View.extend({
     initialize : function() {
       filterList.bind('add', this.addFilter, this);
@@ -841,12 +841,10 @@ EXPLORER.backbone = (function(){
       else if(searchableFieldTypeEnum === 'MIN_MAX_NUMBER'){
         this.lastComponent = new MinMaxValueView();
       }
-      else if(searchableFieldTypeEnum === 'MIN_MAX_NUMBER'){
-        this.lastComponent = new MinMaxValueView();
-      }
       else{
         this.lastComponent = new TextValueView();
       }
+      this.$el.html(this.lastComponent.render().el);
     },
     render : function() {
       return this;
