@@ -471,7 +471,10 @@ EXPLORER.backbone = (function(){
       this.supportSuggestion = availableSearchFields[currFilterKey.get('searchableFieldId')].supportSuggestion;
       this.supportPartialMatch = availableSearchFields[currFilterKey.get('searchableFieldId')].supportPartialMatch;
       this.supportSelectionList = availableSearchFields[currFilterKey.get('searchableFieldId')].supportSelectionList;
-      this.isBooleanFilter = (availableSearchFields[currFilterKey.get('searchableFieldId')].type && availableSearchFields[currFilterKey.get('searchableFieldId')].type.indexOf("Boolean") !== -1);
+      //FIX me, availableSearchFields[currFilterKey.get('searchableFieldId')].type === 'null', this is wrong, FTL should not add it.
+      this.isBooleanFilter = (availableSearchFields[currFilterKey.get('searchableFieldId')].type &&
+        typeof availableSearchFields[currFilterKey.get('searchableFieldId')].type !== 'undefined' &&
+        availableSearchFields[currFilterKey.get('searchableFieldId')].type.indexOf("Boolean") !== -1);
       this.textValueSuggestionView = undefined;
       this.partialTextValueView = undefined;
       this.selectionValueView = undefined;
