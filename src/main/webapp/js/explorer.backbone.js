@@ -468,13 +468,12 @@ EXPLORER.backbone = (function(){
     textValueTemplate : _.template($('#filter_template_single').html()),
     initialize : function() {
       this.setElement(this.textValueTemplate());
-      this.supportSuggestion = availableSearchFields[currFilterKey.get('searchableFieldId')].supportSuggestion;
-      this.supportPartialMatch = availableSearchFields[currFilterKey.get('searchableFieldId')].supportPartialMatch;
-      this.supportSelectionList = availableSearchFields[currFilterKey.get('searchableFieldId')].supportSelectionList;
-      //FIX me, availableSearchFields[currFilterKey.get('searchableFieldId')].type === 'null', this is wrong, FTL should not add it.
-      this.isBooleanFilter = (availableSearchFields[currFilterKey.get('searchableFieldId')].type &&
-        typeof availableSearchFields[currFilterKey.get('searchableFieldId')].type !== 'undefined' &&
-        availableSearchFields[currFilterKey.get('searchableFieldId')].type.indexOf("Boolean") !== -1);
+      var currFilter = availableSearchFields[currFilterKey.get('searchableFieldId')];
+      this.supportSuggestion = currFilter.supportSuggestion;
+      this.supportPartialMatch = currFilter.supportPartialMatch;
+      this.supportSelectionList = currFilter.supportSelectionList;
+      this.isBooleanFilter = (!_.isUndefined(currFilter.type) && currFilter.type.indexOf("Boolean") !== -1);
+        
       this.textValueSuggestionView = undefined;
       this.partialTextValueView = undefined;
       this.selectionValueView = undefined;

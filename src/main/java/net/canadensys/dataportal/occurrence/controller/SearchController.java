@@ -56,6 +56,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -91,6 +92,7 @@ public class SearchController {
 		//avoid sending irrelevant data on the client side
 		JACKSON_MAPPER.addMixInAnnotations(SearchQueryPart.class, SearchQueryPartMixIn.class);
 		JACKSON_MAPPER.addMixInAnnotations(OccurrenceSearchableField.class, OccurrenceSearchableFieldMixIn.class);
+		JACKSON_MAPPER.setSerializationInclusion(Include.NON_NULL);
 	}
 	private String availableSearchFieldsMap;
 	

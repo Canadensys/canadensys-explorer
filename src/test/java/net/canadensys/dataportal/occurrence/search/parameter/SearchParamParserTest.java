@@ -183,10 +183,36 @@ public class SearchParamParserTest {
 	
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testSearchGeoCoordinates(){
+	public void testSearchGeoRectangle(){
 		Map<String,String[]> parametersMap = new HashMap<String, String[]>();
 		//Group #1
-		parametersMap.put("1_f", new String[]{"28"});
+		parametersMap.put("1_f", new String[]{"32"}); //GEO_RECTANGLE
+		parametersMap.put("1_o", new String[]{"in"});
+		
+		parametersMap.put("1_v_1", new String[]{"-25.363882,131.044922"});
+		parametersMap.put("1_v_2", new String[]{"-26.985412,130.053265"});
+
+		SearchServiceConfig searchConfig = new SearchServiceConfig();
+		SearchParamParser paramParser = new SearchParamParser();
+		paramParser.setSearchConfig(searchConfig);
+		
+		Collection<SearchQueryPart> result = paramParser.parse(parametersMap);
+		
+		Iterator<SearchQueryPart> searchQueryPartIt = result.iterator();
+		SearchQueryPart searchQueryPart = searchQueryPartIt.next();
+		Pair<String,String> resultPair = (Pair<String,String>)(searchQueryPart.getParsedValue("-25.363882,131.044922", "the_geom"));
+		assertEquals(resultPair, Pair.of("-25.363882","131.044922"));
+
+		resultPair = (Pair<String,String>)(searchQueryPart.getParsedValue("-26.985412,130.053265", "the_geom"));
+		assertEquals(resultPair, Pair.of("-26.985412","130.053265"));
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testSearchGeoPolygon(){
+		Map<String,String[]> parametersMap = new HashMap<String, String[]>();
+		//Group #1
+		parametersMap.put("1_f", new String[]{"33"});
 		parametersMap.put("1_o", new String[]{"in"});
 		
 		parametersMap.put("1_v_1", new String[]{"-25.363882,131.044922"});
@@ -210,5 +236,31 @@ public class SearchParamParserTest {
 		
 		resultPair = (Pair<String,String>)(searchQueryPart.getParsedValue("-26.979865,130.987986", "the_geom"));
 		assertEquals(resultPair, Pair.of("-26.979865","130.987986"));
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testSearchGeoEllipse(){
+		Map<String,String[]> parametersMap = new HashMap<String, String[]>();
+		//Group #1
+		parametersMap.put("1_f", new String[]{"34"}); //GEO_ELLIPSE
+		parametersMap.put("1_o", new String[]{"in"});
+		
+		parametersMap.put("1_v_1", new String[]{"-25.363882,131.044922"});
+		parametersMap.put("1_v_2", new String[]{"255"});
+
+		SearchServiceConfig searchConfig = new SearchServiceConfig();
+		SearchParamParser paramParser = new SearchParamParser();
+		paramParser.setSearchConfig(searchConfig);
+		
+		Collection<SearchQueryPart> result = paramParser.parse(parametersMap);
+		
+		Iterator<SearchQueryPart> searchQueryPartIt = result.iterator();
+		SearchQueryPart searchQueryPart = searchQueryPartIt.next();
+		Pair<String,String> resultPair = (Pair<String,String>)(searchQueryPart.getParsedValue("-25.363882,131.044922", "the_geom"));
+		assertEquals(resultPair, Pair.of("-25.363882","131.044922"));
+
+		Integer radius = (Integer)(searchQueryPart.getParsedValue("255", "the_geom"));
+		assertEquals(255,radius.intValue());
 	}
 }
