@@ -205,6 +205,7 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <@jsLibAsset libName="sorttable.js"/>
 <@jsLibAsset libName="underscore-min.js"/>
+<@jsLibAsset libName="backbone-min.js"/>
 <@jsAsset fileName="explorer" version=root.currentVersion! useMinified=root.useMinified/>
 <@jsAsset fileName="explorer.portal" version=root.currentVersion! useMinified=root.useMinified/>
 </content>
