@@ -116,7 +116,6 @@ EXPLORER.map = (function() {
       this.cartodb_gmapsv3 = new CartoDBLayer({
         map: this.map,
         marker: this.marker,
-        drawing_overlays: this.drawing_overlays,
         table_name: 'occurrence',
         interactivity: 'auto_id',
         query: obj.mapQuery,
@@ -260,13 +259,13 @@ EXPLORER.map = (function() {
 
         case 'rectangle':
           //searchValue must be ["minLat,minLong","maxLat,maxLong"]
-          searchValue = [e.overlay.getBounds().getNorthEast().lat() + ', ' + e.overlay.getBounds().getNorthEast().lng(),
-          e.overlay.getBounds().getSouthWest().lat() + ', ' + e.overlay.getBounds().getSouthWest().lng()];
+          searchValue = [e.overlay.getBounds().getNorthEast().lat() + ',' + e.overlay.getBounds().getNorthEast().lng(),
+          e.overlay.getBounds().getSouthWest().lat() + ',' + e.overlay.getBounds().getSouthWest().lng()];
           EXPLORER.backbone.addActiveFilter('georectangle', searchValue, {valueText:'map'});
         break;
 
         case 'polygon':
-          searchValue = $.map(e.overlay.getPath().getArray(), function(n) { return [n.lat() + ', ' + n.lng()]; });
+          searchValue = $.map(e.overlay.getPath().getArray(), function(n) { return [n.lat() + ',' + n.lng()]; });
           searchValue.push(searchValue[0]);
           EXPLORER.backbone.addActiveFilter('geopolygon', searchValue, {valueText:'map'});
         break;

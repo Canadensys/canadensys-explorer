@@ -56,7 +56,8 @@ $(function() {
     tilerPort : ${tilerPort},
     mapQuery : "${root.embeddedMapQuery}"
   });
-  <@controlJavaScriptInit/>
+<@controlJavaScriptInit/>
+<@controlDrawingOverlay/>
 });
 </script>
 </content>

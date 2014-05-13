@@ -8,9 +8,9 @@ EXPLORER.backbone = (function(){
 
   'use strict';
 
-  var filterViewTemplate = _.template($('#filter_template_current').html());
+  var filterViewTemplate = _.template($('#filter_template_current').html()),
 
-  var FilterKey = Backbone.Model.extend({
+  FilterKey = Backbone.Model.extend({
     defaults: {
       searchableFieldId: -1,
       searchableFieldName : undefined,
@@ -104,7 +104,7 @@ EXPLORER.backbone = (function(){
 
     //retrieve searchable field
     searchableField = _.find(availableSearchFields,
-        function(sf){ return sf.searchableFieldName === searchableFieldName;});
+        function(sf){ return sf.searchableFieldName === searchableFieldName; });
 
     if(!searchableField || searchableField.supportedOperator.length !== 1) {
       return;
@@ -136,7 +136,7 @@ EXPLORER.backbone = (function(){
         //make sure the id is a String
         filterItem.set('searchableFieldId',json[key].searchableFieldId.toString());
         //for future use, maybe
-        searchableFieldTypeEnum = getSearchableFieldTypeEnum(json[key].searchableFieldId.toString());
+//        searchableFieldTypeEnum = getSearchableFieldTypeEnum(json[key].searchableFieldId.toString());
         filterItem.set('searchableFieldText', getAvailableFieldText(json[key].searchableFieldName));
         filterItem.set('value',json[key].valueList);
         filterItem.set('valueJSON',JSON.stringify(json[key].valueList));
@@ -198,7 +198,6 @@ EXPLORER.backbone = (function(){
     cacheKeys : [],
     cacheMap : {},
     initialize : function() {
-      //this.setElement(this.el);
       currTextSearch.bind('change:currentText', this.onTextChanged, this);
     },
     destroy : function(){
@@ -206,7 +205,6 @@ EXPLORER.backbone = (function(){
       this.remove();
     },
     render : function() {
-      //this.$el.html(this.suggestionValueTemplate());
       this.setElement(this.suggestionValueTemplate());
       this.onTextChanged(currTextSearch);
       return this;
@@ -473,9 +471,7 @@ EXPLORER.backbone = (function(){
       this.supportSuggestion = availableSearchFields[currFilterKey.get('searchableFieldId')].supportSuggestion;
       this.supportPartialMatch = availableSearchFields[currFilterKey.get('searchableFieldId')].supportPartialMatch;
       this.supportSelectionList = availableSearchFields[currFilterKey.get('searchableFieldId')].supportSelectionList;
-      //FIX me, availableSearchFields[currFilterKey.get('searchableFieldId')].type === 'null', this is wrong, FTL should not add it.
-      this.isBooleanFilter = (typeof availableSearchFields[currFilterKey.get('searchableFieldId')].type !== 'undefined' && 
-        availableSearchFields[currFilterKey.get('searchableFieldId')].type.indexOf("Boolean") !== -1);
+      this.isBooleanFilter = (availableSearchFields[currFilterKey.get('searchableFieldId')].type && availableSearchFields[currFilterKey.get('searchableFieldId')].type.indexOf("Boolean") !== -1);
       this.textValueSuggestionView = undefined;
       this.partialTextValueView = undefined;
       this.selectionValueView = undefined;
