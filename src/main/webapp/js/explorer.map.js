@@ -266,7 +266,7 @@ EXPLORER.map = (function() {
         break;
 
         case 'polygon':
-          searchValue = $.map(e.overlay.getPath().getArray(), function(n) { return [n.lat()+', '+n.lng()]; });
+          searchValue = $.map(e.overlay.getPath().getArray(), function(n) { return [n.lat() + ', ' + n.lng()]; });
           searchValue.push(searchValue[0]);
           EXPLORER.backbone.addActiveFilter('geopolygon', searchValue, {valueText:'map'});
         break;

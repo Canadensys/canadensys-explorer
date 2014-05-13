@@ -68,7 +68,7 @@ EXPLORER.backbone = (function(){
 
   //Get the searchableFieldTypeEnum(e.g. SINGLE_VALUE) of a searchableFieldId
   function getSearchableFieldTypeEnum(searchableFieldId) {
-    return availableSearchFields[searchableFieldId].searchableFieldTypeEnum;;
+    return availableSearchFields[searchableFieldId].searchableFieldTypeEnum;
   }
 
   function getInitialFilterParamMap(){
@@ -127,7 +127,7 @@ EXPLORER.backbone = (function(){
 
   //load filter form outer source
   function loadFilter(json){
-    var filterItem, lastSearchableFieldId, key, searchableFieldTypeEnum;
+    var filterItem, lastSearchableFieldId, key;
 
     for (key in json) {
       if (json.hasOwnProperty(key)) {
@@ -475,7 +475,7 @@ EXPLORER.backbone = (function(){
       this.supportSelectionList = availableSearchFields[currFilterKey.get('searchableFieldId')].supportSelectionList;
       //FIX me, availableSearchFields[currFilterKey.get('searchableFieldId')].type === 'null', this is wrong, FTL should not add it.
       this.isBooleanFilter = (typeof availableSearchFields[currFilterKey.get('searchableFieldId')].type !== 'undefined' && 
-      availableSearchFields[currFilterKey.get('searchableFieldId')].type.indexOf("Boolean") !== -1);
+        availableSearchFields[currFilterKey.get('searchableFieldId')].type.indexOf("Boolean") !== -1);
       this.textValueSuggestionView = undefined;
       this.partialTextValueView = undefined;
       this.selectionValueView = undefined;

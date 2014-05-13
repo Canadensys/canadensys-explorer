@@ -74,9 +74,10 @@ EXPLORER.utils = (function(){
     },
 
     isValidDateElement: function($el){
-      var val = $el.val();
+      var val = $el.val(),
       //set the base of parseInt to 10 to accept int like 08
-      var valAsInt = parseInt(val,10);
+          valAsInt = parseInt(val,10);
+
       //make sure it's a number
       if(isNaN(valAsInt)){
         return false;
@@ -97,7 +98,7 @@ EXPLORER.utils = (function(){
       //set the base of parseInt to 10 to accept int like 08
       var yAsInt = parseInt(year,10),
           mAsInt = parseInt(month,10),
-          dAsInt = parseInt(day,10);
+          dAsInt = parseInt(day,10), date;
 
       //accept all partial dates for year alone and year/month if the day is not specified
       if(!isNaN(yAsInt) && isNaN(dAsInt)){
@@ -121,7 +122,7 @@ EXPLORER.utils = (function(){
 
       if(!isNaN(yAsInt) && !isNaN(mAsInt) && !isNaN(dAsInt)){
         // day 0 means the last day/hour of the previous month, Date is 0 based so we ask for the month later
-        var date = new Date(yAsInt, mAsInt,0);
+        date = new Date(yAsInt, mAsInt,0);
         if(dAsInt > date.getDate()){
           return false;
         }

@@ -112,10 +112,11 @@ EXPLORER.control = (function() {
       var self = this,
           display = $('#display_columns'),
           checkboxes = display.find('input:checkbox'),
-          settingsCookie = $.cookie(this.COOKIE_NAME);
+          settingsCookie = $.cookie(this.COOKIE_NAME),
+          arrayOfSettings = [];
 
       if(settingsCookie){
-        var arrayOfSettings = settingsCookie.split(',');
+        arrayOfSettings = settingsCookie.split(',');
         $.each(checkboxes, function() {
           var isSelected = _.include(arrayOfSettings, $(this).val());
           if((isSelected && !$(this).prop("checked")) || (!isSelected && $(this).prop("checked"))){
