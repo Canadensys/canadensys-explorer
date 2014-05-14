@@ -21,11 +21,22 @@ EXPLORER.map = (function() {
     init: function() {
       this.cartoDBsetBounds();
       this.cartoDBgenerateTile();
-      EXPLORER.EventBus.on("filterRemove", this.removeFilterListener, this);
+      //EXPLORER.EventBus.on("filterRemove", this.removeFilterListener, this);
+      EXPLORER.backbone.bindToFilterList('add',this.onAddFilter,this);
+      EXPLORER.backbone.bindToFilterList('remove',this.removeFilterListener,this);
     },
 
-    removeFilterListener: function(data) {
-      if($.inArray(data.model.attributes.searchableFieldName, this.drawing_types) !== -1) {
+    onAddFilter: function(filter) {
+      //example for circle
+      //var fieldName = filter.get('searchableFieldName'),
+      //if($.inArray(fieldName, this.drawing_types) !== -1) {
+      //  var valueList = filter.get('value'),
+      //  coord = valueList[0].split(",");
+      //  this.createDrawingOverlay({type:this.drawing_types[0],data:{coords:[coord[0],coord[1]],radius:parseInt(valueList[1])}});
+      //}
+    },
+    removeFilterListener: function(filter) {
+      if($.inArray(filter.get('searchableFieldName'), this.drawing_types) !== -1) {
         this.clearDrawingOverlays();
       }
     },

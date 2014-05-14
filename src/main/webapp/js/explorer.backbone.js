@@ -98,8 +98,14 @@ EXPLORER.backbone = (function(){
     return parsedValueText.join();
   }
   
+  //Bind an action on the current filters list
+  function bindToFilterList(action,callback,context){
+    filterList.bind(action, callback, context);
+  }
+  
   //Add a new active filter based on provided filter properties.
   //Mandatory properties are: (searchableFieldId or searchableFieldName) and valueList
+  //A copy of the newly created FilterItem will be returned.
   function addActiveFilter(filterProps){
     filterProps = filterProps || {};
     
@@ -140,6 +146,14 @@ EXPLORER.backbone = (function(){
       valueText : safeGetValueText(valueList)
     });
     filterList.add(newFilter);
+    //return a copy, maybe we should only do it if the caller asked for it?
+    return _.extend({},newFilter);
+  }
+  
+  //Update a FilterItem that is currently in the list
+  function updateActiveFilter(filterItem){
+    var cid = filterItem.cid;
+    
   }
 
   //initialize active filters from a list of json properties
@@ -971,6 +985,7 @@ EXPLORER.backbone = (function(){
     getFilter : getFilter,
     initActiveFilters : initActiveFilters,
     addActiveFilter : addActiveFilter,
+    bindToFilterList : bindToFilterList,
     removeFilter : removeFilter,
     getInitialFilterParamMap : getInitialFilterParamMap
   };
