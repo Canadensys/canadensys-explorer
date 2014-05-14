@@ -150,9 +150,17 @@ EXPLORER.backbone = (function(){
   }
   
   //Update a FilterItem that is currently in the list
-  function updateActiveFilter(filterItem){
-    var cid = filterItem.cid;
-    
+  //Only the 'value' array field can be updated for now
+  function updateActiveFilter(filterItem,props){
+    var _filterItem = filterList.get(filterItem.cid);
+    if(_filterItem){
+      var valueList = props.value || [],
+      newValues = {
+        value : valueList,
+        valueJSON : JSON.stringify(valueList),
+        valueText : safeGetValueText(valueList)};
+      _filterItem.set(newValues);
+    }
   }
 
   //initialize active filters from a list of json properties
@@ -739,6 +747,7 @@ EXPLORER.backbone = (function(){
     },
     initialize : function() {
       this.model.bind('remove', this.unrender, this);
+      this.model.bind('change', this.render, this);
     },
     render : function() {
       //compute from template
@@ -750,6 +759,7 @@ EXPLORER.backbone = (function(){
       EXPLORER.EventBus.trigger("filterRemove", this);
     },
     remove: function(){
+      //destoy will also remove events bound to the model
       this.model.destroy();
     }
   });
@@ -982,6 +992,7 @@ EXPLORER.backbone = (function(){
     getFilter : getFilter,
     initActiveFilters : initActiveFilters,
     addActiveFilter : addActiveFilter,
+    updateActiveFilter : updateActiveFilter,
     bindToFilterList : bindToFilterList,
     removeFilter : removeFilter,
     getInitialFilterParamMap : getInitialFilterParamMap
