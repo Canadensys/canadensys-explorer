@@ -150,15 +150,15 @@ EXPLORER.backbone = (function(){
   }
   
   //Update a FilterItem that is currently in the list
-  //Only the 'value' array field can be updated for now
+  //Only the 'valueList' array field can be updated for now
   function updateActiveFilter(filterItem,props){
     var _filterItem = filterList.get(filterItem.cid);
     if(_filterItem){
-      var valueList = props.value || [],
+      var _valueList = valueList.value || [],
       newValues = {
-        value : valueList,
-        valueJSON : JSON.stringify(valueList),
-        valueText : safeGetValueText(valueList)};
+        value : _valueList,
+        valueJSON : JSON.stringify(_valueList),
+        valueText : safeGetValueText(_valueList)};
       _filterItem.set(newValues);
     }
   }
@@ -419,29 +419,21 @@ EXPLORER.backbone = (function(){
     },
     createNewFilter : function() {
       var value = [$("#value_select",this.$el).val()],
-          valueJSON = JSON.stringify(value),
-          newFilter;
+          valueJSON = JSON.stringify(value);
 
       //skip empty filter
       if(!value || value.length === 0){
         return;
       }
-
+      //ignore if a current filter exists
       if(filterList.where({searchableFieldId: currFilterKey.get('searchableFieldId'),valueJSON:valueJSON}).length !== 0){
         return;
       }
-      //TODO use addActiveFilter
-      newFilter = new FilterItem({
-        searchableFieldId : currFilterKey.get('searchableFieldId'),
-        searchableFieldName : currFilterKey.get('searchableFieldName'),
-        searchableFieldText : getAvailableFieldText(currFilterKey.get('searchableFieldName')),
-        op:'EQ',
-        opText : getOperatorText('EQ'),
-        value : value,
-        valueJSON : valueJSON,
-        valueText : safeGetValueText(value)
+      
+      addActiveFilter({
+        searchableFieldId:currFilterKey.get('searchableFieldId'),
+        valueList : value
       });
-      filterList.add(newFilter);
     }
   });
 
