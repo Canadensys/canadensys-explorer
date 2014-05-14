@@ -262,19 +262,19 @@ EXPLORER.map = (function() {
       switch(e.type) {
         case 'circle':
           searchValue = [e.overlay.getCenter().lat() +','+e.overlay.getCenter().lng(),e.overlay.getRadius()];
-          EXPLORER.backbone.addActiveFilter('geoellipse', searchValue, {valueText:'map'});
+          EXPLORER.backbone.addActiveFilter({searchableFieldName:'geoellipse',valueList:searchValue});
         break;
 
         case 'rectangle':
           searchValue = [e.overlay.getBounds().getNorthEast().lat() + ',' + e.overlay.getBounds().getNorthEast().lng(),
           e.overlay.getBounds().getSouthWest().lat() + ',' + e.overlay.getBounds().getSouthWest().lng()];
-          EXPLORER.backbone.addActiveFilter('georectangle', searchValue, {valueText:'map'});
+          EXPLORER.backbone.addActiveFilter({searchableFieldName:'georectangle',valueList:searchValue});
         break;
 
         case 'polygon':
           searchValue = $.map(e.overlay.getPath().getArray(), function(n) { return [n.lat() + ',' + n.lng()]; });
           searchValue.push(searchValue[0]);
-          EXPLORER.backbone.addActiveFilter('geopolygon', searchValue, {valueText:'map'});
+          EXPLORER.backbone.addActiveFilter({searchableFieldName:'geopolygon',valueList:searchValue});
         break;
       }
     }

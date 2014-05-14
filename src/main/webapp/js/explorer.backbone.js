@@ -98,51 +98,59 @@ EXPLORER.backbone = (function(){
     return parsedValueText.join();
   }
   
-  //The searchable field must have only one available operator
-  function addActiveFilter(searchableFieldName, value){
-    var searchableField, operator, valueJSON, newFilter;
-
-    //retrieve searchable field
-    searchableField = _.find(availableSearchFields,
-        function(sf){ return sf.searchableFieldName === searchableFieldName; });
-
-    if(!searchableField || searchableField.supportedOperator.length !== 1) {
+  //Add a new active filter based on provided filter properties.
+  //Mandatory properties are: (searchableFieldId or searchableFieldName) and valueList
+  function addActiveFilter(filterProps){
+    filterProps = filterProps || {};
+    
+    var searchableFieldId = filterProps.searchableFieldId,
+    searchableFieldName = filterProps.searchableFieldName,
+    valueList = filterProps.valueList,
+    searchableField, operator, valueJSON, newFilter;
+    
+    //find the searchableField by id or name
+    if(searchableFieldId){
+      searchableField = availableSearchFields[searchableFieldId.toString()];
+    }
+    else if(searchableFieldName){
+      searchableField = _.find(availableSearchFields,
+          function(sf){ return sf.searchableFieldName === searchableFieldName; });
+    }
+    
+    if(!searchableField){
+      //log to console for debug?
       return;
     }
-
-    operator = searchableField.supportedOperator[0];
-    valueJSON = JSON.stringify(value);
+    //if no operator is specified, we can accomodate that if the searchableField contains only 1 operator
+    if(!filterProps.op && searchableField.supportedOperator.length !== 1){
+      //log to console for debug?
+      return;
+    }
+    
+    operator = filterProps.op || searchableField.supportedOperator[0];
+    valueJSON = JSON.stringify(valueList);
     newFilter = new FilterItem({
       searchableFieldId : searchableField.searchableFieldId,
       searchableFieldName : searchableField.searchableFieldName,
       searchableFieldText : getAvailableFieldText(searchableField.searchableFieldName),
       op : operator,
       opText : getOperatorText(operator),
-      value : value,
+      value : valueList,
       valueJSON : valueJSON,
-      valueText : safeGetValueText(value)
+      valueText : safeGetValueText(valueList)
     });
     filterList.add(newFilter);
   }
 
-  //load filter form outer source
-  function loadFilter(json){
+  //initialize active filters from a list of json properties
+  function initActiveFilters(json){
     var filterItem, lastSearchableFieldId, key, searchableFieldTypeEnum;
 
     for (key in json) {
       if (json.hasOwnProperty(key)) {
-        filterItem = new FilterItem();
-        filterItem.set(json[key]);
-        //make sure the id is a String
-        filterItem.set('searchableFieldId',json[key].searchableFieldId.toString());
-        //for future use, maybe
-        searchableFieldTypeEnum = getSearchableFieldTypeEnum(json[key].searchableFieldId.toString());
-        filterItem.set('searchableFieldText', getAvailableFieldText(json[key].searchableFieldName));
-        filterItem.set('value',json[key].valueList);
-        filterItem.set('valueJSON',JSON.stringify(json[key].valueList));
-        filterItem.set('opText',getOperatorText(json[key].op));
-        filterItem.set('valueText',safeGetValueText(json[key].valueList));
-        filterList.add(filterItem);
+        
+        addActiveFilter(json[key]);
+        
         lastSearchableFieldId = json[key].searchableFieldId.toString();
       }
     }
@@ -156,7 +164,6 @@ EXPLORER.backbone = (function(){
     currFilterKey.set({searchableFieldId:lastSearchableFieldId,
       searchableFieldName:availableSearchFields[lastSearchableFieldId].searchableFieldName,
       searchableFieldText:getAvailableFieldText(availableSearchFields[lastSearchableFieldId].searchableFieldName)});
-
   }
 
   function removeFilter(json) {
@@ -282,7 +289,7 @@ EXPLORER.backbone = (function(){
         })){
         return;
       }
-
+      //TODO use addActiveFilter
       var newFilter = new FilterItem({
         searchableFieldId : currFilterKey.get('searchableFieldId'),
         searchableFieldName : currFilterKey.get('searchableFieldName'),
@@ -345,6 +352,7 @@ EXPLORER.backbone = (function(){
         })){
         return;
       }
+      //TODO use addActiveFilter
       var newFilter = new FilterItem({
         searchableFieldId : currFilterKey.get('searchableFieldId'),
         searchableFieldName : currFilterKey.get('searchableFieldName'),
@@ -403,6 +411,7 @@ EXPLORER.backbone = (function(){
       if(filterList.where({searchableFieldId: currFilterKey.get('searchableFieldId'),valueJSON:valueJSON}).length !== 0){
         return;
       }
+      //TODO use addActiveFilter
       newFilter = new FilterItem({
         searchableFieldId : currFilterKey.get('searchableFieldId'),
         searchableFieldName : currFilterKey.get('searchableFieldName'),
@@ -448,7 +457,7 @@ EXPLORER.backbone = (function(){
       if(filterList.where({searchableFieldId: currFilterKey.get('searchableFieldId')}).length !== 0){
         return;
       }
-
+      //TODO use addActiveFilter
       newFilter = new FilterItem({
         searchableFieldId : currFilterKey.get('searchableFieldId'),
         searchableFieldName : currFilterKey.get('searchableFieldName'),
@@ -588,7 +597,7 @@ EXPLORER.backbone = (function(){
       if(filterList.where({searchableFieldId: currFilterKey.get('searchableFieldId'),valueJSON:valueJSON}).length !== 0){
         return;
       }
-
+      //TODO use addActiveFilter
       newFilter = new FilterItem({
         searchableFieldId : currFilterKey.get('searchableFieldId'),
         searchableFieldName : currFilterKey.get('searchableFieldName'),
@@ -676,7 +685,7 @@ EXPLORER.backbone = (function(){
       if(filterList.where({searchableFieldId: currFilterKey.get('searchableFieldId'),valueJSON:valueJSON}).length !== 0){
         return;
       }
-
+      //TODO use addActiveFilter
       newFilter = new FilterItem({
         searchableFieldId : currFilterKey.get('searchableFieldId'),
         searchableFieldName : currFilterKey.get('searchableFieldName'),
@@ -960,7 +969,7 @@ EXPLORER.backbone = (function(){
     setNumberOfResult : setNumberOfResult,
     setAvailableSearchFields : setAvailableSearchFields,
     getFilter : getFilter,
-    loadFilter : loadFilter,
+    initActiveFilters : initActiveFilters,
     addActiveFilter : addActiveFilter,
     removeFilter : removeFilter,
     getInitialFilterParamMap : getInitialFilterParamMap
