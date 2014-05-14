@@ -215,17 +215,14 @@ EXPLORER.map = (function() {
           break;
 
           case "polygon":
-            // New vertex is inserted
             google.maps.event.addListener(e.overlay.getPath(), 'insert_at', function() {
               //TODO: EXPLORER.backbone.updateActiveFilter()
             });
 
-            // Existing vertex is removed (insertion is undone)
             google.maps.event.addListener(e.overlay.getPath(), 'remove_at', function() {
               //TODO: EXPLORER.backbone.updateActiveFilter()
             });
 
-            // Existing vertex is moved (set elsewhere)
             google.maps.event.addListener(e.overlay.getPath(), 'set_at', function() {
               //TODO: EXPLORER.backbone.updateActiveFilter()
             });
