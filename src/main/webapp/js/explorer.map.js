@@ -120,6 +120,12 @@ EXPLORER.map = (function() {
 
       this.map = new google.maps.Map($('#' + obj.mapCanvasId)[0], {
         center: new google.maps.LatLng(45.5,-73.5),
+        defaults: {
+          editable: true,
+          strokeColor: '#0B0B09',
+          fillColor: '#E7E7E7',
+          fillOpacity: 0.4
+        },
         zoom: 3,
         mapTypeId: google.maps.MapTypeId.TERRAIN,
         mapTypeControl: true
@@ -131,6 +137,7 @@ EXPLORER.map = (function() {
       });
 
       this.createDrawingManager();
+      this.createDrawingListeners();
 
       this.cartodb_gmapsv3 = new CartoDBLayer({
         map: this.map,
@@ -178,21 +185,60 @@ EXPLORER.map = (function() {
             google.maps.drawing.OverlayType.RECTANGLE,
             google.maps.drawing.OverlayType.POLYGON
           ]
-        }
+        },
+        circleOptions: this.map.defaults,
+        rectangleOptions: this.map.defaults,
+        polygonOptions: this.map.defaults
       });
 
       this.drawing_manager.setMap(this.map);
+    },
+
+    createDrawingListeners: function() {
+      var self = this;
 
       google.maps.event.addListener(this.drawing_manager, 'drawingmode_changed', function() {
         if(self.drawing_overlays.length > 0 && self.drawing_manager.drawingMode) {
           self.clearDrawingOverlays();
           self.removeSpatialFilters();
-          self.cartodb_gmapsv3.setInteraction(false);
+          self.cartodb_gmapsv3.setInteraction(false); //TODO: this does not work as expected, hoped it would prevent marker clicking
         }
       });
       google.maps.event.addListener(this.drawing_manager, "overlaycomplete", function(e) {
         self.drawingDone(e, self);
         self.cartodb_gmapsv3.setInteraction(true);
+
+        switch (e.type) {
+          case "circle":
+            google.maps.event.addListener(e.overlay, 'center_changed', function() {
+              //TODO: EXPLORER.backbone.updateActiveFilter()
+            });
+
+            google.maps.event.addListener(e.overlay, 'bounds_changed', function() {
+              //TODO: EXPLORER.backbone.updateActiveFilter()
+            });
+          break;
+
+          case "rectangle":
+            google.maps.event.addListener(e.overlay, 'bounds_changed', function () {
+              //TODO: EXPLORER.backbone.updateActiveFilter()
+            });
+          break;
+
+          case "polygon":
+            google.maps.event.addListener(e.overlay.getPath(), 'insert_at', function() {
+              //TODO: EXPLORER.backbone.updateActiveFilter()
+            });
+
+            google.maps.event.addListener(e.overlay.getPath(), 'remove_at', function() {
+              //TODO: EXPLORER.backbone.updateActiveFilter()
+            });
+
+            google.maps.event.addListener(e.overlay.getPath(), 'set_at', function() {
+              //TODO: EXPLORER.backbone.updateActiveFilter()
+            });
+          break;
+        }
       });
     },
 
@@ -206,7 +252,7 @@ EXPLORER.map = (function() {
           options = {
             center : center,
             radius : json.data.radius,
-            fillOpacity : 0.25
+            fillOpacity : this.map.defaults.fillOpacity
           };
           circle = new google.maps.Circle(options);
 
@@ -223,7 +269,7 @@ EXPLORER.map = (function() {
           );
           options = {
             bounds : bounds,
-            fillOpacity : 0.25
+            fillOpacity : this.map.defaults.fillOpacity
           };
           rectangle = new google.maps.Rectangle(options);
 
@@ -235,10 +281,11 @@ EXPLORER.map = (function() {
           //vertices is an array of arrays where last member is identical to first eg [[lat0,lng0], [lat1,lng1], [lat0,lng0]]
           vertices = json.data.coords;
           paths = $.map(vertices, function(n) { return new google.maps.LatLng(n[0], n[1]); });
-          polygon = new google.maps.Polygon({
+          options = {
             paths: paths,
-            fillOpacity : 0.25
-          });
+            fillOpacity : this.map.defaults.fillOpacity
+          },
+          polygon = new google.maps.Polygon(options);
 
           polygon.setMap(this.map);
           this.drawing_overlays.push(polygon);

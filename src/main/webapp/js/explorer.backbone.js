@@ -97,7 +97,7 @@ EXPLORER.backbone = (function(){
     });
     return parsedValueText.join();
   }
-  
+
   //Bind an action on the current filters list
   function bindToFilterList(action,callback,context){
     filterList.bind(action, callback, context);
@@ -108,12 +108,11 @@ EXPLORER.backbone = (function(){
   //A copy of the newly created FilterItem will be returned.
   function addActiveFilter(filterProps){
     filterProps = filterProps || {};
-    
     var searchableFieldId = filterProps.searchableFieldId,
     searchableFieldName = filterProps.searchableFieldName,
     valueList = filterProps.valueList,
     searchableField, operator, valueJSON, newFilter;
-    
+
     //find the searchableField by id or name
     if(searchableFieldId){
       searchableField = availableSearchFields[searchableFieldId.toString()];
@@ -122,7 +121,7 @@ EXPLORER.backbone = (function(){
       searchableField = _.find(availableSearchFields,
           function(sf){ return sf.searchableFieldName === searchableFieldName; });
     }
-    
+
     if(!searchableField){
       //log to console for debug?
       return;
@@ -132,7 +131,7 @@ EXPLORER.backbone = (function(){
       //log to console for debug?
       return;
     }
-    
+
     operator = filterProps.op || searchableField.supportedOperator[0];
     valueJSON = JSON.stringify(valueList);
     newFilter = new FilterItem({
@@ -162,9 +161,7 @@ EXPLORER.backbone = (function(){
 
     for (key in json) {
       if (json.hasOwnProperty(key)) {
-        
         addActiveFilter(json[key]);
-        
         lastSearchableFieldId = json[key].searchableFieldId.toString();
       }
     }
