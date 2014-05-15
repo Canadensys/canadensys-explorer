@@ -120,7 +120,7 @@ public interface OccurrenceSearchService {
 	/**
 	 * Get the map center coordinates for a query.
 	 * @param sqlQuery
-	 * @return long,lat
+	 * @return long,lat or empty array if no center was found.
 	 */
 	public String[] getMapCenter(String sqlQuery);
 		

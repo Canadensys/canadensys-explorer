@@ -85,13 +85,19 @@ EXPLORER.backbone = (function(){
     return EXPLORER.i18n.getLanguageResource(varName);
   }
 
-  function safeGetValueText(valueList){
+  //Generate the value text to be displayed based on searchableField and value list.
+  //If the searchableField is a Boolean field, value will be translated.
+  function generateValueText(searchableField,valueList){
     var parsedValueText = [], varName;
     $.each(valueList, function() {
-      varName = 'filter.value.'+this.toString().toLowerCase();
-      if(EXPLORER.i18n.getLanguageResource(varName)){
+      if(isBooleanSearchableField(searchableField)){
+        varName = 'filter.value.'+this.toString().toLowerCase();
         parsedValueText.push(EXPLORER.i18n.getLanguageResource(varName));
-      } else {
+      }
+      else if(isGeospatialSearchableField(searchableField)){
+        return "";
+      }
+      else{
         parsedValueText.push(this);
       }
     });
@@ -142,7 +148,7 @@ EXPLORER.backbone = (function(){
       opText : getOperatorText(operator),
       valueList : valueList,
       valueJSON : valueJSON,
-      valueText : safeGetValueText(valueList)
+      valueText : generateValueText(searchableField,valueList)
     });
     filterList.add(newFilter);
     //return a copy, maybe we should only do it if the caller asked for it?
@@ -155,10 +161,11 @@ EXPLORER.backbone = (function(){
     var _filterItem = filterList.get(filterItem.cid);
     if(_filterItem){
       var valueList = props.valueList || [],
+      searchableField = availableSearchFields[_filterItem.get('searchableFieldId').toString()],
       newValues = {
         valueList : valueList,
         valueJSON : JSON.stringify(valueList),
-        valueText : safeGetValueText(valueList)};
+        valueText : generateValueText(searchableField,valueList)};
       _filterItem.set(newValues);
     }
   }
@@ -201,6 +208,19 @@ EXPLORER.backbone = (function(){
       props.searchableFieldId = parseInt(props.searchableFieldId);
     }
     return filterList.findWhere(props);
+  }
+  
+  //Check if a searchableField is a Boolean searchableField
+  //This is defined by the content of 'type' in the filter
+  function isBooleanSearchableField(searchableField){
+    return (!_.isUndefined(searchableField.type) && searchableField.type.indexOf("Boolean") !== -1);
+  }
+  
+  //Check if a searchableField is a Geospatial searchableField
+  //For now, this is achieved using the searchableField.searchableFieldTypeEnum value.
+  //Eventually, we should be able to use the list of searchableFieldId per category (e.g. CLASSIFICATION,LOCATION ...) which you be more reliable.
+  function isGeospatialSearchableField(searchableField){
+    return _.contains(['WITHIN_RADIUS_GEO','INSIDE_ENVELOPE_GEO','INSIDE_POLYGON_GEO'], searchableField.searchableFieldTypeEnum);
   }
 
   //View that supports the text entry
@@ -475,11 +495,11 @@ EXPLORER.backbone = (function(){
     textValueTemplate : _.template($('#filter_template_single').html()),
     initialize : function() {
       this.setElement(this.textValueTemplate());
-      var currFilter = availableSearchFields[currFilterKey.get('searchableFieldId')];
-      this.supportSuggestion = currFilter.supportSuggestion;
-      this.supportPartialMatch = currFilter.supportPartialMatch;
-      this.supportSelectionList = currFilter.supportSelectionList;
-      this.isBooleanFilter = (!_.isUndefined(currFilter.type) && currFilter.type.indexOf("Boolean") !== -1);
+      var searchableField = availableSearchFields[currFilterKey.get('searchableFieldId')];
+      this.supportSuggestion = searchableField.supportSuggestion;
+      this.supportPartialMatch = searchableField.supportPartialMatch;
+      this.supportSelectionList = searchableField.supportSelectionList;
+      this.isBooleanFilter = isBooleanSearchableField(searchableField);
         
       this.textValueSuggestionView = undefined;
       this.partialTextValueView = undefined;
