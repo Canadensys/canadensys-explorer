@@ -192,8 +192,15 @@ EXPLORER.backbone = (function(){
     }
   }
 
-  function getFilter(json) {
-    return filterList.where(json);
+  //Get a filter based on properties
+  //If more than on filter can be found with those properties onyl the first one is returned
+  function getActiveFilter(props) {
+    //searchableFieldId can be used as int or String
+    //ensure we search with an int 
+    if (props.searchableFieldId){
+      props.searchableFieldId = parseInt(props.searchableFieldId);
+    }
+    return filterList.findWhere(props);
   }
 
   //View that supports the text entry
@@ -426,7 +433,7 @@ EXPLORER.backbone = (function(){
         return;
       }
       //ignore if a current filter exists
-      if(filterList.where({searchableFieldId: currFilterKey.get('searchableFieldId'),valueJSON:valueJSON}).length !== 0){
+      if(getActiveFilter({searchableFieldId: currFilterKey.get('searchableFieldId'),valueJSON:valueJSON})){
         return;
       }
       
@@ -437,7 +444,7 @@ EXPLORER.backbone = (function(){
     }
   });
 
-  //View that supports creation of a filter with the LIKE operator
+  //View that supports creation of a filter with yes/no options
   var BooleanValueView = Backbone.View.extend({
     booleanValueTemplate : _.template($('#filter_template_boolean_value').html()),
     initialize: function() {
@@ -456,8 +463,7 @@ EXPLORER.backbone = (function(){
     },
     createNewLikeFilter : function() {
       var value =  [($('input[name=boolGroup]:checked',this.$el).val())],
-          valueJSON = JSON.stringify(value),
-          newFilter;
+          valueJSON = JSON.stringify(value);
 
       //skip empty filter
       if(value.length === 0){
@@ -465,21 +471,14 @@ EXPLORER.backbone = (function(){
       }
 
       //ignore duplicate filter, boolean filter must not be already included
-      if(filterList.where({searchableFieldId: currFilterKey.get('searchableFieldId')}).length !== 0){
+      if(getActiveFilter({searchableFieldId: currFilterKey.get('searchableFieldId')})){
         return;
       }
-      //TODO use addActiveFilter
-      newFilter = new FilterItem({
-        searchableFieldId : currFilterKey.get('searchableFieldId'),
-        searchableFieldName : currFilterKey.get('searchableFieldName'),
-        searchableFieldText : getAvailableFieldText(currFilterKey.get('searchableFieldName')),
-        op:'EQ',
-        opText : getOperatorText('EQ'),
-        value : value,
-        valueJSON : valueJSON,
-        valueText : safeGetValueText(value)
+      
+      addActiveFilter({
+        searchableFieldId:currFilterKey.get('searchableFieldId'),
+        valueList : value
       });
-      filterList.add(newFilter);
     }
   });
 
@@ -981,7 +980,6 @@ EXPLORER.backbone = (function(){
     init: init,
     setNumberOfResult : setNumberOfResult,
     setAvailableSearchFields : setAvailableSearchFields,
-    getFilter : getFilter,
     initActiveFilters : initActiveFilters,
     addActiveFilter : addActiveFilter,
     updateActiveFilter : updateActiveFilter,
