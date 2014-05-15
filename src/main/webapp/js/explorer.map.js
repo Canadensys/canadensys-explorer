@@ -198,8 +198,6 @@ EXPLORER.map = (function() {
     },
 
     addDrawingManager: function() {
-      var self = this;
-
       this.drawing_manager = new google.maps.drawing.DrawingManager({
         drawingControl: true,
         drawingControlOptions: {
@@ -219,7 +217,7 @@ EXPLORER.map = (function() {
     },
 
     addDrawingListeners: function() {
-      var self = this, filter;
+      var self = this;
 
       google.maps.event.addListener(this.drawing_manager, 'drawingmode_changed', function() {
         if(self.drawing_manager.drawingMode) {
@@ -340,19 +338,21 @@ EXPLORER.map = (function() {
     },
 
     addFilter: function(e, scope) {
+      var filter = {};
       switch(e.type) {
         case 'circle':
-          return EXPLORER.backbone.addActiveFilter({ searchableFieldName : 'geoellipse', valueList : scope.circleParameters(e.overlay) });
+          filter = EXPLORER.backbone.addActiveFilter({ searchableFieldName : 'geoellipse', valueList : scope.circleParameters(e.overlay) });
         break;
 
         case 'rectangle':
-          return EXPLORER.backbone.addActiveFilter({ searchableFieldName : 'georectangle', valueList : scope.rectangleParameters(e.overlay) });
+          filter = EXPLORER.backbone.addActiveFilter({ searchableFieldName : 'georectangle', valueList : scope.rectangleParameters(e.overlay) });
         break;
 
         case 'polygon':
-          return EXPLORER.backbone.addActiveFilter({searchableFieldName : 'geopolygon', valueList : scope.polygonParameters(e.overlay) });
+          filter = EXPLORER.backbone.addActiveFilter({searchableFieldName : 'geopolygon', valueList : scope.polygonParameters(e.overlay) });
         break;
       }
+      return filter;
     }
 
   };
