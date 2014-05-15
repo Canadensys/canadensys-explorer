@@ -17,7 +17,6 @@ EXPLORER.map = (function() {
     drawing_overlay: {},
     drawing_types: ["geoellipse", "georectangle", "geopolygon"],
     filter: {},
-    center: new google.maps.LatLng(45.5,-73.5),
 
     init: function() {
       this.cartoDBsetBounds();
@@ -67,19 +66,19 @@ EXPLORER.map = (function() {
 
     cartoDBsetBounds: function() {
       CartoDBLayer.prototype.setBounds = function() {
-        var self = this, lon0, lat0;
+        var cdb = this, lon0, lat0, center;
 
         $.ajax({
-          method:'get',
-          url: 'mapcenter?q='+encodeURIComponent(self.options.query || ''),
+          method:'GET',
+          url: 'mapcenter?q='+encodeURIComponent(cdb.options.query || ''),
           dataType: 'json',
           success: function(result) {
             if(result && result[0]) {
               lon0 = result[0];
               lat0 = result[1];
-              self.center = new google.maps.LatLng(lat0, lon0);
+              center = new google.maps.LatLng(lat0, lon0);
+              cdb.options.map.setCenter(center);
             }
-            self.options.map.setCenter(self.center);
           }
         });
       };
@@ -139,11 +138,12 @@ EXPLORER.map = (function() {
         tilerDomain : "tiles.example.com",
         tilerProtocol : "http",
         tilerPort : 80,
-        mapQuery : ""
+        mapQuery : "",
+        mapCenter : [0,0]
       });
 
       this.map = new google.maps.Map($('#' + obj.mapCanvasId)[0], {
-        center: new google.maps.LatLng(45.5,-73.5),
+        center: new google.maps.LatLng(obj.mapCenter[0],obj.mapCenter[1]),
         defaults: {
           editable: true,
           strokeColor: '#0B0B09',
@@ -230,9 +230,9 @@ EXPLORER.map = (function() {
       google.maps.event.addListener(this.drawing_manager, "overlaycomplete", function(e) {
         self.drawing_manager.setOptions({ drawingMode: null });
         self.drawing_overlay = e.overlay;
-        self.filter = self.addFilter(e, self);
-        self.cartodb_gmapsv3.setInteraction(true);
+        self.filter = self.addFilter(e.type);
         self.addDrawingOverlayListeners(e.type);
+        self.cartodb_gmapsv3.setInteraction(true);
       });
     },
 
@@ -337,19 +337,19 @@ EXPLORER.map = (function() {
       });
     },
 
-    addFilter: function(e, scope) {
+    addFilter: function(type) {
       var filter = {};
-      switch(e.type) {
+      switch(type) {
         case 'circle':
-          filter = EXPLORER.backbone.addActiveFilter({ searchableFieldName : 'geoellipse', valueList : scope.circleParameters(e.overlay) });
+          filter = EXPLORER.backbone.addActiveFilter({ searchableFieldName : 'geoellipse', valueList : this.circleParameters() });
         break;
 
         case 'rectangle':
-          filter = EXPLORER.backbone.addActiveFilter({ searchableFieldName : 'georectangle', valueList : scope.rectangleParameters(e.overlay) });
+          filter = EXPLORER.backbone.addActiveFilter({ searchableFieldName : 'georectangle', valueList : this.rectangleParameters() });
         break;
 
         case 'polygon':
-          filter = EXPLORER.backbone.addActiveFilter({searchableFieldName : 'geopolygon', valueList : scope.polygonParameters(e.overlay) });
+          filter = EXPLORER.backbone.addActiveFilter({searchableFieldName : 'geopolygon', valueList : this.polygonParameters() });
         break;
       }
       return filter;
