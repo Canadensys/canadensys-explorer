@@ -26,7 +26,7 @@ EXPLORER.backbone = (function(){
       groupId : -1,
       op: undefined,
       opText : undefined,
-      value: [],
+      valueList: [],
       valueJSON : undefined,
       valueText : undefined
     }
@@ -140,7 +140,7 @@ EXPLORER.backbone = (function(){
       searchableFieldText : getAvailableFieldText(searchableField.searchableFieldName),
       op : operator,
       opText : getOperatorText(operator),
-      value : valueList,
+      valueList : valueList,
       valueJSON : valueJSON,
       valueText : safeGetValueText(valueList)
     });
@@ -154,11 +154,11 @@ EXPLORER.backbone = (function(){
   function updateActiveFilter(filterItem,props){
     var _filterItem = filterList.get(filterItem.cid);
     if(_filterItem){
-      var _valueList = props.valueList || [],
+      var valueList = props.valueList || [],
       newValues = {
-        value : _valueList,
-        valueJSON : JSON.stringify(_valueList),
-        valueText : safeGetValueText(_valueList)};
+        valueList : valueList,
+        valueJSON : JSON.stringify(valueList),
+        valueText : safeGetValueText(valueList)};
       _filterItem.set(newValues);
     }
   }
@@ -192,8 +192,15 @@ EXPLORER.backbone = (function(){
     }
   }
 
-  function getFilter(json) {
-    return filterList.where(json);
+  //Get a filter based on properties
+  //If more than on filter can be found with those properties only the first one is returned
+  function getActiveFilter(props) {
+    //searchableFieldId can be used as int or String
+    //ensure we search with an int 
+    if (props.searchableFieldId){
+      props.searchableFieldId = parseInt(props.searchableFieldId);
+    }
+    return filterList.findWhere(props);
   }
 
   //View that supports the text entry
@@ -303,23 +310,17 @@ EXPLORER.backbone = (function(){
 
       //ignore duplicate filter (ignore case)
       if(filterList.find(function(currFilter){ 
-        return (currFilter.get('searchableFieldId') === currFilterKey.get('searchableFieldId') &&
+        return (currFilter.get('searchableFieldId') === parseInt(currFilterKey.get('searchableFieldId')) &&
             currFilter.get('valueJSON').toLowerCase() === valueJSON.toLowerCase());
         })){
         return;
       }
-      //TODO use addActiveFilter
-      var newFilter = new FilterItem({
-        searchableFieldId : currFilterKey.get('searchableFieldId'),
-        searchableFieldName : currFilterKey.get('searchableFieldName'),
-        searchableFieldText : getAvailableFieldText(currFilterKey.get('searchableFieldName')),
+      
+      addActiveFilter({
+        searchableFieldId:currFilterKey.get('searchableFieldId'),
         op:'EQ',
-        opText : getOperatorText('EQ'),
-        value : value,
-        valueJSON : valueJSON,
-        valueText : safeGetValueText(value)
+        valueList : value
       });
-      filterList.add(newFilter);
     }
   });
 
@@ -366,23 +367,17 @@ EXPLORER.backbone = (function(){
 
       //ignore duplicate filter (ignore case)
       if(filterList.find(function(currFilter){ 
-        return (currFilter.get('searchableFieldId') === currFilterKey.get('searchableFieldId') &&
+        return (currFilter.get('searchableFieldId') === parseInt(currFilterKey.get('searchableFieldId')) &&
             currFilter.get('valueJSON').toLowerCase() === valueJSON.toLowerCase());
         })){
         return;
       }
-      //TODO use addActiveFilter
-      var newFilter = new FilterItem({
-        searchableFieldId : currFilterKey.get('searchableFieldId'),
-        searchableFieldName : currFilterKey.get('searchableFieldName'),
-        searchableFieldText : getAvailableFieldText(currFilterKey.get('searchableFieldName')),
+      
+      addActiveFilter({
+        searchableFieldId:currFilterKey.get('searchableFieldId'),
         op:this.likeOp,
-        opText : getOperatorText(this.likeOp),
-        value : value,
-        valueJSON : valueJSON,
-        valueText : safeGetValueText(value)
+        valueList : value
       });
-      filterList.add(newFilter);
     }
   });
 
@@ -426,7 +421,7 @@ EXPLORER.backbone = (function(){
         return;
       }
       //ignore if a current filter exists
-      if(filterList.where({searchableFieldId: currFilterKey.get('searchableFieldId'),valueJSON:valueJSON}).length !== 0){
+      if(getActiveFilter({searchableFieldId: currFilterKey.get('searchableFieldId'),valueJSON:valueJSON})){
         return;
       }
       
@@ -437,7 +432,7 @@ EXPLORER.backbone = (function(){
     }
   });
 
-  //View that supports creation of a filter with the LIKE operator
+  //View that supports creation of a filter with yes/no options
   var BooleanValueView = Backbone.View.extend({
     booleanValueTemplate : _.template($('#filter_template_boolean_value').html()),
     initialize: function() {
@@ -456,8 +451,7 @@ EXPLORER.backbone = (function(){
     },
     createNewLikeFilter : function() {
       var value =  [($('input[name=boolGroup]:checked',this.$el).val())],
-          valueJSON = JSON.stringify(value),
-          newFilter;
+          valueJSON = JSON.stringify(value);
 
       //skip empty filter
       if(value.length === 0){
@@ -465,21 +459,14 @@ EXPLORER.backbone = (function(){
       }
 
       //ignore duplicate filter, boolean filter must not be already included
-      if(filterList.where({searchableFieldId: currFilterKey.get('searchableFieldId')}).length !== 0){
+      if(getActiveFilter({searchableFieldId: currFilterKey.get('searchableFieldId')})){
         return;
       }
-      //TODO use addActiveFilter
-      newFilter = new FilterItem({
-        searchableFieldId : currFilterKey.get('searchableFieldId'),
-        searchableFieldName : currFilterKey.get('searchableFieldName'),
-        searchableFieldText : getAvailableFieldText(currFilterKey.get('searchableFieldName')),
-        op:'EQ',
-        opText : getOperatorText('EQ'),
-        value : value,
-        valueJSON : valueJSON,
-        valueText : safeGetValueText(value)
+      
+      addActiveFilter({
+        searchableFieldId:currFilterKey.get('searchableFieldId'),
+        valueList : value
       });
-      filterList.add(newFilter);
     }
   });
 
@@ -543,6 +530,7 @@ EXPLORER.backbone = (function(){
     }
   });
 
+  //View to add a date or date interval filter
   var DateIntervalValueView = Backbone.View.extend({
     dateIntervalTemplate : _.template($('#filter_template_date').html()),
     initialize: function() {
@@ -586,7 +574,7 @@ EXPLORER.backbone = (function(){
           eyear = $.trim($("#date_end_y",this.$el).val()),
           emonth = $.trim($("#date_end_m",this.$el).val()),
           eday = $.trim($("#date_end_d",this.$el).val()),
-          valueJSON, searchValue, newFilter;
+          valueJSON, searchValue;
 
       if(!EXPLORER.utils.isValidPartialDate(syear,smonth,sday) || (isInterval && !EXPLORER.utils.isValidPartialDate(eyear,emonth,eday))){
         alert(EXPLORER.i18n.getLanguageResource('control.invalid.date'));
@@ -605,31 +593,20 @@ EXPLORER.backbone = (function(){
       valueJSON = JSON.stringify(searchValue);
 
       //ignore duplicate filter
-      if(filterList.where({searchableFieldId: currFilterKey.get('searchableFieldId'),valueJSON:valueJSON}).length !== 0){
+      if(getActiveFilter({searchableFieldId: currFilterKey.get('searchableFieldId'),valueJSON:valueJSON})){
         return;
       }
-      //TODO use addActiveFilter
-      newFilter = new FilterItem({
-        searchableFieldId : currFilterKey.get('searchableFieldId'),
-        searchableFieldName : currFilterKey.get('searchableFieldName'),
-        searchableFieldText : getAvailableFieldText(currFilterKey.get('searchableFieldName')),
-        value : searchValue,
-        valueJSON : valueJSON,
-        valueText : safeGetValueText(searchValue)
+      
+      addActiveFilter({
+        searchableFieldId:currFilterKey.get('searchableFieldId'),
+        op: isInterval?'BETWEEN':'EQ',
+        valueList : searchValue
       });
-
-      if(isInterval){
-        newFilter.set('op','BETWEEN');
-        newFilter.set('opText',getOperatorText('BETWEEN'));
-      }
-      else{
-        newFilter.set('op','EQ');
-        newFilter.set('opText',getOperatorText('EQ'));
-      }
-      filterList.add(newFilter);
     }
   });
 
+  //View to add a min/max filter. It can accept exact or interval.
+  //e.g. altitude filter
   var MinMaxValueView = Backbone.View.extend({
     minMaxValueTemplate : _.template($('#filter_template_minmax').html()),
     initialize: function() {
@@ -674,7 +651,7 @@ EXPLORER.backbone = (function(){
       var minValue = $.trim($("#value_min",this.$el).val()),
           isInterval = $("#interval",this.$el).is(':checked'),
           maxValue = $.trim($("#value_max",this.$el).val()),
-          searchValue, valueJSON, newFilter;
+          searchValue, valueJSON;
 
       if(!EXPLORER.utils.isValidNumber(minValue)){
         alert(EXPLORER.i18n.getLanguageResource('control.invalid.number'));
@@ -693,28 +670,15 @@ EXPLORER.backbone = (function(){
       valueJSON = JSON.stringify(searchValue);
 
       //ignore duplicate filter
-      if(filterList.where({searchableFieldId: currFilterKey.get('searchableFieldId'),valueJSON:valueJSON}).length !== 0){
+      if(getActiveFilter({searchableFieldId: currFilterKey.get('searchableFieldId'),valueJSON:valueJSON})){
         return;
       }
-      //TODO use addActiveFilter
-      newFilter = new FilterItem({
-        searchableFieldId : currFilterKey.get('searchableFieldId'),
-        searchableFieldName : currFilterKey.get('searchableFieldName'),
-        searchableFieldText : getAvailableFieldText(currFilterKey.get('searchableFieldName')),
-        value : searchValue,
-        valueJSON : valueJSON,
-        valueText : safeGetValueText(searchValue)
+      
+      addActiveFilter({
+        searchableFieldId:currFilterKey.get('searchableFieldId'),
+        op: isInterval?'BETWEEN':'EQ',
+        valueList : searchValue
       });
-
-      if(isInterval){
-        newFilter.set('op','BETWEEN');
-        newFilter.set('opText',getOperatorText('BETWEEN'));
-      }
-      else{
-        newFilter.set('op','EQ');
-        newFilter.set('opText',getOperatorText('EQ'));
-      }
-      filterList.add(newFilter);
     }
   });
 
@@ -980,7 +944,6 @@ EXPLORER.backbone = (function(){
     init: init,
     setNumberOfResult : setNumberOfResult,
     setAvailableSearchFields : setAvailableSearchFields,
-    getFilter : getFilter,
     initActiveFilters : initActiveFilters,
     addActiveFilter : addActiveFilter,
     updateActiveFilter : updateActiveFilter,
