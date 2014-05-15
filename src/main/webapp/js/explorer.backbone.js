@@ -154,7 +154,7 @@ EXPLORER.backbone = (function(){
   function updateActiveFilter(filterItem,props){
     var _filterItem = filterList.get(filterItem.cid);
     if(_filterItem){
-      var _valueList = valueList.value || [],
+      var _valueList = props.valueList || [],
       newValues = {
         value : _valueList,
         valueJSON : JSON.stringify(_valueList),
@@ -748,7 +748,6 @@ EXPLORER.backbone = (function(){
     },
     unrender: function(){
       $(this.el).remove();
-      EXPLORER.EventBus.trigger("filterRemove", this);
     },
     remove: function(){
       //destoy will also remove events bound to the model

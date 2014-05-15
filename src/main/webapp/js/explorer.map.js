@@ -2,7 +2,7 @@
 Copyright (c) 2013 Canadensys
 Explorer Map
 ****************************/
-/*global EXPLORER, $, window, document, console, jQuery, CartoDBLayer, google, _, Wkt */
+/*global EXPLORER, $, window, document, console, jQuery, CartoDBLayer, google, _ */
 
 EXPLORER.map = (function() {
 
@@ -14,30 +14,54 @@ EXPLORER.map = (function() {
     marker: {},
     cartodb_gmapsv3: {},
     drawing_manager: {},
-    drawing_overlays: [],
+    drawing_overlay: {},
     drawing_types: ["geoellipse", "georectangle", "geopolygon"],
+    filter: {},
     center: new google.maps.LatLng(45.5,-73.5),
 
     init: function() {
       this.cartoDBsetBounds();
       this.cartoDBgenerateTile();
-      //EXPLORER.EventBus.on("filterRemove", this.removeFilterListener, this);
       EXPLORER.backbone.bindToFilterList('add',this.onAddFilter,this);
       EXPLORER.backbone.bindToFilterList('remove',this.removeFilterListener,this);
     },
 
     onAddFilter: function(filter) {
-      //example for circle
-      //var fieldName = filter.get('searchableFieldName'),
-      //if($.inArray(fieldName, this.drawing_types) !== -1) {
-      //  var valueList = filter.get('value'),
-      //  coord = valueList[0].split(",");
-      //  this.createDrawingOverlay({type:this.drawing_types[0],data:{coords:[coord[0],coord[1]],radius:parseInt(valueList[1])}});
-      //}
+      var self = this, fieldName = filter.get('searchableFieldName'), valueList, coords, data, overlay_type;
+
+      if($.inArray(fieldName, this.drawing_types) !== -1 && $.isEmptyObject(this.drawing_overlay)) {
+        self.filter = filter;
+        valueList = filter.get('value');
+
+        switch (fieldName) {
+          case this.drawing_types[0]:
+            overlay_type = 'circle';
+            coords = valueList[0].split(",");
+            data = { coords : [coords[0],coords[1]], radius : parseInt(valueList[1], 10) };
+          break;
+
+          case this.drawing_types[1]:
+            overlay_type = 'rectangle';
+            coords = $.map(valueList.reverse(), function(n) { return n.split(","); });
+            data = { coords : [ [coords[0], coords[1]], [coords[2], coords[3]] ] };
+          break;
+
+          case this.drawing_types[2]:
+            overlay_type = 'polygon';
+            coords = $.map(valueList, function(n) { return [ n.split(",") ]; });
+            data = { coords : coords };
+          break;
+        }
+
+        this.addDrawingOverlay({ type : fieldName, data : data });
+        this.addDrawingOverlayListeners(overlay_type);
+      }
     },
+
     removeFilterListener: function(filter) {
       if($.inArray(filter.get('searchableFieldName'), this.drawing_types) !== -1) {
-        this.clearDrawingOverlays();
+        this.removeDrawingOverlay();
+        this.filter = {};
       }
     },
 
@@ -47,7 +71,7 @@ EXPLORER.map = (function() {
 
         $.ajax({
           method:'get',
-          url: 'mapcenter?q='+encodeURIComponent(self.options.query|| ''),
+          url: 'mapcenter?q='+encodeURIComponent(self.options.query || ''),
           dataType: 'json',
           success: function(result) {
             if(result && result[0]) {
@@ -136,8 +160,8 @@ EXPLORER.map = (function() {
         map: this.map
       });
 
-      this.createDrawingManager();
-      this.createDrawingListeners();
+      this.addDrawingManager();
+      this.addDrawingListeners();
 
       this.cartodb_gmapsv3 = new CartoDBLayer({
         map: this.map,
@@ -173,7 +197,7 @@ EXPLORER.map = (function() {
         });
     },
 
-    createDrawingManager: function() {
+    addDrawingManager: function() {
       var self = this;
 
       this.drawing_manager = new google.maps.drawing.DrawingManager({
@@ -194,70 +218,84 @@ EXPLORER.map = (function() {
       this.drawing_manager.setMap(this.map);
     },
 
-    createDrawingListeners: function() {
-      var self = this;
+    addDrawingListeners: function() {
+      var self = this, filter;
 
       google.maps.event.addListener(this.drawing_manager, 'drawingmode_changed', function() {
-        if(self.drawing_overlays.length > 0 && self.drawing_manager.drawingMode) {
-          self.clearDrawingOverlays();
-          self.removeSpatialFilters();
-          self.cartodb_gmapsv3.setInteraction(false); //TODO: this does not work as expected, hoped it would prevent marker clicking
+        if(self.drawing_manager.drawingMode) {
+          self.removeDrawingOverlay();
+          self.removeSpatialFilter();
+          self.cartodb_gmapsv3.setInteraction(false);
         }
       });
+
       google.maps.event.addListener(this.drawing_manager, "overlaycomplete", function(e) {
-        self.drawingDone(e, self);
+        self.drawing_manager.setOptions({ drawingMode: null });
+        self.drawing_overlay = e.overlay;
+        self.filter = self.addFilter(e, self);
         self.cartodb_gmapsv3.setInteraction(true);
-
-        switch (e.type) {
-          case "circle":
-            google.maps.event.addListener(e.overlay, 'center_changed', function() {
-              //TODO: EXPLORER.backbone.updateActiveFilter()
-            });
-
-            google.maps.event.addListener(e.overlay, 'bounds_changed', function() {
-              //TODO: EXPLORER.backbone.updateActiveFilter()
-            });
-          break;
-
-          case "rectangle":
-            google.maps.event.addListener(e.overlay, 'bounds_changed', function () {
-              //TODO: EXPLORER.backbone.updateActiveFilter()
-            });
-          break;
-
-          case "polygon":
-            google.maps.event.addListener(e.overlay.getPath(), 'insert_at', function() {
-              //TODO: EXPLORER.backbone.updateActiveFilter()
-            });
-
-            google.maps.event.addListener(e.overlay.getPath(), 'remove_at', function() {
-              //TODO: EXPLORER.backbone.updateActiveFilter()
-            });
-
-            google.maps.event.addListener(e.overlay.getPath(), 'set_at', function() {
-              //TODO: EXPLORER.backbone.updateActiveFilter()
-            });
-          break;
-        }
+        self.addDrawingOverlayListeners(e.type);
       });
     },
 
-    createDrawingOverlay: function(json) {
+    addDrawingOverlayListeners: function(type) {
+      var self = this;
+
+      switch(type) {
+        case 'circle':
+          $.each(["center", "bounds"], function() {
+            google.maps.event.addListener(self.drawing_overlay, this+"_changed", function() {
+              EXPLORER.backbone.updateActiveFilter(self.filter, { valueList : self.circleParameters() });
+            });
+          });
+        break;
+
+        case 'rectangle':
+          google.maps.event.addListener(self.drawing_overlay, 'bounds_changed', function() {
+            EXPLORER.backbone.updateActiveFilter(self.filter, { valueList : self.rectangleParameters() });
+          });
+        break;
+
+        case 'polygon':
+          $.each(["insert", "remove", "set"], function() {
+            google.maps.event.addListener(self.drawing_overlay.getPath(), this+"_at", function() {
+              EXPLORER.backbone.updateActiveFilter(self.filter, { valueList : self.polygonParameters() });
+            });
+          });
+        break;
+      }
+    },
+
+    circleParameters: function() {
+      var o = this.drawing_overlay;
+      return [o.getCenter().lat()+','+o.getCenter().lng(),o.getRadius()];
+    },
+
+    rectangleParameters: function() {
+      var o = this.drawing_overlay;
+      return [o.getBounds().getNorthEast().lat() + ',' + o.getBounds().getNorthEast().lng(),
+        o.getBounds().getSouthWest().lat() + ',' + o.getBounds().getSouthWest().lng()];
+    },
+
+    polygonParameters: function() {
+      var o = this.drawing_overlay,
+          searchValue = $.map(o.getPath().getArray(), function(n) { return [n.lat() + ',' + n.lng()]; });
+      searchValue.push(searchValue[0]);
+      return searchValue;
+    },
+
+    addDrawingOverlay: function(json) {
       var coord, center, options, circle, bbox, bounds, rectangle, paths, vertices, polygon;
 
       switch(json.type) {
         case this.drawing_types[0]:
           coord = json.data.coords;
           center = new google.maps.LatLng(coord[0], coord[1]);
-          options = {
-            center : center,
-            radius : json.data.radius,
-            fillOpacity : this.map.defaults.fillOpacity
-          };
+          options = $.extend({ center : center, radius : json.data.radius }, this.map.defaults);
           circle = new google.maps.Circle(options);
 
           circle.setMap(this.map);
-          this.drawing_overlays.push(circle);
+          this.drawing_overlay = circle;
         break;
 
         case this.drawing_types[1]:
@@ -267,72 +305,52 @@ EXPLORER.map = (function() {
             new google.maps.LatLng(bbox[0][0], bbox[0][1]),
             new google.maps.LatLng(bbox[1][0], bbox[1][1])
           );
-          options = {
-            bounds : bounds,
-            fillOpacity : this.map.defaults.fillOpacity
-          };
+          options = $.extend({ bounds : bounds }, this.map.defaults);
           rectangle = new google.maps.Rectangle(options);
 
           rectangle.setMap(this.map);
-          this.drawing_overlays.push(rectangle);
+          this.drawing_overlay = rectangle;
         break;
 
         case this.drawing_types[2]:
           //vertices is an array of arrays where last member is identical to first eg [[lat0,lng0], [lat1,lng1], [lat0,lng0]]
           vertices = json.data.coords;
           paths = $.map(vertices, function(n) { return new google.maps.LatLng(n[0], n[1]); });
-          options = {
-            paths: paths,
-            fillOpacity : this.map.defaults.fillOpacity
-          },
+          options = $.extend({ paths: paths }, this.map.defaults);
           polygon = new google.maps.Polygon(options);
 
           polygon.setMap(this.map);
-          this.drawing_overlays.push(polygon);
+          this.drawing_overlay = polygon;
         break;
 
       }
     },
 
-    clearDrawingOverlays: function() {
-      $.each(this.drawing_overlays, function() {
-        if(this.hasOwnProperty('overlay')) {
-          this.overlay.setMap(null);
-        } else {
-          this.setMap(null);
-        }
-      });
-      this.drawing_overlays = [];
+    removeDrawingOverlay: function() {
+      if(!$.isEmptyObject(this.drawing_overlay)) {
+        this.drawing_overlay.setMap(null);
+      }
+      this.drawing_overlay = {};
     },
 
-    removeSpatialFilters: function() {
+    removeSpatialFilter: function() {
       $.each(this.drawing_types, function() {
         EXPLORER.backbone.removeFilter({ searchableFieldName: this });
       });
     },
 
-    drawingDone: function(e, scope) {
-      var searchValue = [];
-
-      scope.drawing_manager.setOptions({ drawingMode: null });
-      scope.drawing_overlays.push(e);
-
+    addFilter: function(e, scope) {
       switch(e.type) {
         case 'circle':
-          searchValue = [e.overlay.getCenter().lat() +','+e.overlay.getCenter().lng(),e.overlay.getRadius()];
-          EXPLORER.backbone.addActiveFilter({searchableFieldName:'geoellipse',valueList:searchValue});
+          return EXPLORER.backbone.addActiveFilter({ searchableFieldName : 'geoellipse', valueList : scope.circleParameters(e.overlay) });
         break;
 
         case 'rectangle':
-          searchValue = [e.overlay.getBounds().getNorthEast().lat() + ',' + e.overlay.getBounds().getNorthEast().lng(),
-          e.overlay.getBounds().getSouthWest().lat() + ',' + e.overlay.getBounds().getSouthWest().lng()];
-          EXPLORER.backbone.addActiveFilter({searchableFieldName:'georectangle',valueList:searchValue});
+          return EXPLORER.backbone.addActiveFilter({ searchableFieldName : 'georectangle', valueList : scope.rectangleParameters(e.overlay) });
         break;
 
         case 'polygon':
-          searchValue = $.map(e.overlay.getPath().getArray(), function(n) { return [n.lat() + ',' + n.lng()]; });
-          searchValue.push(searchValue[0]);
-          EXPLORER.backbone.addActiveFilter({searchableFieldName:'geopolygon',valueList:searchValue});
+          return EXPLORER.backbone.addActiveFilter({searchableFieldName : 'geopolygon', valueList : scope.polygonParameters(e.overlay) });
         break;
       }
     }
@@ -343,9 +361,6 @@ EXPLORER.map = (function() {
     init: function() { _private.init(); },
     setupMap: function(obj) {
       _private.setupMap(obj);
-    },
-    createDrawingOverlay: function(json) {
-      _private.createDrawingOverlay(json);
     }
   };
 

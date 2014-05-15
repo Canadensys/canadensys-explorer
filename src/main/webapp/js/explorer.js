@@ -20,7 +20,7 @@ DESIGN TEMPLATE FOR MODULES IN THE EXPLORER
 /*global window, document, jQuery*/
 
 ;(function(ex, $, window, document, undefined) {
-  
+
   'use strict';
 
   ex.i18n = {
@@ -40,8 +40,6 @@ DESIGN TEMPLATE FOR MODULES IN THE EXPLORER
     }
 
   };
-
-  ex.EventBus = _.extend({}, Backbone.Events);
 
   //global initializer
   $(function() {
