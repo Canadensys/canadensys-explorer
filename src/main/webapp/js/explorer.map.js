@@ -31,7 +31,7 @@ EXPLORER.map = (function() {
 
       if($.inArray(fieldName, this.drawing_types) !== -1 && $.isEmptyObject(this.drawing_overlay)) {
         self.filter = filter;
-        valueList = filter.get('value');
+        valueList = filter.get('valueList');
 
         switch (fieldName) {
           case this.drawing_types[0]:
