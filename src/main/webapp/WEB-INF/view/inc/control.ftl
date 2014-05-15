@@ -202,7 +202,7 @@
 	<span class="delete">${rc.getMessage("control.search.button.delete")}</span>
 	<input type="hidden" name="<%= groupId %>_f" value="<%= searchableFieldId %>"/>
 	<input type="hidden" name="<%= groupId %>_o" value="<%= op %>"/>
-	<% _.each(value, function(value,key) { %> <input type="hidden" name="<%= groupId %>_v_<%= key+1 %>" value="<%= value %>"/> <% }); %>
+	<% _.each(valueList, function(value,key) { %> <input type="hidden" name="<%= groupId %>_v_<%= key+1 %>" value="<%= value %>"/> <% }); %>
 </script>
 
 <!-- Download templates -->
