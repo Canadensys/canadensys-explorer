@@ -243,7 +243,7 @@ EXPLORER.backbone = (function(){
             activateOn : 'focus',
             keys : {
               enter : function(element) {
-                $(element).triggerHandler('click');
+                $(element).trigger('click');
               }
             }
           }).first().focus();
