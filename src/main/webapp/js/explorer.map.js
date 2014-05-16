@@ -21,8 +21,19 @@ EXPLORER.map = (function() {
     init: function() {
       this.cartoDBsetBounds();
       this.cartoDBgenerateTile();
+      this.addBoundsMethod();
       EXPLORER.backbone.bindToFilterList('add',this.onAddFilter,this);
       EXPLORER.backbone.bindToFilterList('remove',this.removeFilterListener,this);
+    },
+
+    addBoundsMethod: function() {
+      if (!google.maps.Polygon.prototype.getBounds) {
+        google.maps.Polygon.prototype.getBounds = function(){
+            var bounds = new google.maps.LatLngBounds();
+            this.getPath().forEach(function(element,index){ bounds.extend(element); });
+            return bounds;
+        }
+      }
     },
 
     onAddFilter: function(filter) {
@@ -139,7 +150,8 @@ EXPLORER.map = (function() {
         tilerProtocol : "http",
         tilerPort : 80,
         mapQuery : "",
-        mapCenter : [0,0]
+        mapCenter : [0,0],
+        mapZoom : 3
       });
 
       this.map = new google.maps.Map($('#' + obj.mapCanvasId)[0], {
@@ -150,7 +162,7 @@ EXPLORER.map = (function() {
           fillColor: '#E7E7E7',
           fillOpacity: 0.4
         },
-        zoom: 3,
+        zoom: obj.mapZoom,
         mapTypeId: google.maps.MapTypeId.TERRAIN,
         mapTypeControl: true
       });
@@ -293,6 +305,7 @@ EXPLORER.map = (function() {
           circle = new google.maps.Circle(options);
 
           circle.setMap(this.map);
+          this.map.fitBounds(circle.getBounds());
           this.drawing_overlay = circle;
         break;
 
@@ -307,6 +320,7 @@ EXPLORER.map = (function() {
           rectangle = new google.maps.Rectangle(options);
 
           rectangle.setMap(this.map);
+          this.map.fitBounds(rectangle.getBounds());
           this.drawing_overlay = rectangle;
         break;
 
@@ -318,6 +332,7 @@ EXPLORER.map = (function() {
           polygon = new google.maps.Polygon(options);
 
           polygon.setMap(this.map);
+          this.map.fitBounds(polygon.getBounds());
           this.drawing_overlay = polygon;
         break;
 
