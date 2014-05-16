@@ -66,11 +66,6 @@ EXPLORER.backbone = (function(){
     availableSearchFields = _availableSearchFields;
   }
 
-  //Get the searchableFieldTypeEnum(e.g. SINGLE_VALUE) of a searchableFieldId
-  function getSearchableFieldTypeEnum(searchableFieldId) {
-    return availableSearchFields[searchableFieldId].searchableFieldTypeEnum;
-  }
-
   function getInitialFilterParamMap(){
     return initialFilterParamMap;
   }
@@ -85,6 +80,19 @@ EXPLORER.backbone = (function(){
     return EXPLORER.i18n.getLanguageResource(varName);
   }
 
+  //Check if a searchableField is a Boolean searchableField
+  //This is defined by the content of 'type' in the filter
+  function isBooleanSearchableField(searchableField){
+    return (!_.isUndefined(searchableField.type) && searchableField.type.indexOf("Boolean") !== -1);
+  }
+
+  //Check if a searchableField is a Geospatial searchableField
+  //For now, this is achieved using the searchableField.searchableFieldTypeEnum value.
+  //Eventually, we should be able to use the list of searchableFieldId per category (e.g. CLASSIFICATION,LOCATION ...) which you be more reliable.
+  function isGeospatialSearchableField(searchableField){
+    return _.contains(['WITHIN_RADIUS_GEO','INSIDE_ENVELOPE_GEO','INSIDE_POLYGON_GEO'], searchableField.searchableFieldTypeEnum);
+  }
+
   //Generate the value text to be displayed based on searchableField and value list.
   //If the searchableField is a Boolean field, value will be translated.
   function generateValueText(searchableField,valueList){
@@ -97,7 +105,7 @@ EXPLORER.backbone = (function(){
       else if(isGeospatialSearchableField(searchableField)){
         return "";
       }
-      else{
+      else {
         parsedValueText.push(this);
       }
     });
@@ -172,7 +180,7 @@ EXPLORER.backbone = (function(){
 
   //initialize active filters from a list of json properties
   function initActiveFilters(json){
-    var filterItem, lastSearchableFieldId, key, searchableFieldTypeEnum;
+    var lastSearchableFieldId, key;
 
     for (key in json) {
       if (json.hasOwnProperty(key)) {
@@ -205,22 +213,9 @@ EXPLORER.backbone = (function(){
     //searchableFieldId can be used as int or String
     //ensure we search with an int 
     if (props.searchableFieldId){
-      props.searchableFieldId = parseInt(props.searchableFieldId);
+      props.searchableFieldId = parseInt(props.searchableFieldId, 10);
     }
     return filterList.findWhere(props);
-  }
-  
-  //Check if a searchableField is a Boolean searchableField
-  //This is defined by the content of 'type' in the filter
-  function isBooleanSearchableField(searchableField){
-    return (!_.isUndefined(searchableField.type) && searchableField.type.indexOf("Boolean") !== -1);
-  }
-  
-  //Check if a searchableField is a Geospatial searchableField
-  //For now, this is achieved using the searchableField.searchableFieldTypeEnum value.
-  //Eventually, we should be able to use the list of searchableFieldId per category (e.g. CLASSIFICATION,LOCATION ...) which you be more reliable.
-  function isGeospatialSearchableField(searchableField){
-    return _.contains(['WITHIN_RADIUS_GEO','INSIDE_ENVELOPE_GEO','INSIDE_POLYGON_GEO'], searchableField.searchableFieldTypeEnum);
   }
 
   //View that supports the text entry
@@ -330,12 +325,12 @@ EXPLORER.backbone = (function(){
 
       //ignore duplicate filter (ignore case)
       if(filterList.find(function(currFilter){ 
-        return (currFilter.get('searchableFieldId') === parseInt(currFilterKey.get('searchableFieldId')) &&
+        return (currFilter.get('searchableFieldId') === parseInt(currFilterKey.get('searchableFieldId'), 10) &&
             currFilter.get('valueJSON').toLowerCase() === valueJSON.toLowerCase());
         })){
         return;
       }
-      
+
       addActiveFilter({
         searchableFieldId:currFilterKey.get('searchableFieldId'),
         op:'EQ',
@@ -387,12 +382,12 @@ EXPLORER.backbone = (function(){
 
       //ignore duplicate filter (ignore case)
       if(filterList.find(function(currFilter){ 
-        return (currFilter.get('searchableFieldId') === parseInt(currFilterKey.get('searchableFieldId')) &&
+        return (currFilter.get('searchableFieldId') === parseInt(currFilterKey.get('searchableFieldId'), 10) &&
             currFilter.get('valueJSON').toLowerCase() === valueJSON.toLowerCase());
         })){
         return;
       }
-      
+
       addActiveFilter({
         searchableFieldId:currFilterKey.get('searchableFieldId'),
         op:this.likeOp,
@@ -444,7 +439,7 @@ EXPLORER.backbone = (function(){
       if(getActiveFilter({searchableFieldId: currFilterKey.get('searchableFieldId'),valueJSON:valueJSON})){
         return;
       }
-      
+
       addActiveFilter({
         searchableFieldId:currFilterKey.get('searchableFieldId'),
         valueList : value
@@ -470,8 +465,7 @@ EXPLORER.backbone = (function(){
       "click button" : "createNewLikeFilter"
     },
     createNewLikeFilter : function() {
-      var value =  [($('input[name=boolGroup]:checked',this.$el).val())],
-          valueJSON = JSON.stringify(value);
+      var value =  [($('input[name=boolGroup]:checked',this.$el).val())];
 
       //skip empty filter
       if(value.length === 0){
@@ -482,7 +476,7 @@ EXPLORER.backbone = (function(){
       if(getActiveFilter({searchableFieldId: currFilterKey.get('searchableFieldId')})){
         return;
       }
-      
+
       addActiveFilter({
         searchableFieldId:currFilterKey.get('searchableFieldId'),
         valueList : value
@@ -616,7 +610,7 @@ EXPLORER.backbone = (function(){
       if(getActiveFilter({searchableFieldId: currFilterKey.get('searchableFieldId'),valueJSON:valueJSON})){
         return;
       }
-      
+
       addActiveFilter({
         searchableFieldId:currFilterKey.get('searchableFieldId'),
         op: isInterval?'BETWEEN':'EQ',
@@ -693,7 +687,7 @@ EXPLORER.backbone = (function(){
       if(getActiveFilter({searchableFieldId: currFilterKey.get('searchableFieldId'),valueJSON:valueJSON})){
         return;
       }
-      
+
       addActiveFilter({
         searchableFieldId:currFilterKey.get('searchableFieldId'),
         op: isInterval?'BETWEEN':'EQ',
