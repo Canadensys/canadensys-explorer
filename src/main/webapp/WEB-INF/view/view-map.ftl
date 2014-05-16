@@ -41,6 +41,7 @@
 <@jsLibAsset libName="backbone-min.js"/>
 <@jsLibAsset libName="wax.g.min-6.2.0-touched.js"/>
 <@jsLibAsset libName="cartodb-gmapsv3-min.js"/>
+<@jsLibAsset libName="keynavigator.min.js"/>
 <@jsAsset fileName="explorer" version=root.currentVersion! useMinified=root.useMinified/>
 <@jsAsset fileName="explorer.utils" version=root.currentVersion! useMinified=root.useMinified/>
 <@jsAsset fileName="explorer.portal" version=root.currentVersion! useMinified=root.useMinified/>

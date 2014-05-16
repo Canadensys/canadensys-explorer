@@ -122,7 +122,7 @@
 	<table id="value_suggestions">
 	<tbody>
 	<#list 1..10 as i>
-	 	<tr class="hidden">
+	 	<tr class="hidden" tabindex="-1">
 			<td></td>
 			<td class="right"></td>
 		</tr>

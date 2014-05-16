@@ -236,6 +236,18 @@ EXPLORER.backbone = (function(){
       if(e){
         value = $(e.currentTarget).val();
         currTextSearch.set({currentText:value,validate:(e.keyCode === 13)});
+        if(e.keyCode === 40) {
+          $('#value_suggestions tr').keynavigator({
+            cycle : false,
+            useCache : false,
+            activateOn : 'focus',
+            keys : {
+              enter : function(element) {
+                $(element).triggerHandler('click');
+              }
+            }
+          }).first().focus();
+        }
       }
     }
   });

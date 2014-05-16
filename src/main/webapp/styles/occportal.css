@@ -316,7 +316,7 @@ ul.buttons li {
   margin-top: 6px;
   width: 100%;
 }
-#filter_suggestions tr:hover {
+#filter_suggestions tr:hover, #filter_suggestions tr.active {
   background: #a82400;
   color: white;
   cursor: pointer;
