@@ -439,7 +439,8 @@ public class SearchController {
 	/**
 	 * Returns informations(extent, center) of the map based on a SQL query.
 	 * @param q
-	 * @return MapInfoModel as JSON
+	 * @return MapInfoModel as JSON in the form of
+	 * {"extentMin":["-44","-40.0833333"],"extentMax":["39","103.4166667"],"centroid":["-2.5","31.6666667"]}
 	 */
 	@RequestMapping(value="/mapinfo", method=RequestMethod.GET)
 	public ResponseEntity<String> handleMapInfo(@RequestParam String q){
