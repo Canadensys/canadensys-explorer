@@ -23,6 +23,7 @@ import net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig;
 import net.canadensys.dataportal.occurrence.dao.OccurrenceDAO;
 import net.canadensys.dataportal.occurrence.map.MapServerAccess;
 import net.canadensys.dataportal.occurrence.model.DownloadLogModel;
+import net.canadensys.dataportal.occurrence.model.MapInfoModel;
 import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
 import net.canadensys.dataportal.occurrence.search.DownloadResultStatus;
 import net.canadensys.dataportal.occurrence.search.DownloadResultStatus.DownloadResultMode;
@@ -171,6 +172,12 @@ public class OccurrenceSearchServiceImpl implements OccurrenceSearchService {
 	@Transactional(readOnly=true)
 	public String[] getMapCenter(String sqlQuery){
 		return mapServerAccess.getMapCenter(sqlQuery);
+	}
+	
+	@Override
+	@Transactional(readOnly=true)
+	public MapInfoModel getMapInfo(String sqlQuery){
+		return mapServerAccess.getMapInfo(sqlQuery);
 	}
 
 	@Override

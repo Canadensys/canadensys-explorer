@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import net.canadensys.chart.ChartModel;
 import net.canadensys.dataportal.occurrence.autocomplete.AutoCompleteService;
 import net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig;
+import net.canadensys.dataportal.occurrence.model.MapInfoModel;
 import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
 import net.canadensys.dataportal.occurrence.search.DownloadResultStatus;
 import net.canadensys.dataportal.occurrence.search.OccurrenceSearchService;
@@ -421,7 +422,7 @@ public class SearchController {
 	}
 	
 	/**
-	 * Return the map center based on a SQL query.
+	 * Returns the map center based on a SQL query.
 	 * @param q
 	 * @return long,lat as JSON
 	 */
@@ -430,6 +431,21 @@ public class SearchController {
 		String[] box = occurrenceSearchService.getMapCenter(q);
 		
 		String json =  beanAsJSONString(box);		
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", JSON_CONTENT_TYPE);
+		return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+	}
+	
+	/**
+	 * Returns informations(extent, center) of the map based on a SQL query.
+	 * @param q
+	 * @return MapInfoModel as JSON
+	 */
+	@RequestMapping(value="/mapinfo", method=RequestMethod.GET)
+	public ResponseEntity<String> handleMapInfo(@RequestParam String q){
+		MapInfoModel mapInfo = occurrenceSearchService.getMapInfo(q);
+		
+		String json =  beanAsJSONString(mapInfo);		
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.add("Content-Type", JSON_CONTENT_TYPE);
 		return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);

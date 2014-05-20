@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.canadensys.chart.ChartModel;
+import net.canadensys.dataportal.occurrence.model.MapInfoModel;
 import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
 import net.canadensys.query.LimitedResult;
 import net.canadensys.query.SearchQueryPart;
@@ -123,5 +124,12 @@ public interface OccurrenceSearchService {
 	 * @return long,lat or empty array if no center was found.
 	 */
 	public String[] getMapCenter(String sqlQuery);
+	
+	/**
+	 * Get the map informations.
+	 * @param sqlQuery
+	 * @return
+	 */
+	public MapInfoModel getMapInfo(String sqlQuery);
 		
 }

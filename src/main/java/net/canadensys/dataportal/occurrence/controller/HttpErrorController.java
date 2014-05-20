@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig;
 import net.canadensys.exception.web.ResourceNotFoundException;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,9 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 @ControllerAdvice
 @Controller
 public class HttpErrorController {
+	
+	//get log4j handler
+	private static final Logger LOGGER = Logger.getLogger(HttpErrorController.class);
 	
 	@Autowired
 	@Qualifier("occurrencePortalConfig")
@@ -50,7 +54,8 @@ public class HttpErrorController {
 	
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(value=HttpStatus.INTERNAL_SERVER_ERROR)
-	public ModelAndView handleError(HttpServletRequest req){
+	public ModelAndView handleError(HttpServletRequest req, Exception exception){
+		LOGGER.error("Error handled by HttpErrorController",exception);
 		HashMap<String,Object> modelRoot = new HashMap<String,Object>();
 		//Set common stuff (GoogleAnalytics, language, ...)
 		ControllerHelper.setPageHeaderVariables(appConfig, modelRoot);
