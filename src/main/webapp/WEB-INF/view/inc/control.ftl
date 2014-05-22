@@ -2,7 +2,7 @@
 <#macro controlJavaScriptInit>
 	EXPLORER.i18n.setLanguageResources(${root.languageResources});
 	EXPLORER.backbone.setAvailableSearchFields(${root.availableFiltersMap});
-	EXPLORER.backbone.initActiveFilters(${root.searchCriteria});
+	EXPLORER.backbone.initActiveFilters(${root.searchCriteria}, EXPLORER.map.setBounds, this);
 	EXPLORER.backbone.setNumberOfResult(${root.occurrenceCount?c});
 </#macro>
 
