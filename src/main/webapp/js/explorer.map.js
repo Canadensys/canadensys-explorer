@@ -100,7 +100,7 @@ EXPLORER.map = (function() {
             lng0 = Math.max(-160, parseFloat(result.extentMin[1]));
             lat1 = Math.min(80, parseFloat(result.extentMax[0]));
             lng1 = Math.min(160, parseFloat(result.extentMax[1]));
-            if(lng0*lng1 > 0) { //Don't reset bounds if it crosses the IDL
+            if(lng0*lng1 < 0) { //Don't reset bounds if it crosses the IDL
               bounds.extend(new google.maps.LatLng(lat0, lng0));
               bounds.extend(new google.maps.LatLng(lat1, lng1));
               self.cartodb_gmapsv3.options.map.fitBounds(bounds);
