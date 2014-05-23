@@ -33,12 +33,12 @@ EXPLORER.map = (function() {
           var bounds = new google.maps.LatLngBounds();
           this.getPath().forEach(function(element,index){ bounds.extend(element); });
           return bounds;
-        }
+        };
       }
     },
 
     cartoDBsetBounds: function() {
-      CartoDBLayer.prototype.setBounds = function() { return; }
+      CartoDBLayer.prototype.setBounds = function() { return; };
     },
 
     onAddFilter: function(filter) {
@@ -81,7 +81,7 @@ EXPLORER.map = (function() {
     },
 
     setBounds: function(filterList) {
-      var self = this, spatial_filter = false, bounds = new google.maps.LatLngBounds(), lat0, lng0, lat1, lng1;
+      var self = this, spatial_filter = false, bounds;
 
       $.each(this.drawing_types, function() {
         if(filterList.where({ searchableFieldName : this }).length > 0) {
@@ -96,18 +96,29 @@ EXPLORER.map = (function() {
           url: 'mapinfo?q='+encodeURIComponent(this.cartodb_gmapsv3.options.query || ''),
           dataType: 'json',
           success: function(result) {
-            lat0 = Math.max(-60, parseFloat(result.extentMin[0]));
-            lng0 = Math.max(-160, parseFloat(result.extentMin[1]));
-            lat1 = Math.min(80, parseFloat(result.extentMax[0]));
-            lng1 = Math.min(160, parseFloat(result.extentMax[1]));
-            if(lng0*lng1 > 0) { //Don't reset bounds if it crosses the IDL
-              bounds.extend(new google.maps.LatLng(lat0, lng0));
-              bounds.extend(new google.maps.LatLng(lat1, lng1));
-              self.cartodb_gmapsv3.options.map.fitBounds(bounds);
+            if(result.extentMin[1] !== "" && result.extentMax[1] !== "" && 
+            self.getDistanceAtEquator(result.extentMin[1], result.extentMax[1]) < 6000) { //set bounds if distance at equator is < 6k km
+              bounds = new google.maps.LatLngBounds();
+              bounds.extend(new google.maps.LatLng(result.extentMin[0], result.extentMin[1]));
+              bounds.extend(new google.maps.LatLng(result.extentMax[0], result.extentMax[1]));
+              self.map.fitBounds(bounds);
             }
           }
         });
       }
+    },
+
+    radians: function(x) {
+      return x * Math.PI / 180;
+    },
+
+    //Adapted from http://stackoverflow.com/a/1502821
+    getDistanceAtEquator: function(lng1, lng2) {
+      var R = 6378.137, // Earth’s mean radius in km
+          dLong = this.radians(lng2 - lng1),
+          a = Math.sin(dLong / 2) * Math.sin(dLong / 2),
+          c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c;
     },
 
     cartoDBgenerateTile: function() {
