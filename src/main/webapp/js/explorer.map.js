@@ -19,21 +19,26 @@ EXPLORER.map = (function() {
     filter: {},
 
     init: function() {
+      this.addBoundsMethod();
       this.cartoDBsetBounds();
       this.cartoDBgenerateTile();
-      this.addBoundsMethod();
       EXPLORER.backbone.bindToFilterList('add',this.onAddFilter,this);
       EXPLORER.backbone.bindToFilterList('remove',this.removeFilterListener,this);
     },
 
+    // Adapted from http://tutorialspots.com/google-maps-javascript-api-v3-method-polygon-getbounds-515.html
     addBoundsMethod: function() {
       if (!google.maps.Polygon.prototype.getBounds) {
         google.maps.Polygon.prototype.getBounds = function(){
-            var bounds = new google.maps.LatLngBounds();
-            this.getPath().forEach(function(element,index){ bounds.extend(element); });
-            return bounds;
-        }
+          var bounds = new google.maps.LatLngBounds();
+          this.getPath().forEach(function(element,index){ bounds.extend(element); });
+          return bounds;
+        };
       }
+    },
+
+    cartoDBsetBounds: function() {
+      CartoDBLayer.prototype.setBounds = function() { return; };
     },
 
     onAddFilter: function(filter) {
@@ -75,24 +80,45 @@ EXPLORER.map = (function() {
       }
     },
 
-    cartoDBsetBounds: function() {
-      CartoDBLayer.prototype.setBounds = function() {
-        var cdb = this, lon0, lat0, center;
+    setBounds: function(filterList) {
+      var self = this, spatial_filter = false, bounds;
 
+      $.each(this.drawing_types, function() {
+        if(filterList.where({ searchableFieldName : this }).length > 0) {
+          spatial_filter = true;
+          return;
+        }
+      });
+
+      if(filterList.length > 0 && !spatial_filter) {
         $.ajax({
           method:'GET',
-          url: 'mapcenter?q='+encodeURIComponent(cdb.options.query || ''),
+          url: 'mapinfo?q='+encodeURIComponent(this.cartodb_gmapsv3.options.query || ''),
           dataType: 'json',
           success: function(result) {
-            if(result && result[0]) {
-              lon0 = result[0];
-              lat0 = result[1];
-              center = new google.maps.LatLng(lat0, lon0);
-              cdb.options.map.setCenter(center);
+            if(result.extentMin[1] !== "" && result.extentMax[1] !== "" && 
+            self.getDistanceAtEquator(result.extentMin[1], result.extentMax[1]) < 6000) { //set bounds if distance at equator is < 6k km
+              bounds = new google.maps.LatLngBounds();
+              bounds.extend(new google.maps.LatLng(result.extentMin[0], result.extentMin[1]));
+              bounds.extend(new google.maps.LatLng(result.extentMax[0], result.extentMax[1]));
+              self.map.fitBounds(bounds);
             }
           }
         });
-      };
+      }
+    },
+
+    radians: function(x) {
+      return x * Math.PI / 180;
+    },
+
+    //Adapted from http://stackoverflow.com/a/1502821
+    getDistanceAtEquator: function(lng1, lng2) {
+      var R = 6378.137, // Earth’s mean radius in km
+          dLong = this.radians(lng2 - lng1),
+          a = Math.sin(dLong / 2) * Math.sin(dLong / 2),
+          c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c;
     },
 
     cartoDBgenerateTile: function() {
@@ -376,6 +402,9 @@ EXPLORER.map = (function() {
     init: function() { _private.init(); },
     setupMap: function(obj) {
       _private.setupMap(obj);
+    },
+    setBounds: function(obj) {
+      _private.setBounds(obj);
     }
   };
 

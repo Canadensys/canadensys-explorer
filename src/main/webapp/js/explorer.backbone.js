@@ -179,7 +179,7 @@ EXPLORER.backbone = (function(){
   }
 
   //initialize active filters from a list of json properties
-  function initActiveFilters(json){
+  function initActiveFilters(json, callback, scope){
     var lastSearchableFieldId, key;
 
     for (key in json) {
@@ -198,6 +198,10 @@ EXPLORER.backbone = (function(){
     currFilterKey.set({searchableFieldId:lastSearchableFieldId,
       searchableFieldName:availableSearchFields[lastSearchableFieldId].searchableFieldName,
       searchableFieldText:getAvailableFieldText(availableSearchFields[lastSearchableFieldId].searchableFieldName)});
+
+    if(typeof callback === "function") {
+      callback.call(scope || this, filterList, this);
+    }
   }
 
   function removeFilter(json) {
