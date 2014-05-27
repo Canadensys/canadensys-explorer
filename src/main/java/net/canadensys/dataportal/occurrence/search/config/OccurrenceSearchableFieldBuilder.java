@@ -71,9 +71,10 @@ public class OccurrenceSearchableFieldBuilder {
 		return this;
 	}
 	
-	public OccurrenceSearchableFieldBuilder insideEnvelope(String theGeomField){
+	public OccurrenceSearchableFieldBuilder insideEnvelope(String theGeomField, String theShiftedGeomField){
 		searchableField.setSearchableFieldTypeEnum(SearchableFieldTypeEnum.INSIDE_ENVELOPE_GEO);
 		searchableField.addRelatedField(theGeomField);
+		searchableField.addRelatedField(theShiftedGeomField);
 		return this;
 	}
 	
