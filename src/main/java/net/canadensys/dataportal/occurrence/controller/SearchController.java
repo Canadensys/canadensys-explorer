@@ -35,6 +35,8 @@ import net.canadensys.dataportal.occurrence.statistic.StatsTransformation;
 import net.canadensys.exception.web.ResourceNotFoundException;
 import net.canadensys.query.LimitedResult;
 import net.canadensys.query.SearchQueryPart;
+import net.canadensys.query.SearchableFieldTypeEnum;
+import net.canadensys.query.interpreter.InsidePolygonFieldInterpreter;
 import net.canadensys.query.sort.SearchSortPart;
 import net.canadensys.web.QueryStringBuilder;
 import net.canadensys.web.i18n.I18nUrlBuilder;
@@ -187,13 +189,7 @@ public class SearchController {
 
 		//handling data related to the view
 		if(currentView.equals(ViewNameEnum.MAP_VIEW_NAME.getViewName())){
-			modelRoot.put("embeddedMapQuery",occurrenceSearchService.getMapQuery(searchCriteria));
-			int georeferencedOccurrenceCount = occurrenceSearchService.getGeoreferencedOccurrenceCount(searchCriteria);
-			modelRoot.put("georeferencedOccurrenceCount", georeferencedOccurrenceCount);
-			
-			//get regular count
-			occurrenceCount = occurrenceSearchService.getOccurrenceCount(searchCriteria);
-			modelRoot.put("occurrenceCount", occurrenceCount);
+			handleSearchMapView(modelRoot,searchCriteria);
 		}
 		else if(currentView.equals(ViewNameEnum.TABLE_VIEW_NAME.getViewName())){
 			//sorting only make sense for table view
@@ -223,6 +219,35 @@ public class SearchController {
 		}
 
 		return new ModelAndView("view-table","root",modelRoot);
+	}
+	
+	/**
+	 * Handle map-view specific data
+	 * @param model
+	 * @param searchCriteria
+	 * @param searchSortPart
+	 */
+	private void handleSearchMapView(HashMap<String,Object> model, Map<String,List<SearchQueryPart>> searchCriteria){
+		//we need to find if we have a geospatial query
+		List<SearchQueryPart> insidePolygonSqp = null;
+		for(List<SearchQueryPart> sqpListByName: searchCriteria.values()){
+			insidePolygonSqp = searchParamHandler.findSearchQueryPartByType(sqpListByName, SearchableFieldTypeEnum.INSIDE_POLYGON_GEO);
+			//we can only have one geospatial query for now
+			if(!insidePolygonSqp.isEmpty()){
+				break;
+			}
+		}
+		if(!insidePolygonSqp.isEmpty()){
+			//if so, does it cross the IDL?
+			boolean isCrossingIDL = occurrenceSearchService.isCrossingIDL(insidePolygonSqp.get(0));
+			insidePolygonSqp.get(0).addHint(InsidePolygonFieldInterpreter.IS_CROSSING_IDL_HINT, isCrossingIDL);
+		}
+		
+		//get regular count
+		model.put("occurrenceCount", occurrenceSearchService.getOccurrenceCount(searchCriteria));
+		model.put("embeddedMapQuery",occurrenceSearchService.getMapQuery(searchCriteria));
+		int georeferencedOccurrenceCount = occurrenceSearchService.getGeoreferencedOccurrenceCount(searchCriteria);
+		model.put("georeferencedOccurrenceCount", georeferencedOccurrenceCount);
 	}
 	
 	/**

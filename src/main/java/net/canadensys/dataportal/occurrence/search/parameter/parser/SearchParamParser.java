@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 import net.canadensys.dataportal.occurrence.search.config.SearchServiceConfig;
 import net.canadensys.query.QueryOperatorEnum;
 import net.canadensys.query.SearchQueryPart;
+import net.canadensys.query.interpreter.InsidePolygonFieldInterpreter;
 import net.canadensys.utils.NumberUtils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -215,11 +216,12 @@ public class SearchParamParser {
 	protected void parseInsidePolygon(SearchQueryPart currSearchQueryPart){
 		//Geo coordinates are received as -125.3,34.88 but the Interpreter wants this in a Pair object
 		List<String> valueList = currSearchQueryPart.getValueList();
+		String relatedField = currSearchQueryPart.getSearchableField().getRelatedFields().get(InsidePolygonFieldInterpreter.GEOM_FIELD_IDX);
 		for(int i=0;i<valueList.size();i++){
 			String value = valueList.get(i);
 			Matcher m = GEO_COORDINATES_PARAM_PATTERN.matcher(value);
 			if(m.find()){
-				currSearchQueryPart.addParsedValue(value, currSearchQueryPart.getSearchableField().getRelatedField(),
+				currSearchQueryPart.addParsedValue(value, relatedField,
 						Pair.of(m.group(1),m.group(2))); //lat,long
 			}
 			else{//simply clear the value to make this query part invalid

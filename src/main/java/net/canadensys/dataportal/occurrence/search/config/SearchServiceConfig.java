@@ -242,7 +242,7 @@ public class SearchServiceConfig {
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.GEO_RECTANGLE.id,
 				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.GEO_RECTANGLE.id,"georectangle").insideEnvelope("the_geom","the_shifted_geom").inOperator().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.GEO_POLYGON.id,
-				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.GEO_POLYGON.id,"geopolygon").insidePolygon("the_shifted_geom").inOperator().toOccurrenceSearchableField());
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.GEO_POLYGON.id,"geopolygon").insidePolygon("the_geom","the_shifted_geom").inOperator().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.GEO_ELLIPSE.id,
 				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.GEO_ELLIPSE.id,"geoellipse").withinRadius("the_geom").inOperator().toOccurrenceSearchableField());
 

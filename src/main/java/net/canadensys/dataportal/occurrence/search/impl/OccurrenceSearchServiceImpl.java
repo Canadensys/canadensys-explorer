@@ -179,6 +179,12 @@ public class OccurrenceSearchServiceImpl implements OccurrenceSearchService {
 	public MapInfoModel getMapInfo(String sqlQuery){
 		return mapServerAccess.getMapInfo(sqlQuery);
 	}
+	
+	@Override
+	@Transactional(readOnly=true)
+	public boolean isCrossingIDL(SearchQueryPart sqp){
+		return mapServerAccess.isCrossingIDL(sqp);
+	}
 
 	@Override
 	@Transactional(readOnly=true)

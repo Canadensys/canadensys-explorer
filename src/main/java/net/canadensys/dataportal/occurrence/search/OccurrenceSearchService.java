@@ -131,5 +131,7 @@ public interface OccurrenceSearchService {
 	 * @return
 	 */
 	public MapInfoModel getMapInfo(String sqlQuery);
+	
+	public boolean isCrossingIDL(SearchQueryPart sqp);
 		
 }

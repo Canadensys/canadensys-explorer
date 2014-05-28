@@ -78,9 +78,10 @@ public class OccurrenceSearchableFieldBuilder {
 		return this;
 	}
 	
-	public OccurrenceSearchableFieldBuilder insidePolygon(String theGeomField){
+	public OccurrenceSearchableFieldBuilder insidePolygon(String theGeomField, String theShiftedGeomField){
 		searchableField.setSearchableFieldTypeEnum(SearchableFieldTypeEnum.INSIDE_POLYGON_GEO);
 		searchableField.addRelatedField(theGeomField);
+		searchableField.addRelatedField(theShiftedGeomField);
 		return this;
 	}
 	

@@ -14,6 +14,7 @@ import net.canadensys.dataportal.occurrence.search.parameter.parser.SearchParamP
 import net.canadensys.dataportal.occurrence.search.parameter.parser.SearchSortPartParser;
 import net.canadensys.query.SearchQueryPart;
 import net.canadensys.query.SearchQueryPartValidator;
+import net.canadensys.query.SearchableFieldTypeEnum;
 import net.canadensys.query.sort.SearchSortPart;
 
 import org.apache.log4j.Logger;
@@ -131,6 +132,22 @@ public class SearchParamHandler {
 		return list;
 	}
 
+	/**
+	 * Find SearchQueryPart in a list based of the type of its SearchableField.
+	 * @param sqpList
+	 * @param targetType
+	 * @return list of SearchQueryPart matching targetType or empty list if none. Never null
+	 */
+	public List<SearchQueryPart> findSearchQueryPartByType(List<SearchQueryPart> sqpList, SearchableFieldTypeEnum targetType){
+		List<SearchQueryPart> result = new ArrayList<SearchQueryPart>();
+		for(SearchQueryPart sqp: sqpList){
+			if(sqp.getSearchableField().getSearchableFieldTypeEnum() == targetType){
+				result.add(sqp);
+			}
+		}
+		return result;
+	}
+	
 	public void setSearchServiceConfig(SearchServiceConfig searchServiceConfig) {
 		this.searchServiceConfig = searchServiceConfig;
 	}
