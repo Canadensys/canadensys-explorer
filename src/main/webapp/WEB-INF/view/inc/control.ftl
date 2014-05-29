@@ -1,5 +1,8 @@
 <!-- JavaScript init call related to controls -->
 <#macro controlJavaScriptInit>
+	<!-- ${root.contextURL} -->
+	<!-- ${root.contextURL + rc.getLocale().getLanguage()} -->
+	
 	EXPLORER.i18n.setLanguageResources(${root.languageResources});
 	EXPLORER.backbone.setAvailableSearchFields(${root.availableFiltersMap});
 	EXPLORER.backbone.initActiveFilters(${root.searchCriteria}, _.has(EXPLORER, 'map') ? EXPLORER.map.setBounds : {}, this);
