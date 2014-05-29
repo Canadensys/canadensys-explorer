@@ -23,6 +23,10 @@ DESIGN TEMPLATE FOR MODULES IN THE EXPLORER
 
   'use strict';
 
+  ex.settings = {
+    basePath: ""
+  },
+
   ex.i18n = {
 
     languageResources: {},

@@ -50,6 +50,7 @@
 
 <script>
 $(function() {
+<@controlJavaScriptInit/>
   EXPLORER.map.setupMap({
     mapCanvasId : "map_canvas",
     tilerProtocol : "${tilerProtocol}",
@@ -59,7 +60,6 @@ $(function() {
     mapCenter : [60, -101],
     mapZoom : 3
   });
-<@controlJavaScriptInit/>
 });
 </script>
 </content>

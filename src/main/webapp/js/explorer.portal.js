@@ -167,7 +167,7 @@ EXPLORER.table = (function() {
     },
 
     getFragment: function(id) {
-      $.get("occurrence-preview/"+id, function(htmlFragment) {
+      $.get(EXPLORER.settings.basePath + "occurrence-preview/"+id, function(htmlFragment) {
         EXPLORER.preview.replacePreviewContent(htmlFragment);
       })
       .fail(function(jqXHR, textStatus, errorThrown) {
