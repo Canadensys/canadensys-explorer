@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import net.canadensys.chart.ChartModel;
 import net.canadensys.dataportal.occurrence.autocomplete.AutoCompleteService;
 import net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig;
+import net.canadensys.dataportal.occurrence.config.OccurrenceSearchableFieldLanguageSupport;
 import net.canadensys.dataportal.occurrence.model.MapInfoModel;
 import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
 import net.canadensys.dataportal.occurrence.search.DownloadResultStatus;
@@ -22,7 +23,6 @@ import net.canadensys.dataportal.occurrence.search.OccurrenceSearchService;
 import net.canadensys.dataportal.occurrence.search.OccurrenceSearchService.DownloadPropertiesEnum;
 import net.canadensys.dataportal.occurrence.search.OccurrenceSearchService.StatsPropertiesEnum;
 import net.canadensys.dataportal.occurrence.search.OccurrenceSearchableField;
-import net.canadensys.dataportal.occurrence.search.config.OccurrenceSearchableFieldLanguageSupport;
 import net.canadensys.dataportal.occurrence.search.config.SearchServiceConfig;
 import net.canadensys.dataportal.occurrence.search.config.SearchServiceConfig.SearchableFieldEnum;
 import net.canadensys.dataportal.occurrence.search.config.SearchServiceConfig.SearchableFieldGroupEnum;
@@ -151,8 +151,13 @@ public class SearchController {
 		//load dynamic language resources for all locale
 		languageResourcesByLocale = new HashMap<Locale, String>();
 		OccurrenceSearchableFieldLanguageSupport osfLangSupport = new OccurrenceSearchableFieldLanguageSupport();
+		
+		Map<String,String> langResourceMap = null;
 		for(Locale currLocale : appConfig.getSupportedLocale()){
-			languageResourcesByLocale.put(currLocale, beanAsJSONString(osfLangSupport.buildLanguageResourcesMap(appConfig.getResourceBundle(currLocale))));
+			langResourceMap = osfLangSupport.buildLanguageResourcesMap(appConfig.getResourceBundle(currLocale));
+			//also add URL translation resources
+			langResourceMap.putAll(osfLangSupport.buildURLLanguageResourcesMap(appConfig.getURLResourceBundle(currLocale)));
+			languageResourcesByLocale.put(currLocale, beanAsJSONString(langResourceMap));
 		}
 	}
 	
@@ -362,6 +367,26 @@ public class SearchController {
 	}
 	
 	/**
+	 * Occurrence summary as rendered HTML fragment.
+	 * @param auto_id the database key
+	 * @return
+	 */	
+	@RequestMapping(value="/occurrence-preview/{auto_id}", method=RequestMethod.GET)
+	public ModelAndView handleOccurrencePreview(@PathVariable Integer auto_id){
+		OccurrenceModel occModel = occurrenceSearchService.getOccurrenceSummary(auto_id);
+		
+		HashMap<String,Object> modelRoot = new HashMap<String,Object>();
+		if(occModel != null){
+			modelRoot.put("occModel", occModel);
+			modelRoot.put("occViewModel", OccurrenceController.buildOccurrenceViewModel(occModel));
+		}
+		else{
+			throw new ResourceNotFoundException();
+		}
+		return new ModelAndView("fragment/occurrence-preview","root",modelRoot);
+	}
+	
+	/**
 	 * For histogram display, data transformation is required.
 	 * @param searchableFieldEnum
 	 * @param locale
@@ -427,26 +452,6 @@ public class SearchController {
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.add("Content-Type", JSON_CONTENT_TYPE);
 		return new ResponseEntity<String>(possibleValuesJson, responseHeaders, HttpStatus.OK);
-	}
-	
-	/**
-	 * Occurrence summary as rendered HTML fragment.
-	 * @param auto_id the database key
-	 * @return
-	 */	
-	@RequestMapping(value="/occurrence-preview/{auto_id}", method=RequestMethod.GET)
-	public ModelAndView handleOccurrencePreview(@PathVariable Integer auto_id){
-		OccurrenceModel occModel = occurrenceSearchService.getOccurrenceSummary(auto_id);
-		
-		HashMap<String,Object> modelRoot = new HashMap<String,Object>();
-		if(occModel != null){
-			modelRoot.put("occModel", occModel);
-			modelRoot.put("occViewModel", OccurrenceController.buildOccurrenceViewModel(occModel));
-		}
-		else{
-			throw new ResourceNotFoundException();
-		}
-		return new ModelAndView("fragment/occurrence-preview","root",modelRoot);
 	}
 	
 	/**

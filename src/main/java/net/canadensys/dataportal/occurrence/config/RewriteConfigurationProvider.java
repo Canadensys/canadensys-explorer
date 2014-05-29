@@ -57,23 +57,23 @@ public class RewriteConfigurationProvider extends HttpConfigurationProvider{
 			 	.when(Path.matches("/{lang}/{path}").and(Direction.isInbound()))
 			 	.perform(Join.path("/{lang}/{path}").to("/{path}"))
 			 	.where("lang").matches("fr|en")
-	           	.where("path").configuredBy(LocaleTransposition.bundle("urlResource","lang"))
+	           	.where("path").configuredBy(LocaleTransposition.bundle(OccurrencePortalConfig.URL_BUNDLE_NAME,"lang"))
 	         .addRule()
 			 	.when(Path.matches("/{lang}/{path1}/{id1}").and(Direction.isInbound()))
 			 	.perform(Join.path("/{lang}/{path1}/{id1}").to("/{path1}/{id1}"))
 			 	.where("lang").matches("fr|en")
-	           	.where("path1").configuredBy(LocaleTransposition.bundle("urlResource","lang"))
+	           	.where("path1").configuredBy(LocaleTransposition.bundle(OccurrencePortalConfig.URL_BUNDLE_NAME,"lang"))
 	         .addRule()
 			 	.when(Path.matches("/{lang}/{path1}/{id1}/{path2}").and(Direction.isInbound()))
 			 	.perform(Join.path("/{lang}/{path1}/{id1}").to("/{path1}/{id1}/{path2}"))
 			 	.where("lang").matches("fr|en")
-	           	.where("path1").configuredBy(LocaleTransposition.bundle("urlResource","lang"))
+	           	.where("path1").configuredBy(LocaleTransposition.bundle(OccurrencePortalConfig.URL_BUNDLE_NAME,"lang"))
 	         .addRule()
 			 	.when(Path.matches("/{lang}/{path1}/{id1}/{path2}/{id2}").and(Direction.isInbound()))
 			 	.perform(Join.path("/{lang}/{path1}/{id1}/{path2}/{id2}").to("/{path1}/{id1}/{path2}/{id2}"))
 			 	.where("lang").matches("fr|en")
-	           	.where("path1").configuredBy(LocaleTransposition.bundle("urlResource","lang"))
-	           	.where("path2").configuredBy(LocaleTransposition.bundle("urlResource","lang"));
+	           	.where("path1").configuredBy(LocaleTransposition.bundle(OccurrencePortalConfig.URL_BUNDLE_NAME,"lang"))
+	           	.where("path2").configuredBy(LocaleTransposition.bundle(OccurrencePortalConfig.URL_BUNDLE_NAME,"lang"));
 	}
 	
 	@Override

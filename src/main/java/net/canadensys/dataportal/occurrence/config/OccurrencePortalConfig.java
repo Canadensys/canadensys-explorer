@@ -24,6 +24,7 @@ public class OccurrencePortalConfig {
 	private static final Logger LOGGER = Logger.getLogger(OccurrencePortalConfig.class);
 	
 	public static String BUNDLE_NAME = "ApplicationResources";
+	public static String URL_BUNDLE_NAME = "urlResource";
 	
 	private String currentVersion;
 	private Boolean useMinified;
@@ -87,6 +88,17 @@ public class OccurrencePortalConfig {
 			 return frBundle;
 		}
 		return null;
+	}
+	
+	/**
+	 * Get a URL resource bundle.
+	 * Warning: URL resource bundle are inverted resource, the translated term is the key and the 'key' is the value.
+	 * e.g. Locale.FR, arbre=tree. 
+	 * @param locale
+	 * @return
+	 */
+	public ResourceBundle getURLResourceBundle(Locale locale) {
+		return ResourceBundle.getBundle(URL_BUNDLE_NAME, locale);
 	}
 
 	public String getDwcaTermUsed() {
