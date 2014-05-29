@@ -12,13 +12,17 @@ import java.util.ResourceBundle;
 import net.canadensys.bundle.UTF8PropertyResourceBundle;
 import net.canadensys.web.i18n.annotation.I18nTranslationHandler;
 
+import org.apache.log4j.Logger;
+
 /**
  * General configurations for the Occurrence Portal. Those configurations are not tied to a specific service.
  * @author canadensys
  *
  */
 public class OccurrencePortalConfig {
-		
+	//get log4j handler
+	private static final Logger LOGGER = Logger.getLogger(OccurrencePortalConfig.class);
+	
 	public static String BUNDLE_NAME = "ApplicationResources";
 	
 	private String currentVersion;
@@ -56,11 +60,11 @@ public class OccurrencePortalConfig {
 				enBundle = UTF8PropertyResourceBundle.getBundle(BUNDLE_NAME, Locale.ENGLISH);
 				frBundle = UTF8PropertyResourceBundle.getBundle(BUNDLE_NAME, Locale.FRENCH);
 			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
+				LOGGER.fatal("Language bundle issue", e);
 			} catch (FileNotFoundException e) {
-				e.printStackTrace();
+				LOGGER.fatal("Language bundle issue", e);
 			} catch (IOException e) {
-				e.printStackTrace();
+				LOGGER.fatal("Language bundle issue", e);
 			}
 		}catch(MissingResourceException e){
 		    System.out.println(e);
