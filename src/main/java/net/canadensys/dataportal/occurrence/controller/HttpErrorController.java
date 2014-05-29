@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig;
 import net.canadensys.exception.web.ResourceNotFoundException;
+import net.canadensys.web.i18n.annotation.I18nTranslation;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,8 @@ public class HttpErrorController {
 	}
 	
 	@RequestMapping(value="/404")
+	@I18nTranslation(resourceName="404", translateFormat = "/404")
+	@ResponseStatus(value=HttpStatus.NOT_FOUND)
 	public ModelAndView handleNotFound(HttpServletRequest req){
 		HashMap<String,Object> modelRoot = new HashMap<String,Object>();
 		//Set common stuff (GoogleAnalytics, language, ...)

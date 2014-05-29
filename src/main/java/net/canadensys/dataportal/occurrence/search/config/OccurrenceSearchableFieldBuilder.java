@@ -71,6 +71,12 @@ public class OccurrenceSearchableFieldBuilder {
 		return this;
 	}
 	
+	/**
+	 * Set field as INSIDE_ENVELOPE_GEO to be used with the data-access InsideEnvelopeFieldInterpreter.
+	 * @param theGeomField
+	 * @param theShiftedGeomField
+	 * @return
+	 */
 	public OccurrenceSearchableFieldBuilder insideEnvelope(String theGeomField, String theShiftedGeomField){
 		searchableField.setSearchableFieldTypeEnum(SearchableFieldTypeEnum.INSIDE_ENVELOPE_GEO);
 		searchableField.addRelatedField(theGeomField);
@@ -78,6 +84,12 @@ public class OccurrenceSearchableFieldBuilder {
 		return this;
 	}
 	
+	/**
+	 * Set field as INSIDE_POLYGON_GEO to be used with the data-access InsidePolygonFieldInterpreter.
+	 * @param theGeomField
+	 * @param theShiftedGeomField
+	 * @return
+	 */
 	public OccurrenceSearchableFieldBuilder insidePolygon(String theGeomField, String theShiftedGeomField){
 		searchableField.setSearchableFieldTypeEnum(SearchableFieldTypeEnum.INSIDE_POLYGON_GEO);
 		searchableField.addRelatedField(theGeomField);

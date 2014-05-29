@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import net.canadensys.chart.ChartModel;
@@ -122,6 +123,9 @@ public class SearchController {
 	@Qualifier("occurrencePortalConfig")
 	private OccurrencePortalConfig appConfig;
 	
+	@Autowired
+	private ServletContext servletContext;
+	
 	/**
 	 * Write the Java bean as JSON String.
 	 * All exceptions are transfered to the logger.
@@ -154,6 +158,8 @@ public class SearchController {
 		for(Locale currLocale : appConfig.getSupportedLocale()){
 			languageResourcesByLocale.put(currLocale, beanAsJSONString(osfLangSupport.buildLanguageResourcesMap(appConfig.getResourceBundle(currLocale))));
 		}
+		
+		//set context in config
 	}
 	
 	@RequestMapping(value="/search", method=RequestMethod.GET)
@@ -228,7 +234,7 @@ public class SearchController {
 	 * @param searchSortPart
 	 */
 	private void handleSearchMapView(HashMap<String,Object> model, Map<String,List<SearchQueryPart>> searchCriteria){
-		//we need to find if we have a geospatial query
+		//we need to check if we have a geospatial query
 		List<SearchQueryPart> insidePolygonSqp = null;
 		for(List<SearchQueryPart> sqpListByName: searchCriteria.values()){
 			insidePolygonSqp = searchParamHandler.findSearchQueryPartByType(sqpListByName, SearchableFieldTypeEnum.INSIDE_POLYGON_GEO);
@@ -237,7 +243,9 @@ public class SearchController {
 				break;
 			}
 		}
-		if(!insidePolygonSqp.isEmpty()){
+		if(insidePolygonSqp != null && !insidePolygonSqp.isEmpty()){
+			//we could save, in most of the cases, a call to the db by checking if we have a sign change
+			//in the coordinates list.
 			//if so, does it cross the IDL?
 			boolean isCrossingIDL = occurrenceSearchService.isCrossingIDL(insidePolygonSqp.get(0));
 			insidePolygonSqp.get(0).addHint(InsidePolygonFieldInterpreter.IS_CROSSING_IDL_HINT, isCrossingIDL);
