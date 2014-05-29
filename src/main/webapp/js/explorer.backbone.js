@@ -293,7 +293,7 @@ EXPLORER.backbone = (function(){
         this.replaceTableCellContent(this.cacheMap[cacheKey]);
       }
       else{
-        $.get(EXPLORER.settings.basePath + 'livesearch',mapParam)
+        $.get(EXPLORER.settings.baseUrl + EXPLORER.settings.wsPath + 'livesearch',mapParam)
           .success(function(json){
             self.replaceTableCellContent(json);
             
@@ -431,7 +431,7 @@ EXPLORER.backbone = (function(){
     loadContent : function(fieldId) {
       var $select, options = "";
       //could also be loaded with a model fetch
-      $.get(EXPLORER.settings.basePath + 'getpossiblevalues',{fieldId:fieldId})
+      $.get(EXPLORER.settings.baseUrl + EXPLORER.settings.wsPath + 'getpossiblevalues',{fieldId:fieldId})
         .success(function(json){
           $select = $("#value_select",this.$el);
           $.each(json, function() {
@@ -895,7 +895,7 @@ EXPLORER.backbone = (function(){
       _.extend(this.paramMap,initialFilterParamMap);
       this.paramMap.push({name:'e',value:email});
       this.$requestElement.hide();
-      $.get(EXPLORER.settings.basePath + 'downloadresult',this.paramMap)
+      $.get(EXPLORER.settings.baseUrl + EXPLORER.settings.wsPath + 'downloadresult',this.paramMap)
         .success(function(json){
           if(json.status !== 'deferred'){
             self.$statusElement.html(json.error);

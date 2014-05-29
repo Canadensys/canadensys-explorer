@@ -1,4 +1,4 @@
-package net.canadensys.dataportal.occurrence.search.config;
+package net.canadensys.dataportal.occurrence.config;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -19,6 +19,8 @@ import org.apache.commons.lang3.StringUtils;
 public class OccurrenceSearchableFieldLanguageSupport {
 	
 	private static final String OPERATOR_PREFIX = "operator.";
+	private static final String URL_PREFIX = "url.";
+	
 	private static final List<String> PREFIX_FILTER_LIST = new ArrayList<String>();
 	static{
 		PREFIX_FILTER_LIST.add("filter.");
@@ -49,6 +51,22 @@ public class OccurrenceSearchableFieldLanguageSupport {
 			if(shouldInclude(currKey)){
 				languageResources.put(currKey, resourceBundle.getString(currKey));
 			}
+		}
+		return languageResources;
+	}
+	
+	/**
+	 * URL resource bundle are inverted bundle in the form of translatedValue=key
+	 * @param resourceBundle
+	 * @return
+	 */
+	public Map<String,String> buildURLLanguageResourcesMap(ResourceBundle resourceBundle){
+		Map<String,String> languageResources = new HashMap<String, String>();
+		Enumeration<String> keys = resourceBundle.getKeys();
+		String translatedValue = null;
+		while(keys.hasMoreElements()){
+			translatedValue = keys.nextElement();
+			languageResources.put(URL_PREFIX+resourceBundle.getString(translatedValue), translatedValue);
 		}
 		return languageResources;
 	}

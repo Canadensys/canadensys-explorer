@@ -93,7 +93,7 @@ EXPLORER.map = (function() {
       if(filterList.length > 0 && !spatial_filter) {
         $.ajax({
           method:'GET',
-          url: EXPLORER.settings.basePath + 'mapinfo?q='+encodeURIComponent(this.cartodb_gmapsv3.options.query || ''),
+          url: EXPLORER.settings.baseUrl + EXPLORER.settings.wsPath + 'mapinfo?q='+encodeURIComponent(this.cartodb_gmapsv3.options.query || ''),
           dataType: 'json',
           success: function(result) {
             if(result.extentMin[1] !== "" && result.extentMax[1] !== "" && 
@@ -224,8 +224,9 @@ EXPLORER.map = (function() {
     },
 
     onMapClick: function(e, latlng, pos, data) {
+      var url = EXPLORER.settings.baseUrl + '/' + EXPLORER.i18n.getLanguageResource('url.occurrence-preview') + '/' + data.auto_id;
       this.marker.setPosition(latlng);
-      $.get(EXPLORER.settings.basePath + 'occurrence-preview/'+data.auto_id,'context=map')
+      $.get(url,'context=map')
         .success(function(htmlFragment){
           EXPLORER.preview.replacePreviewContent(htmlFragment);
           EXPLORER.preview.show();

@@ -1,6 +1,6 @@
 <!-- JavaScript init call related to controls -->
 <#macro controlJavaScriptInit>
-	$.extend(EXPLORER.settings, {"basePath" : "/root/here/" });
+	$.extend(EXPLORER.settings, { "baseUrl" : "${root.contextURL}", "wsPath" : "/ws/", "locale" : "${rc.getLocale().getLanguage()}" });
 	EXPLORER.i18n.setLanguageResources(${root.languageResources});
 	EXPLORER.backbone.setAvailableSearchFields(${root.availableFiltersMap});
 	EXPLORER.backbone.initActiveFilters(${root.searchCriteria}, _.has(EXPLORER, 'map') ? EXPLORER.map.setBounds : {}, this);

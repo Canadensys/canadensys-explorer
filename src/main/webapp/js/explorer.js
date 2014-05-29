@@ -24,7 +24,9 @@ DESIGN TEMPLATE FOR MODULES IN THE EXPLORER
   'use strict';
 
   ex.settings = {
-    basePath: ""
+    baseUrl: "",
+    wsPath: "/",
+    locale: "en"
   },
 
   ex.i18n = {
