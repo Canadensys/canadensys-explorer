@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import net.canadensys.chart.ChartModel;
@@ -123,9 +122,6 @@ public class SearchController {
 	@Qualifier("occurrencePortalConfig")
 	private OccurrencePortalConfig appConfig;
 	
-	@Autowired
-	private ServletContext servletContext;
-	
 	/**
 	 * Write the Java bean as JSON String.
 	 * All exceptions are transfered to the logger.
@@ -158,8 +154,6 @@ public class SearchController {
 		for(Locale currLocale : appConfig.getSupportedLocale()){
 			languageResourcesByLocale.put(currLocale, beanAsJSONString(osfLangSupport.buildLanguageResourcesMap(appConfig.getResourceBundle(currLocale))));
 		}
-		
-		//set context in config
 	}
 	
 	@RequestMapping(value="/search", method=RequestMethod.GET)
@@ -173,11 +167,12 @@ public class SearchController {
 			currentView=DEFAULT_VIEW;
 		}
 		modelRoot.put("currentView", currentView);
+		modelRoot.put("contextURL", extractContextURL(request));
 		
 		//Handle locale
 		Locale locale = RequestContextUtils.getLocale(request);
 		
-		//Set common stuff (GoogleAnalytics, language, ...)
+		//Set common stuff (version,minified, ...)
 		ControllerHelper.setPageHeaderVariables(appConfig, modelRoot);
 		
 		modelRoot.put("languageResources", ObjectUtils.defaultIfNull(languageResourcesByLocale.get(locale),languageResourcesByLocale.get(Locale.ENGLISH)));
@@ -405,7 +400,7 @@ public class SearchController {
 	 * @param curr current field value
 	 * @return
 	 */
-	@RequestMapping(value="/livesearch", method=RequestMethod.GET)
+	@RequestMapping(value="/ws/livesearch", method=RequestMethod.GET)
 	public ResponseEntity<String> handleSuggestion(@RequestParam Integer fieldId,
 			@RequestParam(required=false) String curr){
 		String suggestion = null;
@@ -422,7 +417,7 @@ public class SearchController {
 	 * @param fieldId
 	 * @return all the values as JSON string
 	 */
-	@RequestMapping(value="/getpossiblevalues", method=RequestMethod.GET)
+	@RequestMapping(value="/ws/getpossiblevalues", method=RequestMethod.GET)
 	public ResponseEntity<String> handleSuggestion(@RequestParam Integer fieldId){
 		String possibleValuesJson = null;
 		if(searchServiceConfig.getSearchableFieldbyId(fieldId) != null &&
@@ -459,7 +454,7 @@ public class SearchController {
 	 * @param q
 	 * @return long,lat as JSON
 	 */
-	@RequestMapping(value="/mapcenter", method=RequestMethod.GET)
+	@RequestMapping(value="/ws/mapcenter", method=RequestMethod.GET)
 	public ResponseEntity<String> handleMapcenter(@RequestParam String q){
 		String[] box = occurrenceSearchService.getMapCenter(q);
 		
@@ -475,7 +470,7 @@ public class SearchController {
 	 * @return MapInfoModel as JSON in the form of
 	 * {"extentMin":["-44","-40.0833333"],"extentMax":["39","103.4166667"],"centroid":["-2.5","31.6666667"]}
 	 */
-	@RequestMapping(value="/mapinfo", method=RequestMethod.GET)
+	@RequestMapping(value="/ws/mapinfo", method=RequestMethod.GET)
 	public ResponseEntity<String> handleMapInfo(@RequestParam String q){
 		MapInfoModel mapInfo = occurrenceSearchService.getMapInfo(q);
 		
@@ -492,7 +487,7 @@ public class SearchController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/downloadresult", method=RequestMethod.GET)
+	@RequestMapping(value="/ws/downloadresult", method=RequestMethod.GET)
 	public ResponseEntity<String> handleDownloadResult(HttpServletRequest request){
 		Collection<SearchQueryPart> searchRelatedParams= searchParamHandler.getSearchQueryPartCollection(request.getParameterMap());
 		Map<String,List<SearchQueryPart>> searchCriteria = searchParamHandler.asMap(searchRelatedParams);		
@@ -533,7 +528,7 @@ public class SearchController {
 		return new ResponseEntity<String>(jsonResponse, responseHeaders, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/stats/unique/{fieldId}", method=RequestMethod.GET)
+	@RequestMapping(value="/ws/stats/unique/{fieldId}", method=RequestMethod.GET)
 	public ResponseEntity<String> handleStatsUnique(@PathVariable Integer fieldId, HttpServletRequest request){
 		Collection<SearchQueryPart> searchRelatedParams= searchParamHandler.getSearchQueryPartCollection(request.getParameterMap());
 		Map<String,List<SearchQueryPart>> searchCriteria = searchParamHandler.asMap(searchRelatedParams);
@@ -548,7 +543,7 @@ public class SearchController {
 		return new ResponseEntity<String>(jsonResponse, responseHeaders, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/stats/chart/{fieldId}", method=RequestMethod.GET)
+	@RequestMapping(value="/ws/stats/chart/{fieldId}", method=RequestMethod.GET)
 	public ResponseEntity<String> handleStats(@PathVariable Integer fieldId, HttpServletRequest request){
 		Collection<SearchQueryPart> searchRelatedParams= searchParamHandler.getSearchQueryPartCollection(request.getParameterMap());
 		Map<String,List<SearchQueryPart>> searchCriteria = searchParamHandler.asMap(searchRelatedParams);
@@ -573,6 +568,15 @@ public class SearchController {
 		responseHeaders.add("Content-Type", JSON_CONTENT_TYPE);
 		String jsonResponse =  beanAsJSONString(chartModel);
 		return new ResponseEntity<String>(jsonResponse, responseHeaders, HttpStatus.OK);
+	}
+	
+	/**
+	 * Get the context complete URL from a HttpServletRequest.
+	 * @param request
+	 * @return
+	 */
+	private String extractContextURL(HttpServletRequest request){
+		return request.getScheme() + "://" + request.getServerName()+request.getContextPath();
 	}
 	
 	/**
