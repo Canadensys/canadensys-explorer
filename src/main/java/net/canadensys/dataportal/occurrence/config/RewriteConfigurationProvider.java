@@ -21,6 +21,7 @@ import org.ocpsoft.rewrite.servlet.config.Path;
 import org.ocpsoft.rewrite.servlet.config.Redirect;
 import org.ocpsoft.rewrite.servlet.config.rule.Join;
 import org.ocpsoft.rewrite.servlet.http.event.HttpServletRewrite;
+import org.ocpsoft.rewrite.transposition.LocaleTransposition;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -51,28 +52,28 @@ public class RewriteConfigurationProvider extends HttpConfigurationProvider{
 			 .addRule()
 				.when(Path.matches("/{tail}").and(Direction.isInbound()).andNot(DispatchType.isForward()))
 				.perform(new HandleLegacyURL())
-				.where("tail").matches("(?!(fr|en|assets)).*")
+				.where("tail").matches("(?!(fr|en|assets|ws)).*")
 			 .addRule()
 			 	.when(Path.matches("/{lang}/{path}").and(Direction.isInbound()))
 			 	.perform(Join.path("/{lang}/{path}").to("/{path}"))
 			 	.where("lang").matches("fr|en")
-	           	.where("path").transposedBy(LocaleTransposition.bundle("urlResource","lang"))
+	           	.where("path").configuredBy(LocaleTransposition.bundle("urlResource","lang"))
 	         .addRule()
 			 	.when(Path.matches("/{lang}/{path1}/{id1}").and(Direction.isInbound()))
 			 	.perform(Join.path("/{lang}/{path1}/{id1}").to("/{path1}/{id1}"))
 			 	.where("lang").matches("fr|en")
-	           	.where("path1").transposedBy(LocaleTransposition.bundle("urlResource","lang"))
+	           	.where("path1").configuredBy(LocaleTransposition.bundle("urlResource","lang"))
 	         .addRule()
 			 	.when(Path.matches("/{lang}/{path1}/{id1}/{path2}").and(Direction.isInbound()))
 			 	.perform(Join.path("/{lang}/{path1}/{id1}").to("/{path1}/{id1}/{path2}"))
 			 	.where("lang").matches("fr|en")
-	           	.where("path1").transposedBy(LocaleTransposition.bundle("urlResource","lang"))
+	           	.where("path1").configuredBy(LocaleTransposition.bundle("urlResource","lang"))
 	         .addRule()
 			 	.when(Path.matches("/{lang}/{path1}/{id1}/{path2}/{id2}").and(Direction.isInbound()))
 			 	.perform(Join.path("/{lang}/{path1}/{id1}/{path2}/{id2}").to("/{path1}/{id1}/{path2}/{id2}"))
 			 	.where("lang").matches("fr|en")
-	           	.where("path1").transposedBy(LocaleTransposition.bundle("urlResource","lang"))
-	           	.where("path2").transposedBy(LocaleTransposition.bundle("urlResource","lang"));
+	           	.where("path1").configuredBy(LocaleTransposition.bundle("urlResource","lang"))
+	           	.where("path2").configuredBy(LocaleTransposition.bundle("urlResource","lang"));
 	}
 	
 	@Override
@@ -117,6 +118,7 @@ public class RewriteConfigurationProvider extends HttpConfigurationProvider{
 			String landingUrl = null;
 			
 			if(urlParts.length >= 1){
+				//if "search" was provided, we can handle it
 				if(urlParts[0].equalsIgnoreCase("search")){
 					landingUrl = I18nUrlBuilder.generateI18nResourcePath(lang, OccurrencePortalConfig.I18N_TRANSLATION_HANDLER.getTranslationFormat("search"), (String)null);
 					
@@ -136,13 +138,12 @@ public class RewriteConfigurationProvider extends HttpConfigurationProvider{
 					}
 				}
 			}
-			
-			if(landingUrl != null){
-				Redirect.permanent(event.getContextPath()+landingUrl).perform(event, context);
+			//if nothing was found, send a 404
+			if(landingUrl == null){
+				landingUrl = I18nUrlBuilder.generateI18nResourcePath(lang, OccurrencePortalConfig.I18N_TRANSLATION_HANDLER.getTranslationFormat("404"));
 			}
-			else{
-				Redirect.permanent(event.getContextPath()+"/404").perform(event, context);
-			}
+
+			Redirect.permanent(event.getContextPath()+landingUrl).perform(event, context);
 		}
 		
 		/**
