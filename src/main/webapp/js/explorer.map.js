@@ -224,7 +224,7 @@ EXPLORER.map = (function() {
     },
 
     onMapClick: function(e, latlng, pos, data) {
-      var url = EXPLORER.settings.baseUrl + '/' + EXPLORER.i18n.getLanguageResource('url.occurrence-preview') + '/' + data.auto_id;
+      var url = EXPLORER.settings.baseUrl + '/' + EXPLORER.settings.locale + '/' + EXPLORER.i18n.getLanguageResource('url.occurrence-preview') + '/' + data.auto_id;
       this.marker.setPosition(latlng);
       $.get(url,'context=map')
         .success(function(htmlFragment){

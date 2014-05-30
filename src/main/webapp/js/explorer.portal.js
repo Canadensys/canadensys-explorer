@@ -167,7 +167,8 @@ EXPLORER.table = (function() {
     },
 
     getFragment: function(id) {
-      $.get(EXPLORER.settings.baseUrl + EXPLORER.settings.wsPath + "occurrence-preview/"+id, function(htmlFragment) {
+      var url = EXPLORER.settings.baseUrl + '/' + EXPLORER.settings.locale + '/' + EXPLORER.i18n.getLanguageResource('url.occurrence-preview') + '/' + id;
+      $.get(url, function(htmlFragment) {
         EXPLORER.preview.replacePreviewContent(htmlFragment);
       })
       .fail(function(jqXHR, textStatus, errorThrown) {

@@ -581,6 +581,10 @@ public class SearchController {
 	 * @return
 	 */
 	private String extractContextURL(HttpServletRequest request){
+		//only add the port to the URL if it's different than 80
+		if(request.getServerPort() != 80){
+			return request.getScheme() + "://" + request.getServerName()+":"+request.getServerPort()+request.getContextPath();
+		}
 		return request.getScheme() + "://" + request.getServerName()+request.getContextPath();
 	}
 	
