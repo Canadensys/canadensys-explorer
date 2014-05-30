@@ -103,6 +103,7 @@
 
 <script>
 $(function() {
+ <@controlJavaScriptSettings/>
  EXPLORER.control.restoreDisplay();
  <@controlJavaScriptInit/>
 });
