@@ -96,13 +96,15 @@ EXPLORER.map = (function() {
           url: EXPLORER.settings.baseUrl + EXPLORER.settings.wsPath + 'mapinfo?q='+encodeURIComponent(this.cartodb_gmapsv3.options.query || ''),
           dataType: 'json',
           success: function(result) {
-            if(result.extentMin[1] !== "" && result.extentMax[1] !== "" && 
-            result.extentMin[1]*result.extentMax[1] > 0 &&
+            if(result.extentMin[1]*result.extentMax[1] > 0 &&
             self.getDistanceAtEquator(result.extentMin[1], result.extentMax[1]) < 6000) { //set bounds if distance at equator is < 6k km
               bounds = new google.maps.LatLngBounds();
               bounds.extend(new google.maps.LatLng(result.extentMin[0], result.extentMin[1]));
               bounds.extend(new google.maps.LatLng(result.extentMax[0], result.extentMax[1]));
               self.map.fitBounds(bounds);
+            } else {
+              self.map.setZoom(2);
+              self.map.setCenter(new google.maps.LatLng(35, -15));
             }
           }
         });
