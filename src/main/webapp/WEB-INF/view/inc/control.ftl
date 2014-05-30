@@ -67,7 +67,7 @@
 				</div>
 				
 				<h3>${rc.getMessage("control.search.current.title")}</h3>
-				<form method="get" action="search">
+				<form method="get" action="<@i18nResource resourceName="search"/>">
 					<input type="hidden" name="view" value="${root.currentView}">
 					<ul id="filter_current" class="custom_list">
 						<li id="filter_empty">${rc.getMessage("control.search.current.empty")}</li>

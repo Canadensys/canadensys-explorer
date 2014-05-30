@@ -144,7 +144,7 @@
 			<tr class="unused"><td>105</td><td>identification</td><td><a href="http://rs.tdwg.org/dwc/terms/identificationVerificationStatus">identificationVerificationStatus</a></td><td>${root.occRawModel.identificationverificationstatus?if_exists}</td><td class="unused"></td></tr>
 			<tr><td>106</td><td>identification</td><td><a href="http://rs.tdwg.org/dwc/terms/identificationRemarks">identificationRemarks</a></td><td>${root.occRawModel.identificationremarks?if_exists}</td><td class="unused"></td></tr>
 			<tr><td>107</td><td>identification</td><td><a href="http://rs.tdwg.org/dwc/terms/identificationQualifier">identificationQualifier</a></td><td>${root.occRawModel.identificationqualifier?if_exists}</td><td class="unused"></td></tr>
-			<tr><td>108</td><td>identification</td><td><a href="http://rs.tdwg.org/dwc/terms/typeStatus">typeStatus</a></td><td>${root.occRawModel.typestatus?if_exists}</td><td class="unused"></td></tr>
+			<tr><td>108</td><td>identification</td><td><a href="http://rs.tdwg.org/dwc/terms/typeStatus">typeStatus</a></td><td>${root.occRawModel.typestatus!}</td><td> ${root.occModel.typestatus!}</td></tr>
 			<tr class="unused"><td>109</td><td>taxon</td><td><a href="http://rs.tdwg.org/dwc/terms/taxonID">taxonID</a></td><td>${root.occRawModel.taxonid?if_exists}</td><td class="unused"></td></tr>
 			<tr class="unused"><td>110</td><td>taxon</td><td><a href="http://rs.tdwg.org/dwc/terms/scientificNameID">scientificNameID</a></td><td>${root.occRawModel.scientificnameid?if_exists}</td><td class="unused"></td></tr>
 			<tr class="unused"><td>111</td><td>taxon</td><td><a href="http://rs.tdwg.org/dwc/terms/acceptedNameUsageID">acceptedNameUsageID</a></td><td>${root.occRawModel.acceptednameusageid?if_exists}</td><td class="unused"></td></tr>

@@ -1,5 +1,10 @@
 Version History
 ===============
+Version 2.1.0 2014-05-30
+* Geospatial filters
+* Better zoom on the map after query
+* Bug fixes URL redirections
+
 Version 2.0.0 2014-05-06
 * Full i18n urls
 * Paging on search table view
