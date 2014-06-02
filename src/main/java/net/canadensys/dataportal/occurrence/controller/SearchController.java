@@ -193,6 +193,7 @@ public class SearchController {
 		handleIptResourceParam(request.getParameter(SearchURLHelper.IPT_RESOURCE_PARAM),searchRelatedParams);
 		Map<String,List<SearchQueryPart>> searchCriteria = searchParamHandler.asMap(searchRelatedParams);
 
+		handleGeospatialQuery(searchCriteria);
 		//handling data related to the view
 		if(currentView.equals(ViewNameEnum.MAP_VIEW_NAME.getViewName())){
 			handleSearchMapView(modelRoot,searchCriteria);
@@ -234,22 +235,7 @@ public class SearchController {
 	 * @param searchSortPart
 	 */
 	private void handleSearchMapView(HashMap<String,Object> model, Map<String,List<SearchQueryPart>> searchCriteria){
-		//we need to check if we have a geospatial query
-		List<SearchQueryPart> insidePolygonSqp = null;
-		for(List<SearchQueryPart> sqpListByName: searchCriteria.values()){
-			insidePolygonSqp = searchParamHandler.findSearchQueryPartByType(sqpListByName, SearchableFieldTypeEnum.INSIDE_POLYGON_GEO);
-			//we can only have one geospatial query for now
-			if(!insidePolygonSqp.isEmpty()){
-				break;
-			}
-		}
-		if(insidePolygonSqp != null && !insidePolygonSqp.isEmpty()){
-			//we could save, in most of the cases, a call to the db by checking if we have a sign change
-			//in the coordinates list.
-			//if so, does it cross the IDL?
-			boolean isCrossingIDL = occurrenceSearchService.isCrossingIDL(insidePolygonSqp.get(0));
-			insidePolygonSqp.get(0).addHint(InsidePolygonFieldInterpreter.IS_CROSSING_IDL_HINT, isCrossingIDL);
-		}
+		
 		
 		//get regular count
 		model.put("occurrenceCount", occurrenceSearchService.getOccurrenceCount(searchCriteria));
@@ -364,6 +350,31 @@ public class SearchController {
 		model.put("statsFieldKey", searchableField.getSearchableFieldName());
 		model.put("statsGroupKey", statsGroup.toString());
 		model.put("statsDataJSON",beanAsJSONString(statsData));
+	}
+	
+	/**
+	 * Responsible for handling the searchCriteria in case of GeoSpatial query.
+	 * Main task is to set 'hint' if the query is crossing the IDL.
+	 * Safe to call if searchCriteria contains no geospatial query.
+	 * @param searchCriteria
+	 */
+	private void handleGeospatialQuery(Map<String,List<SearchQueryPart>> searchCriteria){
+		//we need to check if we have a geospatial query
+		List<SearchQueryPart> insidePolygonSqp = null;
+		for(List<SearchQueryPart> sqpListByName: searchCriteria.values()){
+			insidePolygonSqp = searchParamHandler.findSearchQueryPartByType(sqpListByName, SearchableFieldTypeEnum.INSIDE_POLYGON_GEO);
+			//we can only have one geospatial query for now
+			if(!insidePolygonSqp.isEmpty()){
+				break;
+			}
+		}
+		if(insidePolygonSqp != null && !insidePolygonSqp.isEmpty()){
+			//we could save, in most of the cases, a call to the db by checking if we have a sign change
+			//in the coordinates list.
+			//if so, does it cross the IDL?
+			boolean isCrossingIDL = occurrenceSearchService.isCrossingIDL(insidePolygonSqp.get(0));
+			insidePolygonSqp.get(0).addHint(InsidePolygonFieldInterpreter.IS_CROSSING_IDL_HINT, isCrossingIDL);
+		}
 	}
 	
 	/**

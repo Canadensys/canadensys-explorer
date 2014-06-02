@@ -205,8 +205,8 @@ EXPLORER.backbone = (function(){
   }
 
   function removeFilter(json) {
-    var filter = filterList.where(json);
-    if(filter.length !== 0) {
+    var filter = filterList.findWhere(json);
+    if(filter) {
       filterList.remove(filter);
     }
   }

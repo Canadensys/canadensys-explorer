@@ -36,7 +36,7 @@ public class HealthControllerTest {
     	MockHttpServletRequest request = new MockHttpServletRequest();
     	MockHttpServletResponse response = new MockHttpServletResponse();
     	request.setMethod("GET");
-    	request.setRequestURI("/health");
+    	request.setRequestURI("/status");
     	
     	Object handler = handlerMapping.getHandler(request).getHandler();
         handlerAdapter.handle(request, response, handler);
@@ -47,7 +47,7 @@ public class HealthControllerTest {
     	request = new MockHttpServletRequest();
     	response = new MockHttpServletResponse();
     	request.setMethod("HEAD");
-    	request.setRequestURI("/health");
+    	request.setRequestURI("/status");
     	
     	handler = handlerMapping.getHandler(request).getHandler();
         handlerAdapter.handle(request, response, handler);
