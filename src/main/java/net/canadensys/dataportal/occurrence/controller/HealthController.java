@@ -29,7 +29,7 @@ public class HealthController {
 	 * Response to HEAD request with a HTTP_OK and no content, as defined by the standard.
 	 * @param response
 	 */
-    @RequestMapping(value="/health", method=RequestMethod.HEAD)
+    @RequestMapping(value="/status", method=RequestMethod.HEAD)
     public void healthCheckHead(HttpServletResponse response) {
         response.setContentLength(0);
         response.setStatus(HttpServletResponse.SC_OK);
@@ -39,7 +39,7 @@ public class HealthController {
      * Response to GET request with a HTTP_OK and the string OK.
      * @param response
      */
-    @RequestMapping(value="/health", method=RequestMethod.GET)
+    @RequestMapping(value="/status", method=RequestMethod.GET)
     public void healthCheckGet(HttpServletResponse response) {
         try {
 			response.getWriter().println("OK");
