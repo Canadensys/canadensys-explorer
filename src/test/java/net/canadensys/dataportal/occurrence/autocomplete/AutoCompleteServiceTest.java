@@ -82,7 +82,7 @@ public class AutoCompleteServiceTest extends AbstractTransactionalJUnit4SpringCo
     private MockHttpServletRequest createMockHttpServletRequest(Integer fieldId, String currValue){
     	MockHttpServletRequest request = new MockHttpServletRequest();
     	request.setMethod("GET");
-    	request.setRequestURI("/livesearch");
+    	request.setRequestURI("/ws/livesearch");
     	request.addParameter("fieldId", fieldId.toString());
     	if(currValue != null){
     		request.addParameter("curr", currValue);

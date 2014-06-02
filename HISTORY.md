@@ -1,6 +1,6 @@
 Version History
 ===============
-Version 2.1.0 2014-05-30
+Version 2.1.0 2014-06-02
 * Geospatial filters
 * Better zoom on the map after query
 * Bug fixes URL redirections

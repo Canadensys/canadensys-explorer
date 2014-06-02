@@ -1,7 +1,8 @@
 package net.canadensys.dataportal.occurrence.controller;
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.ModelAndViewAssert.assertViewName;
 
 import javax.servlet.http.HttpServletResponse;
@@ -99,7 +100,7 @@ public class SearchControllerTest extends AbstractTransactionalJUnit4SpringConte
     	MockHttpServletResponse response = new MockHttpServletResponse();
     	MockHttpServletRequest request = new MockHttpServletRequest();
     	request.setMethod("GET");
-    	request.setRequestURI("/livesearch");
+    	request.setRequestURI("/ws/livesearch");
     	request.addParameter("fieldId", "1");
     	request.addParameter("curr", "c");
     	
@@ -114,7 +115,7 @@ public class SearchControllerTest extends AbstractTransactionalJUnit4SpringConte
     	MockHttpServletRequest request = new MockHttpServletRequest();
     	MockHttpServletResponse response = new MockHttpServletResponse();
     	request.setMethod("GET");
-    	request.setRequestURI("/getpossiblevalues");
+    	request.setRequestURI("/ws/getpossiblevalues");
     	request.addParameter("fieldId", "8");
     	Object handler = handlerMapping.getHandler(request).getHandler();
         handlerAdapter.handle(request, response, handler);
@@ -129,14 +130,14 @@ public class SearchControllerTest extends AbstractTransactionalJUnit4SpringConte
     	MockHttpServletRequest request = new MockHttpServletRequest();
     	MockHttpServletResponse response = new MockHttpServletResponse();
     	request.setMethod("GET");
-    	request.setRequestURI("/stats/unique/1");
+    	request.setRequestURI("/ws/stats/unique/1");
     	Object handler = handlerMapping.getHandler(request).getHandler();
         handlerAdapter.handle(request, response, handler);
         assertEquals("{\"count\":1}",response.getContentAsString());
         
         request = new MockHttpServletRequest();
     	request.setMethod("GET");
-    	request.setRequestURI("/stats/chart/1");
+    	request.setRequestURI("/ws/stats/chart/1");
     	handler = handlerMapping.getHandler(request).getHandler();
         handlerAdapter.handle(request, response, handler);
         assertEquals("{\"count\":1}{\"rows\":[[\"Mexico\",1]],\"rowCount\":1}",response.getContentAsString());
