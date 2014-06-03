@@ -83,8 +83,8 @@ EXPLORER.map = (function() {
     setBounds: function(filterList) {
       var self = this, spatial_filter = false, bounds;
 
-      $.each(this.drawing_types, function() {
-        if(filterList.where({ searchableFieldName : this }).length > 0) {
+      $.each(this.drawing_types, function(k, v) {
+        if(filterList.where({ searchableFieldName : v }).length > 0) {
           spatial_filter = true;
           return;
         }
@@ -283,8 +283,8 @@ EXPLORER.map = (function() {
 
       switch(type) {
         case 'circle':
-          $.each(["center", "bounds"], function() {
-            google.maps.event.addListener(self.drawing_overlay, this+"_changed", function() {
+          $.each(["center", "bounds"], function(k, v) {
+            google.maps.event.addListener(self.drawing_overlay, v +"_changed", function() {
               EXPLORER.backbone.updateActiveFilter(self.filter, { valueList : self.circleParameters() });
             });
           });
@@ -297,8 +297,8 @@ EXPLORER.map = (function() {
         break;
 
         case 'polygon':
-          $.each(["insert", "remove", "set"], function() {
-            google.maps.event.addListener(self.drawing_overlay.getPath(), this+"_at", function() {
+          $.each(["insert", "remove", "set"], function(k, v) {
+            google.maps.event.addListener(self.drawing_overlay.getPath(), v +"_at", function() {
               EXPLORER.backbone.updateActiveFilter(self.filter, { valueList : self.polygonParameters() });
             });
           });
@@ -377,8 +377,8 @@ EXPLORER.map = (function() {
     },
 
     removeSpatialFilter: function() {
-      $.each(this.drawing_types, function() {
-        EXPLORER.backbone.removeFilter({ searchableFieldName: this });
+      $.each(this.drawing_types, function(k, v) {
+        EXPLORER.backbone.removeFilter({ searchableFieldName: v });
       });
     },
 
