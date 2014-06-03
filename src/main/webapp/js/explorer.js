@@ -27,7 +27,7 @@ DESIGN TEMPLATE FOR MODULES IN THE EXPLORER
     baseUrl: "",
     wsPath: "/",
     locale: "en"
-  },
+  };
 
   ex.i18n = {
 
