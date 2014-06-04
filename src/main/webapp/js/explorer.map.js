@@ -297,11 +297,13 @@ EXPLORER.map = (function() {
         break;
 
         case 'polygon':
-          $.each(["insert", "remove", "set"], function(k, v) {
-            google.maps.event.addListener(self.drawing_overlay.getPath(), v +"_at", function() {
-              EXPLORER.backbone.updateActiveFilter(self.filter, { valueList : self.polygonParameters() });
+          if(!$.isEmptyObject(this.filter)) {
+            $.each(["insert", "remove", "set"], function(k, v) {
+              google.maps.event.addListener(self.drawing_overlay.getPath(), v +"_at", function() {
+                EXPLORER.backbone.updateActiveFilter(self.filter, { valueList : self.polygonParameters() });
+              });
             });
-          });
+          }
         break;
       }
     },
@@ -394,7 +396,9 @@ EXPLORER.map = (function() {
         break;
 
         case 'polygon':
-          filter = EXPLORER.backbone.addActiveFilter({searchableFieldName : 'geopolygon', valueList : this.polygonParameters() });
+          if(this.polygonParameters().length > 3) {
+            filter = EXPLORER.backbone.addActiveFilter({searchableFieldName : 'geopolygon', valueList : this.polygonParameters() });
+          }
         break;
       }
       return filter;
