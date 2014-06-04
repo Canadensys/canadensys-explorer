@@ -63,6 +63,14 @@ public class SearchParamParserTest {
 				fail();
 			}
 		}
+		
+		//test inverse operation
+		Map<String,String> queryString = paramParser.toQueryStringMap(result);
+		assertEquals(parametersMap.get("1_f")[0], queryString.get("1_f"));
+		assertEquals(parametersMap.get("2_f")[0], queryString.get("2_f"));
+		
+		assertEquals(parametersMap.get("2_v_1")[0], queryString.get("2_v_1"));
+		assertEquals(parametersMap.get("2_v_2")[0], queryString.get("2_v_2"));
 	}
 	
 	@Test

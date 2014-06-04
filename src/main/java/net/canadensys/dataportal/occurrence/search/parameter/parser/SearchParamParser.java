@@ -114,6 +114,30 @@ public class SearchParamParser {
 	}
 	
 	/**
+	 * Inverse function of parse(Map<String,String[]>
+	 * Takes SearchQueryPart collection and turn it back to Map<String,String> so it can be used as query string.
+	 * The main usage is when some SearchQueryPart are added dynamically and we need to adjust the query string.
+	 * @param searchQueryParts
+	 * @return
+	 */
+	public Map<String,String> toQueryStringMap(Collection<SearchQueryPart> searchQueryParts){
+		Map<String,String> queryString = new TreeMap<String, String>();
+		int currField=1;
+		int currFieldValue=1;
+		for(SearchQueryPart sqp: searchQueryParts){
+			queryString.put(currField+"_"+PARAM_TYPE_FIELD,Integer.toString(sqp.getSearchableField().getSearchableFieldId()));
+			queryString.put(currField+"_"+PARAM_TYPE_OPERATOR,sqp.getOp().toString().toLowerCase());
+			currFieldValue=1;
+			for(String sqpValue : sqp.getValueList()){
+				queryString.put(currField+"_"+PARAM_TYPE_VALUE+"_"+currFieldValue,sqpValue);
+				currFieldValue++;
+			}
+			currField++;
+		}
+		return queryString;
+	}
+	
+	/**
 	 * Parses values according to special rules in the OccurrencePortal.
 	 * This need to be done after the regular parsing because we accept query part in different order.
 	 * Each SearchableFieldType is handle differently according to the proper Interpreter.

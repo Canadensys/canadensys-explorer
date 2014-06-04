@@ -67,6 +67,15 @@ public class SearchParamHandler {
 	}
 	
 	/**
+	 * @see SearchParamParser
+	 * @param searchQueryParts
+	 * @return
+	 */
+	public Map<String,String> toQueryStringMap(Collection<SearchQueryPart> searchQueryParts){
+		return paramParser.toQueryStringMap(searchQueryParts);
+	}
+	
+	/**
 	 * Get the parameters that are related to a search query.
 	 * @param parametersMap
 	 * @return empty map or map containing the parameters(and the value) related to a search query.

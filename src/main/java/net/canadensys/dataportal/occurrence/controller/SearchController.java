@@ -186,11 +186,14 @@ public class SearchController {
 		
 		//handle search related parameters
 		Collection<SearchQueryPart> searchRelatedParams= searchParamHandler.getSearchQueryPartCollection(request.getParameterMap());
-		modelRoot.put("searchParameters",searchParamHandler.getSearchQueryRelatedParameters(request.getParameterMap()));
 		
-		//handle special parameters 'dataset','iptresource'
-		handleDatasetParam(request.getParameter(SearchURLHelper.DATASET_PARAM),searchRelatedParams);
-		handleIptResourceParam(request.getParameter(SearchURLHelper.IPT_RESOURCE_PARAM),searchRelatedParams);
+		//handle alias parameters e.g. 'dataset','iptresource'
+		handleSearchParameterAlias(request.getParameter(SearchURLHelper.DATASET_PARAM),"datasetname",searchRelatedParams);
+		handleSearchParameterAlias(request.getParameter(SearchURLHelper.IPT_RESOURCE_PARAM),"sourcefileid",searchRelatedParams);
+		
+		//keep search related query string
+		modelRoot.put("searchParameters",searchParamHandler.toQueryStringMap(searchRelatedParams));
+		
 		Map<String,List<SearchQueryPart>> searchCriteria = searchParamHandler.asMap(searchRelatedParams);
 
 		handleGeospatialQuery(searchCriteria);
@@ -599,29 +602,16 @@ public class SearchController {
 		return request.getScheme() + "://" + request.getServerName()+request.getContextPath();
 	}
 	
-	/**
-	 * This function handles URL parameter 'dataset=...'
-	 * @param sourceFileId
-	 * @param searchRelatedParams
-	 */
-	private void handleDatasetParam(String datasetName, Collection<SearchQueryPart> searchRelatedParams){
-		if(!StringUtils.isBlank(datasetName)){
-			SearchQueryPart sqp = occurrenceSearchService.getSearchQueryPartFromFieldName("datasetname", datasetName);
-			if(sqp != null){
-				//we need to copy the list to be able to add a new element
-				searchRelatedParams.add(sqp);
-			}
-		}
-	}
 	
 	/**
-	 * This function handles URL parameter 'iptresource=...'
-	 * @param sourceFileId
-	 * @param searchRelatedParams
+	 * This function handles search parameter alias in URL parameter.
+	 * @param aliasName
+	 * @param aliasValue
+	 * @param searchRelatedParams collection to add the new SearchQueryPart
 	 */
-	private void handleIptResourceParam(String sourceFileId, Collection<SearchQueryPart> searchRelatedParams){
-		if(!StringUtils.isBlank(sourceFileId)){
-			SearchQueryPart sqp = occurrenceSearchService.getSearchQueryPartFromFieldName("sourcefileid", sourceFileId);
+	private void handleSearchParameterAlias(String aliasValue, String fieldName, Collection<SearchQueryPart> searchRelatedParams){
+		if(!StringUtils.isBlank(aliasValue)){
+			SearchQueryPart sqp = occurrenceSearchService.getSearchQueryPartFromFieldName(fieldName, aliasValue);
 			if(sqp != null){
 				//we need to copy the list to be able to add a new element
 				searchRelatedParams.add(sqp);
