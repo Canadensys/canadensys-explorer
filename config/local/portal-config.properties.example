@@ -13,7 +13,6 @@ database.password=
 
 hibernate.dialect=org.hibernate.dialect.H2Dialect
 hibernate.show_sql=false
-database.idleConnectionTestPeriod=60
 
 email.smtpServer=smtp.mydomain.com
 email.port=25
