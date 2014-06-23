@@ -2,9 +2,9 @@
 #body {
   height: 90%; /* old IE */
   margin: 36px auto;
-  min-width: 1024px;
+  min-width: 1030px;
   position: relative;
-  width: 1024px; /* 36 + 616 (width of content) + 36 + 300 + 36 */
+  width: 1030px; /* 36 + 616 (width of content) + 36 + 300 + 36 */
 }
 body > #body {
   height: auto;
@@ -19,8 +19,8 @@ body > #body {
   font-weight: normal;
   height: 100%; /* old IE only */
   line-height: 1.5em;
-  margin-right: 396px; /* 360 + 36px */
-  padding: 0 36px;
+  margin-right: 390px; /* 360 + 30px */
+  padding: 0 30px;
   position: relative;
   text-align: left!important;
 }
@@ -91,7 +91,7 @@ ul.buttons li {
 
 /*-- Table view --*/
 
-#table_wrapper { margin-right: -36px; } /* Any extra pixel will push the table down! */
+#table_wrapper { margin-right: -24px; } /* Any extra pixel will push the table down! */
 
 #results {
   border: none;
@@ -191,7 +191,7 @@ ul.buttons li {
 #map_canvas {
   bottom: 18px;
   height: auto!important;
-  left: 36px;
+  left: 30px;
   position: absolute;
   right: 36px;
   top: 72px; /* for container_header */
@@ -418,7 +418,7 @@ ul.buttons li {
   position: absolute;
 /*  right: 44px; /* Not setting left or right seems to work too */
   top: 0;
-  width: 350px;
+  width: 360px;
   z-index: 30;
 }
 #occ_preview.fixed {
