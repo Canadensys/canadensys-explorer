@@ -781,8 +781,6 @@ EXPLORER.backbone = (function(){
         model : filter
       });
       $('ul', this.filterGroupView[filter.get('searchableFieldId')]).append(filterView.render().el);
-      //Enable search button
-      $('#filter_submit').removeAttr('disabled');
     },
     removeFilter : function(filter) {
       //check if we just removed the last element
@@ -793,7 +791,6 @@ EXPLORER.backbone = (function(){
       this.nbOfFilter = this.nbOfFilter-1;
       if(this.nbOfFilter===0){
         $("#filter_current").append(this.emptyFilterHtml);
-        $('#filter_submit').attr('disabled','disabled');
       }
     },
     render : function() {
