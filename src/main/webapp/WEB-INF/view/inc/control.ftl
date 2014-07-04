@@ -76,7 +76,7 @@
 					<ul id="filter_current" class="custom_list">
 						<li id="filter_empty">${rc.getMessage("control.search.current.empty")}</li>
 					</ul>
-					<p><input id="filter_submit" type="submit" class="search_button" disabled="disabled" value="${rc.getMessage("control.search.button.search")}" /></p>
+					<p><input id="filter_submit" type="submit" class="search_button" value="${rc.getMessage("control.search.button.search")}" /></p>
 				</form>
 			</div>
 			

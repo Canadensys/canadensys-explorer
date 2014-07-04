@@ -102,6 +102,7 @@ EXPLORER.control = (function() {
 
       $('#control_buttons').on('click', 'a', function(e) {
         e.preventDefault();
+        EXPLORER.preview.hide();
         id = $(this).attr("href");
         $(this).addClass("selected").parent().siblings().children().removeClass("selected");
         $(id).removeClass("hidden").siblings().addClass("hidden");
