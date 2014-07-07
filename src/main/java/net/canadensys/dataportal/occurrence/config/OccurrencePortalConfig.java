@@ -1,11 +1,13 @@
 package net.canadensys.dataportal.occurrence.config;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -26,11 +28,11 @@ public class OccurrencePortalConfig {
 	public static String BUNDLE_NAME = "ApplicationResources";
 	public static String URL_BUNDLE_NAME = "urlResource";
 	
+	private List<String> supportedLanguage;
+	private Map<Locale,ResourceBundle> resourceBundleByLocale;
+	
 	private String currentVersion;
 	private Boolean useMinified;
-	
-	private ResourceBundle enBundle;
-	private ResourceBundle frBundle;
 	
 	//List of all terms to use in our DarwinCore archive
 	private String dwcaTermUsed;
@@ -43,55 +45,55 @@ public class OccurrencePortalConfig {
 	
 	public static final I18nTranslationHandler I18N_TRANSLATION_HANDLER = new I18nTranslationHandler("net.canadensys.dataportal.occurrence.controller");
 
-	private static List<Locale> supportedLocale = new ArrayList<Locale>(2);
-	static{
-		supportedLocale.add(Locale.ENGLISH);
-		supportedLocale.add(Locale.FRENCH);
-	}
-	private static List<String> supportedLanguage = new ArrayList<String>(supportedLocale.size());
-	static{
-		for(Locale currLocale : supportedLocale){
-			supportedLanguage.add(currLocale.getLanguage().toLowerCase());
-		}
-	}
 
 	public OccurrencePortalConfig(){
-		try{
-			try {
-				enBundle = UTF8PropertyResourceBundle.getBundle(BUNDLE_NAME, Locale.ENGLISH);
-				frBundle = UTF8PropertyResourceBundle.getBundle(BUNDLE_NAME, Locale.FRENCH);
-			} catch (UnsupportedEncodingException e) {
-				LOGGER.fatal("Language bundle issue", e);
-			} catch (FileNotFoundException e) {
-				LOGGER.fatal("Language bundle issue", e);
-			} catch (IOException e) {
-				LOGGER.fatal("Language bundle issue", e);
-			}
-		}catch(MissingResourceException e){
-		    System.out.println(e);
-		}
-	}
-	
-	public static boolean isSupportedLanguage(String lang){
-		return supportedLanguage.contains(lang.toLowerCase());
-	}
-	
-	public List<Locale> getSupportedLocale(){
-		return supportedLocale;
-	}
-	
-	public ResourceBundle getResourceBundle(Locale locale) {
-		if(locale.equals(Locale.ENGLISH)){
-			 return enBundle;
-		}
-		else if(locale.equals(Locale.FRENCH)){
-			 return frBundle;
-		}
-		return null;
 	}
 	
 	/**
-	 * Get a URL resource bundle.
+	 * Set supported languages with a comma separated list of languages.
+	 * @param supportedLanguages
+	 */
+	public void setSupportedLanguages(String supportedLanguages) {
+		supportedLanguage = new ArrayList<String>();
+		resourceBundleByLocale = new HashMap<Locale, ResourceBundle>();
+		
+		String[] languages = supportedLanguages.split(",");
+
+		Locale currLocale;
+		for(String currLang : languages){
+			currLang = currLang.trim();
+			try{
+				currLocale = new Locale(currLang);
+				if(currLocale.getISO3Language() != null){
+					supportedLanguage.add(currLang.toLowerCase());
+					resourceBundleByLocale.put(currLocale, UTF8PropertyResourceBundle.getBundle(BUNDLE_NAME, currLocale));
+				}
+			}
+			catch(MissingResourceException mrEx){
+				LOGGER.fatal("Can't load Language defined by " + currLang, mrEx);
+			} catch (UnsupportedEncodingException e) {
+				LOGGER.fatal("Can't load Language defined by " + currLang, e);
+			} catch (IOException e) {
+				LOGGER.fatal("Can't load Language defined by " + currLang, e);
+			}
+		}
+	}
+	
+	public Collection<Locale> getSupportedLocale(){
+		return resourceBundleByLocale.keySet();
+	}
+	
+	/**
+	 * Return the resource bundle defined by the Locale or null of no bundle is associated with the Locale.
+	 * @param locale
+	 * @return
+	 */
+	public ResourceBundle getResourceBundle(Locale locale) {
+		return resourceBundleByLocale.get(locale);
+	}
+	
+	/**
+	 * Get a URL resource bundle used to support i18n URLs
 	 * Warning: URL resource bundle are inverted resource, the translated term is the key and the 'key' is the value.
 	 * e.g. Locale.FR, arbre=tree. 
 	 * @param locale

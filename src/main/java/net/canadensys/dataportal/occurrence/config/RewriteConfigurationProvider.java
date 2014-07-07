@@ -1,6 +1,8 @@
 package net.canadensys.dataportal.occurrence.config;
 
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -37,8 +39,17 @@ public class RewriteConfigurationProvider extends HttpConfigurationProvider{
 
 	private static final String LANG_PARAM = "lang";
 	
+	private Set<String> supportedLocale = new HashSet<String>();
+	
+	public RewriteConfigurationProvider(){
+		//FIXME load from config file
+		supportedLocale.add("en");
+		supportedLocale.add("fr");
+	}
+	
 	@Override
 	public Configuration getConfiguration(final ServletContext context) {
+		
 		 return ConfigurationBuilder.begin()
 			 //handle root path
 			 .addRule()
@@ -89,7 +100,7 @@ public class RewriteConfigurationProvider extends HttpConfigurationProvider{
 	private class RedirectHomePage extends HttpOperation{
 		public void performHttp(HttpServletRewrite event, EvaluationContext context) {
 			String reqLanguage = event.getRequest().getLocale().getLanguage();
-			if(!OccurrencePortalConfig.isSupportedLanguage(reqLanguage)){
+			if(!supportedLocale.contains(reqLanguage)){
 				reqLanguage = Locale.ENGLISH.getLanguage();
 			}
 			String landingUrl = I18nUrlBuilder.generateI18nResourcePath(reqLanguage, OccurrencePortalConfig.I18N_TRANSLATION_HANDLER.getTranslationFormat("search"), (String)null);
@@ -109,7 +120,7 @@ public class RewriteConfigurationProvider extends HttpConfigurationProvider{
 			String lang = Locale.ENGLISH.getLanguage();
 			//check if language was provided as query parameter
 			if(StringUtils.isNotBlank(event.getRequest().getParameter(LANG_PARAM))){
-				if(OccurrencePortalConfig.isSupportedLanguage(event.getRequest().getParameter(LANG_PARAM))){
+				if(supportedLocale.contains(event.getRequest().getParameter(LANG_PARAM))){
 					lang = event.getRequest().getParameter(LANG_PARAM);
 				}
 			}

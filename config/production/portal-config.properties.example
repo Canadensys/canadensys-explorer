@@ -1,3 +1,6 @@
+#Set ISO 639-1 code for supported languages
+i18n.supportedLanguages=en,fr
+
 #Do we use the minified version of JavaScript and CSS files. Always use minified when using versioning.
 url.useMinified=true
 
