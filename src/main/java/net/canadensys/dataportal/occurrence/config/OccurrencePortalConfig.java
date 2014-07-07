@@ -25,6 +25,9 @@ public class OccurrencePortalConfig {
 	//get log4j handler
 	private static final Logger LOGGER = Logger.getLogger(OccurrencePortalConfig.class);
 	
+	public static final String CONFIG_FILENAME = "/WEB-INF/portal-config.properties";
+	public static final String SUPPORTED_LANGUAGES_KEY = "i18n.supportedLanguages";
+	
 	public static String BUNDLE_NAME = "ApplicationResources";
 	public static String URL_BUNDLE_NAME = "urlResource";
 	

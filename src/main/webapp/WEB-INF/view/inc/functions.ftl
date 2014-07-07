@@ -37,6 +37,7 @@ ${rc.getContextUrl(URLHelper.toI18nResource(rc.getLocale().getLanguage(),resourc
 </#macro>
 
 <#macro i18nLanguageSwitch resourceName params=[]>
+<#-- FIXME https://github.com/Canadensys/canadensys-web-core/issues/3 -->
 ${URLHelper.getLanguageSwitchPath(Request,rc.getLocale().getLanguage(),resourceName,params)}
 </#macro>
 

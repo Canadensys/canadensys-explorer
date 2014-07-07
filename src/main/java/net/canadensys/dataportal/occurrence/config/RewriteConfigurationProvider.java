@@ -1,7 +1,10 @@
 package net.canadensys.dataportal.occurrence.config;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.servlet.ServletContext;
@@ -9,7 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.canadensys.web.i18n.I18nUrlBuilder;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.ocpsoft.rewrite.annotation.RewriteConfiguration;
 import org.ocpsoft.rewrite.config.Configuration;
 import org.ocpsoft.rewrite.config.ConfigurationBuilder;
@@ -30,59 +35,59 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * URL Rewriting configuration.
+ * supportedLocale are loaded from configuration file defined in OccurrencePortalConfig.
  * @author cgendreau
  *
  */
 @Component
 @RewriteConfiguration
 public class RewriteConfigurationProvider extends HttpConfigurationProvider{
+	
+	private static final Logger LOGGER = Logger.getLogger(RewriteConfigurationProvider.class);
 
 	private static final String LANG_PARAM = "lang";
 	
-	private Set<String> supportedLocale = new HashSet<String>();
-	
-	public RewriteConfigurationProvider(){
-		//FIXME load from config file
-		supportedLocale.add("en");
-		supportedLocale.add("fr");
-	}
+	private final Set<String> supportedLocale = new HashSet<String>();
 	
 	@Override
 	public Configuration getConfiguration(final ServletContext context) {
+		//load supported languages from configuration file
+		loadSupportedLocale(context);
+		
+		String languageRegexPart = StringUtils.join(supportedLocale,"|");
 		
 		 return ConfigurationBuilder.begin()
 			 //handle root path
 			 .addRule()
 					.when(Path.matches("/").and(Direction.isInbound()).andNot(DispatchType.isForward()))
 					.perform(new RedirectHomePage())
-			//some containers (e.g. Weblogic send nothing as web-app root
-			.addRule()
-					.when(Path.matches("").and(Direction.isInbound()).andNot(DispatchType.isForward()))
-					.perform(new RedirectHomePage())
-			  //only resolve path that begins with fr|en|assets
+			 //some containers (e.g. Weblogic send nothing as web-app root
+			 .addRule()
+				.when(Path.matches("").and(Direction.isInbound()).andNot(DispatchType.isForward()))
+				.perform(new RedirectHomePage())
 			 .addRule()
 				.when(Path.matches("/{tail}").and(Direction.isInbound()).andNot(DispatchType.isForward()))
 				.perform(new HandleLegacyURL())
-				.where("tail").matches("(?!(fr|en|assets|ws)).*")
+				.where("tail").matches("(?!("+languageRegexPart+"|assets|ws)).*")
 			 .addRule()
 			 	.when(Path.matches("/{lang}/{path}").and(Direction.isInbound()))
 			 	.perform(Join.path("/{lang}/{path}").to("/{path}"))
-			 	.where("lang").matches("fr|en")
+			 	.where("lang").matches(languageRegexPart)
 	           	.where("path").configuredBy(LocaleTransposition.bundle(OccurrencePortalConfig.URL_BUNDLE_NAME,"lang"))
 	         .addRule()
 			 	.when(Path.matches("/{lang}/{path1}/{id1}").and(Direction.isInbound()))
 			 	.perform(Join.path("/{lang}/{path1}/{id1}").to("/{path1}/{id1}"))
-			 	.where("lang").matches("fr|en")
+			 	.where("lang").matches(languageRegexPart)
 	           	.where("path1").configuredBy(LocaleTransposition.bundle(OccurrencePortalConfig.URL_BUNDLE_NAME,"lang"))
 	         .addRule()
 			 	.when(Path.matches("/{lang}/{path1}/{id1}/{path2}").and(Direction.isInbound()))
 			 	.perform(Join.path("/{lang}/{path1}/{id1}").to("/{path1}/{id1}/{path2}"))
-			 	.where("lang").matches("fr|en")
+			 	.where("lang").matches(languageRegexPart)
 	           	.where("path1").configuredBy(LocaleTransposition.bundle(OccurrencePortalConfig.URL_BUNDLE_NAME,"lang"))
 	         .addRule()
 			 	.when(Path.matches("/{lang}/{path1}/{id1}/{path2}/{id2}").and(Direction.isInbound()))
 			 	.perform(Join.path("/{lang}/{path1}/{id1}/{path2}/{id2}").to("/{path1}/{id1}/{path2}/{id2}"))
-			 	.where("lang").matches("fr|en")
+			 	.where("lang").matches(languageRegexPart)
 	           	.where("path1").configuredBy(LocaleTransposition.bundle(OccurrencePortalConfig.URL_BUNDLE_NAME,"lang"))
 	           	.where("path2").configuredBy(LocaleTransposition.bundle(OccurrencePortalConfig.URL_BUNDLE_NAME,"lang"));
 	}
@@ -90,6 +95,36 @@ public class RewriteConfigurationProvider extends HttpConfigurationProvider{
 	@Override
 	public int priority() {
 		return 10;
+	}
+	
+	/**
+	 * Load supported languages from configuration file. Languages must be comma separated.
+	 * This class is loaded before Spring web application so it is more reliable to read the configuration file ourselves.
+	 * @param context
+	 */
+	private void loadSupportedLocale(final ServletContext context){
+		final InputStream is = context.getResourceAsStream(OccurrencePortalConfig.CONFIG_FILENAME);
+		
+		Properties configProperties = new Properties();
+        try {
+        	configProperties.load(is);
+            String supportedLanguages = configProperties.getProperty(OccurrencePortalConfig.SUPPORTED_LANGUAGES_KEY);
+            
+            if(StringUtils.isBlank(supportedLanguages)){
+            	supportedLocale.add(Locale.ENGLISH.getLanguage());
+            	LOGGER.warn("No supported language detected in configuration file. Using English(en) as fallback.");
+            	return;
+            }
+            
+            String[] languages = supportedLanguages.split(",");
+    		for(String currLang : languages){
+    			supportedLocale.add(currLang.trim().toLowerCase());
+    		}
+        } catch (IOException ioEx) {
+        	LOGGER.fatal("Can't load supported language for Rewrite", ioEx);
+		} finally {
+			IOUtils.closeQuietly(is);
+        }
 	}
 	
 	/**
