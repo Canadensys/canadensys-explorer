@@ -1,7 +1,7 @@
 ext {
-	canadensysWebThemeVersion = '0.1'
+	webThemeVersion = '0.2-SNAPSHOT'
 }
 
 dependencies {
-	compile("net.canadensys:canadensys-web-theme:${canadensysWebThemeVersion}@war")
+	compile("net.canadensys:canadensys-web-theme:${webThemeVersion}@war")
 }

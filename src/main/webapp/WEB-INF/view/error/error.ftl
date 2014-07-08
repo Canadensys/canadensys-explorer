@@ -3,11 +3,8 @@
 <#include "../inc/global-functions.ftl">
 <head>
 <title>${rc.getMessage("cwt.error.title")}</title>
-<@cssAsset fileName="occportal" version=(root.currentVersion)! useMinified=false/>
+<@cssAsset fileName="occportal" version=(page.currentVersion)! useMinified=false/>
 </head>
-<content tag="lang_switch">
-<@i18nLanguageSwitch resourceName="search"/>
-</content>
 <div id="body">
 	<div id="content" class="no_side_bar">
 		<h1>${rc.getMessage("cwt.error.title")}</h1>

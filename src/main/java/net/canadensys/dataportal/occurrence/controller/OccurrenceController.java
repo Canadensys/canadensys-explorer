@@ -67,14 +67,14 @@ public class OccurrenceController {
 			throw new ResourceNotFoundException();
 		}
 		//Set common stuff
-		ControllerHelper.setPageHeaderVariables(appConfig, modelRoot);
+		ControllerHelper.setPageHeaderVariables(request,"occurrence",new String[]{iptResource,dwcaId},appConfig, modelRoot);
 		
 		//handle view stuff
 		String view = request.getParameter(VIEW_PARAM);
 		if(DWC_VIEW_NAME.equalsIgnoreCase(view)){
-			return new ModelAndView("occurrence-dwc","root",modelRoot);
+			return new ModelAndView("occurrence-dwc",OccurrencePortalConfig.PAGE_ROOT_MODEL_KEY,modelRoot);
 		}
-		return new ModelAndView("occurrence","root",modelRoot);
+		return new ModelAndView("occurrence",OccurrencePortalConfig.PAGE_ROOT_MODEL_KEY,modelRoot);
 	}
 	
 	/**
@@ -95,9 +95,9 @@ public class OccurrenceController {
 			throw new ResourceNotFoundException();
 		}
 		//Set common stuff
-		ControllerHelper.setPageHeaderVariables(appConfig, modelRoot);
+		ControllerHelper.setPageHeaderVariables(request,"contact",new String[]{iptResource},appConfig, modelRoot);
 
-		return new ModelAndView("resource-contact","root",modelRoot);
+		return new ModelAndView("resource-contact",OccurrencePortalConfig.PAGE_ROOT_MODEL_KEY,modelRoot);
 	}
 	
 	/**

@@ -178,7 +178,7 @@ public class SearchController {
 		Locale locale = RequestContextUtils.getLocale(request);
 		
 		//Set common stuff (version,minified, ...)
-		ControllerHelper.setPageHeaderVariables(appConfig, modelRoot);
+		ControllerHelper.setPageHeaderVariables(request,"search",null,appConfig, modelRoot);
 		
 		modelRoot.put("languageResources", ObjectUtils.defaultIfNull(languageResourcesByLocale.get(locale),languageResourcesByLocale.get(Locale.ENGLISH)));
 		modelRoot.put("availableFilters", searchServiceConfig.getFreemarkerSearchableFieldMap());
@@ -222,13 +222,13 @@ public class SearchController {
 		modelRoot.put("debug", locale.toString());
 		
 		if(currentView.equals(ViewNameEnum.MAP_VIEW_NAME.getViewName())){
-			return new ModelAndView("view-map","root",modelRoot);
+			return new ModelAndView("view-map",OccurrencePortalConfig.PAGE_ROOT_MODEL_KEY,modelRoot);
 		}
 		else if(currentView.equals(ViewNameEnum.STATS_VIEW_NAME.getViewName())){
-			return new ModelAndView("view-stats","root",modelRoot);
+			return new ModelAndView("view-stats",OccurrencePortalConfig.PAGE_ROOT_MODEL_KEY,modelRoot);
 		}
 
-		return new ModelAndView("view-table","root",modelRoot);
+		return new ModelAndView("view-table",OccurrencePortalConfig.PAGE_ROOT_MODEL_KEY,modelRoot);
 	}
 	
 	/**
@@ -238,7 +238,6 @@ public class SearchController {
 	 * @param searchSortPart
 	 */
 	private void handleSearchMapView(HashMap<String,Object> model, Map<String,List<SearchQueryPart>> searchCriteria){
-		
 		
 		//get regular count
 		model.put("occurrenceCount", occurrenceSearchService.getOccurrenceCount(searchCriteria));
@@ -397,7 +396,7 @@ public class SearchController {
 		else{
 			throw new ResourceNotFoundException();
 		}
-		return new ModelAndView("fragment/occurrence-preview","root",modelRoot);
+		return new ModelAndView("fragment/occurrence-preview",OccurrencePortalConfig.PAGE_ROOT_MODEL_KEY,modelRoot);
 	}
 	
 	/**

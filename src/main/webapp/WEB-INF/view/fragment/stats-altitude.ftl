@@ -4,16 +4,16 @@
   <table class="stats_container" id="chart_table">
   <thead>
   	<tr>
-     <th scope="col">${rc.getMessage("view.stats."+root.statsFieldKey)}</th>
+     <th scope="col">${rc.getMessage("view.stats."+page.statsFieldKey)}</th>
      <th scope="col">${rc.getMessage("view.stats.count")}</th>
   	</tr>
   </thead>
   <tbody>
-  <#list root.statsData?keys as currKey>
-  	<#if (root.statsData[currKey] > 0)>
+  <#list page.statsData?keys as currKey>
+  	<#if (page.statsData[currKey] > 0)>
   	  <tr>
   	    <td>${currKey}</td>
-  	    <td>${root.statsData[currKey]}</td>
+  	    <td>${page.statsData[currKey]}</td>
   	  </tr>
   	</#if>
   </#list>
@@ -23,5 +23,5 @@
 
 <!-- JavaScript init call related to this statistic view -->
 <#macro statsJavaScriptInit>
-	EXPLORER.chart.loadBarChart('${rc.getMessage("view.stats.chart.altitude.title")}','${root.statsFieldKey}',${root.statsDataJSON});
+	EXPLORER.chart.loadBarChart('${rc.getMessage("view.stats.chart.altitude.title")}','${page.statsFieldKey}',${page.statsDataJSON});
 </#macro>

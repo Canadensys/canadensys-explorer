@@ -1,14 +1,14 @@
 <!-- JavaScript extend settings -->
 <#macro controlJavaScriptSettings>
-	$.extend(EXPLORER.settings, { "baseUrl" : "${root.contextURL}", "wsPath" : "/ws/", "locale" : "${rc.getLocale().getLanguage()}" });
+	$.extend(EXPLORER.settings, { "baseUrl" : "${page.contextURL}", "wsPath" : "/ws/", "locale" : "${rc.getLocale().getLanguage()}" });
 </#macro>
 
 <!-- JavaScript init call related to controls -->
 <#macro controlJavaScriptInit>
-	EXPLORER.i18n.setLanguageResources(${root.languageResources});
-	EXPLORER.backbone.setAvailableSearchFields(${root.availableFiltersMap});
-	EXPLORER.backbone.initActiveFilters(${root.searchCriteria}, _.has(EXPLORER, 'map') ? EXPLORER.map.setBounds : {}, this);
-	EXPLORER.backbone.setNumberOfResult(${root.occurrenceCount?c});
+	EXPLORER.i18n.setLanguageResources(${page.languageResources});
+	EXPLORER.backbone.setAvailableSearchFields(${page.availableFiltersMap});
+	EXPLORER.backbone.initActiveFilters(${page.searchCriteria}, _.has(EXPLORER, 'map') ? EXPLORER.map.setBounds : {}, this);
+	EXPLORER.backbone.setNumberOfResult(${page.occurrenceCount?c});
 </#macro>
 
 <div id="control">
@@ -28,41 +28,41 @@
 				<div id="filter_select">
 					<select id="key_select">
 						<optgroup label="${rc.getMessage("filter.group.classification")}">
-							<option value="${root.availableFilters.scientificname}">${rc.getMessage("filter.scientificname")}</option>
-							<option value="${root.availableFilters.kingdom}">${rc.getMessage("filter.kingdom")}</option>
-							<option value="${root.availableFilters.phylum}">${rc.getMessage("filter.phylum")}</option>
-							<option value="${root.availableFilters._class}">${rc.getMessage("filter._class")}</option>
-							<option value="${root.availableFilters._order}">${rc.getMessage("filter._order")}</option>
-							<option value="${root.availableFilters.family}">${rc.getMessage("filter.family")}</option>
-							<option value="${root.availableFilters.taxonrank}">${rc.getMessage("filter.taxonrank")}</option>
+							<option value="${page.availableFilters.scientificname}">${rc.getMessage("filter.scientificname")}</option>
+							<option value="${page.availableFilters.kingdom}">${rc.getMessage("filter.kingdom")}</option>
+							<option value="${page.availableFilters.phylum}">${rc.getMessage("filter.phylum")}</option>
+							<option value="${page.availableFilters._class}">${rc.getMessage("filter._class")}</option>
+							<option value="${page.availableFilters._order}">${rc.getMessage("filter._order")}</option>
+							<option value="${page.availableFilters.family}">${rc.getMessage("filter.family")}</option>
+							<option value="${page.availableFilters.taxonrank}">${rc.getMessage("filter.taxonrank")}</option>
 						</optgroup>
 						<optgroup label="${rc.getMessage("filter.group.dataset")}">
-							<option value="${root.availableFilters.institutioncode}">${rc.getMessage("filter.institutioncode")}</option>
-							<option value="${root.availableFilters.datasetname}">${rc.getMessage("filter.datasetname")}</option>
-							<option value="${root.availableFilters.sourcefileid}">${rc.getMessage("filter.sourcefileid")}</option>
+							<option value="${page.availableFilters.institutioncode}">${rc.getMessage("filter.institutioncode")}</option>
+							<option value="${page.availableFilters.datasetname}">${rc.getMessage("filter.datasetname")}</option>
+							<option value="${page.availableFilters.sourcefileid}">${rc.getMessage("filter.sourcefileid")}</option>
 						</optgroup>
 						<optgroup label="${rc.getMessage("filter.group.specimen")}">
-							<option value="${root.availableFilters.collectioncode}">${rc.getMessage("filter.collectioncode")}</option>
-							<option value="${root.availableFilters.catalognumber}">${rc.getMessage("filter.catalognumber")}</option>
-							<option value="${root.availableFilters.recordedby}">${rc.getMessage("filter.recordedby")}</option>
-							<option value="${root.availableFilters.recordnumber}">${rc.getMessage("filter.recordnumber")}</option>
+							<option value="${page.availableFilters.collectioncode}">${rc.getMessage("filter.collectioncode")}</option>
+							<option value="${page.availableFilters.catalognumber}">${rc.getMessage("filter.catalognumber")}</option>
+							<option value="${page.availableFilters.recordedby}">${rc.getMessage("filter.recordedby")}</option>
+							<option value="${page.availableFilters.recordnumber}">${rc.getMessage("filter.recordnumber")}</option>
 						</optgroup>
 						<optgroup label="${rc.getMessage("filter.group.date")}">
-							<option value="${root.availableFilters.daterange}">${rc.getMessage("filter.daterange")}</option>
+							<option value="${page.availableFilters.daterange}">${rc.getMessage("filter.daterange")}</option>
 						</optgroup>
 						<optgroup label="${rc.getMessage("filter.group.location")}">
-							<option value="${root.availableFilters.continent}">${rc.getMessage("filter.continent")}</option>
-							<option value="${root.availableFilters.country}">${rc.getMessage("filter.country")}</option>
-							<option value="${root.availableFilters.stateprovince}">${rc.getMessage("filter.stateprovince")}</option>
-							<option value="${root.availableFilters.county}">${rc.getMessage("filter.county")}</option>
-							<option value="${root.availableFilters.municipality}">${rc.getMessage("filter.municipality")}</option>
-							<option value="${root.availableFilters.locality}">${rc.getMessage("filter.locality")}</option>
-							<option value="${root.availableFilters.altituderange}">${rc.getMessage("filter.altituderange")}</option>
+							<option value="${page.availableFilters.continent}">${rc.getMessage("filter.continent")}</option>
+							<option value="${page.availableFilters.country}">${rc.getMessage("filter.country")}</option>
+							<option value="${page.availableFilters.stateprovince}">${rc.getMessage("filter.stateprovince")}</option>
+							<option value="${page.availableFilters.county}">${rc.getMessage("filter.county")}</option>
+							<option value="${page.availableFilters.municipality}">${rc.getMessage("filter.municipality")}</option>
+							<option value="${page.availableFilters.locality}">${rc.getMessage("filter.locality")}</option>
+							<option value="${page.availableFilters.altituderange}">${rc.getMessage("filter.altituderange")}</option>
 						</optgroup>
 						<optgroup label="${rc.getMessage("filter.group.extra")}">
-							<option value="${root.availableFilters.hascoordinates}">${rc.getMessage("filter.hascoordinates")}</option>
-							<option value="${root.availableFilters.hasmedia}">${rc.getMessage("filter.hasmedia")}</option>
-							<option value="${root.availableFilters.hastypestatus}">${rc.getMessage("filter.hastypestatus")}</option>
+							<option value="${page.availableFilters.hascoordinates}">${rc.getMessage("filter.hascoordinates")}</option>
+							<option value="${page.availableFilters.hasmedia}">${rc.getMessage("filter.hasmedia")}</option>
+							<option value="${page.availableFilters.hastypestatus}">${rc.getMessage("filter.hastypestatus")}</option>
 						</optgroup>
 					</select>
 				</div>
@@ -72,7 +72,7 @@
 				
 				<h3>${rc.getMessage("control.search.current.title")}</h3>
 				<form method="get" action="<@i18nResource resourceName="search"/>">
-					<input type="hidden" name="view" value="${root.currentView}">
+					<input type="hidden" name="view" value="${page.currentView}">
 					<ul id="filter_current" class="custom_list">
 						<li id="filter_empty">${rc.getMessage("control.search.current.empty")}</li>
 					</ul>
@@ -213,11 +213,11 @@
 <!-- Download templates -->
 <script type="text/template" id="download_template_email">
 	<div id="request">
-		<p>${rc.getMessage("control.download.request.details1")} <strong>${root.occurrenceCount}</strong> ${rc.getMessage("control.download.request.details2")}</p>
+		<p>${rc.getMessage("control.download.request.details1")} <strong>${page.occurrenceCount}</strong> ${rc.getMessage("control.download.request.details2")}</p>
 		<p>${rc.getMessage("control.download.request.details3")}</p>
 		<p>${rc.getMessage("control.download.request.details4")}</p>
 		<p><label for="email">${rc.getMessage("control.download.email.label")}</label><input id="email" type="text"/></p>
-		<p class="clear_fix"><button type="button" onClick="_gaq.push(['_trackEvent', 'Archive', 'Download', '${root.occurrenceCount}']);">${rc.getMessage("control.download.button.send")}</button></p>
+		<p class="clear_fix"><button type="button" onClick="_gaq.push(['_trackEvent', 'Archive', 'Download', '${page.occurrenceCount}']);">${rc.getMessage("control.download.button.send")}</button></p>
 	</div>
 	<div id="status" class="hidden">
 		<p>${rc.getMessage("control.download.status.details1")}</p>

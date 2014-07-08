@@ -74,6 +74,15 @@
 	<bean id="URLHelper" factory-bean="freemarkerStaticModels" factory-method="get">
           <constructor-arg value="net.canadensys.web.freemarker.FreemarkerURLHelper"/>
  	</bean>
+ 	
+	<bean id="occurrencePortalConfig" class="net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig">
+		<property name="currentVersion" value="${version.current:}" />
+		<property name="useMinified" value="${url.useMinified}" />
+		<property name="dwcaTermUsed" value="${dwca.termUsed}" />
+		<property name="hashEmailAddress" value="${email.hashAddress:false}" />
+		<property name="emailSalt" value="${email.salt:null}" />
+		<property name="supportedLanguages" value="${i18n.supportedLanguages:en}" />
+	</bean>
 	
 	<!-- Freemarker config -->
 	<bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
@@ -89,14 +98,6 @@
 		</property>
 	</bean>
 
-	<bean id="occurrencePortalConfig" class="net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig">
-		<property name="currentVersion" value="${version.current:}" />
-		<property name="useMinified" value="${url.useMinified}" />
-		<property name="dwcaTermUsed" value="${dwca.termUsed}" />
-		<property name="hashEmailAddress" value="${email.hashAddress:false}" />
-		<property name="emailSalt" value="${email.salt:null}" />
-		<property name="supportedLanguages" value="${i18n.supportedLanguages:en}" />
-	</bean>
 	
 	<bean id ="mapServerAccess" class="net.canadensys.dataportal.occurrence.map.impl.WindshaftMapServerAccess">
 		<property name="tableUsed" value="occurrence"/>

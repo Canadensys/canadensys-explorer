@@ -3,64 +3,64 @@
 <div id="occ_preview_control"><span id="preview_close">${rc.getMessage("view.preview.close")} &times;</span></div>
 <div id="occ_preview_content">
 
-<h2>${root.occModel.scientificname!}</h2>
+<h2>${page.occModel.scientificname!}</h2>
 
-<#if root.occModel.typestatus?has_content>
-	<p><strong>${rc.getMessage("occ.typestatus")}</strong>: ${root.occModel.typestatus!}</p>
+<#if page.occModel.typestatus?has_content>
+	<p><strong>${rc.getMessage("occ.typestatus")}</strong>: ${page.occModel.typestatus!}</p>
 </#if>
 
 <dl class="occ_preview_classification clear_fix">
-	<dt>${rc.getMessage("occ.kingdom")}: </dt><dd>${root.occModel.kingdom!}</dd>
-	<dt>${rc.getMessage("occ.phylum")}: </dt><dd>${root.occModel.phylum!}</dd>
-	<dt>${rc.getMessage("occ._class")}: </dt><dd>${root.occModel._class!}</dd>
-	<dt>${rc.getMessage("occ._order")}: </dt><dd>${root.occModel._order!}</dd>
-	<dt>${rc.getMessage("occ.family")}: </dt><dd>${root.occModel.family!}</dd>
-	<dt>${rc.getMessage("occ.genus")}: </dt><dd>${root.occModel.genus!}</dd>
-	<dt>${rc.getMessage("occ.rawscientificname")}: </dt><dd>${root.occModel.rawscientificname!}</dd>
+	<dt>${rc.getMessage("occ.kingdom")}: </dt><dd>${page.occModel.kingdom!}</dd>
+	<dt>${rc.getMessage("occ.phylum")}: </dt><dd>${page.occModel.phylum!}</dd>
+	<dt>${rc.getMessage("occ._class")}: </dt><dd>${page.occModel._class!}</dd>
+	<dt>${rc.getMessage("occ._order")}: </dt><dd>${page.occModel._order!}</dd>
+	<dt>${rc.getMessage("occ.family")}: </dt><dd>${page.occModel.family!}</dd>
+	<dt>${rc.getMessage("occ.genus")}: </dt><dd>${page.occModel.genus!}</dd>
+	<dt>${rc.getMessage("occ.rawscientificname")}: </dt><dd>${page.occModel.rawscientificname!}</dd>
 </dl>
-<p class="occ_preview_links"><a id="viewfullrecord" href="<@i18nResource resourceName="occurrence" params=[root.occModel.sourcefileid,root.occModel.dwcaid]/>" target="_blank">${rc.getMessage("view.preview.viewfullrecord")}</a>
-<#if root.occModel._references??>
- | <a id="viewsourcerecord" href="${root.occModel._references}" target="_blank">${rc.getMessage("view.preview.viewsourcerecord")}</a></p>
+<p class="occ_preview_links"><a id="viewfullrecord" href="<@i18nResource resourceName="occurrence" params=[page.occModel.sourcefileid,page.occModel.dwcaid]/>" target="_blank">${rc.getMessage("view.preview.viewfullrecord")}</a>
+<#if page.occModel._references??>
+ | <a id="viewsourcerecord" href="${page.occModel._references}" target="_blank">${rc.getMessage("view.preview.viewsourcerecord")}</a></p>
 </#if>
 <dl class="occ_preview_data clear_fix">
-	<dt>${rc.getMessage("occ.institutioncode")}</dt><dd>${root.occModel.institutioncode!}</dd>
-	<dt>${rc.getMessage("occ.datasetname")}</dt><dd>${root.occModel.datasetname!}</dd>
+	<dt>${rc.getMessage("occ.institutioncode")}</dt><dd>${page.occModel.institutioncode!}</dd>
+	<dt>${rc.getMessage("occ.datasetname")}</dt><dd>${page.occModel.datasetname!}</dd>
 </dl>
 <dl class="occ_preview_data clear_fix">
-	<dt>${rc.getMessage("occ.catalognumber")}</dt><dd>${root.occModel.catalognumber!}</dd>
-	<dt>${rc.getMessage("occ.recordedby")}</dt><dd>${root.occModel.recordedby!}</dd>
-	<dt>${rc.getMessage("occ.recordnumber")}</dt><dd>${root.occModel.recordnumber!}</dd>
+	<dt>${rc.getMessage("occ.catalognumber")}</dt><dd>${page.occModel.catalognumber!}</dd>
+	<dt>${rc.getMessage("occ.recordedby")}</dt><dd>${page.occModel.recordedby!}</dd>
+	<dt>${rc.getMessage("occ.recordnumber")}</dt><dd>${page.occModel.recordnumber!}</dd>
 </dl>
 <dl class="occ_preview_data clear_fix">
-<#assign formattedStartDate = formatdate(root.occModel.syear!0,root.occModel.smonth!0,root.occModel.sday!0)>
-<#assign formattedEndDate = formatdate(root.occModel.eyear!0,root.occModel.emonth!0,root.occModel.eday!0)>
+<#assign formattedStartDate = formatdate(page.occModel.syear!0,page.occModel.smonth!0,page.occModel.sday!0)>
+<#assign formattedEndDate = formatdate(page.occModel.eyear!0,page.occModel.emonth!0,page.occModel.eday!0)>
 	<dt>${rc.getMessage("view.preview.daterange")}</dt><dd>${formattedStartDate}<#if formattedEndDate?has_content>/${formattedEndDate}</#if></dd>
 </dl>
 <dl class="occ_preview_data clear_fix">
-	<dt>${rc.getMessage("occ.country")}</dt><dd>${root.occModel.country!}</dd>
-	<dt>${rc.getMessage("occ.stateprovince")}</dt><dd>${root.occModel.stateprovince!}</dd>
-	<dt>${rc.getMessage("occ.locality")}</dt><dd>${root.occModel.locality!}</dd>
-	<dt>${rc.getMessage("view.preview.latlong")}</dt><dd>${root.occModel.decimallatitude!} ${root.occModel.decimallongitude!}</dd>
+	<dt>${rc.getMessage("occ.country")}</dt><dd>${page.occModel.country!}</dd>
+	<dt>${rc.getMessage("occ.stateprovince")}</dt><dd>${page.occModel.stateprovince!}</dd>
+	<dt>${rc.getMessage("occ.locality")}</dt><dd>${page.occModel.locality!}</dd>
+	<dt>${rc.getMessage("view.preview.latlong")}</dt><dd>${page.occModel.decimallatitude!} ${page.occModel.decimallongitude!}</dd>
 	<#assign altituteStr = "">
-	<#if root.occModel.minimumelevationinmeters??>
-		<#assign altituteStr = root.occModel.minimumelevationinmeters>
-		<#if root.occModel.maximumelevationinmeters?? && (root.occModel.minimumelevationinmeters != root.occModel.maximumelevationinmeters)>
-			<#assign altituteStr =  altituteStr + "-" + root.occModel.maximumelevationinmeters>
+	<#if page.occModel.minimumelevationinmeters??>
+		<#assign altituteStr = page.occModel.minimumelevationinmeters>
+		<#if page.occModel.maximumelevationinmeters?? && (page.occModel.minimumelevationinmeters != page.occModel.maximumelevationinmeters)>
+			<#assign altituteStr =  altituteStr + "-" + page.occModel.maximumelevationinmeters>
 		</#if>
 		<#assign altituteStr =  altituteStr + " m">
 	</#if>	
 	<dt>${rc.getMessage("view.preview.altituderange")}</dt><dd>${altituteStr}</dd>
 </dl>
 <dl class="occ_preview_data clear_fix">
-	<dt>${rc.getMessage("occ.habitat")}</dt><dd>${root.occModel.habitat!}</dd>
+	<dt>${rc.getMessage("occ.habitat")}</dt><dd>${page.occModel.habitat!}</dd>
 </dl>
 <dl class="occ_preview_data clear_fix">
 	<dt>${rc.getMessage("occ.associatedmedia")}</dt>
 	<dd>
-		<#if root.occViewModel.imageList?has_content>
-			<a href="${root.occViewModel.imageList[0]}"><img src="${root.occViewModel.imageList[0]}" alt="${root.occModel.scientificname!} (${root.occModel.collectioncode!} ${root.occModel.catalognumber!})" target="_blank"/></a>
-		<#elseif root.occViewModel.otherMediaList?has_content>
-			<a href="${root.occViewModel.otherMediaList[0]}">${rc.getMessage("occpage.menu.associatedmedia")}</a>
+		<#if page.occViewModel.imageList?has_content>
+			<a href="${page.occViewModel.imageList[0]}"><img src="${page.occViewModel.imageList[0]}" alt="${page.occModel.scientificname!} (${page.occModel.collectioncode!} ${page.occModel.catalognumber!})" target="_blank"/></a>
+		<#elseif page.occViewModel.otherMediaList?has_content>
+			<a href="${page.occViewModel.otherMediaList[0]}">${rc.getMessage("occpage.menu.associatedmedia")}</a>
 		</#if>
 	</dd>
 </dl>

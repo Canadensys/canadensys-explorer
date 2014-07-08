@@ -40,9 +40,8 @@ public class HttpErrorController {
 	@ResponseStatus(value=HttpStatus.NOT_FOUND)
 	public ModelAndView handleNotFoundException(HttpServletRequest req){
 		HashMap<String,Object> modelRoot = new HashMap<String,Object>();
-		//Set common stuff (GoogleAnalytics, language, ...)
-		ControllerHelper.setPageHeaderVariables(appConfig, modelRoot);
-        return new ModelAndView("error/404","root",modelRoot);
+		ControllerHelper.setPageHeaderVariables(req,"404",null,appConfig, modelRoot);
+        return new ModelAndView("error/404",OccurrencePortalConfig.PAGE_ROOT_MODEL_KEY,modelRoot);
 	}
 	
 	@RequestMapping(value="/404")
@@ -50,9 +49,8 @@ public class HttpErrorController {
 	@ResponseStatus(value=HttpStatus.NOT_FOUND)
 	public ModelAndView handleNotFound(HttpServletRequest req){
 		HashMap<String,Object> modelRoot = new HashMap<String,Object>();
-		//Set common stuff (GoogleAnalytics, language, ...)
-		ControllerHelper.setPageHeaderVariables(appConfig, modelRoot);
-        return new ModelAndView("error/404","root",modelRoot);
+		ControllerHelper.setPageHeaderVariables(req,"404",null,appConfig, modelRoot);
+        return new ModelAndView("error/404",OccurrencePortalConfig.PAGE_ROOT_MODEL_KEY,modelRoot);
 	}
 	
 	@ExceptionHandler(Exception.class)
@@ -60,8 +58,7 @@ public class HttpErrorController {
 	public ModelAndView handleError(HttpServletRequest req, Exception exception){
 		LOGGER.error("Error handled by HttpErrorController",exception);
 		HashMap<String,Object> modelRoot = new HashMap<String,Object>();
-		//Set common stuff (GoogleAnalytics, language, ...)
-		ControllerHelper.setPageHeaderVariables(appConfig, modelRoot);
-        return new ModelAndView("error/error","root",modelRoot);
+		ControllerHelper.setPageHeaderVariables(req,"search",null,appConfig, modelRoot);
+        return new ModelAndView("error/error",OccurrencePortalConfig.PAGE_ROOT_MODEL_KEY,modelRoot);
 	}
 }

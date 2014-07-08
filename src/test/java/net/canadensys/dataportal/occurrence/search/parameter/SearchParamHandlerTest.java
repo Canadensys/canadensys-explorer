@@ -95,4 +95,30 @@ public class SearchParamHandlerTest {
 		assertTrue(queryRelatedParams.containsKey("1_o"));
 		assertTrue(queryRelatedParams.containsKey("1_v"));
 	}
+	
+	@Test
+	public void testEmptyParams(){
+		Map<String,String[]> parametersMap = new HashMap<String, String[]>();
+		parametersMap.put("lang", new String[]{"fr"});
+		
+		SearchParamHandler paramHandler = new SearchParamHandler();
+		paramHandler.setSearchServiceConfig(new SearchServiceConfig());
+		paramHandler.initialize();
+		
+		Collection<SearchQueryPart> queryRelatedParams = paramHandler.getSearchQueryPartCollection(parametersMap);
+		assertEquals(0, queryRelatedParams.size());
+	}
+	
+	@Test
+	public void testWrongParams(){
+		Map<String,String[]> parametersMap = new HashMap<String, String[]>();
+		parametersMap.put("3_3_3", new String[]{"fr"});
+		
+		SearchParamHandler paramHandler = new SearchParamHandler();
+		paramHandler.setSearchServiceConfig(new SearchServiceConfig());
+		paramHandler.initialize();
+		
+		Collection<SearchQueryPart> queryRelatedParams = paramHandler.getSearchQueryPartCollection(parametersMap);
+		assertEquals(0, queryRelatedParams.size());
+	}
 }

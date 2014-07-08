@@ -4,11 +4,21 @@ apply plugin: 'eclipse'
 
 ext {
     tomcatContextPath = 'explorer'
+    defaultTheme = 'config/gradle/default/theme.gradle'
+    overrideTheme = 'config/gradle/theme.gradle'
 }
 
 //Use Canadensys common web build file
 apply from: "https://raw.github.com/Canadensys/canadensys-common/master/gradle/canadensys_web_build.gradle"
 apply from: "http://dl.bintray.com/scalding/generic/waroverlay.gradle"
+
+//Check for theme override
+if( file(overrideTheme).exists()){
+	apply from: overrideTheme
+}
+else{
+	apply from: defaultTheme
+}
 
 //Make sure tomcat will run with the right encoding
 System.setProperty('file.encoding', 'UTF-8')
@@ -25,11 +35,10 @@ ext {
 	apacheCodecVersion = '1.9'
 	rewriteVersion = '2.0.12.Final'
 	ehCacheVersion = '2.6.8'
-	sitemeshVersion = '3.0.0-SNAPSHOT'
+	sitemeshVersion = '3.0.0'
 	
 	dataAccessVersion = '2.7.1'
-	webCoreVersion = '0.1.1'
-	canadensysWebThemeVersion = '0.1'
+	webCoreVersion = '0.2-SNAPSHOT'
 
 	tomcatVersion = '6.0.29'
 	seleniumVersion = '2.42.2'
@@ -57,7 +66,6 @@ dependencies {
 	compile group: 'net.canadensys', name: 'canadensys-data-access', version: dataAccessVersion
 	compile group: 'net.canadensys', name: 'canadensys-web-core', version: webCoreVersion
 	compile("net.canadensys:canadensys-webapp-core:${webCoreVersion}@war")
-	compile("net.canadensys:canadensys-web-theme:${canadensysWebThemeVersion}@war")
 	
 	compile group: 'log4j', name: 'log4j', version: '1.2.17'
 	compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.2'
@@ -90,6 +98,7 @@ dependencies {
 }
 
 //WAR plugin settings
+//We could use this in theme.gradle to include layout.ftl
 war {
 	from("${additionalWebFilesDir}/js"){
         into("js")

@@ -31,7 +31,7 @@ public class OccurrencePortalConfig {
 	public static String BUNDLE_NAME = "ApplicationResources";
 	public static String URL_BUNDLE_NAME = "urlResource";
 	
-	private List<String> supportedLanguage;
+	private List<String> supportedLanguagesList;
 	private Map<Locale,ResourceBundle> resourceBundleByLocale;
 	
 	private String currentVersion;
@@ -46,6 +46,10 @@ public class OccurrencePortalConfig {
 	//Unique key that is managed by the portal
 	public static final String OCCURRENCE_MANAGED_ID_FIELD = "auto_id";
 	
+	
+	//Key used for models in view
+	public static final String PAGE_ROOT_MODEL_KEY = "page";
+	
 	public static final I18nTranslationHandler I18N_TRANSLATION_HANDLER = new I18nTranslationHandler("net.canadensys.dataportal.occurrence.controller");
 
 
@@ -57,7 +61,7 @@ public class OccurrencePortalConfig {
 	 * @param supportedLanguages
 	 */
 	public void setSupportedLanguages(String supportedLanguages) {
-		supportedLanguage = new ArrayList<String>();
+		supportedLanguagesList = new ArrayList<String>();
 		resourceBundleByLocale = new HashMap<Locale, ResourceBundle>();
 		
 		String[] languages = supportedLanguages.split(",");
@@ -68,7 +72,7 @@ public class OccurrencePortalConfig {
 			try{
 				currLocale = new Locale(currLang);
 				if(currLocale.getISO3Language() != null){
-					supportedLanguage.add(currLang.toLowerCase());
+					supportedLanguagesList.add(currLang.toLowerCase());
 					resourceBundleByLocale.put(currLocale, UTF8PropertyResourceBundle.getBundle(BUNDLE_NAME, currLocale));
 				}
 			}
@@ -80,6 +84,10 @@ public class OccurrencePortalConfig {
 				LOGGER.fatal("Can't load Language defined by " + currLang, e);
 			}
 		}
+	}
+	
+	public List<String> getSupportedLanguagesList(){
+		return supportedLanguagesList;
 	}
 	
 	public Collection<Locale> getSupportedLocale(){

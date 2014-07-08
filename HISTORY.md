@@ -1,5 +1,9 @@
 Version History
 ===============
+
+Version 2.2.0 2014-??-??
+* Rename Freemarker root model from 'root' to 'page'
+
 Version 2.1.0 2014-06-02
 * Geospatial filters
 * Better zoom on the map after query

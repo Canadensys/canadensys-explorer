@@ -3,27 +3,24 @@
 <#include "inc/global-functions.ftl">
 <head>
 <title>${rc.getMessage("page.search.title")}</title>
-<@cssAsset fileName="occportal" version=root.currentVersion! useMinified=false/> 
+<@cssAsset fileName="occportal" version=page.currentVersion! useMinified=false/> 
 </head>
-<content tag="lang_switch">
-<@i18nLanguageSwitch resourceName="search"/>
-</content>
 <div id="body" class="fullscreen">
   <#include "inc/control.ftl">
   <div id="view" class="clear_fix">
     <div class="nav_container">
 
-      <#if ((root.occurrenceCount!0) >= root.pageSize)>
-        <#assign totalPages=((root.occurrenceCount!0)/root.pageSize)?ceiling/>
+      <#if ((page.occurrenceCount!0) >= page.pageSize)>
+        <#assign totalPages=((page.occurrenceCount!0)/page.pageSize)?ceiling/>
       </#if>
 
-      <#if root.allRecordsTargeted >
-        <h1>${rc.getMessage("view.header.results.all", [root.occurrenceCount])}</h1>
+      <#if page.allRecordsTargeted >
+        <h1>${rc.getMessage("view.header.results.all", [page.occurrenceCount])}</h1>
       <#else>
-        <#if ((root.pageNumber!0) > 1)>
-          <h1>${rc.getMessage("view.header.results.paging",[root.occurrenceCount, root.pageNumber, totalPages])}</h1>
+        <#if ((page.pageNumber!0) > 1)>
+          <h1>${rc.getMessage("view.header.results.paging",[page.occurrenceCount, page.pageNumber, totalPages])}</h1>
         <#else>
-          <h1>${rc.getMessage("view.header.results",[root.occurrenceCount])}</h1>
+          <h1>${rc.getMessage("view.header.results",[page.occurrenceCount])}</h1>
         </#if>
       </#if>
 
@@ -38,21 +35,21 @@
       <table id="results">
       <thead>
         <tr>
-          <th class="view_1 sorttable_alpha" scope="col"><a href="?${getTableHeaderSortingUrl("scientificname",root.sortBy!,root.sort!)}">${rc.getMessage("occ.scientificname")}${getTableHeaderSortingClass("scientificname",root.sortBy!,root.sort!)}</a></th>
-          <th class="view_2 sorttable_alpha" scope="col"><a href="?${getTableHeaderSortingUrl("family",root.sortBy!,root.sort!)}">${rc.getMessage("occ.family")}${getTableHeaderSortingClass("family",root.sortBy!,root.sort!)}</a></th>
-          <th class="view_1 sorttable_alpha" scope="col"><a href="?${getTableHeaderSortingUrl("country",root.sortBy!,root.sort!)}">${rc.getMessage("occ.country")}${getTableHeaderSortingClass("country",root.sortBy!,root.sort!)}</a></th>
-          <th class="view_1 sorttable_alpha" scope="col"><a href="?${getTableHeaderSortingUrl("stateprovince",root.sortBy!,root.sort!)}">${rc.getMessage("occ.stateprovince")}${getTableHeaderSortingClass("stateprovince",root.sortBy!,root.sort!)}</a></th>
-          <th class="view_3 sorttable_alpha" scope="col"><a href="?${getTableHeaderSortingUrl("locality",root.sortBy!,root.sort!)}">${rc.getMessage("occ.locality")}${getTableHeaderSortingClass("locality",root.sortBy!,root.sort!)}</a></th>
+          <th class="view_1 sorttable_alpha" scope="col"><a href="?${getTableHeaderSortingUrl("scientificname",page.sortBy!,page.sort!)}">${rc.getMessage("occ.scientificname")}${getTableHeaderSortingClass("scientificname",page.sortBy!,page.sort!)}</a></th>
+          <th class="view_2 sorttable_alpha" scope="col"><a href="?${getTableHeaderSortingUrl("family",page.sortBy!,page.sort!)}">${rc.getMessage("occ.family")}${getTableHeaderSortingClass("family",page.sortBy!,page.sort!)}</a></th>
+          <th class="view_1 sorttable_alpha" scope="col"><a href="?${getTableHeaderSortingUrl("country",page.sortBy!,page.sort!)}">${rc.getMessage("occ.country")}${getTableHeaderSortingClass("country",page.sortBy!,page.sort!)}</a></th>
+          <th class="view_1 sorttable_alpha" scope="col"><a href="?${getTableHeaderSortingUrl("stateprovince",page.sortBy!,page.sort!)}">${rc.getMessage("occ.stateprovince")}${getTableHeaderSortingClass("stateprovince",page.sortBy!,page.sort!)}</a></th>
+          <th class="view_3 sorttable_alpha" scope="col"><a href="?${getTableHeaderSortingUrl("locality",page.sortBy!,page.sort!)}">${rc.getMessage("occ.locality")}${getTableHeaderSortingClass("locality",page.sortBy!,page.sort!)}</a></th>
           <th class="view_3 sorttable_alpha" scope="col">${rc.getMessage("occ.habitat")}</th>
-          <th class="view_2 sorttable_numeric" scope="col"><a href="?${getTableHeaderSortingUrl("syear",root.sortBy!,root.sort!)}">${rc.getMessage("occ.syear")}${getTableHeaderSortingClass("syear",root.sortBy!,root.sort!)}</a></th>
-          <th class="view_1 sorttable_alpha" scope="col"><a href="?${getTableHeaderSortingUrl("collectioncode",root.sortBy!,root.sort!)}">${rc.getMessage("occ.collectioncode")}${getTableHeaderSortingClass("collectioncode",root.sortBy!,root.sort!)}</a></th>
-          <th class="view_2 sorttable_numeric" scope="col"><a href="?${getTableHeaderSortingUrl("catalognumber",root.sortBy!,root.sort!)}">${rc.getMessage("occ.catalognumber")}${getTableHeaderSortingClass("catalognumber",root.sortBy!,root.sort!)}</a></th>
+          <th class="view_2 sorttable_numeric" scope="col"><a href="?${getTableHeaderSortingUrl("syear",page.sortBy!,page.sort!)}">${rc.getMessage("occ.syear")}${getTableHeaderSortingClass("syear",page.sortBy!,page.sort!)}</a></th>
+          <th class="view_1 sorttable_alpha" scope="col"><a href="?${getTableHeaderSortingUrl("collectioncode",page.sortBy!,page.sort!)}">${rc.getMessage("occ.collectioncode")}${getTableHeaderSortingClass("collectioncode",page.sortBy!,page.sort!)}</a></th>
+          <th class="view_2 sorttable_numeric" scope="col"><a href="?${getTableHeaderSortingUrl("catalognumber",page.sortBy!,page.sort!)}">${rc.getMessage("occ.catalognumber")}${getTableHeaderSortingClass("catalognumber",page.sortBy!,page.sort!)}</a></th>
           <th class="view_1 sorttable_numeric extra" scope="col">${rc.getMessage("view.table.extra")}</th>
           <th class="view_1 persist last_column" scope="col"></th>
         </tr>
       </thead>
       <tbody>
-      <#list root.occurrenceList as currOccurrence>
+      <#list page.occurrenceList as currOccurrence>
 
         <#if currOccurrence.hascoordinates == "true" && currOccurrence.hasmedia == "true">
           <#assign iconsort = 1>
@@ -82,8 +79,8 @@
       </table>
     </div><#-- table_wrapper -->
   </div>
-  <#if ((root.occurrenceCount!0) >= root.pageSize)>
-    <@pages 1..totalPages root.pageNumber!1 />
+  <#if ((page.occurrenceCount!0) >= page.pageSize)>
+    <@pages 1..totalPages page.pageNumber!1 />
   </#if>
 </div><#-- body -->
 
@@ -94,10 +91,10 @@
 <@jsLibAsset libName="backbone-min.js"/>
 <@jsLibAsset libName="jquery.cookie.js"/>
 <@jsLibAsset libName="keynavigator.min.js"/>
-<@jsAsset fileName="explorer" version=root.currentVersion! useMinified=root.useMinified/>
-<@jsAsset fileName="explorer.utils" version=root.currentVersion! useMinified=root.useMinified/>
-<@jsAsset fileName="explorer.backbone" version=root.currentVersion! useMinified=root.useMinified/>
-<@jsAsset fileName="explorer.portal" version=root.currentVersion! useMinified=root.useMinified/>
+<@jsAsset fileName="explorer" version=page.currentVersion! useMinified=page.useMinified/>
+<@jsAsset fileName="explorer.utils" version=page.currentVersion! useMinified=page.useMinified/>
+<@jsAsset fileName="explorer.backbone" version=page.currentVersion! useMinified=page.useMinified/>
+<@jsAsset fileName="explorer.portal" version=page.currentVersion! useMinified=page.useMinified/>
 <@jsLibAsset libName="rwd-table.js"/>
 <@jsLibAsset libName="respond.js"/>
 

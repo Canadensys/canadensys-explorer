@@ -1,4 +1,5 @@
-<#-- Copyright 2011-2013 Canadensys -->
+<#-- Copyright 2011-2014 Canadensys -->
+<#-- Relies on variables: URLHelper,rc,Request  -->
 
 <#function formatdate y m d>
 	<#assign formattedDate = "">
@@ -36,14 +37,9 @@
 ${rc.getContextUrl(URLHelper.toI18nResource(rc.getLocale().getLanguage(),resourceName,params))}
 </#macro>
 
-<#macro i18nLanguageSwitch resourceName params=[]>
-<#-- FIXME https://github.com/Canadensys/canadensys-web-core/issues/3 -->
-${URLHelper.getLanguageSwitchPath(Request,rc.getLocale().getLanguage(),resourceName,params)}
-</#macro>
-
-<#-- root.searchParameters should exists-->
+<#-- page.searchParameters should exists-->
 <#macro searchViewUrl view>
-${URLHelper.newQueryStringBuilder().add("view",view).add(root.searchParameters!).toQueryString()}
+${URLHelper.newQueryStringBuilder().add("view",view).add(page.searchParameters!).toQueryString()}
 </#macro>
 
 <#function isImageMimeType url>
