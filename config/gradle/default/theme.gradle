@@ -5,3 +5,10 @@ ext {
 dependencies {
 	compile("net.canadensys:canadensys-web-theme:${webThemeVersion}@war")
 }
+
+//include our layout.ftl to the root of 'decorators' as defined in sitemesh3.xml
+war {
+	from("${webAppDirName}/decorators/layouts/canadensys"){
+        into("decorators")
+	}
+}

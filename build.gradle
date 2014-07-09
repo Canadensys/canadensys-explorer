@@ -98,8 +98,8 @@ dependencies {
 }
 
 //WAR plugin settings
-//We could use this in theme.gradle to include layout.ftl
 war {
+	exclude("decorators/layouts")
 	from("${additionalWebFilesDir}/js"){
         into("js")
         include ("**/*.js")
