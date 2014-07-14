@@ -37,8 +37,8 @@ ext {
 	ehCacheVersion = '2.6.8'
 	sitemeshVersion = '3.0.0'
 	
-	dataAccessVersion = '2.8.0-SNAPSHOT'
-	webCoreVersion = '0.2-SNAPSHOT'
+	dataAccessVersion = '2.8.0'
+	webCoreVersion = '0.2'
 
 	tomcatVersion = '6.0.29'
 	seleniumVersion = '2.42.2'

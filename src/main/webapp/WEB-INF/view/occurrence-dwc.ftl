@@ -49,7 +49,7 @@
 			<tr><td>13</td><td>root</td><td><a href="http://rs.tdwg.org/dwc/terms/collectionCode">collectionCode</a></td><td>${page.occRawModel.collectioncode?if_exists}</td><td>${page.occModel.collectioncode?if_exists}</td></tr>
 			<tr><td>14</td><td>root</td><td><a href="http://rs.tdwg.org/dwc/terms/datasetName">datasetName</a></td><td>${page.occRawModel.datasetname?if_exists}</td><td>${page.occModel.datasetname?if_exists}</td></tr>
 			<tr><td>15</td><td>root</td><td><a href="http://rs.tdwg.org/dwc/terms/ownerInstitutionCode">ownerInstitutionCode</a></td><td>${page.occRawModel.ownerinstitutioncode?if_exists}</td><td class="unused"></td></tr>
-			<tr><td>16</td><td>root</td><td><a href="http://rs.tdwg.org/dwc/terms/basisOfRecord">basisOfRecord</a></td><td>${page.occRawModel.basisofrecord?if_exists}</td><td class="unused"></td></tr>
+			<tr><td>16</td><td>root</td><td><a href="http://rs.tdwg.org/dwc/terms/basisOfRecord">basisOfRecord</a></td><td>${page.occRawModel.basisofrecord?if_exists}</td><td>${page.occModel.basisofrecord!}</td></tr>
 			<tr class="unused"><td>17</td><td>root</td><td><a href="http://rs.tdwg.org/dwc/terms/informationWithheld">informationWithheld</a></td><td>${page.occRawModel.informationwithheld?if_exists}</td><td class="unused"></td></tr>
 			<tr class="unused"><td>18</td><td>root</td><td><a href="http://rs.tdwg.org/dwc/terms/dataGeneralizations">dataGeneralizations</a></td><td>${page.occRawModel.datageneralizations?if_exists}</td><td class="unused"></td></tr>
 			<tr><td>19</td><td>root</td><td><a href="http://rs.tdwg.org/dwc/terms/dynamicProperties">dynamicProperties</a></td><td>${page.occRawModel.dynamicproperties?if_exists}</td><td class="unused"></td></tr>
@@ -73,7 +73,7 @@
 			<tr><td>37</td><td>occurrence</td><td><a href="http://rs.tdwg.org/dwc/terms/associatedMedia">associatedMedia</a></td><td>${page.occRawModel.associatedmedia?if_exists}</td><td>${page.occModel.associatedmedia?if_exists}</td></tr>
 			<tr><td>38</td><td>occurrence</td><td><a href="http://rs.tdwg.org/dwc/terms/associatedReferences">associatedReferences</a></td><td>${page.occRawModel.associatedreferences?if_exists}</td><td class="unused"></td></tr>
 			<tr><td>39</td><td>occurrence</td><td><a href="http://rs.tdwg.org/dwc/terms/associatedOccurrences">associatedOccurrences</a></td><td>${page.occRawModel.associatedoccurrences?if_exists}</td><td class="unused"></td></tr>
-			<tr><td>40</td><td>occurrence</td><td><a href="http://rs.tdwg.org/dwc/terms/associatedSequences">associatedSequences</a></td><td>${page.occRawModel.associatedsequences?if_exists}</td><td class="unused"></td></tr>
+			<tr><td>40</td><td>occurrence</td><td><a href="http://rs.tdwg.org/dwc/terms/associatedSequences">associatedSequences</a></td><td>${page.occRawModel.associatedsequences!}</td><td>${page.occModel.associatedsequences!}</td></tr>
 			<tr><td>41</td><td>occurrence</td><td><a href="http://rs.tdwg.org/dwc/terms/associatedTaxa">associatedTaxa</a></td><td>${page.occRawModel.associatedtaxa?if_exists}</td><td class="unused"></td></tr>
 			<tr class="unused"><td>42</td><td>event</td><td><a href="http://rs.tdwg.org/dwc/terms/eventID">eventID</a></td><td>${page.occRawModel.eventid?if_exists}</td><td class="unused"></td></tr>
 			<tr><td>43</td><td>event</td><td><a href="http://rs.tdwg.org/dwc/terms/samplingProtocol">samplingProtocol</a></td><td>${page.occRawModel.samplingprotocol?if_exists}</td><td class="unused"></td></tr>
