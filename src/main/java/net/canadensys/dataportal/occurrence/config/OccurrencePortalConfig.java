@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 import net.canadensys.bundle.UTF8PropertyResourceBundle;
@@ -28,6 +29,10 @@ public class OccurrencePortalConfig {
 	public static final String CONFIG_FILENAME = "/WEB-INF/portal-config.properties";
 	public static final String SUPPORTED_LANGUAGES_KEY = "i18n.supportedLanguages";
 	
+	//Associated sequences properties related
+	public static final String SEQ_URL_FORMAT_SUFFIX = ".urlFormat";
+	public static final String SEQ_DISPLAY_NAME_SUFFIX = ".displayName";
+	
 	public static String BUNDLE_NAME = "ApplicationResources";
 	public static String URL_BUNDLE_NAME = "urlResource";
 	
@@ -42,6 +47,9 @@ public class OccurrencePortalConfig {
 	
 	private boolean hashEmailAddress = false;
 	private String emailSalt;
+	
+	//Associated sequences related
+	private Properties sequenceProvidersProperties;
 	
 	//Unique key that is managed by the portal
 	public static final String OCCURRENCE_MANAGED_ID_FIELD = "auto_id";
@@ -148,4 +156,20 @@ public class OccurrencePortalConfig {
 	public void setEmailSalt(String emailSalt) {
 		this.emailSalt = emailSalt;
 	}
+
+	/**
+	 * 
+	 * @param sequenceProviderProperties
+	 */
+	public void setSequenceProvidersProperties(Properties sequenceProviderProperties) {
+		this.sequenceProvidersProperties = sequenceProviderProperties;
+	}
+
+	public String getSequenceProviderUrlFormat(String sequenceProvider) {
+		return sequenceProvidersProperties.getProperty(sequenceProvider + SEQ_URL_FORMAT_SUFFIX);
+	}
+	public String getSequenceProviderDisplayName(String sequenceProvider) {
+		return sequenceProvidersProperties.getProperty(sequenceProvider + SEQ_DISPLAY_NAME_SUFFIX);
+	}
+
 }

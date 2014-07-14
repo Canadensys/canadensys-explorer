@@ -109,6 +109,9 @@ public class SearchController {
 	@Autowired
 	private OccurrenceSearchService occurrenceSearchService;
 	
+	@Autowired
+	private OccurrenceController occurrenceController;
+	
 	//Configuration
 	@Autowired
 	@Qualifier("searchServiceConfig")
@@ -391,7 +394,7 @@ public class SearchController {
 		HashMap<String,Object> modelRoot = new HashMap<String,Object>();
 		if(occModel != null){
 			modelRoot.put("occModel", occModel);
-			modelRoot.put("occViewModel", OccurrenceController.buildOccurrenceViewModel(occModel));
+			modelRoot.put("occViewModel", occurrenceController.buildOccurrenceViewModel(occModel));
 		}
 		else{
 			throw new ResourceNotFoundException();

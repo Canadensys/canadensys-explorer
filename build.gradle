@@ -37,7 +37,7 @@ ext {
 	ehCacheVersion = '2.6.8'
 	sitemeshVersion = '3.0.0'
 	
-	dataAccessVersion = '2.7.1'
+	dataAccessVersion = '2.8.0-SNAPSHOT'
 	webCoreVersion = '0.2-SNAPSHOT'
 
 	tomcatVersion = '6.0.29'

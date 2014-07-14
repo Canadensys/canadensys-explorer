@@ -34,6 +34,7 @@
 			</div>
 		</#if>
 	</div>
+	
 	<div id="content" class="clear_fix">
 		<h1>${page.occModel.scientificname?if_exists} (${page.occModel.collectioncode?if_exists} ${page.occModel.catalognumber?if_exists})</h1>
 		<p class="details">${rc.getMessage("occpage.header.details")}: ${page.occModel.sourcefileid?if_exists}/${page.occModel.dwcaid?if_exists}</p>
@@ -120,22 +121,40 @@
 		<tbody>
 			<tr>
 			  <th scope="row">${rc.getMessage("occ.collectioncode")}</th>
-			  <td>${page.occModel.collectioncode?if_exists}</td>
+			  <td>${page.occModel.collectioncode!}</td>
 			</tr>
 			<tr>
 			  <th scope="row">${rc.getMessage("occ.catalognumber")}</th>
-			  <td>${page.occModel.catalognumber?if_exists}</td>
+			  <td>${page.occModel.catalognumber!}</td>
 			</tr>
 			<tr>
 			  <th scope="row">${rc.getMessage("occ.recordedby")}</th>
-			  <td>${page.occModel.recordedby?if_exists}</td>
+			  <td>${page.occModel.recordedby!}</td>
 			</tr>
 			<tr>
 			  <th scope="row">${rc.getMessage("occ.recordnumber")}</th>
-			  <td>${page.occModel.recordnumber?if_exists}</td>
+			  <td>${page.occModel.recordnumber!}</td>
 			</tr>
 		</tbody>
 		</table>
+		
+		<#-- associatedSequences, optional section -->
+		<#if page.occViewModel.associatedSequencesPerProviderMap?has_content>
+		<h2>${rc.getMessage("occpage.group.associatedsequences")}</h2>
+		<table class="occpage_group">
+		<tbody>
+			<#list page.occViewModel.associatedSequencesPerProviderMap?keys as sequenceProvider>
+			  <#list page.occViewModel.associatedSequencesPerProviderMap[sequenceProvider] as associatedSequence>
+			  	<tr>
+			  		<#-- dont't repeat header text -->
+			  		<th scope="row"><#if associatedSequence_index == 0>${sequenceProvider}</#if></th>
+					<td><@hrefIfNotEmpty text=associatedSequence.getLeft() link=associatedSequence.getRight()/></td>
+				</tr>
+			  </#list>
+			</#list>
+		</tbody>
+		</table>
+		</#if>
 
 		<h2>${rc.getMessage("occpage.group.dataset")}</h2>
 		<table class="occpage_group">
