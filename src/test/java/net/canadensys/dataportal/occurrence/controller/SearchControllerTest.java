@@ -18,7 +18,6 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
@@ -30,7 +29,6 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:test-dispatcher-servlet.xml"})
-@TransactionConfiguration(transactionManager="hibernateTransactionManager")
 public class SearchControllerTest extends AbstractTransactionalJUnit4SpringContextTests{
 		
 	@Autowired

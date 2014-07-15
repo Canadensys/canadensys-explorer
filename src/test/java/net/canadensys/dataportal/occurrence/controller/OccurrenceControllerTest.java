@@ -5,12 +5,19 @@ import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.ModelAndViewAssert.assertViewName;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig;
 import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
+import net.canadensys.dataportal.occurrence.model.OccurrenceViewModel;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +28,6 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
@@ -50,7 +56,6 @@ import org.springframework.web.servlet.view.RedirectView;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:test-dispatcher-servlet.xml"})
-@TransactionConfiguration(transactionManager="hibernateTransactionManager")
 public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringContextTests{
 	
 	@Autowired
@@ -59,6 +64,9 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
     @Autowired
     private RequestMappingHandlerMapping handlerMapping;
     
+    @Autowired
+    private OccurrenceController occurrenceController;
+     
     private JdbcTemplate jdbcTemplate;
 	
     @Autowired
@@ -114,7 +122,7 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
         assertEquals(HttpServletResponse.SC_OK, response.getStatus());
         assertViewName(mav,"occurrence");
         
-        HashMap<String,Object> modelRoot = (HashMap<String,Object>)mav.getModel().get("root");
+        HashMap<String,Object> modelRoot = (HashMap<String,Object>)mav.getModel().get(OccurrencePortalConfig.PAGE_ROOT_MODEL_KEY);
         OccurrenceModel occModel = (OccurrenceModel)modelRoot.get("occModel");
         assertEquals("2.2", occModel.getDwcaid());
     }
@@ -130,5 +138,33 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
         assertEquals(HttpServletResponse.SC_OK, response.getStatus());
         assertViewName(mav,"resource-contact");
     }
-
+    
+    /**
+     * Test the model used for display purpose.
+     * associatedSequences urls format are defined in src/main/resources/references/sequenceProviders.properties
+     */
+    @Test
+    public void buildOccurrenceViewModel(){
+    	OccurrenceModel occModel = new OccurrenceModel();
+    	occModel.setAssociatedsequences("BOLD:1234|bold:2345|unknown:3456");
+    	
+    	OccurrenceViewModel occViewModel = occurrenceController.buildOccurrenceViewModel(occModel);
+    	
+    	Map<String,List<Pair<String,String>>> associatedSequencesPerProviderMap = occViewModel.getAssociatedSequencesPerProviderMap();
+    	
+    	assertEquals(2,associatedSequencesPerProviderMap.keySet().size());
+    	
+    	Iterator<String> keyIt = associatedSequencesPerProviderMap.keySet().iterator();
+    	String firstKey = keyIt.next();
+    	assertEquals(2,associatedSequencesPerProviderMap.get(firstKey).size());
+    	
+    	//ensure we have urls for known provider
+    	assertTrue(StringUtils.isNotBlank(associatedSequencesPerProviderMap.get(firstKey).get(0).getValue()));
+    	assertTrue(StringUtils.isNotBlank(associatedSequencesPerProviderMap.get(firstKey).get(1).getValue()));
+    	
+    	//ensure we do not have urls for unknown provider
+    	String secondKey = keyIt.next();
+    	assertTrue(StringUtils.isBlank(associatedSequencesPerProviderMap.get(secondKey).get(0).getValue()));
+    }
+    
 }

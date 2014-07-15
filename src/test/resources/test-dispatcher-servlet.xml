@@ -6,6 +6,8 @@
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
 	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 	http://www.springframework.org/schema/context
@@ -14,8 +16,12 @@
     http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
 	http://www.springframework.org/schema/mvc
 	http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
 	http://www.springframework.org/schema/task
-	http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+	http://www.springframework.org/schema/task/spring-task-3.0.xsd
+	http://www.springframework.org/schema/util 
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<import resource="test-data-source.xml" />
 
@@ -29,8 +35,12 @@
     	<jdbc:script location="classpath:script/occurrence/create_occurrence_tables.sql" />
   	</jdbc:initialize-database>
   	
+  	<!-- Load reference resources -->
+	<util:properties id="sequenceProvidersProperties" location="classpath:references/sequenceProviders.properties"/>
+  	
 	<task:annotation-driven executor="executor"/>
 	<task:executor id="executor" pool-size="3"/>
+
 	
 	<bean id="searchServiceConfig" class="net.canadensys.dataportal.occurrence.search.config.SearchServiceConfig">
 		<property name="generatedContentFolder" value="${searchServiceConfig.generatedContentFolder}"/>
@@ -38,10 +48,12 @@
 	
 	<!-- use to return JSON -->
 	<mvc:annotation-driven/>
+	<tx:annotation-driven transaction-manager="hibernateTransactionManager"/>
 	
 	<bean id="occurrencePortalConfig" class="net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig">
 		<property name="dwcaTermUsed" value="${dwca.termUsed}" />
 		<property name="supportedLanguages" value="${i18n.supportedLanguages:en}" />
+		<property name="sequenceProvidersProperties" ref="sequenceProvidersProperties" />
 	</bean>
 		
 	<bean id ="mapServerAccess" class="net.canadensys.dataportal.occurrence.map.impl.WindshaftMapServerAccess">
@@ -52,9 +64,9 @@
 	<bean id="hibernateTransactionManager"
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager" lazy-init="true">
 		<property name="sessionFactory" ref="sessionFactory" />
-		
 	</bean>
-		<bean id="templateMailSender" class="net.canadensys.mail.TemplateMailSender">
+	
+	<bean id="templateMailSender" class="net.canadensys.mail.TemplateMailSender">
 		<property name="mailSender" ref="mailSender" />
 	</bean>
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl"/>
