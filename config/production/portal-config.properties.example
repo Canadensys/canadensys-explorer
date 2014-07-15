@@ -1,6 +1,10 @@
 #Set ISO 639-1 code for supported languages
 i18n.supportedLanguages=en,fr
 
+#Set ISO 639-1 code for default language in case it was unspecified by the request (or the browser).
+#If omitted, English will be used.
+i18n.defaultLanguage=en
+
 #Do we use the minified version of JavaScript and CSS files. Always use minified when using versioning.
 url.useMinified=true
 

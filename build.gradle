@@ -4,7 +4,7 @@ apply plugin: 'eclipse'
 
 ext {
     tomcatContextPath = 'explorer'
-    defaultTheme = 'config/gradle/default/theme.gradle'
+    defaultTheme = 'config/gradle/canadensys/theme.gradle'
     overrideTheme = 'config/gradle/theme.gradle'
 }
 

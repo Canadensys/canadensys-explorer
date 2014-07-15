@@ -27,6 +27,7 @@ public class OccurrencePortalConfig {
 	private static final Logger LOGGER = Logger.getLogger(OccurrencePortalConfig.class);
 	
 	public static final String CONFIG_FILENAME = "/WEB-INF/portal-config.properties";
+	public static final String DEFAULT_LANGUAGE_KEY = "i18n.defaultLanguage";
 	public static final String SUPPORTED_LANGUAGES_KEY = "i18n.supportedLanguages";
 	
 	//Associated sequences properties related

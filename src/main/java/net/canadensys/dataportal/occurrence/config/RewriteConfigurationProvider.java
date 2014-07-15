@@ -47,6 +47,7 @@ public class RewriteConfigurationProvider extends HttpConfigurationProvider{
 
 	private static final String LANG_PARAM = "lang";
 	
+	private String defaultLanguage;
 	private final Set<String> supportedLocale = new HashSet<String>();
 	
 	@Override
@@ -108,6 +109,7 @@ public class RewriteConfigurationProvider extends HttpConfigurationProvider{
 		Properties configProperties = new Properties();
         try {
         	configProperties.load(is);
+        	defaultLanguage = StringUtils.defaultString(configProperties.getProperty(OccurrencePortalConfig.DEFAULT_LANGUAGE_KEY), Locale.ENGLISH.getLanguage());
             String supportedLanguages = configProperties.getProperty(OccurrencePortalConfig.SUPPORTED_LANGUAGES_KEY);
             
             if(StringUtils.isBlank(supportedLanguages)){
@@ -136,7 +138,7 @@ public class RewriteConfigurationProvider extends HttpConfigurationProvider{
 		public void performHttp(HttpServletRewrite event, EvaluationContext context) {
 			String reqLanguage = event.getRequest().getLocale().getLanguage();
 			if(!supportedLocale.contains(reqLanguage)){
-				reqLanguage = Locale.ENGLISH.getLanguage();
+				reqLanguage = defaultLanguage;
 			}
 			String landingUrl = I18nUrlBuilder.generateI18nResourcePath(reqLanguage, OccurrencePortalConfig.I18N_TRANSLATION_HANDLER.getTranslationFormat("search"), (String)null);
 			Redirect.permanent(event.getContextPath()+landingUrl).perform(event, context);
