@@ -1,7 +1,7 @@
 Version History
 ===============
 
-Version 2.2.0 2014-07-15
+Version 2.2.0 2014-07-16
 * Controllers are now responsible to provide 'otherLanguage' map
 * Added associatedSequences to occurrence view.
 * Renamed Freemarker root model from 'root' to 'page'

@@ -18,10 +18,10 @@ Dependencies
 ### Libraries
 * [Apache Maven 3](http://maven.apache.org/)
 * [Spring Framework 4.0.2](http://www.springsource.org/spring-framework)
-* [Canadensys Data Access 2.7.0](https://github.com/Canadensys/canadensys-data-access)
+* [Canadensys Data Access 2.8.0](https://github.com/Canadensys/canadensys-data-access)
 * [Hibernate 4.3.2](http://www.hibernate.org/)
 * [Freemarker 2.3.20](http://freemarker.sourceforge.net/)
-* [SiteMesh 3.0.0](https://github.com/sitemesh/sitemesh2/)
+* [SiteMesh 3.0.0](https://github.com/sitemesh/sitemesh3/)
 * [Rewrite 2.0.12](https://github.com/ocpsoft/rewrite)
 * [H2 Database 1.3.175](http://www.h2database.com) (for unit testing only)
 * [Selenium Client 2.39](http://docs.seleniumhq.org/download/) (for integration testing)
