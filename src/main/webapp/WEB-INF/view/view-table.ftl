@@ -17,7 +17,7 @@
       <#if page.allRecordsTargeted >
         <h1>${rc.getMessage("view.header.results.all", [page.occurrenceCount])}</h1>
       <#else>
-        <#if ((page.pageNumber!0) > 1)>
+        <#if ((page.pageNumber!0) > 1 && totalPages??)>
           <h1>${rc.getMessage("view.header.results.paging",[page.occurrenceCount, page.pageNumber, totalPages])}</h1>
         <#else>
           <h1>${rc.getMessage("view.header.results",[page.occurrenceCount])}</h1>
