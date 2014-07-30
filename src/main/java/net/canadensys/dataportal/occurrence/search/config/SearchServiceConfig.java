@@ -63,7 +63,6 @@ public class SearchServiceConfig {
 			return null;
 		}
 	}
-	
 
 	/**
 	 * Enum that includes groups of different SearchableField.
@@ -123,7 +122,6 @@ public class SearchServiceConfig {
 	
 	private String publicDownloadURL;
 	private String generatedContentFolder;
-	private String emailSenderAddress;
 	
 	/**
 	 * List of all fields to be included on search result
@@ -329,13 +327,6 @@ public class SearchServiceConfig {
 	}
 	public void setPublicDownloadURL(String publicDownloadURL) {
 		this.publicDownloadURL = publicDownloadURL;
-	}
-	
-	public void setEmailSenderAdresse(String emailSenderAdresse){
-		this.emailSenderAddress = emailSenderAdresse;
-	}
-	public String getEmailSenderAdresse(){
-		return emailSenderAddress;
 	}
 	
 }

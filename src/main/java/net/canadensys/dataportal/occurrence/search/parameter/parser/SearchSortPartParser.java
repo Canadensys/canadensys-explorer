@@ -23,8 +23,11 @@ public class SearchSortPartParser {
 	public static String PARAM_SORT_BY = "sortby";
 	public static String PARAM_SORT = "sort";
 	
-	private SearchServiceConfig searchConfig;
+	private final SearchServiceConfig searchConfig;
 	
+	public SearchSortPartParser(SearchServiceConfig searchConfig){
+		this.searchConfig = searchConfig;
+	}
 	
 	/**
 	 * Create a SearchSortPart from query parameters if they contain at least one SearchSortPart related parameter.
@@ -69,10 +72,6 @@ public class SearchSortPartParser {
 			}
 		}
 		return searchSortPart;
-	}
-	
-	public void setSearchConfig(SearchServiceConfig searchConfig) {
-		this.searchConfig = searchConfig;
 	}
 
 }

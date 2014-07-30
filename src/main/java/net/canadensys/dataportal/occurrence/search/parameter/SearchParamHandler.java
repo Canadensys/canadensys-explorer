@@ -41,11 +41,8 @@ public class SearchParamHandler {
 	
 	@PostConstruct
 	public void initialize() {
-		 paramParser = new SearchParamParser();
-		 paramParser.setSearchConfig(searchServiceConfig);
-		 
-		 sortParser = new SearchSortPartParser();
-		 sortParser.setSearchConfig(searchServiceConfig);
+		 paramParser = new SearchParamParser(searchServiceConfig);
+		 sortParser = new SearchSortPartParser(searchServiceConfig);
 	}
 	
 	/**

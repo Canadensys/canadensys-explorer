@@ -42,8 +42,7 @@ public class SearchParamParserTest {
 		parametersMap.put("2_v_2", new String[]{"Toto"});
 
 		SearchServiceConfig searchConfig = new SearchServiceConfig();
-		SearchParamParser paramParser = new SearchParamParser();
-		paramParser.setSearchConfig(searchConfig);
+		SearchParamParser paramParser = new SearchParamParser(searchConfig);
 		
 		Collection<SearchQueryPart> result = paramParser.parse(parametersMap);
 		
@@ -82,8 +81,7 @@ public class SearchParamParserTest {
 		parametersMap.put("1_v", new String[]{"2009-08-"});
 
 		SearchServiceConfig searchConfig = new SearchServiceConfig();
-		SearchParamParser paramParser = new SearchParamParser();
-		paramParser.setSearchConfig(searchConfig);
+		SearchParamParser paramParser = new SearchParamParser(searchConfig);
 		
 		Collection<SearchQueryPart> result = paramParser.parse(parametersMap);
 		
@@ -108,8 +106,7 @@ public class SearchParamParserTest {
 		parametersMap.put("1_v_2", new String[]{"2009-11-"});
 
 		SearchServiceConfig searchConfig = new SearchServiceConfig();
-		SearchParamParser paramParser = new SearchParamParser();
-		paramParser.setSearchConfig(searchConfig);
+		SearchParamParser paramParser = new SearchParamParser(searchConfig);
 		
 		Collection<SearchQueryPart> result = paramParser.parse(parametersMap);
 		
@@ -138,8 +135,7 @@ public class SearchParamParserTest {
 		parametersMap.put("1_v", new String[]{"2009-08"});
 
 		SearchServiceConfig searchConfig = new SearchServiceConfig();
-		SearchParamParser paramParser = new SearchParamParser();
-		paramParser.setSearchConfig(searchConfig);
+		SearchParamParser paramParser = new SearchParamParser(searchConfig);
 		
 		Collection<SearchQueryPart> result = paramParser.parse(parametersMap);
 		
@@ -158,8 +154,7 @@ public class SearchParamParserTest {
 		parametersMap.put("1_v", new String[]{"4"});
 
 		SearchServiceConfig searchConfig = new SearchServiceConfig();
-		SearchParamParser paramParser = new SearchParamParser();
-		paramParser.setSearchConfig(searchConfig);
+		SearchParamParser paramParser = new SearchParamParser(searchConfig);
 		
 		Collection<SearchQueryPart> result = paramParser.parse(parametersMap);
 		
@@ -178,8 +173,7 @@ public class SearchParamParserTest {
 		parametersMap.put("1_v", new String[]{"true"});
 
 		SearchServiceConfig searchConfig = new SearchServiceConfig();
-		SearchParamParser paramParser = new SearchParamParser();
-		paramParser.setSearchConfig(searchConfig);
+		SearchParamParser paramParser = new SearchParamParser(searchConfig);
 		
 		Collection<SearchQueryPart> result = paramParser.parse(parametersMap);
 		
@@ -201,8 +195,7 @@ public class SearchParamParserTest {
 		parametersMap.put("1_v_2", new String[]{"-26.985412,130.053265"});
 
 		SearchServiceConfig searchConfig = new SearchServiceConfig();
-		SearchParamParser paramParser = new SearchParamParser();
-		paramParser.setSearchConfig(searchConfig);
+		SearchParamParser paramParser = new SearchParamParser(searchConfig);
 		
 		Collection<SearchQueryPart> result = paramParser.parse(parametersMap);
 		
@@ -229,8 +222,7 @@ public class SearchParamParserTest {
 		parametersMap.put("1_v_4", new String[]{"-25.363882,131.044922"});
 
 		SearchServiceConfig searchConfig = new SearchServiceConfig();
-		SearchParamParser paramParser = new SearchParamParser();
-		paramParser.setSearchConfig(searchConfig);
+		SearchParamParser paramParser = new SearchParamParser(searchConfig);
 		
 		Collection<SearchQueryPart> result = paramParser.parse(parametersMap);
 		
@@ -258,8 +250,7 @@ public class SearchParamParserTest {
 		parametersMap.put("1_v_2", new String[]{"255"});
 
 		SearchServiceConfig searchConfig = new SearchServiceConfig();
-		SearchParamParser paramParser = new SearchParamParser();
-		paramParser.setSearchConfig(searchConfig);
+		SearchParamParser paramParser = new SearchParamParser(searchConfig);
 		
 		Collection<SearchQueryPart> result = paramParser.parse(parametersMap);
 		

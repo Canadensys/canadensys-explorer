@@ -41,7 +41,11 @@ public class SearchParamParser {
 	private static final String PARAM_TYPE_OPERATOR = "o";
 	private static final String PARAM_TYPE_VALUE = "v";
 	
-	private SearchServiceConfig searchConfig;
+	private final SearchServiceConfig searchConfig;
+	
+	public SearchParamParser(SearchServiceConfig searchConfig){
+		this.searchConfig = searchConfig;
+	}
 	
 	/**
 	 * You should not use this function directly, look at SearchParamHandler.
@@ -166,10 +170,6 @@ public class SearchParamParser {
 			}
 		}
 		return searchQueryPartList;
-	}
-
-	public void setSearchConfig(SearchServiceConfig searchConfig) {
-		this.searchConfig = searchConfig;
 	}
 	
 	/**
