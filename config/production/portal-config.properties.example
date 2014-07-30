@@ -30,6 +30,9 @@ email.hashAddress=true
 #if we hash it, should we 'salt' it? (ignored if email.hashAddress=false)
 email.salt=6SFDW$PTkp04yogq>vyEfku
 
+# Optional, if you want to overwrite the location of the Freemarker email templates.
+# email.templateFolder=/WEB-INF/email/
+
 #The URL of the tile server
 tiler.protocol=http
 tiler.domain=tiles.canadensys.net

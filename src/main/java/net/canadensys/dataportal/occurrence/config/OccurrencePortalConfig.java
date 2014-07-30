@@ -30,8 +30,7 @@ public class OccurrencePortalConfig {
 	public static final String DEFAULT_LANGUAGE_KEY = "i18n.defaultLanguage";
 	public static final String SUPPORTED_LANGUAGES_KEY = "i18n.supportedLanguages";
 	
-	//TODO we should use "_" and not "-"
-	public static final String DOWNLOAD_EMAIL_TEMPLATE_FORMAT = "download-email-%s.ftl";
+	public static final String DOWNLOAD_EMAIL_TEMPLATE_FORMAT = "download-email_%s.ftl";
 	
 	//Associated sequences properties related
 	public static final String SEQ_URL_FORMAT_SUFFIX = ".urlFormat";

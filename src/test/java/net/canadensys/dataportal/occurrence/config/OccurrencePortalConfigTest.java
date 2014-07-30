@@ -32,7 +32,7 @@ public class OccurrencePortalConfigTest {
 	
 	@Test
 	public void testGetDownloadEmailTemplateName(){
-		assertEquals("download-email-en.ftl",occurrencePortalConfig.getDownloadEmailTemplateName(Locale.ENGLISH));
+		assertEquals("download-email_en.ftl",occurrencePortalConfig.getDownloadEmailTemplateName(Locale.ENGLISH));
 	}
 
 }

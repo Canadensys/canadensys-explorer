@@ -77,7 +77,7 @@ public class OccurrenceServiceImpl implements OccurrenceService {
 	 */
 	@Override
 	@Transactional(readOnly=true)
-	@Cacheable(value=CacheManagementServiceIF.RESOURCE_MODEL_CACHE_KEY, key="#sourcefileid")
+	@Cacheable(value=CacheManagementServiceIF.RESOURCE_MODEL_CACHE_KEY, key="#sourcefileid", condition="#sourcefileid != null")
 	public ResourceModel loadResourceModel(String sourcefileid) {
 		return resourceDAO.load(sourcefileid);
 	}
