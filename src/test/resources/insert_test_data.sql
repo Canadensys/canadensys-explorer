@@ -55,12 +55,18 @@ VALUES (
 'GenBank:KC251652|BOLD:TADCR103-10.rbcLa|GenBank:KC25165x|TestBank:anId'
 );
 
+-- resource_contact
 INSERT INTO resource_contact(
             id, sourcefileid, resource_name, name, position_name, organization_name, 
             address, city, administrative_area, country, postal_code, 
             email)
 VALUES (1, 'acad-specimens', 'E. C. Smith Herbarium (ACAD)', 'Greedo', 'Manager', 'Sith', '1212 Death Star Road', 'Jawas County', 'Dunes', 'Tatooine', 'R1-D2', 'greedo@tatooine.org');
 
+-- resource_management
+INSERT INTO resource_management(sourcefileid,name,archive_url)
+  VALUES ('acad-specimens','E. C. Smith Herbarium (ACAD)','http://data.canadensys.net/ipt/resource.do?r=acad-specimens');
+
+-- unique_values
 INSERT INTO unique_values(id,key,occurrence_count,value,unaccented_value)
 VALUES (1,'_class',1,'Magnoliopsida','magnoliopsida');
 
@@ -69,3 +75,4 @@ VALUES (2,'_order',1,'Sapindales','sapindales');
 
 INSERT INTO unique_values(id,key,occurrence_count,value,unaccented_value)
 VALUES (3,'country',1,'Canada','canada');
+
