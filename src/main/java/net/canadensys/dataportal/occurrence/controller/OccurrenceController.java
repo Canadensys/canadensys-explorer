@@ -11,6 +11,7 @@ import net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig;
 import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
 import net.canadensys.dataportal.occurrence.model.OccurrenceViewModel;
 import net.canadensys.dataportal.occurrence.model.ResourceContactModel;
+import net.canadensys.dataportal.occurrence.model.ResourceModel;
 import net.canadensys.exception.web.ResourceNotFoundException;
 import net.canadensys.web.i18n.I18nUrlBuilder;
 import net.canadensys.web.i18n.annotation.I18nTranslation;
@@ -46,6 +47,10 @@ public class OccurrenceController {
 	//separators
 	private static final String ASSOCIATED_SEQUENCES_SEPARATOR = "|";
 	private static final String ASSOCIATED_SEQUENCES_PROVIDER_SEPARATOR = ":";
+	
+	//IPT variable
+	private static final String IPT_ARCHIVE_PATTERN = "/archive.do?r=";
+	private static final String IPT_RESOURCE_PATTERN = "/resource.do?r=";
 	
 	private static String VIEW_PARAM = "view";
 	private static String DWC_VIEW_NAME = "dwc";
@@ -176,6 +181,13 @@ public class OccurrenceController {
 			}
 		}
 		
+		//handle data source page URL (url to the resource page)
+		ResourceModel resource = occurrenceService.loadResourceModel(occModel.getSourcefileid());
+		if(resource != null){
+			if(StringUtils.contains(resource.getArchive_url(),IPT_ARCHIVE_PATTERN)){
+				occViewModel.setDataSourcePageURL(StringUtils.replace(resource.getArchive_url(), IPT_ARCHIVE_PATTERN, IPT_RESOURCE_PATTERN));
+			}
+		}
 		return occViewModel;
 	}
 }

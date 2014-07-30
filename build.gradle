@@ -27,6 +27,7 @@ def group = 'net.canadensys'
 
 ext {
 	sourceCompatibility = JavaVersion.VERSION_1_6
+	targetCompatibility = JavaVersion.VERSION_1_6
 	sourceEncoding = 'UTF-8'
 	
 	springVersion = '4.0.2.RELEASE'
@@ -37,7 +38,7 @@ ext {
 	ehCacheVersion = '2.6.8'
 	sitemeshVersion = '3.0.0'
 	
-	dataAccessVersion = '2.8.0'
+	dataAccessVersion = '2.9.0'
 	webCoreVersion = '0.2'
 
 	tomcatVersion = '6.0.29'
@@ -59,6 +60,8 @@ repositories {
 
 compileJava.options.encoding = sourceEncoding
 compileTestJava.options.encoding = sourceEncoding
+compileJava.sourceCompatibility = sourceCompatibility
+compileJava.targetCompatibility = targetCompatibility
 
 dependencies {
 	providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.0.1'
@@ -136,6 +139,7 @@ task useLocalDataSource{
 		if( file("config/local/data-source.xml").exists()){
 			war.excludes = ['WEB-INF/data-source.xml']
 			war.webInf { from 'config/local/data-source.xml' }
+			war.webInf { from 'src/test/resources/h2/h2setup.sql' }
 			war.webInf { from 'src/test/resources/insert_test_data.sql' }
 		}
 	}

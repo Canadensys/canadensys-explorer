@@ -123,7 +123,7 @@
 	</bean>
 	
 	<bean id="freemarkerMailConfiguration" class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
-		<property name="templateLoaderPath" value="/WEB-INF/email/" />
+		<property name="templateLoaderPath" value="${email.templateFolder:/WEB-INF/email/}" />
 	</bean>
 		
 	<!-- Warning, those 2 ViewResolver are based on UrlBasedViewResolver. That means that the

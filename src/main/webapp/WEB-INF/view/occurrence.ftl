@@ -155,28 +155,9 @@
 		</tbody>
 		</table>
 		</#if>
-
-		<h2>${rc.getMessage("occpage.group.dataset")}</h2>
+		<h2>${rc.getMessage("occpage.group.record")}</h2>
 		<table class="occpage_group">
 		<tbody>
-			<tr>
-			  <th scope="row">${rc.getMessage("occ.institutioncode")}</th>
-			  <td>${page.occModel.institutioncode?if_exists}</td>
-			</tr>
-			<tr>
-			  <th scope="row">${rc.getMessage("occ.datasetname")}</th>
-			  <td><a href="${page.occRawModel.datasetid?if_exists}">${page.occModel.datasetname?if_exists}</a></td>
-			</tr>
-			<tr>
-			  <th scope="row">${rc.getMessage("occ.rights")}</th>
-			  <td>${page.occRawModel.rights?if_exists}</td>
-			</tr>
-		</tbody>
-		<tbody>
-			<tr>
-			  <th scope="row">${rc.getMessage("occ.sourcefileid")}</th>
-			  <td>${page.occModel.sourcefileid?if_exists}</td>
-			</tr>
 			<tr>
 			  <th scope="row">${rc.getMessage("occ.dwcaid")}</th>
 			  <td>${page.occModel.dwcaid?if_exists}</td>
@@ -188,6 +169,30 @@
 			<tr>
 			  <th scope="row">${rc.getMessage("occ.modified")}</th>
 			  <td>${page.occRawModel.modified?if_exists}</td>
+			</tr>
+		</tbody>
+		</table>
+
+		<h2>${rc.getMessage("occpage.group.dataset")}</h2>
+		<table class="occpage_group">
+		<tbody>
+			<tr>
+			  <th scope="row">${rc.getMessage("occ.institutioncode")}</th>
+			  <td>${page.occModel.institutioncode?if_exists}</td>
+			</tr>
+			<tr>
+			  <th scope="row">${rc.getMessage("occ.datasetname")}</th>
+			  <td>${page.occModel.datasetname!}</td>
+			</tr>
+			<tr>
+			  <th scope="row">${rc.getMessage("occ.rights")}</th>
+			  <td>${page.occRawModel.rights?if_exists}</td>
+			</tr>
+		</tbody>
+		<tbody>
+			<tr>
+			  <th scope="row">${rc.getMessage("occpage.sourcefile")}</th>
+			  <td><@hrefIfNotEmpty text=page.occModel.sourcefileid! link=page.occViewModel.dataSourcePageURL!/></td>
 			</tr>
 		</tbody>
 		</table>

@@ -3,13 +3,17 @@ package net.canadensys.dataportal.occurrence.impl;
 import java.util.List;
 
 import net.canadensys.dataportal.occurrence.OccurrenceService;
+import net.canadensys.dataportal.occurrence.cache.CacheManagementServiceIF;
 import net.canadensys.dataportal.occurrence.dao.OccurrenceDAO;
 import net.canadensys.dataportal.occurrence.dao.ResourceContactDAO;
+import net.canadensys.dataportal.occurrence.dao.ResourceDAO;
 import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
 import net.canadensys.dataportal.occurrence.model.ResourceContactModel;
+import net.canadensys.dataportal.occurrence.model.ResourceModel;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +31,9 @@ public class OccurrenceServiceImpl implements OccurrenceService {
 	
 	@Autowired
 	private ResourceContactDAO resourceContactDAO;
+	
+	@Autowired
+	private ResourceDAO resourceDAO;
 	
 	@Override
 	@Transactional(readOnly=true)
@@ -61,5 +68,17 @@ public class OccurrenceServiceImpl implements OccurrenceService {
 			return resourceContactModelList.get(0);
 		}
 		return null;
+	}
+
+	/**
+	 * ResourceModel will be cached after calling this method.
+	 * Those models are assumed to be 'almost static' so the current cache invalidation is handled by CacheInvalidationScheduled.
+	 * This could potentially cause an issue if a ResourceModel is updated and no harvest are achieved.
+	 */
+	@Override
+	@Transactional(readOnly=true)
+	@Cacheable(value=CacheManagementServiceIF.RESOURCE_MODEL_CACHE_KEY, key="#sourcefileid")
+	public ResourceModel loadResourceModel(String sourcefileid) {
+		return resourceDAO.load(sourcefileid);
 	}
 }

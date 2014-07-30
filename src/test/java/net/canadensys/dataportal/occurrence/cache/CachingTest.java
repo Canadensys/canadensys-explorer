@@ -1,6 +1,7 @@
-package net.canadensys.dataportal.occurrence.search;
+package net.canadensys.dataportal.occurrence.cache;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
@@ -9,7 +10,11 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import net.canadensys.dataportal.occurrence.OccurrenceService;
 import net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig;
+import net.canadensys.dataportal.occurrence.model.ResourceModel;
+import net.canadensys.dataportal.occurrence.search.OccurrenceSearchService;
+import net.canadensys.dataportal.occurrence.search.OccurrenceSearchableField;
 import net.canadensys.dataportal.occurrence.search.config.SearchServiceConfig;
 import net.canadensys.dataportal.occurrence.search.config.SearchServiceConfig.SearchableFieldEnum;
 import net.canadensys.query.SearchQueryPart;
@@ -92,10 +97,28 @@ public class CachingTest extends AbstractTransactionalJUnit4SpringContextTests{
     	assertTrue(count.intValue() > 0);
     	
     	//extract value from cache
-    	Cache cache = CacheManager.getCacheManager(CacheManager.DEFAULT_NAME).getCache("distinctValuesCountCache");
+    	Cache cache = CacheManager.getCacheManager(CacheManager.DEFAULT_NAME).getCache(CacheManagementServiceIF.DISTINCT_VALUES_COUNT_CACHE_KEY);
     	Integer countFromCache = (Integer)cache.get(countrySearchableField.getSearchableFieldId()).getObjectValue();
     	
     	assertEquals(count, countFromCache);
+    }
+    
+    /**
+     * Test distinctValuesCountCache
+     */
+    @Test
+    public void testResourceModelCache(){
+    	OccurrenceService occService = (OccurrenceService)applicationContext.getBean("occurrenceService");
+
+    	ResourceModel resourceModel = occService.loadResourceModel("acad-specimens");
+    	assertNotNull(resourceModel);
+    	
+    	//extract value from cache
+    	Cache cache = CacheManager.getCacheManager(CacheManager.DEFAULT_NAME).getCache(CacheManagementServiceIF.RESOURCE_MODEL_CACHE_KEY);
+    	ResourceModel resourceModelFromCache = (ResourceModel)cache.get("acad-specimens").getObjectValue();
+    	assertNotNull(resourceModelFromCache);
+    	
+    	assertEquals(resourceModel.getName(), resourceModelFromCache.getName());
     }
 
 }

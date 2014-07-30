@@ -25,7 +25,9 @@ hibernate.jdbc.fetch_size=1000
 #Email sender configurations
 email.smtpServer=YOUR_VALUE
 email.port=25
+#should we hash the email or store the plain text version
 email.hashAddress=true
+#if we hash it, should we 'salt' it? (ignored if email.hashAddress=false)
 email.salt=6SFDW$PTkp04yogq>vyEfku
 
 #The URL of the tile server
@@ -36,7 +38,7 @@ tiler.port=80
 #The URL of your feedback system. Could also be a mailto or can be removed if no feedback is required.
 feedback.url=http://code.google.com/p/canadensys/issues/entry?template=Explorer%20-%20Interface%20issue
 
-#The path of the folder to store the generated content. Must ends with a slash. Make sure Tomcat can read/write in this folder.
+#The path of the folder to store the generated content. Make sure system user running Tomcat can read/write in this folder.
 searchServiceConfig.generatedContentFolder=YOUR_VALUE
 #The public URL to reach the generated content. Must ends with a slash.
 searchServiceConfig.publicDownloadURL=YOUR_VALUE

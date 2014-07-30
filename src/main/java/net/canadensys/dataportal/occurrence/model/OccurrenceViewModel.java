@@ -15,6 +15,7 @@ import org.apache.commons.lang3.tuple.Pair;
  */
 public class OccurrenceViewModel {
 
+	private String dataSourcePageURL;
 	private List<String> imageList;
 	private List<String> otherMediaList;
 	
@@ -66,5 +67,11 @@ public class OccurrenceViewModel {
 	public Map<String,List<Pair<String,String>>> getAssociatedSequencesPerProviderMap() {
 		return associatedSequencesPerProviderMap;
 	}
-	
+
+	public String getDataSourcePageURL() {
+		return dataSourcePageURL;
+	}
+	public void setDataSourcePageURL(String dataSourcePageURL) {
+		this.dataSourcePageURL = dataSourcePageURL;
+	}
 }

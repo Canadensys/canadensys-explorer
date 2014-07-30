@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * CacheInvalidation strategy using Spring @Scheduled and ImportLogDAO.
- * At a fixed rate, we get the timestamp of the last import log and update the cache if needed.
+ * At a fixed rate, we get the timestamp of the last import log and purge the cache if needed.
  * @author cgendreau
  *
  */
@@ -35,15 +35,15 @@ public class CacheInvalidationScheduled implements CacheInvalidationStrategyIF {
 	public void checkCacheState(){
 		ImportLogModel lastImport = importLogDAO.loadLast();
 		if(lastImport == null){
-			LOGGER.error("Can not check the state of the preLoaded cache. No ImportLogModel found.");
+			LOGGER.error("Can not check the state of the cache. No ImportLogModel found.");
 			return;
 		}
 		
 		long lastImportTimestamp = lastImport.getEvent_end_date_time().getTime();
-		long cacheTimestamp = cacheManagementService.getPreLoadedCacheTimestamp();
+		long cacheTimestamp = cacheManagementService.getCacheTimestamp();
 		
 		if(lastImportTimestamp > cacheTimestamp){
-			cacheManagementService.reloadPreLoadedCache();
+			cacheManagementService.purgeCache();
 		}
 	}
 }

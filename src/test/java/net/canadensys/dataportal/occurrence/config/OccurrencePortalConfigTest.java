@@ -25,10 +25,14 @@ public class OccurrencePortalConfigTest {
 	
 	@Test
 	public void testConfigLoading(){
-		
 		//ensure locales are loaded
 		assertEquals(2,occurrencePortalConfig.getSupportedLocale().size());
 		assertNotNull(occurrencePortalConfig.getResourceBundle(Locale.ENGLISH));
+	}
+	
+	@Test
+	public void testGetDownloadEmailTemplateName(){
+		assertEquals("download-email-en.ftl",occurrencePortalConfig.getDownloadEmailTemplateName(Locale.ENGLISH));
 	}
 
 }

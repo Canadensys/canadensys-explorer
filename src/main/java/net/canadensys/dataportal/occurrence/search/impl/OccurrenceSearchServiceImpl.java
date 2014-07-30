@@ -1,5 +1,5 @@
 /*
-	Copyright (c) 2012 Canadensys
+	Copyright (c) 2012,2014 Canadensys
 */
 package net.canadensys.dataportal.occurrence.search.impl;
 
@@ -61,15 +61,7 @@ public class OccurrenceSearchServiceImpl implements OccurrenceSearchService {
 		
 	//get log4j handler
 	private static final Logger LOGGER = Logger.getLogger(OccurrenceSearchServiceImpl.class);
-	private static final Map<Locale,String> DOWNLOAD_EMAIL_TEMPLATE_PER_LOCALE = new HashMap<Locale,String>();
 	private static final String EMAIL_DATE_FORMAT = "EEEE, yyyy-MM-dd HH:mm:ss z";
-	private static final int MAX_STATS_PER_FIELD = 10;
-	
-	//TODO allow to customize this through configuration
-	static{
-		DOWNLOAD_EMAIL_TEMPLATE_PER_LOCALE.put(Locale.ENGLISH, "download-email-en.ftl");
-		DOWNLOAD_EMAIL_TEMPLATE_PER_LOCALE.put(Locale.FRENCH, "download-email-fr.ftl");
-	}
 	
 	private List<String> DWCA_HEADERS;
 	
@@ -235,7 +227,8 @@ public class OccurrenceSearchServiceImpl implements OccurrenceSearchService {
 				File dwcaFile = dwcaBuilder.generatesDarwinCoreArchive(DWCA_HEADERS,searchCriteria, fullPath, fullFilePath);
 				if(dwcaFile != null && dwcaFile.exists()){					
 					//send email
-					String fileURL = searchServiceConfig.getPublicDownloadURL() + dwcaFile.getName();
+					String fileURL = StringUtils.appendIfMissing(searchServiceConfig.getPublicDownloadURL(), "/") + dwcaFile.getName();
+					
 					Locale locale = (Locale)extraProperties.get(DownloadPropertiesEnum.LOCALE);
 					ResourceBundle bundle = appConfig.getResourceBundle(locale);
 					
@@ -246,7 +239,7 @@ public class OccurrenceSearchServiceImpl implements OccurrenceSearchService {
 					templateData.put("requestTimestampText", new SimpleDateFormat(EMAIL_DATE_FORMAT, locale).format(now));
 					templateData.put("requestURL", extraProperties.get(DownloadPropertiesEnum.SEARCH_URL));
 					
-					String templateName = DOWNLOAD_EMAIL_TEMPLATE_PER_LOCALE.get(locale);
+					String templateName = appConfig.getDownloadEmailTemplateName(locale);
 					if(!mailSender.sendMessage(emailAddress, bundle.getString("download.dwca.email.subject"), templateData, templateName)){
 						LOGGER.fatal("Supposed to send DarwinCore archive by email to " + md5emailAddress + " but it failed.");
 					}
@@ -390,7 +383,7 @@ public class OccurrenceSearchServiceImpl implements OccurrenceSearchService {
 	 */
 	@Override
 	@Transactional(readOnly=true)
-	@Cacheable(value=CacheManagementServiceIF.CACHE_NAME_DISTINCT_VALUES_COUNT, key="#column.searchableFieldId", condition="#searchCriteria.isEmpty()")
+	@Cacheable(value=CacheManagementServiceIF.DISTINCT_VALUES_COUNT_CACHE_KEY, key="#column.searchableFieldId", condition="#searchCriteria.isEmpty()")
 	public Integer getDistinctValuesCount(Map<String, List<SearchQueryPart>> searchCriteria, OccurrenceSearchableField column){
 		//copy(deep copy not needed) searchCriteria to not add the non-empty criteria in the provided object.
 		Map<String, List<SearchQueryPart>> innerSearchCriteria = new HashMap<String, List<SearchQueryPart>>();

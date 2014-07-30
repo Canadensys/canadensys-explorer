@@ -1,5 +1,6 @@
 package net.canadensys.dataportal.occurrence.cache.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class CacheManagementServiceImpl implements CacheManagementServiceIF{
 	
+	//cache keys managed by this CacheManagementServiceIF implementation
+	public static final List<String> MANAGED_CACHE_KEY = new ArrayList<String>();
+	static{
+		MANAGED_CACHE_KEY.add(DISTINCT_VALUES_COUNT_CACHE_KEY);
+		MANAGED_CACHE_KEY.add(CacheManagementServiceIF.RESOURCE_MODEL_CACHE_KEY);
+	}
+	
 	@Autowired
 	private OccurrenceSearchService occurrenceSearchService;
 	
@@ -34,7 +42,7 @@ public class CacheManagementServiceImpl implements CacheManagementServiceIF{
 	@Qualifier("searchServiceConfig")
 	private SearchServiceConfig searchServiceConfig;
 	
-	private AtomicLong preLoadedCacheTimestamp = new AtomicLong(0);
+	private AtomicLong cacheTimestamp = new AtomicLong(0);
 	
 	/**
 	 * Blocking function, caller is responsible to run this in a thread if needed.
@@ -52,23 +60,25 @@ public class CacheManagementServiceImpl implements CacheManagementServiceIF{
 			osf = searchServiceConfig.getSearchableField(currSf);
 			occurrenceSearchService.getDistinctValuesCount(emptySearchCriteria, osf);
 		}
-		preLoadedCacheTimestamp.set(System.currentTimeMillis());
 	}
 	
 	@Override
-	public void reloadPreLoadedCache(){
-		
-		//clear cache
-		Cache cache = CacheManager.getCacheManager(CacheManager.DEFAULT_NAME).getCache(CACHE_NAME_DISTINCT_VALUES_COUNT);
-		if(cache != null){
-			cache.removeAll();
+	public long getCacheTimestamp() {
+		return cacheTimestamp.get();
+	}
+
+	@Override
+	public void purgeCache() {
+		Cache cache = null;
+		for(String currCacheKey : MANAGED_CACHE_KEY){
+			cache = CacheManager.getCacheManager(CacheManager.DEFAULT_NAME).getCache(currCacheKey);
+			if(cache != null){
+				cache.removeAll();
+			}
 		}
-		//reload
+		cacheTimestamp.set(System.currentTimeMillis());
+		
+		//reload the preLoaded cache
 		preLoadCache();
-	}
-	
-	@Override
-	public long getPreLoadedCacheTimestamp() {
-		return preLoadedCacheTimestamp.get();
 	}
 }

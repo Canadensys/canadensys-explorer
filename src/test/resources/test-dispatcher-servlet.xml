@@ -31,6 +31,7 @@
 	<context:property-placeholder location="classpath:portal-test.properties" />
 
 	<jdbc:initialize-database data-source="dataSource">
+		<jdbc:script location="classpath:h2/h2setup.sql" />
 		<!-- loaded from canadensys-data-access jar file -->
     	<jdbc:script location="classpath:script/occurrence/create_occurrence_tables.sql" />
   	</jdbc:initialize-database>

@@ -2,6 +2,7 @@ package net.canadensys.dataportal.occurrence;
 
 import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
 import net.canadensys.dataportal.occurrence.model.ResourceContactModel;
+import net.canadensys.dataportal.occurrence.model.ResourceModel;
 
 /**
  * OccurrenceService layer interface to access occurrence related data. This interface handles only high-level methods.
@@ -38,5 +39,12 @@ public interface OccurrenceService {
 	 * @return
 	 */
 	public ResourceContactModel loadResourceContactModel(String sourcefileid);
+	
+	/**
+	 * Load a ResourceModel based on the sourcefileid
+	 * @param sourcefileid
+	 * @return
+	 */
+	public ResourceModel loadResourceModel(String sourcefileid);
 
 }

@@ -64,7 +64,7 @@ VALUES (1, 'acad-specimens', 'E. C. Smith Herbarium (ACAD)', 'Greedo', 'Manager'
 
 -- resource_management
 INSERT INTO resource_management(sourcefileid,name,archive_url)
-  VALUES ('acad-specimens','E. C. Smith Herbarium (ACAD)','http://data.canadensys.net/ipt/resource.do?r=acad-specimens');
+  VALUES ('acad-specimens','E. C. Smith Herbarium (ACAD)','http://data.canadensys.net/ipt/archive.do?r=acad-specimens');
 
 -- unique_values
 INSERT INTO unique_values(id,key,occurrence_count,value,unaccented_value)

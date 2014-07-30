@@ -30,6 +30,9 @@ public class OccurrencePortalConfig {
 	public static final String DEFAULT_LANGUAGE_KEY = "i18n.defaultLanguage";
 	public static final String SUPPORTED_LANGUAGES_KEY = "i18n.supportedLanguages";
 	
+	//TODO we should use "_" and not "-"
+	public static final String DOWNLOAD_EMAIL_TEMPLATE_FORMAT = "download-email-%s.ftl";
+	
 	//Associated sequences properties related
 	public static final String SEQ_URL_FORMAT_SUFFIX = ".urlFormat";
 	public static final String SEQ_DISPLAY_NAME_SUFFIX = ".displayName";
@@ -54,7 +57,6 @@ public class OccurrencePortalConfig {
 	
 	//Unique key that is managed by the portal
 	public static final String OCCURRENCE_MANAGED_ID_FIELD = "auto_id";
-	
 	
 	//Key used for models in view
 	public static final String PAGE_ROOT_MODEL_KEY = "page";
@@ -172,5 +174,14 @@ public class OccurrencePortalConfig {
 	public String getSequenceProviderDisplayName(String sequenceProvider) {
 		return sequenceProvidersProperties.getProperty(sequenceProvider + SEQ_DISPLAY_NAME_SUFFIX);
 	}
-
+	
+	/**
+	 * Get download Email Freemarker template name for a Locale.
+	 * @param locale
+	 * @return
+	 */
+	public String getDownloadEmailTemplateName(Locale locale){
+		return String.format(DOWNLOAD_EMAIL_TEMPLATE_FORMAT, locale.getLanguage());
+	}
+	
 }
