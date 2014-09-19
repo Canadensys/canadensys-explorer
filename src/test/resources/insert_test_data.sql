@@ -13,6 +13,20 @@ VALUES (
 'Acer pseudoplatanus','species','Canada','Nova Scotia','ACAD','ECS019597',1980,'Under rocks'
 );
 
+/* Add extension data */
+INSERT INTO occurrence_extension(auto_id,dwcaid,sourcefileid,resource_uuid,ext_type,ext_data)
+VALUES(
+1,'ACAD-1','acad-specimens','ABDU-NSNS-2836','Multimedia',
+toKeyValue('creator=>Chuck Norris','references=>http://procyon.acadiau.ca/ecsmith/cgi-bin/image.cgi?ECS019597,jpeg','identifier=>http://procyon.acadiau.ca/ecsmith/cgi-bin/image.cgi?ECS019597,jpeg',
+'license=>http://creativecommons.org/licenses/by/4.0/')
+),
+(
+2,'ACAD-1','acad-specimens','ABDU-NSNS-2836','Multimedia',
+toKeyValue('creator=>JCVD','references=>http://procyon.acadiau.ca/ecsmith/cgi-bin/image.cgi?ECS019597,jpeg','identifier=>http://procyon.acadiau.ca/ecsmith/cgi-bin/image.cgi?ECS019597,jpeg',
+'license=>http://creativecommons.org/licenses/unkown')
+)
+;
+
 INSERT INTO occurrence(
 auto_id,datasetname,sourcefileid,dwcaid,scientificname,taxonrank,country,stateprovince,collectioncode,catalognumber,syear,habitat)
 VALUES (
@@ -63,8 +77,8 @@ INSERT INTO resource_contact(
 VALUES (1, 'acad-specimens', 'E. C. Smith Herbarium (ACAD)', 'Greedo', 'Manager', 'Sith', '1212 Death Star Road', 'Jawas County', 'Dunes', 'Tatooine', 'R1-D2', 'greedo@tatooine.org');
 
 -- resource_management
-INSERT INTO resource_management(sourcefileid,name,archive_url)
-  VALUES ('acad-specimens','E. C. Smith Herbarium (ACAD)','http://data.canadensys.net/ipt/archive.do?r=acad-specimens');
+INSERT INTO resource_management(sourcefileid,resource_uuid,name,archive_url)
+  VALUES ('acad-specimens','ABDU-NSNS-2836','E. C. Smith Herbarium (ACAD)','http://data.canadensys.net/ipt/archive.do?r=acad-specimens');
 
 -- unique_values
 INSERT INTO unique_values(id,key,occurrence_count,value,unaccented_value)

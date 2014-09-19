@@ -148,7 +148,7 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
     	OccurrenceModel occModel = new OccurrenceModel();
     	occModel.setAssociatedsequences("BOLD :1234|bold: 2345|unknown:3456");
     	
-    	OccurrenceViewModel occViewModel = occurrenceController.buildOccurrenceViewModel(occModel);
+    	OccurrenceViewModel occViewModel = occurrenceController.buildOccurrenceViewModel(occModel,null,null);
     	
     	Map<String,List<Pair<String,String>>> associatedSequencesPerProviderMap = occViewModel.getAssociatedSequencesPerProviderMap();
     	

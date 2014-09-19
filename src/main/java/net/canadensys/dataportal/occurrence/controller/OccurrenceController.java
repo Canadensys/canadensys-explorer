@@ -2,12 +2,16 @@ package net.canadensys.dataportal.occurrence.controller;
 
 import java.text.MessageFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import net.canadensys.dataportal.occurrence.OccurrenceService;
 import net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig;
+import net.canadensys.dataportal.occurrence.model.MultimediaViewModel;
+import net.canadensys.dataportal.occurrence.model.OccurrenceExtensionModel;
 import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
 import net.canadensys.dataportal.occurrence.model.OccurrenceViewModel;
 import net.canadensys.dataportal.occurrence.model.ResourceContactModel;
@@ -18,6 +22,7 @@ import net.canadensys.web.i18n.annotation.I18nTranslation;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.gbif.dwc.terms.GbifTerm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -66,12 +71,19 @@ public class OccurrenceController {
 	@I18nTranslation(resourceName="occurrence", translateFormat = "/resources/{}/occurrences/{}")
 	public ModelAndView handleOccurrencePerResource(@PathVariable String iptResource,@PathVariable String dwcaId, HttpServletRequest request){
 		OccurrenceModel occModel = occurrenceService.loadOccurrenceModel(iptResource,dwcaId,true);
+		
+		//get UUID from sourcefileid (iptResource). loadResourceModel is using cache
+		ResourceModel resourceModel = occurrenceService.loadResourceModel(iptResource);
+		
+		List<OccurrenceExtensionModel> occMultimediaExtModelList = occurrenceService.loadOccurrenceExtensionModel(
+				GbifTerm.Multimedia.simpleName(), resourceModel.getResource_uuid(), dwcaId);
+		
 		HashMap<String,Object> modelRoot = new HashMap<String,Object>();
 		
 		if(occModel != null){
 			modelRoot.put("occModel", occModel);
 			modelRoot.put("occRawModel",occModel.getRawModel());
-			modelRoot.put("occViewModel", buildOccurrenceViewModel(occModel));
+			modelRoot.put("occViewModel", buildOccurrenceViewModel(occModel, resourceModel, occMultimediaExtModelList));
 		}
 		else{
 			throw new ResourceNotFoundException();
@@ -135,11 +147,35 @@ public class OccurrenceController {
 	 * @param occModel
 	 * @return OccurrenceViewModel instance, never null
 	 */
-	public OccurrenceViewModel buildOccurrenceViewModel(OccurrenceModel occModel){
+	public OccurrenceViewModel buildOccurrenceViewModel(OccurrenceModel occModel, ResourceModel resourceModel, List<OccurrenceExtensionModel> occMultimediaExtModelList){
 		OccurrenceViewModel occViewModel = new OccurrenceViewModel();
 		
-		//handle media
-		if(StringUtils.isNotEmpty(occModel.getAssociatedmedia())){
+		//handle multimedia first (priority over associatedmedia)
+		if(occMultimediaExtModelList != null){
+			String multimediaType, multimediaLicense;
+			boolean isImage;
+			String licenseShortname;
+			MultimediaViewModel multimediaViewModel;
+			Map<String,String> extData;
+			
+			for(OccurrenceExtensionModel currMultimediaExt : occMultimediaExtModelList){
+				extData = currMultimediaExt.getExt_data();
+				
+				multimediaType = StringUtils.defaultString(extData.get("type"));
+				multimediaLicense = StringUtils.defaultString(extData.get("license"));
+				
+				//check if it's an image
+				isImage = multimediaType.startsWith("image");
+				licenseShortname = appConfig.getLicenseShortName(multimediaLicense);
+				
+				multimediaViewModel = new MultimediaViewModel(extData.get("references"), extData.get("identifier"),
+						multimediaLicense, extData.get("creator"), isImage, licenseShortname);
+				occViewModel.addMultimediaViewModel(multimediaViewModel);
+			}
+		}
+		
+		//handle media (if occMultimediaExtModelList was not provided)
+		if(occMultimediaExtModelList == null && StringUtils.isNotEmpty(occModel.getAssociatedmedia())){
 			//assumes that data are coming from harvester
 			String[] media = occModel.getAssociatedmedia().split("; ");
 			for(String currentMedia : media){
@@ -151,6 +187,7 @@ public class OccurrenceController {
 				}
 			}
 		}
+		
 		
 		//handle associated sequences
 		if(StringUtils.isNotEmpty(occModel.getAssociatedsequences())){
@@ -182,10 +219,9 @@ public class OccurrenceController {
 		}
 		
 		//handle data source page URL (url to the resource page)
-		ResourceModel resource = occurrenceService.loadResourceModel(occModel.getSourcefileid());
-		if(resource != null){
-			if(StringUtils.contains(resource.getArchive_url(),IPT_ARCHIVE_PATTERN)){
-				occViewModel.setDataSourcePageURL(StringUtils.replace(resource.getArchive_url(), IPT_ARCHIVE_PATTERN, IPT_RESOURCE_PATTERN));
+		if(resourceModel != null){
+			if(StringUtils.contains(resourceModel.getArchive_url(),IPT_ARCHIVE_PATTERN)){
+				occViewModel.setDataSourcePageURL(StringUtils.replace(resourceModel.getArchive_url(), IPT_ARCHIVE_PATTERN, IPT_RESOURCE_PATTERN));
 			}
 		}
 		return occViewModel;

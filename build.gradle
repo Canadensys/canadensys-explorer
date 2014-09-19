@@ -37,9 +37,10 @@ ext {
 	rewriteVersion = '2.0.12.Final'
 	ehCacheVersion = '2.6.8'
 	sitemeshVersion = '3.0.0'
+	snakeYamlVersion = '1.14'
 	
-	dataAccessVersion = '2.9.0'
-	webCoreVersion = '0.2'
+	dataAccessVersion = '2.11.0-SNAPSHOT'
+	webCoreVersion = '0.3-SNAPSHOT'
 
 	tomcatVersion = '6.0.29'
 	seleniumVersion = '2.42.2'
@@ -84,6 +85,7 @@ dependencies {
 	compile group: 'org.ocpsoft.rewrite', name: 'rewrite-servlet', version: rewriteVersion
 	compile group: 'net.sf.ehcache', name: 'ehcache-core', version: ehCacheVersion
 	compile group: 'org.sitemesh', name: 'sitemesh', version: sitemeshVersion
+	compile group: 'org.yaml', name: 'snakeyaml', version: snakeYamlVersion
 
 	//h2 is included to allow integration testing using a mock database
     compile group: 'com.h2database', name: 'h2', version: h2Version

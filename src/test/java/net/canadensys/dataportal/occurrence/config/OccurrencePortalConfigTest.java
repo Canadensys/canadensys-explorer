@@ -28,6 +28,8 @@ public class OccurrencePortalConfigTest {
 		//ensure locales are loaded
 		assertEquals(2,occurrencePortalConfig.getSupportedLocale().size());
 		assertNotNull(occurrencePortalConfig.getResourceBundle(Locale.ENGLISH));
+		
+		assertEquals("cc0",occurrencePortalConfig.getLicenseShortName("http://creativecommons.org/publicdomain/zero/1.0/"));
 	}
 	
 	@Test

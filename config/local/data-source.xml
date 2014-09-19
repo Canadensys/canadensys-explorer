@@ -7,7 +7,7 @@
 	http://www.springframework.org/schema/jdbc
     http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd">
     
-    	<!-- Application configuration -->
+    <!-- Application configuration -->
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="ignoreResourceNotFound" value="true" />
 		<property name="locations">
@@ -42,6 +42,7 @@
 				<value>net.canadensys.dataportal.occurrence.model.UniqueValuesModel</value>
 				<value>net.canadensys.dataportal.occurrence.model.OccurrenceModel</value>
 				<value>net.canadensys.dataportal.occurrence.model.OccurrenceRawModel</value>
+				<value>net.canadensys.dataportal.occurrence.model.OccurrenceExtensionModel</value>
 				<value>net.canadensys.dataportal.occurrence.model.DownloadLogModel</value>
 				<value>net.canadensys.dataportal.occurrence.model.ResourceContactModel</value>
 				<value>net.canadensys.dataportal.occurrence.model.ResourceModel</value>

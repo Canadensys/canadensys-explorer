@@ -69,6 +69,10 @@
 	    <property name="fallbackToSystemLocale" value="false"/>
 	</bean>
 	
+	<bean id="licenseInfo" class="net.canadensys.dataportal.occurrence.config.YamlLoader" factory-method="fromFile">
+		<constructor-arg type="java.lang.String" value="references/license.yml"/>
+	</bean>
+	
 	<!-- Load reference resources -->
 	<util:properties id="sequenceProvidersProperties" location="classpath:references/sequenceProviders.properties"/>
 
@@ -90,6 +94,7 @@
 		<property name="emailSalt" value="${email.salt:null}" />
 		<property name="supportedLanguages" value="${i18n.supportedLanguages:en}" />
 		<property name="sequenceProvidersProperties" ref="sequenceProvidersProperties" />
+		<property name="licenseInfo" ref="licenseInfo" />
 	</bean>
 	
 	<!-- Freemarker config -->

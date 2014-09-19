@@ -1,0 +1,16 @@
+#temporary yaml file to store license information
+#In the future, license informations should be extracted from Creative Commons rdf
+cc0:
+  - http://creativecommons.org/publicdomain/zero/1.0/
+by:
+  - http://creativecommons.org/licenses/by/4.0/
+  - http://creativecommons.org/licenses/by/3.0/
+by-sa:
+  - http://creativecommons.org/licenses/by-sa/4.0/
+  - http://creativecommons.org/licenses/by-sa/3.0/
+by-nc:
+  - http://creativecommons.org/licenses/by-nc/4.0/
+  - http://creativecommons.org/licenses/by-nc/3.0/
+by-nc-sa:
+  - http://creativecommons.org/licenses/by-nc-sa/4.0/
+  - http://creativecommons.org/licenses/by-nc-sa/3.0/

@@ -19,6 +19,7 @@ public class OccurrenceViewModel {
 	private List<String> imageList;
 	private List<String> otherMediaList;
 	
+	private List<MultimediaViewModel> multimediaViewModelList;
 	private Map<String,List<Pair<String,String>>> associatedSequencesPerProviderMap;
 	
 	public void addImage(String image){
@@ -33,6 +34,17 @@ public class OccurrenceViewModel {
 			otherMediaList = new ArrayList<String>();
 		}
 		otherMediaList.add(otherMedia);
+	}
+	
+	public void addMultimediaViewModel(MultimediaViewModel multimediaViewModel){
+		if(multimediaViewModelList == null){
+			multimediaViewModelList = new ArrayList<MultimediaViewModel>();
+		}
+		multimediaViewModelList.add(multimediaViewModel);
+	}
+	
+	public List<MultimediaViewModel> getMultimediaViewModelList(){
+		return multimediaViewModelList;
 	}
 	
 	/**

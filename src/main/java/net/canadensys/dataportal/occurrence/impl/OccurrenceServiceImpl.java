@@ -5,8 +5,10 @@ import java.util.List;
 import net.canadensys.dataportal.occurrence.OccurrenceService;
 import net.canadensys.dataportal.occurrence.cache.CacheManagementServiceIF;
 import net.canadensys.dataportal.occurrence.dao.OccurrenceDAO;
+import net.canadensys.dataportal.occurrence.dao.OccurrenceExtensionDAO;
 import net.canadensys.dataportal.occurrence.dao.ResourceContactDAO;
 import net.canadensys.dataportal.occurrence.dao.ResourceDAO;
+import net.canadensys.dataportal.occurrence.model.OccurrenceExtensionModel;
 import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
 import net.canadensys.dataportal.occurrence.model.ResourceContactModel;
 import net.canadensys.dataportal.occurrence.model.ResourceModel;
@@ -28,6 +30,9 @@ public class OccurrenceServiceImpl implements OccurrenceService {
 		
 	@Autowired
 	private OccurrenceDAO occurrenceDAO;
+	
+	@Autowired
+	private OccurrenceExtensionDAO occurrenceExtensionDAO;
 	
 	@Autowired
 	private ResourceContactDAO resourceContactDAO;
@@ -58,6 +63,12 @@ public class OccurrenceServiceImpl implements OccurrenceService {
 	public OccurrenceModel loadOccurrenceModel(String sourcefileid, String dwcaId, boolean loadRawModel) {
 		OccurrenceModel occModel = occurrenceDAO.load(sourcefileid, dwcaId, loadRawModel);
 		return occModel;
+	}
+	
+	@Override
+	@Transactional(readOnly=true)
+	public List<OccurrenceExtensionModel> loadOccurrenceExtensionModel(String extensionType, String resourceUUID, String dwcaId) {
+		return occurrenceExtensionDAO.load(extensionType, resourceUUID, dwcaId);
 	}
 	
 	@Override

@@ -1,5 +1,8 @@
 package net.canadensys.dataportal.occurrence;
 
+import java.util.List;
+
+import net.canadensys.dataportal.occurrence.model.OccurrenceExtensionModel;
 import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
 import net.canadensys.dataportal.occurrence.model.ResourceContactModel;
 import net.canadensys.dataportal.occurrence.model.ResourceModel;
@@ -32,6 +35,15 @@ public interface OccurrenceService {
 	 * @return
 	 */
 	public OccurrenceModel loadOccurrenceModel(String sourcefileid, String dwcaId, boolean loadRawModel);
+	
+	/**
+	 * Load all OccurrenceExtensionModel of the specified type based on the unique key resourceUUID/dwcaId.
+	 * @param extensionType
+	 * @param resourceUUID
+	 * @param dwcaId
+	 * @return
+	 */
+	public List<OccurrenceExtensionModel> loadOccurrenceExtensionModel(String extensionType, String resourceUUID, String dwcaId);
 	
 	/**
 	 * Load a ResourceContactModel based on the sourcefileid

@@ -63,6 +63,26 @@
 			<tr><th scope="row">${rc.getMessage("occ.scientificnameauthorship")}</th><td>${page.occModel.scientificnameauthorship?if_exists}</td></tr>
 		</tbody>
 		</table>
+		
+		<#if page.occViewModel.multimediaViewModelList?has_content>
+		<h2>${rc.getMessage("occpage.group.multimedia")}</h2>
+		<div id="occpage_image">
+		<ul>
+		<#list page.occViewModel.multimediaViewModelList as currMultimediaViewModel>
+			<li><a href="${currMultimediaViewModel.references!}"><img src="${currMultimediaViewModel.identifier!}"/></a>
+			<div>
+			<#if currMultimediaViewModel.licenseShortname?has_content>
+				<a href="${currMultimediaViewModel.license}"><img src="${rc.getContextUrl("/assets/images/"+currMultimediaViewModel.licenseShortname+".png")}"/></a>
+			<#else>
+				<@printIfNotEmpty text=rc.getMessage("occ.multimedia.license")+": " variable=currMultimediaViewModel.license/>
+			</#if>
+			<@printIfNotEmpty text=rc.getMessage("occ.multimedia.creator")+": " variable=currMultimediaViewModel.creator/>
+			</div>
+			</li>
+		</#list>
+		</ul>
+		</div>
+		</#if>
 
 		<h2>${rc.getMessage("occpage.group.location")}</h2>
 		<table class="occpage_group">

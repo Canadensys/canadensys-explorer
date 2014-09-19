@@ -54,6 +54,8 @@ public class OccurrencePortalConfig {
 	//Associated sequences related
 	private Properties sequenceProvidersProperties;
 	
+	private Map<String,List<String>> licenseInfo;
+	
 	//Unique key that is managed by the portal
 	public static final String OCCURRENCE_MANAGED_ID_FIELD = "auto_id";
 	
@@ -172,6 +174,29 @@ public class OccurrencePortalConfig {
 	}
 	public String getSequenceProviderDisplayName(String sequenceProvider) {
 		return sequenceProvidersProperties.getProperty(sequenceProvider + SEQ_DISPLAY_NAME_SUFFIX);
+	}
+	
+	public void setLicenseInfo(Map<String,List<String>> licenseInfo) {
+		this.licenseInfo = licenseInfo;
+	}
+	
+	/**
+	 * Get a license shortname (e.g. by-nc) from an Uri.
+	 * Uri must be defined in the license configuration file.
+	 * @param licenseUri
+	 * @return
+	 */
+	public String getLicenseShortName(String licenseUri) {
+		if(licenseInfo != null){
+			for(String currKey : licenseInfo.keySet()){
+				for(String currUri : licenseInfo.get(currKey)){
+					if(currUri.equalsIgnoreCase(licenseUri)){
+						return currKey;
+					}
+				}
+			}
+		}
+		return null;
 	}
 	
 	/**

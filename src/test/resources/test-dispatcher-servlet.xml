@@ -30,6 +30,10 @@
 	<!-- Application configuration -->
 	<context:property-placeholder location="classpath:portal-test.properties" />
 
+	<bean id="licenseInfo" class="net.canadensys.dataportal.occurrence.config.YamlLoader" factory-method="fromFile">
+		<constructor-arg type="java.lang.String" value="references/license.yml"/>
+	</bean>
+
 	<jdbc:initialize-database data-source="dataSource">
 		<jdbc:script location="classpath:h2/h2setup.sql" />
 		<!-- loaded from canadensys-data-access jar file -->
@@ -55,6 +59,7 @@
 		<property name="dwcaTermUsed" value="${dwca.termUsed}" />
 		<property name="supportedLanguages" value="${i18n.supportedLanguages:en}" />
 		<property name="sequenceProvidersProperties" ref="sequenceProvidersProperties" />
+		<property name="licenseInfo" ref="licenseInfo" />
 	</bean>
 		
 	<bean id ="mapServerAccess" class="net.canadensys.dataportal.occurrence.map.impl.WindshaftMapServerAccess">
