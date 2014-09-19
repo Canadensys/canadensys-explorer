@@ -6,16 +6,12 @@
 </head>
 <a id="main-content"></a>
 <div id="body">
+
+<!--
 	<div id="side_bar">
-		<p><a class="round big_button no_margin" href="../contact">${rc.getMessage("occpage.menu.datasetcontact")}</a></p>
 		<#if page.occRawModel._references?has_content >
 		<p><a class="round big_button" href="${page.occRawModel._references}">${rc.getMessage("occpage.menu.sourcerecord")}</a></p>
 		</#if>
-		
-		<div id="occpage_map" class="round">
-		<#-- Map injected, will remove span element -->
-		<span>${rc.getMessage("occpage.nogeo")}</span>
-		</div>
 		
 		<#if page.occViewModel.imageList?has_content>
 			<div id="occpage_image">
@@ -34,8 +30,9 @@
 			</div>
 		</#if>
 	</div>
+-->
 	
-	<div id="content" class="clear_fix">
+	<div id="content" class="clear_fix no_side_bar">
 		<h1>${page.occModel.scientificname?if_exists} (${page.occModel.collectioncode?if_exists} ${page.occModel.catalognumber?if_exists})</h1>
 		<p class="details">${rc.getMessage("occpage.header.details")}: ${page.occModel.sourcefileid?if_exists}/${page.occModel.dwcaid?if_exists}</p>
 		<div class="nav_container" id="occpage_navigation">
@@ -67,17 +64,20 @@
 		<#if page.occViewModel.multimediaViewModelList?has_content>
 		<h2>${rc.getMessage("occpage.group.multimedia")}</h2>
 		<div id="occpage_image">
-		<ul>
+		<ul class="clear_fix">
 		<#list page.occViewModel.multimediaViewModelList as currMultimediaViewModel>
-			<li><a href="${currMultimediaViewModel.references!}"><img src="${currMultimediaViewModel.identifier!}"/></a>
-			<div>
-			<#if currMultimediaViewModel.licenseShortname?has_content>
-				<a href="${currMultimediaViewModel.license}"><img src="${rc.getContextUrl("/assets/images/"+currMultimediaViewModel.licenseShortname+".png")}"/></a>
-			<#else>
-				<@printIfNotEmpty text=rc.getMessage("occ.multimedia.license")+": " variable=currMultimediaViewModel.license/>
-			</#if>
-			<@printIfNotEmpty text=rc.getMessage("occ.multimedia.creator")+": " variable=currMultimediaViewModel.creator/>
-			</div>
+			<li>
+				<div>
+					<a href="${currMultimediaViewModel.references!}" class="media"><img src="${currMultimediaViewModel.identifier!}"/></a>
+					<div>
+						<#if currMultimediaViewModel.licenseShortname?has_content>
+							<a href="${currMultimediaViewModel.license}"><img src="${rc.getContextUrl("/assets/images/"+currMultimediaViewModel.licenseShortname+".png")}"/></a>
+						<#else>
+							<@printIfNotEmpty text=rc.getMessage("occ.multimedia.license")+": " variable=currMultimediaViewModel.license/>
+						</#if>
+						<@printIfNotEmpty text=rc.getMessage("occ.multimedia.creator")+": " variable=currMultimediaViewModel.creator/>
+					</div>
+				</div>
 			</li>
 		</#list>
 		</ul>
@@ -85,47 +85,54 @@
 		</#if>
 
 		<h2>${rc.getMessage("occpage.group.location")}</h2>
-		<table class="occpage_group">
-		<tbody>
-			<tr><th scope="row">${rc.getMessage("occ.country")}</th><td>${page.occModel.country?if_exists}</td></tr>
-			<tr><th scope="row">${rc.getMessage("occ.stateprovince")}</th><td>${page.occModel.stateprovince?if_exists}</td></tr>
-			<tr><th scope="row">${rc.getMessage("occ.county")}</th><td>${page.occModel.county?if_exists}</td></tr>
-			<tr><th scope="row">${rc.getMessage("occ.municipality")}</th><td>${page.occModel.municipality?if_exists}</td></tr>
-			<tr><th scope="row">${rc.getMessage("occ.locality")}</th><td>${page.occModel.locality?if_exists}</td></tr>
-		</tbody>
-		<tbody>
-			<tr>
-			  <th scope="row">${rc.getMessage("occ.decimallatitude")}</th>
-			  <td>${safeNumber(page.occModel.decimallatitude!"","")}</td>
-			</tr>
-			<tr>
-			  <th scope="row">${rc.getMessage("occ.decimallongitude")}</th>
-			  <td>${safeNumber(page.occModel.decimallongitude!"","")}</td>
-			</tr>
-			<tr>
-			  <th scope="row">${rc.getMessage("occ.coordinateuncertaintyinmeters")}</th>
-			  <td>${page.occRawModel.coordinateuncertaintyinmeters?if_exists}</td>
-			</tr>
-		</tbody>
-		<tbody>	
-			<tr>
-			  <th scope="row">${rc.getMessage("occ.minimumelevationinmeters")}</th>
-			  <td>${page.occModel.minimumelevationinmeters?if_exists}</td>
-			</tr>
-			<tr>
-			  <th scope="row">${rc.getMessage("occ.maximumelevationinmeters")}</th>
-			  <td>${page.occModel.maximumelevationinmeters?if_exists}</td>
-			</tr>
-		<tbody>
-		</tbody>
-		<tboby>
-			<tr>
-			  <th scope="row">${rc.getMessage("occ.habitat")}</th>
-			  <td>${page.occModel.habitat?if_exists}</td>
-			</tr>
-		</tbody>
-		</table>
-		
+		<div id="occpage_location" class="clear_fix">
+			<table class="occpage_group">
+			<tbody>
+				<tr><th scope="row">${rc.getMessage("occ.country")}</th><td>${page.occModel.country?if_exists}</td></tr>
+				<tr><th scope="row">${rc.getMessage("occ.stateprovince")}</th><td>${page.occModel.stateprovince?if_exists}</td></tr>
+				<tr><th scope="row">${rc.getMessage("occ.county")}</th><td>${page.occModel.county?if_exists}</td></tr>
+				<tr><th scope="row">${rc.getMessage("occ.municipality")}</th><td>${page.occModel.municipality?if_exists}</td></tr>
+				<tr><th scope="row">${rc.getMessage("occ.locality")}</th><td>${page.occModel.locality?if_exists}</td></tr>
+			</tbody>
+			<tbody>
+				<tr>
+				  <th scope="row">${rc.getMessage("occ.decimallatitude")}</th>
+				  <td>${safeNumber(page.occModel.decimallatitude!"","")}</td>
+				</tr>
+				<tr>
+				  <th scope="row">${rc.getMessage("occ.decimallongitude")}</th>
+				  <td>${safeNumber(page.occModel.decimallongitude!"","")}</td>
+				</tr>
+				<tr>
+				  <th scope="row">${rc.getMessage("occ.coordinateuncertaintyinmeters")}</th>
+				  <td>${page.occRawModel.coordinateuncertaintyinmeters?if_exists}</td>
+				</tr>
+			</tbody>
+			<tbody>	
+				<tr>
+				  <th scope="row">${rc.getMessage("occ.minimumelevationinmeters")}</th>
+				  <td>${page.occModel.minimumelevationinmeters?if_exists}</td>
+				</tr>
+				<tr>
+				  <th scope="row">${rc.getMessage("occ.maximumelevationinmeters")}</th>
+				  <td>${page.occModel.maximumelevationinmeters?if_exists}</td>
+				</tr>
+			<tbody>
+			</tbody>
+			<tboby>
+				<tr>
+				  <th scope="row">${rc.getMessage("occ.habitat")}</th>
+				  <td>${page.occModel.habitat?if_exists}</td>
+				</tr>
+			</tbody>
+			</table>
+
+			<div id="occpage_map" class="round">
+			  <#-- Map injected, will remove span element -->
+			  <span>${rc.getMessage("occpage.nogeo")}</span>
+			</div>
+		</div>
+
 		<h2>${rc.getMessage("occpage.group.date")}</h2>
 		<table class="occpage_group">
 		<tbody>

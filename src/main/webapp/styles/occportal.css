@@ -500,7 +500,7 @@ ul.buttons li {
 
 #occpage_navigation .buttons { left: 0; } /* #occpage_navigation extends .nav_container */
 
-#occpage_map, #occpage_image a { /* Size: 298x298 + padding + border = 300x300 */
+#occpage_map, #occpage_image a.media { /* Size: 298x298 + padding + border = 300x300 */
   border: 1px solid #a8a7a5;
   background-color: #e7e7e7;
   display: block;
@@ -518,7 +518,28 @@ ul.buttons li {
   display: table-cell;
   vertical-align: middle;
 }
-#occpage_image a:hover {
+
+#occpage_image ul {
+  padding:0px;
+  list-style-type: none;
+}
+
+#occpage_image li {
+  float:left;
+  margin-right:2em;
+  width:45%;
+}
+
+#occpage_image li div {
+  width:300px;
+  margin:0px auto;
+}
+
+#occpage_image a {
+  margin:0px auto;
+}
+
+#occpage_image a.media:hover {
   background-color: #d3d3d3;
 }
 #occpage_image span {
@@ -531,6 +552,17 @@ ul.buttons li {
   border: none;
   max-height: 298px;
   max-width: 298px;
+  vertical-align:middle;
+}
+
+#occpage_location table {
+  float:left;
+  width:55%;
+  padding-right:20px;
+}
+
+#occpage_map {
+  margin-left:550px;
 }
 
 .occpage_group tbody { border-bottom: 18px solid transparent; } /* Neither padding/margin works */
