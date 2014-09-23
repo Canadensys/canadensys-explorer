@@ -65,8 +65,22 @@ INSERT INTO occurrence_raw(
 auto_id,datasetname,sourcefileid,dwcaid,scientificname,taxonrank,country,stateprovince,collectioncode,catalognumber,habitat,_class,_order,decimallatitude,decimallongitude,associatedSequences)
 VALUES (
 4,'TRT (TRT)','trt-specimens',
-'ACAD-1','Acer pseudoplatanus','species','Canada','Nova Scotia','ACAD','ECS019597','Under rocks','Magnoliopsida','Sapindales',45.099220,-62.354647,
+'TRT-1','Acer pseudoplatanus','species','Canada','Nova Scotia','ACAD','ECS019597','Under rocks','Magnoliopsida','Sapindales',45.099220,-62.354647,
 'GenBank:KC251652|BOLD:TADCR103-10.rbcLa|GenBank:KC25165x|TestBank:anId'
+);
+
+/* record with no scientificname*/
+INSERT INTO occurrence(
+auto_id,datasetname,sourcefileid,dwcaid,taxonrank,country,stateprovince,collectioncode,catalognumber,habitat,_class,_order,decimallatitude,decimallongitude)
+VALUES (
+5,'TRT (TRT)','trt-specimens',
+'TRT-5','species','Canada','Nova Scotia','TRT','ECS019598','Under rocks','Magnoliopsida','Sapindales',45.099220,-62.354647
+);
+INSERT INTO occurrence_raw(
+auto_id,datasetname,sourcefileid,dwcaid,taxonrank,country,stateprovince,collectioncode,catalognumber,habitat,_class,_order,decimallatitude,decimallongitude)
+VALUES (
+5,'TRT (TRT)','trt-specimens',
+'TRT-5','species','Canada','Nova Scotia','TRT','ECS019598','Under rocks','Magnoliopsida','Sapindales',45.099220,-62.354647
 );
 
 -- resource_contact
@@ -79,6 +93,8 @@ VALUES (1, 'acad-specimens', 'E. C. Smith Herbarium (ACAD)', 'Greedo', 'Manager'
 -- resource_management
 INSERT INTO resource_management(sourcefileid,resource_uuid,name,archive_url)
   VALUES ('acad-specimens','ABDU-NSNS-2836','E. C. Smith Herbarium (ACAD)','http://data.canadensys.net/ipt/archive.do?r=acad-specimens');
+INSERT INTO resource_management(sourcefileid,resource_uuid,name,archive_url)
+  VALUES ('trt-specimens','ABDU-NSNS-2837','TRT','http://data.canadensys.net/ipt/archive.do?r=trt-specimens');
 
 -- unique_values
 INSERT INTO unique_values(id,key,occurrence_count,value,unaccented_value)

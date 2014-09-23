@@ -33,8 +33,9 @@
 -->
 	
 	<div id="content" class="clear_fix no_side_bar">
-		<h1>${page.occModel.scientificname?if_exists} (${page.occModel.collectioncode?if_exists} ${page.occModel.catalognumber?if_exists})</h1>
-		<p class="details">${rc.getMessage("occpage.header.details")}: ${page.occModel.sourcefileid?if_exists}/${page.occModel.dwcaid?if_exists}</p>
+		<h1>${page.occModel.scientificname!rc.getMessage("occpage.scientificnamenotprovided")}</h1>
+		<h2>${page.occModel.collectioncode!} ${page.occModel.catalognumber!}<h2>
+		<p class="details">${rc.getMessage("occpage.header.details")}: ${page.occModel.sourcefileid}/${page.occModel.dwcaid}</p>
 		<div class="nav_container" id="occpage_navigation">
 		<ul class="buttons">
 			<li><a href="?view=normal" class="selected">${rc.getMessage("occpage.header.button.normal")}</a></li>
