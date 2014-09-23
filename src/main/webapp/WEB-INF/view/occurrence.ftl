@@ -6,36 +6,13 @@
 </head>
 <a id="main-content"></a>
 <div id="body">
-
-<!--
-	<div id="side_bar">
-		<#if page.occRawModel._references?has_content >
-		<p><a class="round big_button" href="${page.occRawModel._references}">${rc.getMessage("occpage.menu.sourcerecord")}</a></p>
-		</#if>
-		
-		<#if page.occViewModel.imageList?has_content>
-			<div id="occpage_image">
-				<#list page.occViewModel.imageList as currImg>
-				<a class="round" href="${currImg}"><span><img src="${currImg}" alt="${page.occModel.scientificname?if_exists} (${page.occModel.collectioncode?if_exists} ${page.occModel.catalognumber?if_exists})"/></span></a>
-				</#list>
-			</div>
-		</#if>
-		<#if page.occViewModel.otherMediaList?has_content>
-			<div id="occpage_media">
-				<#assign mediaNumber = 1>
-				<#list page.occViewModel.otherMediaList as currOm>
-				<p><a class="round big_button" href="${currOm}" target="_blank">${rc.getMessage("occpage.menu.associatedmedia")} ${mediaNumber}</a></p>
-				<#assign mediaNumber = mediaNumber + 1>
-				</#list>
-			</div>
-		</#if>
-	</div>
--->
 	
 	<div id="content" class="clear_fix no_side_bar">
 		<h1>${page.occModel.scientificname!rc.getMessage("occpage.scientificnamenotprovided")}</h1>
-		<h2>${page.occModel.collectioncode!} ${page.occModel.catalognumber!}<h2>
-		<p class="details">${rc.getMessage("occpage.header.details")}: ${page.occModel.sourcefileid}/${page.occModel.dwcaid}</p>
+		<p class="details">
+		  <@printIfNotEmpty text=rc.getMessage("occpage.header.details")+": "+page.occModel.collectioncode+ " " variable=page.occModel.catalognumber/>
+		</p>
+
 		<div class="nav_container" id="occpage_navigation">
 		<ul class="buttons">
 			<li><a href="?view=normal" class="selected">${rc.getMessage("occpage.header.button.normal")}</a></li>
@@ -72,7 +49,9 @@
 					<a href="${currMultimediaViewModel.references!}" class="media"><img src="${currMultimediaViewModel.identifier!}"/></a>
 					<div>
 						<#if currMultimediaViewModel.licenseShortname?has_content>
-							<a href="${currMultimediaViewModel.license}"><img src="${rc.getContextUrl("/assets/images/"+currMultimediaViewModel.licenseShortname+".png")}"/></a>
+							<a href="${currMultimediaViewModel.license}">
+								<img src="${rc.getContextUrl("/assets/images/"+currMultimediaViewModel.licenseShortname+".png")}" title="${currMultimediaViewModel.title!}" alt="${currMultimediaViewModel.title!}" />
+							</a>
 						<#else>
 							<@printIfNotEmpty text=rc.getMessage("occ.multimedia.license")+": " variable=currMultimediaViewModel.license/>
 						</#if>
@@ -83,6 +62,20 @@
 		</#list>
 		</ul>
 		</div>
+		</#if>
+
+<!-- TODO: adjust the styling here -->
+		<#if page.occViewModel.otherMediaList?has_content>
+		<h2>${rc.getMessage("occpage.group.associatedmultimedia")}</h2>
+			<ul>
+				<#assign mediaNumber = 1>
+				<#list page.occViewModel.otherMediaList as currOm>
+				<li>
+					<a href="${currOm}">${rc.getMessage("occpage.menu.associatedmedia")} ${mediaNumber}</a>
+				</li>
+				<#assign mediaNumber = mediaNumber + 1>
+				</#list>
+			</ul>
 		</#if>
 
 		<h2>${rc.getMessage("occpage.group.location")}</h2>
@@ -97,40 +90,40 @@
 			</tbody>
 			<tbody>
 				<tr>
-				  <th scope="row">${rc.getMessage("occ.decimallatitude")}</th>
-				  <td>${safeNumber(page.occModel.decimallatitude!"","")}</td>
+					<th scope="row">${rc.getMessage("occ.decimallatitude")}</th>
+					<td>${safeNumber(page.occModel.decimallatitude!"","")}</td>
 				</tr>
 				<tr>
-				  <th scope="row">${rc.getMessage("occ.decimallongitude")}</th>
-				  <td>${safeNumber(page.occModel.decimallongitude!"","")}</td>
+					<th scope="row">${rc.getMessage("occ.decimallongitude")}</th>
+					<td>${safeNumber(page.occModel.decimallongitude!"","")}</td>
 				</tr>
 				<tr>
-				  <th scope="row">${rc.getMessage("occ.coordinateuncertaintyinmeters")}</th>
-				  <td>${page.occRawModel.coordinateuncertaintyinmeters?if_exists}</td>
+					<th scope="row">${rc.getMessage("occ.coordinateuncertaintyinmeters")}</th>
+					<td>${page.occRawModel.coordinateuncertaintyinmeters?if_exists}</td>
 				</tr>
 			</tbody>
-			<tbody>	
+			<tbody> 
 				<tr>
-				  <th scope="row">${rc.getMessage("occ.minimumelevationinmeters")}</th>
-				  <td>${page.occModel.minimumelevationinmeters?if_exists}</td>
+					<th scope="row">${rc.getMessage("occ.minimumelevationinmeters")}</th>
+					<td>${page.occModel.minimumelevationinmeters?if_exists}</td>
 				</tr>
 				<tr>
-				  <th scope="row">${rc.getMessage("occ.maximumelevationinmeters")}</th>
-				  <td>${page.occModel.maximumelevationinmeters?if_exists}</td>
+					<th scope="row">${rc.getMessage("occ.maximumelevationinmeters")}</th>
+					<td>${page.occModel.maximumelevationinmeters?if_exists}</td>
 				</tr>
 			<tbody>
 			</tbody>
 			<tboby>
 				<tr>
-				  <th scope="row">${rc.getMessage("occ.habitat")}</th>
-				  <td>${page.occModel.habitat?if_exists}</td>
+					<th scope="row">${rc.getMessage("occ.habitat")}</th>
+					<td>${page.occModel.habitat?if_exists}</td>
 				</tr>
 			</tbody>
 			</table>
 
 			<div id="occpage_map" class="round">
-			  <#-- Map injected, will remove span element -->
-			  <span>${rc.getMessage("occpage.nogeo")}</span>
+				<#-- Map injected, will remove span element -->
+				<span>${rc.getMessage("occpage.nogeo")}</span>
 			</div>
 		</div>
 
@@ -138,8 +131,8 @@
 		<table class="occpage_group">
 		<tbody>
 			<tr>
-			  <th scope="row">${rc.getMessage("view.preview.daterange")}</th>
-			  <td>${formatdate(page.occModel.syear!-1,page.occModel.smonth!-1,page.occModel.sday!-1)}</td>
+				<th scope="row">${rc.getMessage("view.preview.daterange")}</th>
+				<td>${formatdate(page.occModel.syear!-1,page.occModel.smonth!-1,page.occModel.sday!-1)}</td>
 			</tr>
 		</tbody>
 		</table>
@@ -148,20 +141,20 @@
 		<table class="occpage_group">
 		<tbody>
 			<tr>
-			  <th scope="row">${rc.getMessage("occ.collectioncode")}</th>
-			  <td>${page.occModel.collectioncode!}</td>
+				<th scope="row">${rc.getMessage("occ.collectioncode")}</th>
+				<td>${page.occModel.collectioncode!}</td>
 			</tr>
 			<tr>
-			  <th scope="row">${rc.getMessage("occ.catalognumber")}</th>
-			  <td>${page.occModel.catalognumber!}</td>
+				<th scope="row">${rc.getMessage("occ.catalognumber")}</th>
+				<td>${page.occModel.catalognumber!}</td>
 			</tr>
 			<tr>
-			  <th scope="row">${rc.getMessage("occ.recordedby")}</th>
-			  <td>${page.occModel.recordedby!}</td>
+				<th scope="row">${rc.getMessage("occ.recordedby")}</th>
+				<td>${page.occModel.recordedby!}</td>
 			</tr>
 			<tr>
-			  <th scope="row">${rc.getMessage("occ.recordnumber")}</th>
-			  <td>${page.occModel.recordnumber!}</td>
+				<th scope="row">${rc.getMessage("occ.recordnumber")}</th>
+				<td>${page.occModel.recordnumber!}</td>
 			</tr>
 		</tbody>
 		</table>
@@ -172,13 +165,13 @@
 		<table class="occpage_group">
 		<tbody>
 			<#list page.occViewModel.associatedSequencesPerProviderMap?keys as sequenceProvider>
-			  <#list page.occViewModel.associatedSequencesPerProviderMap[sequenceProvider] as associatedSequence>
-			  	<tr>
-			  		<#-- dont't repeat header text -->
-			  		<th scope="row"><#if associatedSequence_index == 0>${sequenceProvider}</#if></th>
+				<#list page.occViewModel.associatedSequencesPerProviderMap[sequenceProvider] as associatedSequence>
+					<tr>
+						<#-- dont't repeat header text -->
+						<th scope="row"><#if associatedSequence_index == 0>${sequenceProvider}</#if></th>
 					<td><@hrefIfNotEmpty text=associatedSequence.getLeft() link=associatedSequence.getRight()/></td>
 				</tr>
-			  </#list>
+				</#list>
 			</#list>
 		</tbody>
 		</table>
@@ -187,16 +180,20 @@
 		<table class="occpage_group">
 		<tbody>
 			<tr>
-			  <th scope="row">${rc.getMessage("occ.dwcaid")}</th>
-			  <td>${page.occModel.dwcaid?if_exists}</td>
+				<th scope="row">${rc.getMessage("occ.dwcaid")}</th>
+				<td>${page.occModel.dwcaid?if_exists}</td>
 			</tr>
 			<tr>
-			  <th scope="row">${rc.getMessage("occ.basisofrecord")}</th>
-			  <td>${page.occRawModel.basisofrecord?if_exists}</td>
+				<th scope="row">${rc.getMessage("occ.basisofrecord")}</th>
+				<td>${page.occRawModel.basisofrecord?if_exists}</td>
 			</tr>
 			<tr>
-			  <th scope="row">${rc.getMessage("occ.modified")}</th>
-			  <td>${page.occRawModel.modified?if_exists}</td>
+				<th scope="row">${rc.getMessage("occpage.menu.sourcerecord")}</th>
+				<td><@hrefIfNotEmpty text=page.occRawModel._references! link=page.occRawModel._references!/></td>
+			</tr>
+			<tr>
+				<th scope="row">${rc.getMessage("occ.modified")}</th>
+				<td>${page.occRawModel.modified?if_exists}</td>
 			</tr>
 		</tbody>
 		</table>
@@ -205,25 +202,34 @@
 		<table class="occpage_group">
 		<tbody>
 			<tr>
-			  <th scope="row">${rc.getMessage("occ.institutioncode")}</th>
-			  <td>${page.occModel.institutioncode?if_exists}</td>
+				<th scope="row">${rc.getMessage("occ.institutioncode")}</th>
+				<td>${page.occModel.institutioncode?if_exists}</td>
 			</tr>
 			<tr>
-			  <th scope="row">${rc.getMessage("occ.datasetname")}</th>
-			  <td>${page.occModel.datasetname!}</td>
+				<th scope="row">${rc.getMessage("occ.datasetname")}</th>
+				<td>${page.occModel.datasetname!}</td>
 			</tr>
 			<tr>
-			  <th scope="row">${rc.getMessage("occ.rights")}</th>
-			  <td>${page.occRawModel.rights?if_exists}</td>
+				<th scope="row">${rc.getMessage("occ.rights")}</th>
+				<td>${page.occRawModel.rights?if_exists}</td>
 			</tr>
 		</tbody>
 		<tbody>
 			<tr>
-			  <th scope="row">${rc.getMessage("occpage.sourcefile")}</th>
-			  <td><@hrefIfNotEmpty text=page.occModel.sourcefileid! link=page.occViewModel.dataSourcePageURL!/></td>
+				<th scope="row">${rc.getMessage("occpage.sourcefile")}</th>
+				<td><@hrefIfNotEmpty text=page.occModel.sourcefileid! link=page.occViewModel.dataSourcePageURL!/></td>
 			</tr>
 		</tbody>
 		</table>
+		
+		<h2>${rc.getMessage("occpage.group.contact")}</h2>
+<!-- TODO: need to get content from ../contact and dump here -->
+		
+		<h2>${rc.getMessage("occpage.group.citation")}</h2>
+<!-- TODO: need a controller method here to construct a citation
+		<p>${page.occModel.catalognumber!} from ${page.occModel.datasetname!} at ${page.occModel.institutioncode!}, ${page.occViewModel.dataSourcePageURL!} (accessed on ${.now})</p>
+-->
+
 	</div>
 </div><#-- body -->
 <#assign coordinateuncertaintyinmeters=0>
@@ -239,7 +245,7 @@
 <@jsAsset fileName="explorer.portal" version=page.currentVersion! useMinified=page.useMinified/>
 <script>
 $(function() {
-  EXPLORER.details.setupSingleOccurrenceMap('occpage_map',${safeNumber(page.occModel.decimallatitude!"","undefined")},${safeNumber(page.occModel.decimallongitude!"","undefined")},${coordinateuncertaintyinmeters?c});
+	EXPLORER.details.setupSingleOccurrenceMap('occpage_map',${safeNumber(page.occModel.decimallatitude!"","undefined")},${safeNumber(page.occModel.decimallongitude!"","undefined")},${coordinateuncertaintyinmeters?c});
 });
 </script>
 </content>
