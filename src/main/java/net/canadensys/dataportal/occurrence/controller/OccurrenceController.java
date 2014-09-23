@@ -169,12 +169,12 @@ public class OccurrenceController {
 				licenseShortname = appConfig.getLicenseShortName(multimediaLicense);
 				
 				multimediaViewModel = new MultimediaViewModel(extData.get("references"), extData.get("identifier"),
-						multimediaLicense, extData.get("creator"), isImage, licenseShortname);
+						extData.get("title"), multimediaLicense, extData.get("creator"), isImage, licenseShortname);
 				occViewModel.addMultimediaViewModel(multimediaViewModel);
 			}
 		}
 		
-		//handle media (if occMultimediaExtModelList was not provided)
+		//handle media (only if occMultimediaExtModelList was not provided)
 		if(occMultimediaExtModelList == null && StringUtils.isNotEmpty(occModel.getAssociatedmedia())){
 			//assumes that data are coming from harvester
 			String[] media = occModel.getAssociatedmedia().split("; ");
