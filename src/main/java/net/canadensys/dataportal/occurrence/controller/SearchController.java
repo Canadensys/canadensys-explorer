@@ -394,8 +394,6 @@ public class SearchController {
 		HashMap<String,Object> modelRoot = new HashMap<String,Object>();
 		if(occModel != null){
 			modelRoot.put("occModel", occModel);
-			//to be removed
-			modelRoot.put("occViewModel", occurrenceController.buildOccurrenceViewModel(occModel,null,null));
 		}
 		else{
 			throw new ResourceNotFoundException();

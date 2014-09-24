@@ -175,19 +175,20 @@ public class OccurrenceController {
 		}
 		
 		//handle media (only if occMultimediaExtModelList was not provided)
-		if(occMultimediaExtModelList == null && StringUtils.isNotEmpty(occModel.getAssociatedmedia())){
+		if((occMultimediaExtModelList == null || occMultimediaExtModelList.isEmpty()) && StringUtils.isNotEmpty(occModel.getAssociatedmedia())){
 			//assumes that data are coming from harvester
 			String[] media = occModel.getAssociatedmedia().split("; ");
+			
+			MultimediaViewModel multimediaViewModel;
+			boolean isImage;
+			
 			for(String currentMedia : media){
-				if(MIME_TYPE_MAP.getContentType(currentMedia).startsWith("image")){
-					occViewModel.addImage(currentMedia);
-				}
-				else{
-					occViewModel.addOtherMedia(currentMedia);
-				}
+				isImage = MIME_TYPE_MAP.getContentType(currentMedia).startsWith("image");
+				multimediaViewModel = new MultimediaViewModel(currentMedia,currentMedia,
+						null, null, null, isImage, null);
+				occViewModel.addMultimediaViewModel(multimediaViewModel);
 			}
 		}
-		
 		
 		//handle associated sequences
 		if(StringUtils.isNotEmpty(occModel.getAssociatedsequences())){
@@ -224,6 +225,9 @@ public class OccurrenceController {
 				occViewModel.setDataSourcePageURL(StringUtils.replace(resourceModel.getArchive_url(), IPT_ARCHIVE_PATTERN, IPT_RESOURCE_PATTERN));
 			}
 		}
+		
+		//TODO handle citation
+		
 		return occViewModel;
 	}
 }

@@ -57,10 +57,8 @@
 <dl class="occ_preview_data clear_fix">
 	<dt>${rc.getMessage("occ.associatedmedia")}</dt>
 	<dd>
-		<#if page.occViewModel.imageList?has_content>
-			<a href="${page.occViewModel.imageList[0]}"><img src="${page.occViewModel.imageList[0]}" alt="${page.occModel.scientificname!} (${page.occModel.collectioncode!} ${page.occModel.catalognumber!})" target="_blank"/></a>
-		<#elseif page.occViewModel.otherMediaList?has_content>
-			<a href="${page.occViewModel.otherMediaList[0]}">${rc.getMessage("occpage.menu.associatedmedia")}</a>
+		<#if page.occModel.hasmedia!false>
+			put icon here
 		</#if>
 	</dd>
 </dl>

@@ -6,7 +6,6 @@
 </head>
 <a id="main-content"></a>
 <div id="body">
-	
 	<div id="content" class="clear_fix no_side_bar">
 		<h1>${page.occModel.scientificname!rc.getMessage("occpage.scientificnamenotprovided")}</h1>
 		<p class="details">
@@ -43,7 +42,7 @@
 		<h2>${rc.getMessage("occpage.group.multimedia")}</h2>
 		<div id="occpage_image">
 		<ul class="clear_fix">
-		<#list page.occViewModel.multimediaViewModelList as currMultimediaViewModel>
+		<#list page.occViewModel.imageViewModelList as currMultimediaViewModel>
 			<li>
 				<div>
 					<a href="${currMultimediaViewModel.references!}" class="media"><img src="${currMultimediaViewModel.identifier!}"/></a>
@@ -64,14 +63,15 @@
 		</div>
 		</#if>
 
-<!-- TODO: adjust the styling here -->
-		<#if page.occViewModel.otherMediaList?has_content>
+<#-- TODO: adjust the styling here -->
+		<#if page.occViewModel.otherMediaViewModelList?has_content>
 		<h2>${rc.getMessage("occpage.group.associatedmultimedia")}</h2>
 			<ul>
+			    <#-- TODO: display the title here and let the controller fill it in case it's missing -->
 				<#assign mediaNumber = 1>
-				<#list page.occViewModel.otherMediaList as currOm>
+				<#list page.occViewModel.otherMediaViewModelList as currOm>
 				<li>
-					<a href="${currOm}">${rc.getMessage("occpage.menu.associatedmedia")} ${mediaNumber}</a>
+					<a href="${currOm.references}">${rc.getMessage("occpage.menu.associatedmedia")} ${mediaNumber}</a>
 				</li>
 				<#assign mediaNumber = mediaNumber + 1>
 				</#list>
@@ -222,14 +222,13 @@
 		</tbody>
 		</table>
 		
-		<h2>${rc.getMessage("occpage.group.contact")}</h2>
-<!-- TODO: need to get content from ../contact and dump here -->
+<#-- <h2>${rc.getMessage("occpage.group.contact")}</h2> -->
+<#-- TODO: need to get content from ../contact and dump here -->
 		
 		<h2>${rc.getMessage("occpage.group.citation")}</h2>
-<!-- TODO: need a controller method here to construct a citation
+<#-- TODO: need a controller method here to construct a citation
 		<p>${page.occModel.catalognumber!} from ${page.occModel.datasetname!} at ${page.occModel.institutioncode!}, ${page.occViewModel.dataSourcePageURL!} (accessed on ${.now})</p>
 -->
-
 	</div>
 </div><#-- body -->
 <#assign coordinateuncertaintyinmeters=0>

@@ -1,16 +1,16 @@
+/* Occurrence with extension */
 INSERT INTO occurrence(
-auto_id,datasetname,sourcefileid,dwcaid,associatedmedia,scientificname,taxonrank,country,stateprovince,collectioncode,catalognumber,minimumelevationinmeters,maximumelevationinmeters,syear,habitat,_class,_order,decimallatitude,decimallongitude)
+auto_id,datasetname,sourcefileid,dwcaid,scientificname,taxonrank,country,stateprovince,collectioncode,catalognumber,minimumelevationinmeters,maximumelevationinmeters,syear,habitat,_class,_order,decimallatitude,decimallongitude,hasmedia)
 VALUES (
 1,'E. C. Smith Herbarium (ACAD)','acad-specimens',
-'ACAD-1','http://procyon.acadiau.ca/ecsmith/cgi-bin/image.cgi?ECS019597,jpeg; http://procyon.acadiau.ca/ecsmith/cgi-bin/image.cgi?ECS019597.jpeg',
-'Acer pseudoplatanus','species','Canada','Nova Scotia','ACAD','ECS019597',100,200,1980,'Under rocks','Magnoliopsida','Sapindales',45.099220,-62.354647
+'ACAD-1',
+'Acer pseudoplatanus','species','Canada','Nova Scotia','ACAD','ECS019597',100,200,1980,'Under rocks','Magnoliopsida','Sapindales',45.099220,-62.354647,true
 );
 INSERT INTO occurrence_raw(
-auto_id,datasetname,sourcefileid,dwcaid,associatedmedia,scientificname,taxonrank,country,stateprovince,collectioncode,catalognumber,year,habitat)
+auto_id,datasetname,sourcefileid,dwcaid,scientificname,taxonrank,country,stateprovince,collectioncode,catalognumber,year,habitat)
 VALUES (
 1,'E. C. Smith Herbarium (ACAD)','acad-specimens',
-'ACAD-1','http://procyon.acadiau.ca/ecsmith/cgi-bin/image.cgi?ECS019597,jpeg; http://procyon.acadiau.ca/ecsmith/cgi-bin/image.cgi?ECS019597.jpeg',
-'Acer pseudoplatanus','species','Canada','Nova Scotia','ACAD','ECS019597',1980,'Under rocks'
+'ACAD-1','Acer pseudoplatanus','species','Canada','Nova Scotia','ACAD','ECS019597',1980,'Under rocks'
 );
 
 /* Add extension data */
@@ -27,17 +27,18 @@ toKeyValue('creator=>JCVD','references=>http://procyon.acadiau.ca/ecsmith/cgi-bi
 )
 ;
 
+/* Occurrence with associatedMedia */
 INSERT INTO occurrence(
-auto_id,datasetname,sourcefileid,dwcaid,scientificname,taxonrank,country,stateprovince,collectioncode,catalognumber,syear,habitat)
+auto_id,datasetname,sourcefileid,dwcaid,scientificname,taxonrank,country,stateprovince,collectioncode,catalognumber,syear,habitat,associatedmedia)
 VALUES (
 2,'E. C. Smith Herbarium (ACAD)','acad-specimens',
-'ACAD-2','Myosotis arvensis','species','Canada','Nova Scotia','ACAD','10440',2013,'On a lobster claw'
+'ACAD-2','Myosotis arvensis','species','Canada','Nova Scotia','ACAD','10440',2013,'On a lobster claw','http://procyon.acadiau.ca/ecsmith/cgi-bin/image.cgi?ECS019597,jpeg; http://procyon.acadiau.ca/ecsmith/cgi-bin/image.cgi?ECS019597.jpeg'
 );
 INSERT INTO occurrence_raw(
-auto_id,datasetname,sourcefileid,dwcaid,scientificname,taxonrank,country,stateprovince,collectioncode,catalognumber,year,habitat)
+auto_id,datasetname,sourcefileid,dwcaid,scientificname,taxonrank,country,stateprovince,collectioncode,catalognumber,year,habitat,associatedmedia)
 VALUES (
 2,'E. C. Smith Herbarium (ACAD)','acad-specimens',
-'ACAD-2','Myosotis arvensis','species','Canada','Nova Scotia','ACAD','10440',2013, 'On a lobster claw'
+'ACAD-2','Myosotis arvensis','species','Canada','Nova Scotia','ACAD','10440',2013, 'On a lobster claw','http://procyon.acadiau.ca/ecsmith/cgi-bin/image.cgi?ECS019597,jpeg; http://procyon.acadiau.ca/ecsmith/cgi-bin/image.cgi?ECS019597.jpeg'
 );
 
 /* dwcaid containing a space character */

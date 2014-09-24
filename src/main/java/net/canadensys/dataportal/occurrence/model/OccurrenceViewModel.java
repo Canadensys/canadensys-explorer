@@ -16,35 +16,53 @@ import org.apache.commons.lang3.tuple.Pair;
 public class OccurrenceViewModel {
 
 	private String dataSourcePageURL;
-	private List<String> imageList;
-	private List<String> otherMediaList;
 	
 	private List<MultimediaViewModel> multimediaViewModelList;
+	
+	//prefiltered list
+	private List<MultimediaViewModel> imageViewModelList;
+	private List<MultimediaViewModel> otherMediaViewModelList;
+	
 	private Map<String,List<Pair<String,String>>> associatedSequencesPerProviderMap;
-	
-	public void addImage(String image){
-		if(imageList == null){
-			imageList = new ArrayList<String>();
-		}
-		imageList.add(image);
-	}
-	
-	public void addOtherMedia(String otherMedia){
-		if(otherMediaList == null){
-			otherMediaList = new ArrayList<String>();
-		}
-		otherMediaList.add(otherMedia);
-	}
-	
+		
 	public void addMultimediaViewModel(MultimediaViewModel multimediaViewModel){
 		if(multimediaViewModelList == null){
 			multimediaViewModelList = new ArrayList<MultimediaViewModel>();
 		}
 		multimediaViewModelList.add(multimediaViewModel);
+		
+		if(multimediaViewModel.isImage()){
+			if(imageViewModelList == null){
+				imageViewModelList = new ArrayList<MultimediaViewModel>();
+			}
+			imageViewModelList.add(multimediaViewModel);
+		}
+		else{
+			if(otherMediaViewModelList == null){
+				otherMediaViewModelList = new ArrayList<MultimediaViewModel>();
+			}
+			otherMediaViewModelList.add(multimediaViewModel);
+		}
 	}
 	
 	public List<MultimediaViewModel> getMultimediaViewModelList(){
 		return multimediaViewModelList;
+	}
+	
+	/**
+	 * Return List of MultimediaViewModel including only the MultimediaViewModel where isImage is true
+	 * @return
+	 */
+	public List<MultimediaViewModel> getImageViewModelList(){
+		return imageViewModelList;
+	}
+	
+	/**
+	 * Return List of MultimediaViewModel including only the MultimediaViewModel where isImage is false
+	 * @return
+	 */
+	public List<MultimediaViewModel> getOtherMediaViewModelList(){
+		return otherMediaViewModelList;
 	}
 	
 	/**
@@ -61,19 +79,6 @@ public class OccurrenceViewModel {
 			associatedSequencesPerProviderMap.put(sequenceProvider, new ArrayList<Pair<String,String>>());
 		}
 		associatedSequencesPerProviderMap.get(sequenceProvider).add(Pair.of(providedSequenceId, link));
-	}
-	
-	public List<String> getImageList() {
-		return imageList;
-	}
-	public void setImageList(List<String> imageList) {
-		this.imageList = imageList;
-	}
-	public List<String> getOtherMediaList() {
-		return otherMediaList;
-	}
-	public void setOtherMediaList(List<String> otherMediaList) {
-		this.otherMediaList = otherMediaList;
 	}
 	
 	public Map<String,List<Pair<String,String>>> getAssociatedSequencesPerProviderMap() {
