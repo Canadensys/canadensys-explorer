@@ -5,16 +5,13 @@
 <@cssAsset fileName="occportal" version=page.currentVersion! useMinified=false/>
 </head>
 <a id="main-content"></a>
-<div id="body" class="fullscreen">
-	<div id="side_bar">
-		<p><a class="round big_button no_margin" href="../contact">${rc.getMessage("occpage.menu.datasetcontact")}</a></p>
-		<#if page.occRawModel._references?has_content >
-		<p><a class="round big_button" href="${page.occRawModel._references?if_exists}">${rc.getMessage("occpage.menu.sourcerecord")}</a></p>
-		</#if>
-	</div>
-	<div id="content" class="clear_fix">
-		<h1>${page.occModel.scientificname?if_exists} (${page.occModel.collectioncode?if_exists} ${page.occModel.catalognumber?if_exists})</h1>
-		<p class="details">${rc.getMessage("occpage.header.details")}: ${page.occModel.sourcefileid?if_exists}/${page.occModel.dwcaid?if_exists}</p>
+<div id="body">
+	<div id="content" class="clear_fix no_side_bar">
+		<h1>${page.occModel.scientificname!rc.getMessage("occpage.scientificnamenotprovided")}</h1>
+		<p class="details">
+	  	<@printIfNotEmpty text=rc.getMessage("occpage.header.details")+": "+page.occModel.collectioncode+ " " variable=page.occModel.catalognumber/>
+			</p>
+
 		<div class="nav_container" id="occpage_navigation">
 			<ul class="buttons">
 				<li><a href="?view=normal">${rc.getMessage("occpage.header.button.normal")}</a></li>
