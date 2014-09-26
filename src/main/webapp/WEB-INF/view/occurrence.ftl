@@ -38,7 +38,7 @@
 		</tbody>
 		</table>
 		
-		<#if page.occViewModel.multimediaViewModelList?has_content>
+		<#if page.occViewModel.imageViewModelList?has_content>
 		<h2>${rc.getMessage("occpage.group.multimedia")}</h2>
 		<div id="occpage_image">
 		<ul class="clear_fix">
@@ -226,9 +226,7 @@
 <#-- TODO: need to get content from ../contact and dump here -->
 		
 		<h2>${rc.getMessage("occpage.group.citation")}</h2>
-<#-- TODO: need a controller method here to construct a citation
-		<p>${page.occModel.catalognumber!} from ${page.occModel.datasetname!} at ${page.occModel.institutioncode!}, ${page.occViewModel.dataSourcePageURL!} (accessed on ${.now})</p>
--->
+		<p>${page.occViewModel.recommendedCitation!}</p>
 	</div>
 </div><#-- body -->
 <#assign coordinateuncertaintyinmeters=0>

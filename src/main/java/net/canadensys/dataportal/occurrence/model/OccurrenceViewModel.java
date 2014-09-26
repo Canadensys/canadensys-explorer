@@ -16,6 +16,7 @@ import org.apache.commons.lang3.tuple.Pair;
 public class OccurrenceViewModel {
 
 	private String dataSourcePageURL;
+	private String recommendedCitation;
 	
 	private List<MultimediaViewModel> multimediaViewModelList;
 	
@@ -90,5 +91,13 @@ public class OccurrenceViewModel {
 	}
 	public void setDataSourcePageURL(String dataSourcePageURL) {
 		this.dataSourcePageURL = dataSourcePageURL;
+	}
+
+	public String getRecommendedCitation() {
+		return recommendedCitation;
+	}
+
+	public void setRecommendedCitation(String recommendedCitation) {
+		this.recommendedCitation = recommendedCitation;
 	}
 }

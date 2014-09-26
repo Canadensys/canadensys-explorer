@@ -7,6 +7,7 @@ import static org.springframework.test.web.ModelAndViewAssert.assertViewName;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -148,7 +149,7 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
     	OccurrenceModel occModel = new OccurrenceModel();
     	occModel.setAssociatedsequences("BOLD :1234|bold: 2345|unknown:3456");
     	
-    	OccurrenceViewModel occViewModel = occurrenceController.buildOccurrenceViewModel(occModel,null,null);
+    	OccurrenceViewModel occViewModel = occurrenceController.buildOccurrenceViewModel(occModel, null, null, Locale.ENGLISH);
     	
     	Map<String,List<Pair<String,String>>> associatedSequencesPerProviderMap = occViewModel.getAssociatedSequencesPerProviderMap();
     	

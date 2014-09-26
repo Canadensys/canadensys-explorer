@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.canadensys.dataportal.occurrence.OccurrenceService;
 import net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig;
+import net.canadensys.dataportal.occurrence.controller.formatter.FormatterUtility;
 import net.canadensys.dataportal.occurrence.model.MultimediaViewModel;
 import net.canadensys.dataportal.occurrence.model.OccurrenceExtensionModel;
 import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
@@ -70,6 +71,7 @@ public class OccurrenceController {
 	@RequestMapping(value="/resources/{iptResource}/occurrences/{dwcaId:.+}", method=RequestMethod.GET)
 	@I18nTranslation(resourceName="occurrence", translateFormat = "/resources/{}/occurrences/{}")
 	public ModelAndView handleOccurrencePerResource(@PathVariable String iptResource,@PathVariable String dwcaId, HttpServletRequest request){
+		Locale locale = RequestContextUtils.getLocale(request);
 		OccurrenceModel occModel = occurrenceService.loadOccurrenceModel(iptResource,dwcaId,true);
 		
 		//get UUID from sourcefileid (iptResource). loadResourceModel is using cache
@@ -83,7 +85,7 @@ public class OccurrenceController {
 		if(occModel != null){
 			modelRoot.put("occModel", occModel);
 			modelRoot.put("occRawModel",occModel.getRawModel());
-			modelRoot.put("occViewModel", buildOccurrenceViewModel(occModel, resourceModel, occMultimediaExtModelList));
+			modelRoot.put("occViewModel", buildOccurrenceViewModel(occModel, resourceModel, occMultimediaExtModelList, locale));
 		}
 		else{
 			throw new ResourceNotFoundException();
@@ -147,7 +149,7 @@ public class OccurrenceController {
 	 * @param occModel
 	 * @return OccurrenceViewModel instance, never null
 	 */
-	public OccurrenceViewModel buildOccurrenceViewModel(OccurrenceModel occModel, ResourceModel resourceModel, List<OccurrenceExtensionModel> occMultimediaExtModelList){
+	public OccurrenceViewModel buildOccurrenceViewModel(OccurrenceModel occModel, ResourceModel resourceModel, List<OccurrenceExtensionModel> occMultimediaExtModelList, Locale locale){
 		OccurrenceViewModel occViewModel = new OccurrenceViewModel();
 		
 		//handle multimedia first (priority over associatedmedia)
@@ -226,7 +228,9 @@ public class OccurrenceController {
 			}
 		}
 		
-		//TODO handle citation
+		//handle Recommended Citation
+		occViewModel.setRecommendedCitation(
+				FormatterUtility.buildRecommendedCitation(occModel, occViewModel.getDataSourcePageURL(), appConfig.getResourceBundle(locale)));
 		
 		return occViewModel;
 	}
