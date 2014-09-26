@@ -33,7 +33,7 @@ public class FormatterUtilityTest {
 	 */
 	@Test
 	public void testBuildRecommendedCitation(){
-		String now = FormatterUtility.ISO_DATE_FORMAT.format(Calendar.getInstance().getTime());
+		String now = FormatterUtility.ISO_UTC_DATE_FORMAT.format(Calendar.getInstance().getTime());
 		
 		OccurrenceModel occModel = new OccurrenceModel();
 		occModel.setCatalognumber("ABC-123");
