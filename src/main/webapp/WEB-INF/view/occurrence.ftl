@@ -39,7 +39,7 @@
 		</table>
 		
 		<#if page.occViewModel.imageViewModelList?has_content>
-		<h2>${rc.getMessage("occpage.group.multimedia")}</h2>
+		<h2>${rc.getMessage("occpage.group.images")}</h2>
 		<div id="occpage_image">
 		<ul class="clear_fix">
 		<#list page.occViewModel.imageViewModelList as currMultimediaViewModel>
@@ -63,9 +63,8 @@
 		</div>
 		</#if>
 
-<#-- TODO: adjust the styling here -->
 		<#if page.occViewModel.otherMediaViewModelList?has_content>
-		<h2>${rc.getMessage("occpage.group.associatedmultimedia")}</h2>
+		<h2>${rc.getMessage("occpage.group.othermultimedia")}</h2>
 			<ul>
 			    <#-- TODO: display the title here and let the controller fill it in case it's missing -->
 				<#assign mediaNumber = 1>

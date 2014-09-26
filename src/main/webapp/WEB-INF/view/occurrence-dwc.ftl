@@ -10,7 +10,7 @@
 		<h1>${page.occModel.scientificname!rc.getMessage("occpage.scientificnamenotprovided")}</h1>
 		<p class="details">
 	  	<@printIfNotEmpty text=rc.getMessage("occpage.header.details")+": "+page.occModel.collectioncode+ " " variable=page.occModel.catalognumber/>
-			</p>
+		</p>
 
 		<div class="nav_container" id="occpage_navigation">
 			<ul class="buttons">
