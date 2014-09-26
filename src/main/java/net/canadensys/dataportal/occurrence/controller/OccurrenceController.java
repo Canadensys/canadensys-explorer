@@ -77,6 +77,11 @@ public class OccurrenceController {
 		//get UUID from sourcefileid (iptResource). loadResourceModel is using cache
 		ResourceModel resourceModel = occurrenceService.loadResourceModel(iptResource);
 		
+		// load resource contact
+		// loadResourceContactModel probably use cache
+		ResourceContactModel contactModel = occurrenceService.loadResourceContactModel(iptResource);
+		
+		// load multimedia extension data
 		List<OccurrenceExtensionModel> occMultimediaExtModelList = occurrenceService.loadOccurrenceExtensionModel(
 				GbifTerm.Multimedia.simpleName(), resourceModel.getResource_uuid(), dwcaId);
 		
@@ -84,8 +89,9 @@ public class OccurrenceController {
 		
 		if(occModel != null){
 			modelRoot.put("occModel", occModel);
-			modelRoot.put("occRawModel",occModel.getRawModel());
+			modelRoot.put("occRawModel", occModel.getRawModel());
 			modelRoot.put("occViewModel", buildOccurrenceViewModel(occModel, resourceModel, occMultimediaExtModelList, locale));
+			modelRoot.put("contactModel", contactModel);
 		}
 		else{
 			throw new ResourceNotFoundException();
