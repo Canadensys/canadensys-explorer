@@ -77,6 +77,9 @@ public class OccurrenceController {
 		
 		//get UUID from sourcefileid (iptResource). loadResourceModel is using cache
 		ResourceModel resourceModel = occurrenceService.loadResourceModel(iptResource);
+		if(resourceModel == null){
+			throw new ResourceNotFoundException();
+		}
 		
 		// load resource contact
 		// loadResourceContactModel probably use cache
@@ -106,29 +109,6 @@ public class OccurrenceController {
 			return new ModelAndView("occurrence-dwc",OccurrencePortalConfig.PAGE_ROOT_MODEL_KEY,modelRoot);
 		}
 		return new ModelAndView("occurrence",OccurrencePortalConfig.PAGE_ROOT_MODEL_KEY,modelRoot);
-	}
-	
-	/**
-	 * Resource contact page.
-	 * @param ipt resource identifier (sourcefileid).
-	 * @return
-	 */
-	@RequestMapping(value="/resources/{iptResource}/contact", method=RequestMethod.GET)
-	@I18nTranslation(resourceName="contact", translateFormat = "/resources/{}/contact")
-	public ModelAndView handleResourceContact(@PathVariable String iptResource, HttpServletRequest request){
-		ResourceContactModel resourceContactModel = occurrenceService.loadResourceContactModel(iptResource);
-		HashMap<String,Object> modelRoot = new HashMap<String,Object>();
-		
-		if(resourceContactModel != null){
-			modelRoot.put("data", resourceContactModel);
-		}
-		else{
-			throw new ResourceNotFoundException();
-		}
-		//Set common stuff
-		ControllerHelper.setPageHeaderVariables(request,"contact",new String[]{iptResource},appConfig, modelRoot);
-
-		return new ModelAndView("resource-contact",OccurrencePortalConfig.PAGE_ROOT_MODEL_KEY,modelRoot);
 	}
 	
 	/**

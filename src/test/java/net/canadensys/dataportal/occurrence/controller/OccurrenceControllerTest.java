@@ -86,6 +86,7 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
 		jdbcTemplate.update("INSERT INTO occurrence (auto_id,dwcaId,country,locality,datasetname,sourcefileid,syear,smonth,sday) VALUES (1,'2','Mexico','Mexico','University of Mexico (UOM)','uom-occurrence',2001,03,21)");
 		jdbcTemplate.update("INSERT INTO occurrence (auto_id,dwcaId,country,locality,datasetname,sourcefileid,syear,smonth,sday) VALUES (2,'2.2','Mexico','Mexico','University of Mexico (UOM)','uom-occurrence',2001,03,21)");
 		jdbcTemplate.update("INSERT INTO resource_contact (id,sourcefileid,name) VALUES (1,'uom-occurrence','Jim')");
+		jdbcTemplate.update("INSERT INTO resource_management(sourcefileid,resource_uuid,name,archive_url) VALUES ('uom-occurrence','ABDU-NSNS-2838','UOM','http://data.canadensys.net/ipt/archive.do?r=uom-occurrence')");
     }
 
     @Test
@@ -126,18 +127,6 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
         HashMap<String,Object> modelRoot = (HashMap<String,Object>)mav.getModel().get(OccurrencePortalConfig.PAGE_ROOT_MODEL_KEY);
         OccurrenceModel occModel = (OccurrenceModel)modelRoot.get("occModel");
         assertEquals("2.2", occModel.getDwcaid());
-    }
-    
-    @Test
-    public void testOccurrenceContactURL() throws Exception {
-    	MockHttpServletResponse response = new MockHttpServletResponse();
-    	MockHttpServletRequest request = new MockHttpServletRequest();
-    	request.setMethod("GET");
-    	request.setRequestURI("/resources/uom-occurrence/contact");
-    	Object handler = handlerMapping.getHandler(request).getHandler();    	
-        ModelAndView mav = handlerAdapter.handle(request, response, handler);
-        assertEquals(HttpServletResponse.SC_OK, response.getStatus());
-        assertViewName(mav,"resource-contact");
     }
     
     /**

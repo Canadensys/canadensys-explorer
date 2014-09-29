@@ -26,7 +26,7 @@ public class OccurrencePageIntegrationTest extends AbstractIntegrationTest {
 		PageFactory.initElements(browser, this);
 		
 		WebElement h1 = browser.findElement(By.cssSelector("h1"));
-		assertEquals("Acer pseudoplatanus (ACAD ECS019597)", h1.getText());
+		assertEquals("Acer pseudoplatanus", h1.getText());
 		//make sure footer is there
 		assertEquals("div",footerDiv.getTagName().toLowerCase());
 	}
@@ -39,7 +39,7 @@ public class OccurrencePageIntegrationTest extends AbstractIntegrationTest {
 		PageFactory.initElements(browser, this);
 		
 		WebElement h1 = browser.findElement(By.cssSelector("h1"));
-		assertEquals("Myosotis arvensis (ACAD z10441)", h1.getText());
+		assertEquals("Myosotis arvensis", h1.getText());
 		//make sure footer is there
 		assertEquals("div",footerDiv.getTagName().toLowerCase());
 	}
@@ -52,20 +52,7 @@ public class OccurrencePageIntegrationTest extends AbstractIntegrationTest {
 		PageFactory.initElements(browser, this);
 		
 		WebElement h1 = browser.findElement(By.cssSelector("h1"));
-		assertEquals("Acer pseudoplatanus (ACAD ECS019597)", h1.getText());
-		//make sure footer is there
-		assertEquals("div",footerDiv.getTagName().toLowerCase());
-	}
-	
-	@Test
-	public void testOccurrenceContactPage() {
-		browser.get(TESTING_SERVER_URL+"resources/acad-specimens/contact");
-		
-		//bind the WebElement to the current page
-		PageFactory.initElements(browser, this);
-		
-		WebElement h1 = browser.findElement(By.cssSelector("h1"));
-		assertEquals("E. C. Smith Herbarium (ACAD)", h1.getText());
+		assertEquals("Acer pseudoplatanus", h1.getText());
 		//make sure footer is there
 		assertEquals("div",footerDiv.getTagName().toLowerCase());
 	}
