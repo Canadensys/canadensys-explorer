@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -157,6 +158,7 @@ public class OccurrenceController {
 	 */
 	public OccurrenceViewModel buildOccurrenceViewModel(OccurrenceModel occModel, ResourceModel resourceModel, List<OccurrenceExtensionModel> occMultimediaExtModelList, Locale locale){
 		OccurrenceViewModel occViewModel = new OccurrenceViewModel();
+		ResourceBundle bundle = appConfig.getResourceBundle(locale);
 		
 		//handle multimedia first (priority over associatedmedia)
 		if(occMultimediaExtModelList != null){
@@ -189,11 +191,21 @@ public class OccurrenceController {
 			
 			MultimediaViewModel multimediaViewModel;
 			boolean isImage;
-			
+			String title;
+			int imageNumber=1, otherMediaNumber=1;
 			for(String currentMedia : media){
 				isImage = MIME_TYPE_MAP.getContentType(currentMedia).startsWith("image");
+				if(isImage){
+					title = bundle.getString("occ.image") + " " + imageNumber;
+					imageNumber++;
+				}
+				else{
+					title = bundle.getString("occ.associatedmedia") + " " + otherMediaNumber;
+					otherMediaNumber++;
+				}
+				
 				multimediaViewModel = new MultimediaViewModel(currentMedia,currentMedia,
-						null, null, null, isImage, null);
+						title, null, null, isImage, null);
 				occViewModel.addMultimediaViewModel(multimediaViewModel);
 			}
 		}
@@ -236,7 +248,7 @@ public class OccurrenceController {
 		
 		//handle Recommended Citation
 		occViewModel.setRecommendedCitation(
-				FormatterUtility.buildRecommendedCitation(occModel, occViewModel.getDataSourcePageURL(), appConfig.getResourceBundle(locale)));
+				FormatterUtility.buildRecommendedCitation(occModel, occViewModel.getDataSourcePageURL(), bundle));
 		
 		return occViewModel;
 	}

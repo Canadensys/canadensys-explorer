@@ -45,17 +45,8 @@
 		<#list page.occViewModel.imageViewModelList as currMultimediaViewModel>
 			<li>
 				<div>
-					<a href="${currMultimediaViewModel.references!}" class="media"><img src="${currMultimediaViewModel.identifier!}"/></a>
-					<div>
-						<#if currMultimediaViewModel.licenseShortname?has_content>
-							<a href="${currMultimediaViewModel.license}">
-								<img src="${rc.getContextUrl("/assets/images/"+currMultimediaViewModel.licenseShortname+".png")}" title="${currMultimediaViewModel.title!}" alt="${currMultimediaViewModel.title!}" />
-							</a>
-						<#else>
-							<@printIfNotEmpty text=rc.getMessage("occ.multimedia.license")+": " variable=currMultimediaViewModel.license/>
-						</#if>
-						<@printIfNotEmpty text=rc.getMessage("occ.multimedia.creator")+": " variable=currMultimediaViewModel.creator/>
-					</div>
+					<a href="${currMultimediaViewModel.references!}" class="media"><img src="${currMultimediaViewModel.identifier!}" title="${currMultimediaViewModel.title!}" alt="${currMultimediaViewModel.title!}"/></a>
+					<@licenseDiv license=currMultimediaViewModel.license! licenseShortname=currMultimediaViewModel.licenseShortname! creator=currMultimediaViewModel.creator!/>
 				</div>
 			</li>
 		</#list>
@@ -64,15 +55,13 @@
 		</#if>
 
 		<#if page.occViewModel.otherMediaViewModelList?has_content>
-		<h2>${rc.getMessage("occpage.group.othermultimedia")}</h2>
+		<h2>${rc.getMessage("occpage.group.multimedia")}</h2>
 			<ul>
-			    <#-- TODO: display the title here and let the controller fill it in case it's missing -->
-				<#assign mediaNumber = 1>
 				<#list page.occViewModel.otherMediaViewModelList as currOm>
 				<li>
-					<a href="${currOm.references}">${rc.getMessage("occpage.menu.associatedmedia")} ${mediaNumber}</a>
+					<a href="${currOm.references!}">${currOm.title!}</a>
+					<@licenseDiv license=currOm.license! licenseShortname=currOm.licenseShortname! creator=currOm.creator!/>
 				</li>
-				<#assign mediaNumber = mediaNumber + 1>
 				</#list>
 			</ul>
 		</#if>
@@ -221,8 +210,23 @@
 		</tbody>
 		</table>
 		
-<#-- <h2>${rc.getMessage("occpage.group.contact")}</h2> -->
-<#-- TODO: need to get content from ../contact and dump here -->
+		<h2>${rc.getMessage("occpage.group.contact")}</h2>
+		<#if page.contactModel?has_content>
+		<table>
+		<tbody>
+			<tr><th>${rc.getMessage("resourcecontact.name")}</th><td>${page.contactModel.name!}</td></tr>
+			<tr><th>${rc.getMessage("resourcecontact.position")}</th><td>${page.contactModel.position_name!}</td></tr>
+			<tr><th>${rc.getMessage("resourcecontact.organization")}</th><td>${page.contactModel.organization_name!}</td></tr>
+			<tr><th>${rc.getMessage("resourcecontact.address")}</th><td>${page.contactModel.address!}, ${page.contactModel.city!}, ${page.contactModel.administrative_area!}, ${page.contactModel.postal_code!}, ${page.contactModel.country!}</td></tr>
+			<tr><th>${rc.getMessage("resourcecontact.email")}</th><td>
+			<#if page.contactModel.email?has_content>
+			<a href="mailto:${page.contactModel.email}">${page.contactModel.email}</a>
+			</#if>
+			</td></tr>
+			<tr><th>${rc.getMessage("resourcecontact.telephone")}</th><td>${page.contactModel.phone!}</td></tr>
+		</tbody>
+		</table>
+		</#if>
 		
 		<h2>${rc.getMessage("occpage.group.citation")}</h2>
 		<p>${page.occViewModel.recommendedCitation!}</p>

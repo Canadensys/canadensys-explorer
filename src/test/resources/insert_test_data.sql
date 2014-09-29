@@ -18,7 +18,7 @@ INSERT INTO occurrence_extension(auto_id,dwcaid,sourcefileid,resource_uuid,ext_t
 VALUES(
 1,'ACAD-1','acad-specimens','ABDU-NSNS-2836','Multimedia',
 toKeyValue('creator=>Chuck Norris','references=>http://procyon.acadiau.ca/ecsmith/cgi-bin/image.cgi?ECS019597,jpeg','identifier=>http://procyon.acadiau.ca/ecsmith/cgi-bin/image.cgi?ECS019597,jpeg',
-'license=>http://creativecommons.org/licenses/by/4.0/','title=>Image title 1')
+'license=>http://creativecommons.org/licenses/by/4.0/','title=>Image title 1','type=>image/png')
 ),
 (
 2,'ACAD-1','acad-specimens','ABDU-NSNS-2836','Multimedia',

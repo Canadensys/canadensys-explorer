@@ -84,3 +84,16 @@ ${URLHelper.newQueryStringBuilder().add("view",view).add(page.searchParameters!)
   </#if>
   <#return tag>
 </#function>
+
+<#macro licenseDiv license licenseShortname="" creator="">
+<div>
+<#if licenseShortname?has_content>
+  <a href="${license}">
+  <img src="${rc.getContextUrl("/assets/images/"+licenseShortname+".png")}" />
+  </a>
+<#else>
+  <@printIfNotEmpty text=rc.getMessage("occ.multimedia.license")+": " variable=license/>
+</#if>
+<@printIfNotEmpty text=rc.getMessage("occ.multimedia.creator")+": " variable=creator/>
+</div>
+</#macro>

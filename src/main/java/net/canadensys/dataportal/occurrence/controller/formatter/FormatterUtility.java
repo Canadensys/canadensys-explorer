@@ -17,7 +17,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class FormatterUtility {
 	
-	public static final DateFormat ISO_UTC_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd '(GMT'XX')'");
+	public static final DateFormat ISO_UTC_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd 'GMT'XX");
 
 	
 	public static final String CITATION_DATE_REGEX =  "[\\[{(]date[\\])}]";
