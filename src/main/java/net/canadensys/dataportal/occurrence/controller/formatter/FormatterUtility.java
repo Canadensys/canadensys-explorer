@@ -5,7 +5,6 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.ResourceBundle;
-import java.util.TimeZone;
 
 import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
 
@@ -18,11 +17,8 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class FormatterUtility {
 	
-	public static final DateFormat ISO_UTC_DATE_FORMAT;
-	static{
-		ISO_UTC_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-		ISO_UTC_DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
-	}
+	public static final DateFormat ISO_UTC_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd '(GMT'XX')'");
+
 	
 	public static final String CITATION_DATE_REGEX =  "[\\[{(]date[\\])}]";
 	
