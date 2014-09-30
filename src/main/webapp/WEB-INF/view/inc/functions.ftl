@@ -85,6 +85,7 @@ ${URLHelper.newQueryStringBuilder().add("view",view).add(page.searchParameters!)
   <#return tag>
 </#function>
 
+<#-- Print license div block-->
 <#macro licenseDiv license licenseShortname="" creator="">
 <div>
 <#if licenseShortname?has_content>

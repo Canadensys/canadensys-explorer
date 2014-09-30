@@ -57,9 +57,17 @@
 <dl class="occ_preview_data clear_fix">
 	<dt>${rc.getMessage("occ.associatedmedia")}</dt>
 	<dd>
-		<#if page.occModel.hasmedia!false>
-			put icon here
-		</#if>
+	<#if page.occViewModel.imageViewModelList?has_content>
+		${page.occViewModel.imageViewModelList?size} ${rc.getMessage("occpreview.image")}
+	<#else/>
+		0 ${rc.getMessage("occpreview.image")}
+	</#if>
+	</dd>
+	<#if page.occViewModel.otherMediaViewModelList?has_content>
+		<dd>
+			${page.occViewModel.otherMediaViewModelList?size} ${rc.getMessage("occpreview.othermultimedia")}
+		</dd>
+	</#if>
 	</dd>
 </dl>
 </div>

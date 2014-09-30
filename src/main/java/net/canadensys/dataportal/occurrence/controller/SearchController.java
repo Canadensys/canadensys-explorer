@@ -13,11 +13,14 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
 import net.canadensys.chart.ChartModel;
+import net.canadensys.dataportal.occurrence.OccurrenceService;
 import net.canadensys.dataportal.occurrence.autocomplete.AutoCompleteService;
 import net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig;
 import net.canadensys.dataportal.occurrence.config.OccurrenceSearchableFieldLanguageSupport;
 import net.canadensys.dataportal.occurrence.model.MapInfoModel;
+import net.canadensys.dataportal.occurrence.model.OccurrenceExtensionModel;
 import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
+import net.canadensys.dataportal.occurrence.model.ResourceModel;
 import net.canadensys.dataportal.occurrence.search.DownloadResultStatus;
 import net.canadensys.dataportal.occurrence.search.OccurrenceSearchService;
 import net.canadensys.dataportal.occurrence.search.OccurrenceSearchService.DownloadPropertiesEnum;
@@ -46,6 +49,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
+import org.gbif.dwc.terms.GbifTerm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
@@ -108,6 +112,9 @@ public class SearchController {
 
 	@Autowired
 	private OccurrenceSearchService occurrenceSearchService;
+	
+	@Autowired
+	private OccurrenceService occurrenceService;
 	
 	@Autowired
 	private OccurrenceController occurrenceController;
@@ -388,12 +395,22 @@ public class SearchController {
 	 * @return
 	 */	
 	@RequestMapping(value="/occurrence-preview/{auto_id}", method=RequestMethod.GET)
-	public ModelAndView handleOccurrencePreview(@PathVariable Integer auto_id){
+	public ModelAndView handleOccurrencePreview(@PathVariable Integer auto_id, HttpServletRequest request){
+		Locale locale = RequestContextUtils.getLocale(request);
 		OccurrenceModel occModel = occurrenceSearchService.getOccurrenceSummary(auto_id);
-		
+
 		HashMap<String,Object> modelRoot = new HashMap<String,Object>();
 		if(occModel != null){
+			//get UUID from sourcefileid (iptResource). loadResourceModel is using cache
+			ResourceModel resourceModel = occurrenceService.loadResourceModel(occModel.getSourcefileid());
+			if(resourceModel == null){
+				throw new ResourceNotFoundException();
+			}
+			List<OccurrenceExtensionModel> occMultimediaExtModelList = occurrenceService.loadOccurrenceExtensionModel(
+					GbifTerm.Multimedia.simpleName(), resourceModel.getResource_uuid(), occModel.getDwcaid());
+			
 			modelRoot.put("occModel", occModel);
+			modelRoot.put("occViewModel", occurrenceController.buildOccurrenceViewModel(occModel, resourceModel, occMultimediaExtModelList, locale));
 		}
 		else{
 			throw new ResourceNotFoundException();

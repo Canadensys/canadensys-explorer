@@ -82,7 +82,7 @@ public class OccurrenceController {
 		}
 		
 		// load resource contact
-		// loadResourceContactModel probably use cache
+		// loadResourceContactModel should probably use cache
 		ResourceContactModel contactModel = occurrenceService.loadResourceContactModel(iptResource);
 		
 		// load multimedia extension data
