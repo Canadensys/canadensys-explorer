@@ -62,6 +62,7 @@
 						<optgroup label="${rc.getMessage("filter.group.extra")}">
 							<option value="${page.availableFilters.hascoordinates}">${rc.getMessage("filter.hascoordinates")}</option>
 							<option value="${page.availableFilters.hasmedia}">${rc.getMessage("filter.hasmedia")}</option>
+							<option value="${page.availableFilters.hasassociatedsequences}">${rc.getMessage("filter.hasassociatedsequences")}</option>
 							<option value="${page.availableFilters.hastypestatus}">${rc.getMessage("filter.hastypestatus")}</option>
 						</optgroup>
 					</select>

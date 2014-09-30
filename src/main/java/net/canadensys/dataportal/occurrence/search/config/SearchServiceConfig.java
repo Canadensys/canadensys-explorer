@@ -41,7 +41,7 @@ public class SearchServiceConfig {
 		DECADE(26),
 		AVERAGE_ALTITUDE_ROUNDED(27),
 		SOURCE_FILE_ID(29),
-		START_YEAR(30),HAS_TYPE_STATUS(31),GEO_RECTANGLE(32),GEO_POLYGON(33),GEO_ELLIPSE(34)
+		START_YEAR(30),HAS_TYPE_STATUS(31),HAS_ASSOCIATED_SEQUENCES(35),GEO_RECTANGLE(32),GEO_POLYGON(33),GEO_ELLIPSE(34)
 		;
 		
 		private int id;
@@ -181,7 +181,6 @@ public class SearchServiceConfig {
 		OCCURENCE_SUMMARY_FIELDS.add("sourcefileid");
 		OCCURENCE_SUMMARY_FIELDS.add("dwcaid");
 		OCCURENCE_SUMMARY_FIELDS.add("typestatus");
-		OCCURENCE_SUMMARY_FIELDS.add("hasmedia");
 	}
 	
 	public SearchServiceConfig(){
@@ -231,6 +230,8 @@ public class SearchServiceConfig {
 				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.HAS_MEDIA.id,"hasmedia").singleValue("hasmedia",Boolean.class).eqOperator().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.HAS_TYPE_STATUS.id,
 				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.HAS_TYPE_STATUS.id,"hastypestatus").singleValue("hastypestatus",Boolean.class).eqOperator().toOccurrenceSearchableField());
+		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.HAS_ASSOCIATED_SEQUENCES.id,
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.HAS_ASSOCIATED_SEQUENCES.id,"hasassociatedsequences").singleValue("hasassociatedsequences",Boolean.class).eqOperator().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.COUNTY.id,
 				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.COUNTY.id,"county").singleValue("county",String.class).eqOperator().supportSuggestion().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.MUNICIPALITY.id,
