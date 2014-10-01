@@ -142,7 +142,7 @@ public class OccurrenceController {
 		
 		//handle multimedia first (priority over associatedmedia)
 		if(occMultimediaExtModelList != null){
-			String multimediaType, multimediaLicense;
+			String multimediaFormat, multimediaLicense;
 			boolean isImage;
 			String licenseShortname;
 			MultimediaViewModel multimediaViewModel;
@@ -151,11 +151,11 @@ public class OccurrenceController {
 			for(OccurrenceExtensionModel currMultimediaExt : occMultimediaExtModelList){
 				extData = currMultimediaExt.getExt_data();
 				
-				multimediaType = StringUtils.defaultString(extData.get("type"));
+				multimediaFormat = StringUtils.defaultString(extData.get("format"));
 				multimediaLicense = StringUtils.defaultString(extData.get("license"));
 				
 				//check if it's an image
-				isImage = multimediaType.startsWith("image");
+				isImage = multimediaFormat.startsWith("image");
 				licenseShortname = appConfig.getLicenseShortName(multimediaLicense);
 				
 				multimediaViewModel = new MultimediaViewModel(extData.get("references"), extData.get("identifier"),
