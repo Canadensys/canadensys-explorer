@@ -101,7 +101,7 @@
 				</tr>
 			<tbody>
 			</tbody>
-			<tboby>
+			<tbody>
 				<tr>
 					<th scope="row">${rc.getMessage("occ.habitat")}</th>
 					<td>${page.occModel.habitat?if_exists}</td>
