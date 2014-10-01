@@ -1,6 +1,12 @@
 Version History
 ===============
 
+Version 2.3.0 2014-10-02
+* Support Simple Multimedia extension display in occurrence page
+* Reworked occurrence page
+* Moved to Gradle 2.1
+* Closed issues: https://github.com/Canadensys/canadensys-explorer/milestones/2.3.0
+
 Version 2.2.0 2014-07-16
 * Controllers are now responsible to provide 'otherLanguage' map
 * Added associatedSequences to occurrence view.
