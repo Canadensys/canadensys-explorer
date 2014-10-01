@@ -9,7 +9,7 @@ ext {
 }
 
 //Use Canadensys common web build file
-apply from: "https://raw.github.com/Canadensys/canadensys-common/master/gradle/canadensys_web_build.gradle"
+apply from: "https://raw.github.com/Canadensys/canadensys-common/master/gradle/canadensys_web_build_21.gradle"
 apply from: "http://dl.bintray.com/scalding/generic/waroverlay.gradle"
 
 //Check for theme override
@@ -39,11 +39,11 @@ ext {
 	sitemeshVersion = '3.0.0'
 	snakeYamlVersion = '1.14'
 	
-	dataAccessVersion = '2.11.0-SNAPSHOT'
-	webCoreVersion = '0.3-SNAPSHOT'
+	dataAccessVersion = '2.11.0'
+	webCoreVersion = '0.3'
 
 	tomcatVersion = '6.0.29'
-	seleniumVersion = '2.42.2'
+	seleniumVersion = '2.43.1'
 
 	h2Version = '1.3.175'
 	versionFile = project.file("config/production/version.properties")
