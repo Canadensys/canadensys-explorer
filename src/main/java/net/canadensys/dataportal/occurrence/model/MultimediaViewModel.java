@@ -17,9 +17,9 @@ public class MultimediaViewModel {
 	private final boolean isImage;
 	private final String licenseShortname;
 	
-	public MultimediaViewModel(String references, String identifier, String title, String license, String creator, boolean isImage, String licenseShortname){
-		this.references = references;
+	public MultimediaViewModel(String identifier,String references, String title, String license, String creator, boolean isImage, String licenseShortname){
 		this.identifier = identifier;
+		this.references = references;
 		this.title = title;
 		this.license = license;
 		this.creator = creator;

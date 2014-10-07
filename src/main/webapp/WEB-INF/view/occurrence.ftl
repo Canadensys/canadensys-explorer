@@ -7,9 +7,9 @@
 <a id="main-content"></a>
 <div id="body">
 	<div id="content" class="clear_fix no_side_bar">
-		<h1>${page.occModel.scientificname!rc.getMessage("occpage.scientificnamenotprovided")}</h1>
+		<h1><@defaultIfEmpty text=page.occModel.scientificname! defaulttext=rc.getMessage("occpage.scientificnamenotprovided")/></h1>
 		<p class="details">
-		  <@printIfNotEmpty text=rc.getMessage("occpage.header.details")+": "+page.occModel.collectioncode+ " " variable=page.occModel.catalognumber/>
+		  <@printIfNotEmpty text=rc.getMessage("occpage.header.details")+": "+page.occModel.collectioncode!+ " " variable=page.occModel.catalognumber/>
 		</p>
 
 		<div class="nav_container" id="occpage_navigation">
