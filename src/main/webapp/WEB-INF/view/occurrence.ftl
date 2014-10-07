@@ -33,7 +33,7 @@
 			<tr><th scope="row">${rc.getMessage("occ._order")}</th><td>${page.occModel._order?if_exists}</td></tr>
 			<tr><th scope="row">${rc.getMessage("occ.family")}</th><td>${page.occModel.family?if_exists}</td></tr>
 			<tr><th scope="row">${rc.getMessage("occ.genus")}</th><td>${page.occModel.genus?if_exists}</td></tr>
-			<tr><th scope="row">${rc.getMessage("occ.scientificname")}</th><td>${page.occModel.scientificname?if_exists} <span class="remark">(${rc.getMessage("occpage.remark.interpretedfrom")}: ${page.occRawModel.scientificname?if_exists})</span></td></tr>
+			<tr><th scope="row">${rc.getMessage("occ.scientificname")}</th><td>${page.occModel.scientificname!} <#if page.occModel.scientificname?has_content><span class="remark">(${rc.getMessage("occpage.remark.interpretedfrom")}: ${page.occRawModel.scientificname?if_exists})</span></#if></td></tr>
 			<tr><th scope="row">${rc.getMessage("occ.scientificnameauthorship")}</th><td>${page.occModel.scientificnameauthorship?if_exists}</td></tr>
 		</tbody>
 		</table>

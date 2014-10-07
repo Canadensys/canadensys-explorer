@@ -37,7 +37,7 @@
 			<tr><td>4</td><td>root</td><td><a href="http://purl.org/dc/terms/rights">rights</a></td><td>${page.occRawModel.rights?if_exists}</td><td class="unused"></td></tr>
 			<tr><td>5</td><td>root</td><td><a href="http://purl.org/dc/terms/rightsHolder">rightsHolder</a></td><td>${page.occRawModel.rightsholder?if_exists}</td><td class="unused"></td></tr>
 			<tr class="unused"><td>6</td><td>root</td><td><a href="http://purl.org/dc/terms/accessRights">accessRights</a></td><td>${page.occRawModel.accessrights?if_exists}</td><td class="unused"></td></tr>
-			<tr><td>7</td><td>root</td><td><a href="http://purl.org/dc/terms/bibliographicCitation">bibliographicCitation</a></td><td>${page.occRawModel.bibliographiccitation?if_exists}</td><td class="unused"></td></tr>
+			<tr><td>7</td><td>root</td><td><a href="http://purl.org/dc/terms/bibliographicCitation">bibliographicCitation</a></td><td>${page.occRawModel.bibliographiccitation!}</td><td>${page.occRawModel.bibliographiccitation!}</td></tr>
 			<tr><td>8</td><td>root</td><td><a href="http://purl.org/dc/terms/references">references</a></td><td>${page.occRawModel._references?if_exists}</td><td class="unused"></td></tr>
 			<tr class="unused"><td>9</td><td>root</td><td><a href="http://rs.tdwg.org/dwc/terms/institutionID">institutionID</a></td><td>${page.occRawModel.institutionid?if_exists}</td><td class="unused"></td></tr>
 			<tr><td>10</td><td>root</td><td><a href="http://rs.tdwg.org/dwc/terms/collectionID">collectionID</a></td><td>${page.occRawModel.collectionid?if_exists}</td><td class="unused"></td></tr>
@@ -50,7 +50,7 @@
 			<tr class="unused"><td>17</td><td>root</td><td><a href="http://rs.tdwg.org/dwc/terms/informationWithheld">informationWithheld</a></td><td>${page.occRawModel.informationwithheld?if_exists}</td><td class="unused"></td></tr>
 			<tr class="unused"><td>18</td><td>root</td><td><a href="http://rs.tdwg.org/dwc/terms/dataGeneralizations">dataGeneralizations</a></td><td>${page.occRawModel.datageneralizations?if_exists}</td><td class="unused"></td></tr>
 			<tr><td>19</td><td>root</td><td><a href="http://rs.tdwg.org/dwc/terms/dynamicProperties">dynamicProperties</a></td><td>${page.occRawModel.dynamicproperties?if_exists}</td><td class="unused"></td></tr>
-			<tr><td>20</td><td>occurrence</td><td><a href="http://rs.tdwg.org/dwc/terms/occurrenceID">occurrenceID</a></td><td>${page.occRawModel.occurrenceid?if_exists}</td><td class="unused"></td></tr>
+			<tr><td>20</td><td>occurrence</td><td><a href="http://rs.tdwg.org/dwc/terms/occurrenceID">occurrenceID</a></td><td>${page.occRawModel.occurrenceid!}</td><td>${page.occModel.occurrenceid!}</td></tr>
 			<tr><td>21</td><td>occurrence</td><td><a href="http://rs.tdwg.org/dwc/terms/catalogNumber">catalogNumber</a></td><td>${page.occRawModel.catalognumber?if_exists}</td><td>${page.occModel.catalognumber?if_exists}</td></tr>
 			<tr><td>22</td><td>occurrence</td><td><a href="http://rs.tdwg.org/dwc/terms/occurrenceRemarks">occurrenceRemarks</a></td><td>${page.occRawModel.occurrenceremarks?if_exists}</td><td class="unused"></td></tr>
 			<tr><td>23</td><td>occurrence</td><td><a href="http://rs.tdwg.org/dwc/terms/recordNumber">recordNumber</a></td><td>${page.occRawModel.recordnumber?if_exists}</td><td>${page.occModel.recordnumber?if_exists}</td></tr>

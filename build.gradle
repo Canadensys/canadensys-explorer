@@ -38,9 +38,10 @@ ext {
 	ehCacheVersion = '2.6.8'
 	sitemeshVersion = '3.0.0'
 	snakeYamlVersion = '1.14'
+	postgresqlVersion = '9.3-1102-jdbc4'
 	
-	dataAccessVersion = '2.11.0'
-	webCoreVersion = '0.3'
+	dataAccessVersion = '2.11.1'
+	webCoreVersion = '0.4'
 
 	tomcatVersion = '6.0.29'
 	seleniumVersion = '2.43.1'
@@ -78,7 +79,7 @@ dependencies {
 	compile group: 'org.springframework', name: 'spring-webmvc', version: springVersion
 	compile group: 'org.springframework', name: 'spring-web', version: springVersion
 	compile group: 'org.springframework', name: 'spring-context-support', version: springVersion
-	compile group: 'postgresql', name: 'postgresql', version: '9.1-901.jdbc4'
+	compile group: 'org.postgresql', name: 'postgresql', version: postgresqlVersion
 	compile group: 'org.hibernate', name: 'hibernate-c3p0', version: hibernateVersion
 	compile group: 'org.freemarker', name: 'freemarker', version: freemarkerVersion
 	compile group: 'commons-codec', name: 'commons-codec', version: apacheCodecVersion

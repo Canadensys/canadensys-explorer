@@ -72,16 +72,16 @@ VALUES (
 
 /* record with empty scientificname*/
 INSERT INTO occurrence(
-auto_id,datasetname,sourcefileid,dwcaid,scientificname,taxonrank,country,stateprovince,collectioncode,catalognumber,habitat,_class,_order,decimallatitude,decimallongitude)
+auto_id,datasetname,sourcefileid,dwcaid,occurrenceid,scientificname,taxonrank,country,stateprovince,collectioncode,catalognumber,habitat,_class,_order,decimallatitude,decimallongitude)
 VALUES (
 5,'TRT (TRT)','trt-specimens',
-'TRT-5','','species','Canada','Nova Scotia','TRT','ECS019598','Under rocks','Magnoliopsida','Sapindales',45.099220,-62.354647
+'TRT-5','5','','species','Canada','Nova Scotia','TRT','ECS019598','Under rocks','Magnoliopsida','Sapindales',45.099220,-62.354647
 );
 INSERT INTO occurrence_raw(
-auto_id,datasetname,sourcefileid,dwcaid,scientificname,taxonrank,country,stateprovince,collectioncode,catalognumber,habitat,_class,_order,decimallatitude,decimallongitude)
+auto_id,datasetname,sourcefileid,dwcaid,occurrenceid,scientificname,taxonrank,country,stateprovince,collectioncode,catalognumber,habitat,_class,_order,decimallatitude,decimallongitude)
 VALUES (
 5,'TRT (TRT)','trt-specimens',
-'TRT-5','','species','Canada','Nova Scotia','TRT','ECS019598','Under rocks','Magnoliopsida','Sapindales',45.099220,-62.354647
+'TRT-5','5','','species','Canada','Nova Scotia','TRT','ECS019598','Under rocks','Magnoliopsida','Sapindales',45.099220,-62.354647
 );
 
 -- resource_contact
