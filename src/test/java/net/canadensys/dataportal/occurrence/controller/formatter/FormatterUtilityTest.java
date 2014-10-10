@@ -56,13 +56,6 @@ public class FormatterUtilityTest {
 		assertEquals("ABC-123, Biodivertsity Centre, http://data.canadensys.net/ipt (accessed on " + now + ")" ,
 				FormatterUtility.buildRecommendedCitation(occModel, 
 						"http://data.canadensys.net/ipt", appConfig.getResourceBundle(Locale.ENGLISH)));
-		
-		//test when bibliographicCitation is provided (including a [date] variable)
-		String bibliographicCitation = "ABC-123, MT, Biodivertsity Centre, http://data.canadensys.net/ipt accessed on ";
-		occModel.setBibliographiccitation(bibliographicCitation + "[date]");
-		assertEquals(bibliographicCitation + now,
-				FormatterUtility.buildRecommendedCitation(occModel, 
-						"http://data.canadensys.net/ipt", appConfig.getResourceBundle(Locale.ENGLISH)));
 	}
 
 }

@@ -18,7 +18,6 @@ import org.apache.commons.lang3.StringUtils;
 public class FormatterUtility {
 	
 	public static final DateFormat ISO_UTC_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd 'GMT'Z");
-
 	
 	public static final String CITATION_DATE_REGEX =  "[\\[{(]date[\\])}]";
 	
@@ -33,11 +32,6 @@ public class FormatterUtility {
 	public static String buildRecommendedCitation(OccurrenceModel occModel, String urlToResource, ResourceBundle bundle){
 		String now = ISO_UTC_DATE_FORMAT.format(Calendar.getInstance().getTime());
 		
-		//if Bibliographiccitation is provided simply check if we have a 'date' variable to replace
-		if(StringUtils.isNotBlank(occModel.getBibliographiccitation())){
-			return StringUtils.replacePattern(occModel.getBibliographiccitation(), CITATION_DATE_REGEX, now);
-		}
-	
 		String catalogNumber = occModel.getCatalognumber();
 		String datasetName = occModel.getDatasetname();
 		String institutionCode = occModel.getInstitutioncode();
