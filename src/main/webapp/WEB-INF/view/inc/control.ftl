@@ -34,6 +34,7 @@
 							<option value="${page.availableFilters._class}">${rc.getMessage("filter._class")}</option>
 							<option value="${page.availableFilters._order}">${rc.getMessage("filter._order")}</option>
 							<option value="${page.availableFilters.family}">${rc.getMessage("filter.family")}</option>
+							<option value="${page.availableFilters.genus}">${rc.getMessage("filter.genus")}</option>
 							<option value="${page.availableFilters.taxonrank}">${rc.getMessage("filter.taxonrank")}</option>
 						</optgroup>
 						<optgroup label="${rc.getMessage("filter.group.dataset")}">
