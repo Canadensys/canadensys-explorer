@@ -91,9 +91,9 @@ ${URLHelper.newQueryStringBuilder().add("view",view).add(page.searchParameters!)
 <#if licenseShortname?has_content>
   <a href="${license}">
   <img src="${rc.getContextUrl("/assets/images/"+licenseShortname+".png")}" alt="CC ${licenseShortname?upper_case}" />
-  </a>
+  </a><br>
 <#else>
-  <@printIfNotEmpty text=rc.getMessage("occ.multimedia.license")+": " variable=license/>
+  <@printIfNotEmpty text=rc.getMessage("occ.multimedia.license")+": " variable=license/><br>
 </#if>
 <@printIfNotEmpty text=rc.getMessage("occ.multimedia.creator")+": " variable=creator/>
 </div>

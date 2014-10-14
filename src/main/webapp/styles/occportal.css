@@ -533,6 +533,7 @@ ul.buttons li {
 #occpage_image li div {
   width:300px;
   margin:0px auto;
+  text-align:right;
 }
 
 #occpage_image a {
