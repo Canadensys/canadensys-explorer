@@ -505,7 +505,7 @@ ul.buttons li {
   background-color: #e7e7e7;
   display: block;
   height: 298px;
-  margin-bottom: 18px;
+  margin-bottom: 0px;
   padding: 0px;
   text-align: center;
   width: 298px;
@@ -532,7 +532,7 @@ ul.buttons li {
 
 #occpage_image li div {
   width:300px;
-  margin:0px auto;
+  margin:0px auto 20px;
   text-align:right;
 }
 
