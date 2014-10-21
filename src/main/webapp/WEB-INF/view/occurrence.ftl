@@ -228,8 +228,10 @@
 		</table>
 		</#if>
 		
+		<#if page.occViewModel.recommendedCitation?has_content>
 		<h2>${rc.getMessage("occpage.group.citation")}</h2>
 		<p>${page.occViewModel.recommendedCitation!}</p>
+		</#if>
 	</div>
 </div><#-- body -->
 <#assign coordinateuncertaintyinmeters=0>
