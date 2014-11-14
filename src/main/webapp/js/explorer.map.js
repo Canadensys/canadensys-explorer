@@ -189,7 +189,7 @@ EXPLORER.map = (function() {
           editable: true,
           strokeColor: '#0B0B09',
           fillColor: '#E7E7E7',
-          fillOpacity: 0.4
+          fillOpacity: 0.2
         },
         zoom: obj.mapZoom,
         mapTypeId: google.maps.MapTypeId.TERRAIN,
