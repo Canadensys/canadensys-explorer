@@ -20,6 +20,7 @@ EXPLORER.map = (function() {
 
     init: function() {
       this.addBoundsMethod();
+      this.cartoDBinit();
       this.cartoDBsetBounds();
       this.cartoDBgenerateTile();
       EXPLORER.backbone.bindToFilterList('add',this.onAddFilter,this);
@@ -35,6 +36,10 @@ EXPLORER.map = (function() {
           return bounds;
         };
       }
+    },
+
+    cartoDBinit: function() {
+      CartoDBLayer.prototype._addWadus = function() { return; };
     },
 
     cartoDBsetBounds: function() {
