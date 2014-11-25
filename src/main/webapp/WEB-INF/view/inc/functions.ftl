@@ -87,14 +87,16 @@ ${URLHelper.newQueryStringBuilder().add("view",view).add(page.searchParameters!)
 
 <#-- Print license div block-->
 <#macro licenseDiv license licenseShortname="" creator="">
-<div>
+<div class="attribution">
 <#if licenseShortname?has_content>
-  <a href="${license}">
+  <a itemprop="license" rel="license" href="${license}">
   <img src="${rc.getContextUrl("/assets/images/"+licenseShortname+".png")}" alt="CC ${licenseShortname?upper_case}" />
   </a><br>
 <#else>
   <@printIfNotEmpty text=rc.getMessage("occ.multimedia.license")+": " variable=license/><br>
 </#if>
-<@printIfNotEmpty text=rc.getMessage("occ.multimedia.creator")+": " variable=creator/>
+<#if creator?has_content>
+  ${rc.getMessage("occ.multimedia.creator")}: <span itemprop="author">${creator}</span>
+</#if>
 </div>
 </#macro>

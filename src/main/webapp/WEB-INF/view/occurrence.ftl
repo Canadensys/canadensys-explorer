@@ -44,8 +44,8 @@
 		<ul class="clear_fix">
 		<#list page.occViewModel.imageViewModelList as currMultimediaViewModel>
 			<li>
-				<div>
-					<a href="${currMultimediaViewModel.references!}" class="media"><img src="${currMultimediaViewModel.identifier!}" title="${currMultimediaViewModel.title!}" alt="${currMultimediaViewModel.title!}"/></a>
+				<div itemscope itemtype="http://schema.org/ImageObject">
+					<a href="${currMultimediaViewModel.references!}" class="media"><img src="${currMultimediaViewModel.identifier!}" title="${currMultimediaViewModel.title!}" alt="${currMultimediaViewModel.title!}" itemprop="contentUrl"/></a>
 					<@licenseDiv license=currMultimediaViewModel.license! licenseShortname=currMultimediaViewModel.licenseShortname! creator=currMultimediaViewModel.creator!/>
 				</div>
 			</li>

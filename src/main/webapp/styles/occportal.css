@@ -555,6 +555,11 @@ ul.buttons li {
   max-width: 298px;
   vertical-align:middle;
 }
+#occpage_image div.attribution span {
+  display:inline;
+  height:auto;
+  width:auto;
+}
 
 #occpage_location table {
   float:left;
