@@ -1,7 +1,10 @@
 <#include "inc/functions.ftl">
 <#include "inc/global-functions.ftl">
 <head>
-<title>${rc.getMessage("page.search.title")}</title>
+<meta property="og:title" content="${rc.getMessage("page.search.title")}: <@defaultIfEmpty text=page.occModel.scientificname! defaulttext=rc.getMessage("occpage.scientificnamenotprovided")/>" />
+<meta property="og:locale" content="${rc.getLocale().getLanguage()}" />
+<meta property="og:type" content="website" />
+<title>${rc.getMessage("page.search.title")}: <@defaultIfEmpty text=page.occModel.scientificname! defaulttext=rc.getMessage("occpage.scientificnamenotprovided")/></title>
 <@cssAsset fileName="occportal" version=page.currentVersion! useMinified=false/>
 </head>
 <a id="main-content"></a>
@@ -44,8 +47,8 @@
 		<ul class="clear_fix">
 		<#list page.occViewModel.imageViewModelList as currMultimediaViewModel>
 			<li>
-				<div itemscope itemtype="http://schema.org/ImageObject">
-					<a href="${currMultimediaViewModel.references!}" class="media"><img src="${currMultimediaViewModel.identifier!}" title="${currMultimediaViewModel.title!}" alt="${currMultimediaViewModel.title!}" itemprop="contentUrl"/></a>
+				<div vocab="http://schema.org/" typeof="ImageObject">
+					<a href="${currMultimediaViewModel.references!}" class="media"><img src="${currMultimediaViewModel.identifier!}" title="${currMultimediaViewModel.title!}" alt="${currMultimediaViewModel.title!}" property="contentUrl"/></a>
 					<@licenseDiv license=currMultimediaViewModel.license! licenseShortname=currMultimediaViewModel.licenseShortname! creator=currMultimediaViewModel.creator!/>
 				</div>
 			</li>
