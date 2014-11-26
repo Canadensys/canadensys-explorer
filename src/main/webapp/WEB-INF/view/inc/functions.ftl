@@ -89,7 +89,7 @@ ${URLHelper.newQueryStringBuilder().add("view",view).add(page.searchParameters!)
 <#macro licenseDiv license licenseShortname="" creator="">
 <div class="attribution">
 <#if licenseShortname?has_content>
-  <a property="license" rel="license" href="${license}">
+  <a href="${license}" rel="license">
   <img src="${rc.getContextUrl("/assets/images/"+licenseShortname+".png")}" alt="CC ${licenseShortname?upper_case}" />
   </a><br>
 <#else>
