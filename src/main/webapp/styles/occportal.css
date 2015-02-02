@@ -61,22 +61,6 @@ ul.buttons li {
   height:45px;
 }
 
-.skipnav { text-align: left; }
-.skipnav {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(1px, 1px, 1px, 1px);
- }
-.skipnav:focus {
-  position: static;
-  width: inherit;
-  height: inherit;
-  overflow: inherit;
-  clip: rect(auto, auto, auto, auto);
- }
-
 .clear_fix:after {
     clear: both;
     content: "";
