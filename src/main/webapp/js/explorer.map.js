@@ -20,6 +20,7 @@ EXPLORER.map = (function() {
 
     init: function() {
       this.addBoundsMethod();
+      this.cartoDBinit();
       this.cartoDBsetBounds();
       this.cartoDBgenerateTile();
       EXPLORER.backbone.bindToFilterList('add',this.onAddFilter,this);
@@ -35,6 +36,10 @@ EXPLORER.map = (function() {
           return bounds;
         };
       }
+    },
+
+    cartoDBinit: function() {
+      CartoDBLayer.prototype._addWadus = function() { return; };
     },
 
     cartoDBsetBounds: function() {
@@ -189,7 +194,7 @@ EXPLORER.map = (function() {
           editable: true,
           strokeColor: '#0B0B09',
           fillColor: '#E7E7E7',
-          fillOpacity: 0.4
+          fillOpacity: 0.2
         },
         zoom: obj.mapZoom,
         mapTypeId: google.maps.MapTypeId.TERRAIN,

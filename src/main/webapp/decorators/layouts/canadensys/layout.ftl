@@ -1,7 +1,7 @@
 <#-- some /WEB-INF/view/inc/.ftl can come from canadensys-web-core project -->
 <#include "/WEB-INF/view/inc/global-functions.ftl">
 <!DOCTYPE html>
-<html lang="${rc.getLocale().getLanguage()}">
+<html lang="${rc.getLocale().getLanguage()}" prefix="og: http://ogp.me/ns#">
 <head>
 <meta charset="UTF-8">
 <title><sitemesh:write property='title'>Title goes here</sitemesh:write></title>

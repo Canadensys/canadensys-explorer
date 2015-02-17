@@ -1,6 +1,9 @@
 <#include "inc/functions.ftl">
 <#include "inc/global-functions.ftl">
 <head>
+<meta property="og:title" content="${rc.getMessage("page.search.title")}" />
+<meta property="og:locale" content="${rc.getLocale().getLanguage()}" />
+<meta property="og:type" content="website" />
 <title>${rc.getMessage("page.search.title")}</title>
 <@cssAsset fileName="occportal" version=page.currentVersion! useMinified=false/>
 </head>
