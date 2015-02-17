@@ -1,5 +1,5 @@
 ext {
-	webThemeVersion = '0.2'
+	webThemeVersion = '0.3'
 }
 
 dependencies {
