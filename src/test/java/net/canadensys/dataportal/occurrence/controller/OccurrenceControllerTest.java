@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import net.canadensys.dataportal.occurrence.TestDataHelper;
 import net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig;
 import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
 import net.canadensys.dataportal.occurrence.model.OccurrenceViewModel;
@@ -77,16 +78,7 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
 	
     @Before
     public void setup() {
-		//make sure the tables are empty
-		jdbcTemplate.update("DELETE FROM occurrence");
-		jdbcTemplate.update("DELETE FROM occurrence_raw");
-		jdbcTemplate.update("DELETE FROM resource_contact");
-		jdbcTemplate.update("INSERT INTO occurrence_raw (auto_id,dwcaId,country,locality,datasetname,sourcefileid) VALUES (1,'2','Mexico','Mexico','University of Mexico (UOM)','uom-occurrence')");
-		jdbcTemplate.update("INSERT INTO occurrence_raw (auto_id,dwcaId,country,locality,datasetname,sourcefileid) VALUES (2,'2.2','Mexico','Mexico','University of Mexico (UOM)','uom-occurrence')");
-		jdbcTemplate.update("INSERT INTO occurrence (auto_id,dwcaId,country,locality,datasetname,sourcefileid,syear,smonth,sday) VALUES (1,'2','Mexico','Mexico','University of Mexico (UOM)','uom-occurrence',2001,03,21)");
-		jdbcTemplate.update("INSERT INTO occurrence (auto_id,dwcaId,country,locality,datasetname,sourcefileid,syear,smonth,sday) VALUES (2,'2.2','Mexico','Mexico','University of Mexico (UOM)','uom-occurrence',2001,03,21)");
-		jdbcTemplate.update("INSERT INTO resource_contact (id,sourcefileid,name) VALUES (1,'uom-occurrence','Jim')");
-		jdbcTemplate.update("INSERT INTO resource_management(sourcefileid,resource_uuid,name,archive_url) VALUES ('uom-occurrence','ABDU-NSNS-2838','UOM','http://data.canadensys.net/ipt/archive.do?r=uom-occurrence')");
+    	TestDataHelper.loadTestData(applicationContext, jdbcTemplate);
     }
 
     @Test
@@ -94,11 +86,11 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
     	MockHttpServletResponse response = new MockHttpServletResponse();
     	MockHttpServletRequest request = new MockHttpServletRequest();
     	request.setMethod("GET");
-    	request.setRequestURI("/resources/uom-occurrence");
+    	request.setRequestURI("/resources/acad-specimens");
     	//test default view
     	Object handler = handlerMapping.getHandler(request).getHandler();    
     	ModelAndView mav = handlerAdapter.handle(request, response, handler);
-    	assertTrue(((RedirectView)mav.getView()).getUrl().contains("search?iptresource=uom-occurrence"));
+    	assertTrue(((RedirectView)mav.getView()).getUrl().contains("search?iptresource=acad-specimens"));
     }
 
     @Test
@@ -106,7 +98,7 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
     	MockHttpServletResponse response = new MockHttpServletResponse();
     	MockHttpServletRequest request = new MockHttpServletRequest();
     	request.setMethod("GET");
-    	request.setRequestURI("/resources/uom-occurrence/occurrences/2");
+    	request.setRequestURI("/resources/acad-specimens/occurrences/ACAD-2");
     	//test default view
     	Object handler = handlerMapping.getHandler(request).getHandler();    	
         ModelAndView mav = handlerAdapter.handle(request, response, handler);
@@ -117,7 +109,7 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
         response = new MockHttpServletResponse();
     	request = new MockHttpServletRequest();
     	request.setMethod("GET");
-    	request.setRequestURI("/resources/uom-occurrence/occurrences/2.2");
+    	request.setRequestURI("/resources/trt-specimens/occurrences/TRT.6");
     	//test default view
     	handler = handlerMapping.getHandler(request).getHandler();    	
         mav = handlerAdapter.handle(request, response, handler);
@@ -126,7 +118,7 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
         
         HashMap<String,Object> modelRoot = (HashMap<String,Object>)mav.getModel().get(OccurrencePortalConfig.PAGE_ROOT_MODEL_KEY);
         OccurrenceModel occModel = (OccurrenceModel)modelRoot.get("occModel");
-        assertEquals("2.2", occModel.getDwcaid());
+        assertEquals("TRT.6", occModel.getDwcaid());
     }
     
     /**

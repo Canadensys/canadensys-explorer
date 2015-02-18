@@ -2,10 +2,10 @@ package net.canadensys.dataportal.occurrence;
 
 import java.util.List;
 
+import net.canadensys.dataportal.occurrence.model.DwcaResourceModel;
 import net.canadensys.dataportal.occurrence.model.OccurrenceExtensionModel;
 import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
-import net.canadensys.dataportal.occurrence.model.ResourceContactModel;
-import net.canadensys.dataportal.occurrence.model.ResourceModel;
+import net.canadensys.dataportal.occurrence.model.ResourceMetadataModel;
 
 /**
  * OccurrenceService layer interface to access occurrence related data. This interface handles only high-level methods.
@@ -46,17 +46,19 @@ public interface OccurrenceService {
 	public List<OccurrenceExtensionModel> loadOccurrenceExtensionModel(String extensionType, String resourceUUID, String dwcaId);
 	
 	/**
-	 * Load a ResourceContactModel based on the sourcefileid
+	 * Load a ResourceMetadataModel based on the resourceUUID.
+	 * 
 	 * @param sourcefileid
 	 * @return
 	 */
-	public ResourceContactModel loadResourceContactModel(String sourcefileid);
+	public ResourceMetadataModel loadResourceMetadata(String resourceUUID);
 	
 	/**
-	 * Load a ResourceModel based on the sourcefileid
+	 * Load a DwcaResourceModel based on the resourceUUID.
+	 * 
 	 * @param sourcefileid
 	 * @return
 	 */
-	public ResourceModel loadResourceModel(String sourcefileid);
+	public DwcaResourceModel loadDwcaResource(String resourceUUID);
 
 }

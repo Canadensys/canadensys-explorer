@@ -11,6 +11,7 @@ import javax.annotation.PostConstruct;
 
 import net.canadensys.ServletGlobalConfig;
 import net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig;
+import net.canadensys.dataportal.occurrence.model.OccurrenceFieldConstants;
 import net.canadensys.dataportal.occurrence.search.OccurrenceSearchableField;
 import net.canadensys.query.QueryOperatorEnum;
 import net.canadensys.query.SearchableField;
@@ -178,8 +179,9 @@ public class SearchServiceConfig {
 		OCCURENCE_SUMMARY_FIELDS.add("scientificnameauthorship");
 		OCCURENCE_SUMMARY_FIELDS.add("rawscientificname");
 		OCCURENCE_SUMMARY_FIELDS.add("_references");
-		OCCURENCE_SUMMARY_FIELDS.add("sourcefileid");
-		OCCURENCE_SUMMARY_FIELDS.add("dwcaid");
+		OCCURENCE_SUMMARY_FIELDS.add(OccurrenceFieldConstants.DWCA_ID);
+		OCCURENCE_SUMMARY_FIELDS.add(OccurrenceFieldConstants.RESOURCE_UUID);
+		OCCURENCE_SUMMARY_FIELDS.add(OccurrenceFieldConstants.SOURCE_FILE_ID);
 		OCCURENCE_SUMMARY_FIELDS.add("typestatus");
 	}
 	

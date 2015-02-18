@@ -17,10 +17,10 @@ import net.canadensys.dataportal.occurrence.OccurrenceService;
 import net.canadensys.dataportal.occurrence.autocomplete.AutoCompleteService;
 import net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig;
 import net.canadensys.dataportal.occurrence.config.OccurrenceSearchableFieldLanguageSupport;
+import net.canadensys.dataportal.occurrence.model.DwcaResourceModel;
 import net.canadensys.dataportal.occurrence.model.MapInfoModel;
 import net.canadensys.dataportal.occurrence.model.OccurrenceExtensionModel;
 import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
-import net.canadensys.dataportal.occurrence.model.ResourceModel;
 import net.canadensys.dataportal.occurrence.search.DownloadResultStatus;
 import net.canadensys.dataportal.occurrence.search.OccurrenceSearchService;
 import net.canadensys.dataportal.occurrence.search.OccurrenceSearchService.DownloadPropertiesEnum;
@@ -398,16 +398,16 @@ public class SearchController {
 	public ModelAndView handleOccurrencePreview(@PathVariable Integer auto_id, HttpServletRequest request){
 		Locale locale = RequestContextUtils.getLocale(request);
 		OccurrenceModel occModel = occurrenceSearchService.getOccurrenceSummary(auto_id);
-
+		
 		HashMap<String,Object> modelRoot = new HashMap<String,Object>();
 		if(occModel != null){
-			//get UUID from sourcefileid (iptResource). loadResourceModel is using cache
-			ResourceModel resourceModel = occurrenceService.loadResourceModel(occModel.getSourcefileid());
+			//loadDwcaResource is using cache
+			DwcaResourceModel resourceModel = occurrenceService.loadDwcaResource(occModel.getResource_uuid());
 			if(resourceModel == null){
 				throw new ResourceNotFoundException();
 			}
 			List<OccurrenceExtensionModel> occMultimediaExtModelList = occurrenceService.loadOccurrenceExtensionModel(
-					GbifTerm.Multimedia.simpleName(), resourceModel.getResource_uuid(), occModel.getDwcaid());
+					GbifTerm.Multimedia.simpleName(), occModel.getResource_uuid(), occModel.getDwcaid());
 			
 			modelRoot.put("occModel", occModel);
 			modelRoot.put("occViewModel", occurrenceController.buildOccurrenceViewModel(occModel, resourceModel, occMultimediaExtModelList, locale));

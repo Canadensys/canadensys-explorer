@@ -4,14 +4,14 @@ import java.util.List;
 
 import net.canadensys.dataportal.occurrence.OccurrenceService;
 import net.canadensys.dataportal.occurrence.cache.CacheManagementServiceIF;
+import net.canadensys.dataportal.occurrence.dao.DwcaResourceDAO;
 import net.canadensys.dataportal.occurrence.dao.OccurrenceDAO;
 import net.canadensys.dataportal.occurrence.dao.OccurrenceExtensionDAO;
-import net.canadensys.dataportal.occurrence.dao.ResourceContactDAO;
-import net.canadensys.dataportal.occurrence.dao.ResourceDAO;
+import net.canadensys.dataportal.occurrence.dao.ResourceMetadataDAO;
+import net.canadensys.dataportal.occurrence.model.DwcaResourceModel;
 import net.canadensys.dataportal.occurrence.model.OccurrenceExtensionModel;
 import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
-import net.canadensys.dataportal.occurrence.model.ResourceContactModel;
-import net.canadensys.dataportal.occurrence.model.ResourceModel;
+import net.canadensys.dataportal.occurrence.model.ResourceMetadataModel;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +35,10 @@ public class OccurrenceServiceImpl implements OccurrenceService {
 	private OccurrenceExtensionDAO occurrenceExtensionDAO;
 	
 	@Autowired
-	private ResourceContactDAO resourceContactDAO;
+	private DwcaResourceDAO resourceDAO;
 	
 	@Autowired
-	private ResourceDAO resourceDAO;
+	private ResourceMetadataDAO resourceMetadataDAO;
 	
 	@Override
 	@Transactional(readOnly=true)
@@ -73,12 +73,9 @@ public class OccurrenceServiceImpl implements OccurrenceService {
 	
 	@Override
 	@Transactional(readOnly=true)
-	public ResourceContactModel loadResourceContactModel(String sourceFileId) {
-		List<ResourceContactModel> resourceContactModelList = resourceContactDAO.load(sourceFileId);
-		if(resourceContactModelList.size() > 0){
-			return resourceContactModelList.get(0);
-		}
-		return null;
+	@Cacheable(value=CacheManagementServiceIF.RESOURCE_METADATA_MODEL_CACHE_KEY, key="#resourceUUID", condition="#resourceUUID != null")
+	public ResourceMetadataModel loadResourceMetadata(String resourceUUID) {
+		return resourceMetadataDAO.load(resourceUUID);
 	}
 
 	/**
@@ -88,8 +85,8 @@ public class OccurrenceServiceImpl implements OccurrenceService {
 	 */
 	@Override
 	@Transactional(readOnly=true)
-	@Cacheable(value=CacheManagementServiceIF.RESOURCE_MODEL_CACHE_KEY, key="#sourcefileid", condition="#sourcefileid != null")
-	public ResourceModel loadResourceModel(String sourcefileid) {
-		return resourceDAO.load(sourcefileid);
+	@Cacheable(value=CacheManagementServiceIF.DWCA_RESOURCE_MODEL_CACHE_KEY, key="#resourceUUID", condition="#resourceUUID != null")
+	public DwcaResourceModel loadDwcaResource(String resourceUUID) {
+		return resourceDAO.loadByResourceUUID(resourceUUID);
 	}
 }

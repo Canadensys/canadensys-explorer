@@ -12,12 +12,14 @@ import javax.servlet.http.HttpServletRequest;
 import net.canadensys.dataportal.occurrence.OccurrenceService;
 import net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig;
 import net.canadensys.dataportal.occurrence.controller.formatter.FormatterUtility;
+import net.canadensys.dataportal.occurrence.dao.ResourceMetadataDAO;
+import net.canadensys.dataportal.occurrence.model.ContactModel;
+import net.canadensys.dataportal.occurrence.model.DwcaResourceModel;
 import net.canadensys.dataportal.occurrence.model.MultimediaViewModel;
 import net.canadensys.dataportal.occurrence.model.OccurrenceExtensionModel;
 import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
 import net.canadensys.dataportal.occurrence.model.OccurrenceViewModel;
-import net.canadensys.dataportal.occurrence.model.ResourceContactModel;
-import net.canadensys.dataportal.occurrence.model.ResourceModel;
+import net.canadensys.dataportal.occurrence.model.ResourceMetadataModel;
 import net.canadensys.exception.web.ResourceNotFoundException;
 import net.canadensys.web.i18n.I18nUrlBuilder;
 import net.canadensys.web.i18n.annotation.I18nTranslation;
@@ -71,35 +73,44 @@ public class OccurrenceController {
 	
 	@RequestMapping(value="/resources/{iptResource}/occurrences/{dwcaId:.+}", method=RequestMethod.GET)
 	@I18nTranslation(resourceName="occurrence", translateFormat = "/resources/{}/occurrences/{}")
-	public ModelAndView handleOccurrencePerResource(@PathVariable String iptResource,@PathVariable String dwcaId, HttpServletRequest request){
+	public ModelAndView handleOccurrencePerResource(@PathVariable String iptResource, @PathVariable String dwcaId, HttpServletRequest request){
 		Locale locale = RequestContextUtils.getLocale(request);
-		OccurrenceModel occModel = occurrenceService.loadOccurrenceModel(iptResource,dwcaId,true);
 		
-		//get UUID from sourcefileid (iptResource). loadResourceModel is using cache
-		ResourceModel resourceModel = occurrenceService.loadResourceModel(iptResource);
+		OccurrenceModel occModel = occurrenceService.loadOccurrenceModel(iptResource,dwcaId,true);
+		if(occModel == null){
+			throw new ResourceNotFoundException();
+		}
+		
+		//loadDwcaResource is using cache
+		DwcaResourceModel resourceModel = occurrenceService.loadDwcaResource(occModel.getResource_uuid());
 		if(resourceModel == null){
 			throw new ResourceNotFoundException();
 		}
 		
-		// load resource contact
-		// loadResourceContactModel should probably use cache
-		ResourceContactModel contactModel = occurrenceService.loadResourceContactModel(iptResource);
+		//loadResourceMetadata is using cache
+		ResourceMetadataModel resourceMetadata = occurrenceService.loadResourceMetadata(occModel.getResource_uuid());
+		
+		//Get main contact
+		ContactModel contactModel = null;
+		if(resourceMetadata.getContacts() != null){
+			for(ContactModel currContact : resourceMetadata.getContacts()){
+				if(ResourceMetadataDAO.ContactRole.CONTACT.getKey().equals(currContact.getRole())){
+					contactModel = currContact;
+					break;
+				}
+			}
+		}
 		
 		// load multimedia extension data
 		List<OccurrenceExtensionModel> occMultimediaExtModelList = occurrenceService.loadOccurrenceExtensionModel(
-				GbifTerm.Multimedia.simpleName(), resourceModel.getResource_uuid(), dwcaId);
+				GbifTerm.Multimedia.simpleName(), occModel.getResource_uuid(), dwcaId);
 		
 		HashMap<String,Object> modelRoot = new HashMap<String,Object>();
-		
-		if(occModel != null){
-			modelRoot.put("occModel", occModel);
-			modelRoot.put("occRawModel", occModel.getRawModel());
-			modelRoot.put("occViewModel", buildOccurrenceViewModel(occModel, resourceModel, occMultimediaExtModelList, locale));
-			modelRoot.put("contactModel", contactModel);
-		}
-		else{
-			throw new ResourceNotFoundException();
-		}
+		modelRoot.put("occModel", occModel);
+		modelRoot.put("occRawModel", occModel.getRawModel());
+		modelRoot.put("occViewModel", buildOccurrenceViewModel(occModel, resourceModel, occMultimediaExtModelList, locale));
+		modelRoot.put("contactModel", contactModel);
+
 		//Set common stuff
 		ControllerHelper.setPageHeaderVariables(request,"occurrence",new String[]{iptResource,dwcaId},appConfig, modelRoot);
 		
@@ -136,7 +147,7 @@ public class OccurrenceController {
 	 * @param occModel
 	 * @return OccurrenceViewModel instance, never null
 	 */
-	public OccurrenceViewModel buildOccurrenceViewModel(OccurrenceModel occModel, ResourceModel resourceModel, List<OccurrenceExtensionModel> occMultimediaExtModelList, Locale locale){
+	public OccurrenceViewModel buildOccurrenceViewModel(OccurrenceModel occModel, DwcaResourceModel resourceModel, List<OccurrenceExtensionModel> occMultimediaExtModelList, Locale locale){
 		OccurrenceViewModel occViewModel = new OccurrenceViewModel();
 		ResourceBundle bundle = appConfig.getResourceBundle(locale);
 		

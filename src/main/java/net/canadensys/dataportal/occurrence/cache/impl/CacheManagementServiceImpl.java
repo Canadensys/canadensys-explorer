@@ -32,7 +32,8 @@ public class CacheManagementServiceImpl implements CacheManagementServiceIF{
 	public static final List<String> MANAGED_CACHE_KEY = new ArrayList<String>();
 	static{
 		MANAGED_CACHE_KEY.add(DISTINCT_VALUES_COUNT_CACHE_KEY);
-		MANAGED_CACHE_KEY.add(CacheManagementServiceIF.RESOURCE_MODEL_CACHE_KEY);
+		MANAGED_CACHE_KEY.add(RESOURCE_METADATA_MODEL_CACHE_KEY);
+		MANAGED_CACHE_KEY.add(DWCA_RESOURCE_MODEL_CACHE_KEY);
 	}
 	
 	@Autowired

@@ -11,8 +11,9 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import net.canadensys.dataportal.occurrence.OccurrenceService;
+import net.canadensys.dataportal.occurrence.TestDataHelper;
 import net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig;
-import net.canadensys.dataportal.occurrence.model.ResourceModel;
+import net.canadensys.dataportal.occurrence.model.DwcaResourceModel;
 import net.canadensys.dataportal.occurrence.search.OccurrenceSearchService;
 import net.canadensys.dataportal.occurrence.search.OccurrenceSearchableField;
 import net.canadensys.dataportal.occurrence.search.config.SearchServiceConfig;
@@ -27,14 +28,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.ApplicationContext;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
@@ -61,9 +58,6 @@ public class CachingTest extends AbstractTransactionalJUnit4SpringContextTests{
     @Autowired
     private RequestMappingHandlerMapping handlerMapping;
     
-    @Autowired
-    private ApplicationContext applicationContext;
-    
     private JdbcTemplate jdbcTemplate;
 	
     @Autowired
@@ -73,13 +67,7 @@ public class CachingTest extends AbstractTransactionalJUnit4SpringContextTests{
     
     @Before
     public void setup() {       
-		//make sure the table is empty
-		jdbcTemplate.update("DELETE FROM occurrence");
-		jdbcTemplate.update("DELETE FROM occurrence_raw");
-		jdbcTemplate.update("DELETE FROM resource_contact");
-		
-    	Resource resource = new ClassPathResource("/insert_test_data.sql");
-    	JdbcTestUtils.executeSqlScript(jdbcTemplate, resource, true);
+		TestDataHelper.loadTestData(applicationContext, jdbcTemplate);
     }
     
     /**
@@ -110,12 +98,12 @@ public class CachingTest extends AbstractTransactionalJUnit4SpringContextTests{
     public void testResourceModelCache(){
     	OccurrenceService occService = (OccurrenceService)applicationContext.getBean("occurrenceService");
 
-    	ResourceModel resourceModel = occService.loadResourceModel("acad-specimens");
+    	DwcaResourceModel resourceModel = occService.loadDwcaResource("db4f9560-9cca-11e4-89d3-123b93f75cba");
     	assertNotNull(resourceModel);
     	
     	//extract value from cache
-    	Cache cache = CacheManager.getCacheManager(CacheManager.DEFAULT_NAME).getCache(CacheManagementServiceIF.RESOURCE_MODEL_CACHE_KEY);
-    	ResourceModel resourceModelFromCache = (ResourceModel)cache.get("acad-specimens").getObjectValue();
+    	Cache cache = CacheManager.getCacheManager(CacheManager.DEFAULT_NAME).getCache(CacheManagementServiceIF.DWCA_RESOURCE_MODEL_CACHE_KEY);
+    	DwcaResourceModel resourceModelFromCache = (DwcaResourceModel)cache.get("db4f9560-9cca-11e4-89d3-123b93f75cba").getObjectValue();
     	assertNotNull(resourceModelFromCache);
     	
     	assertEquals(resourceModel.getName(), resourceModelFromCache.getName());

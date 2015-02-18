@@ -8,8 +8,10 @@ package net.canadensys.dataportal.occurrence.cache;
  */
 public interface CacheManagementServiceIF {
 	
+	// Must be defined in ehcache.xml file
 	public static final String DISTINCT_VALUES_COUNT_CACHE_KEY = "distinctValuesCountCache";
-	public static final String RESOURCE_MODEL_CACHE_KEY = "resourceModelCache";
+	public static final String DWCA_RESOURCE_MODEL_CACHE_KEY = "dwcaResourceModelCache";
+	public static final String RESOURCE_METADATA_MODEL_CACHE_KEY = "resourceMetadataCache";
 		
 	/**
 	 * Preload elements in cache that are expensive in time to create but cheap in memory to hold.
