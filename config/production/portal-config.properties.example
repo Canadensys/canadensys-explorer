@@ -12,7 +12,7 @@ url.useMinified=true
 googleanalytics.siteVerification=YOUR_VALUE
 googleanalytics.account=YOUR_VALUE
 
-#Database
+#Database configuration
 database.driver=org.postgresql.Driver
 database.url=jdbc:postgresql://YOUR_DATABASE_SERVER/dataportal
 database.user=YOUR_VALUE
@@ -33,10 +33,14 @@ email.salt=6SFDW$PTkp04yogq>vyEfku
 # Optional, if you want to overwrite the location of the Freemarker email templates.
 # email.templateFolder=/WEB-INF/email/
 
+#Map configuration
 #The URL of the tile server
 tiler.protocol=http
 tiler.domain=tiles.canadensys.net
 tiler.port=80
+#Center of Canada [60, -101]
+map.default.latitude=60
+map.default.longitude=-101
 
 #The URL of your feedback system. Could also be a mailto or can be removed if no feedback is required.
 feedback.url=http://code.google.com/p/canadensys/issues/entry?template=Explorer%20-%20Interface%20issue

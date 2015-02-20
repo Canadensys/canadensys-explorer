@@ -105,6 +105,8 @@
           <entry key="tilerDomain" value="${tiler.domain:}"/>
           <entry key="tilerProtocol" value="${tiler.protocol:}"/>
           <entry key="tilerPort" value="${tiler.port:}"/>
+          <entry key="mapDefaultLat" value="${map.default.latitude:0}" />
+          <entry key="mapDefaultLong" value="${map.default.longitude:0}" />
           <entry key="feedbackURL" value="${feedback.url:}"/>
           <entry key="URLHelper" value-ref="URLHelper"/>
         </map>

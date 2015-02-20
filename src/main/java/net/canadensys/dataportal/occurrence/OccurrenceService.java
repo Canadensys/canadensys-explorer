@@ -48,7 +48,7 @@ public interface OccurrenceService {
 	/**
 	 * Load a ResourceMetadataModel based on the resourceUUID.
 	 * 
-	 * @param sourcefileid
+	 * @param resourceUUID
 	 * @return
 	 */
 	public ResourceMetadataModel loadResourceMetadata(String resourceUUID);
@@ -56,7 +56,7 @@ public interface OccurrenceService {
 	/**
 	 * Load a DwcaResourceModel based on the resourceUUID.
 	 * 
-	 * @param sourcefileid
+	 * @param resourceUUID
 	 * @return
 	 */
 	public DwcaResourceModel loadDwcaResource(String resourceUUID);
