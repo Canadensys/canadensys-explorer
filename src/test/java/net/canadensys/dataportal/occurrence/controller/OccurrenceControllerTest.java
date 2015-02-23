@@ -116,7 +116,8 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
         assertEquals(HttpServletResponse.SC_OK, response.getStatus());
         assertViewName(mav,"occurrence");
         
-        HashMap<String,Object> modelRoot = (HashMap<String,Object>)mav.getModel().get(OccurrencePortalConfig.PAGE_ROOT_MODEL_KEY);
+        @SuppressWarnings("unchecked")
+		HashMap<String,Object> modelRoot = (HashMap<String,Object>)mav.getModel().get(OccurrencePortalConfig.PAGE_ROOT_MODEL_KEY);
         OccurrenceModel occModel = (OccurrenceModel)modelRoot.get("occModel");
         assertEquals("TRT.6", occModel.getDwcaid());
     }

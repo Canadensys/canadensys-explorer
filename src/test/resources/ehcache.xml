@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ehcache>
-    <defaultCache eternal="false" maxElementsInMemory="100" overflowToDisk="false" />
-    <cache name="distinctValuesCountCache" maxElementsInMemory="30" eternal="false" overflowToDisk="false" />
-    <cache name="resourceModelCache" maxElementsInMemory="30" eternal="false" overflowToDisk="false" />
-</ehcache>

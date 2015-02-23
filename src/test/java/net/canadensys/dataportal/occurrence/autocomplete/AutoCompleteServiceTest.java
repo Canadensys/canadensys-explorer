@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import javax.sql.DataSource;
 
+import net.canadensys.dataportal.occurrence.TestDataHelper;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,14 +44,8 @@ public class AutoCompleteServiceTest extends AbstractTransactionalJUnit4SpringCo
     }
 	
     @Before
-    public void setup() {       
-		//make sure the table is empty and reset the sequence
-		jdbcTemplate.update("DELETE FROM unique_values");
-		jdbcTemplate.update("ALTER SEQUENCE unique_values_id_seq RESTART WITH 1");
-		//add controlled rows
-		jdbcTemplate.update("INSERT INTO unique_values (key,occurrence_count,value,unaccented_value) VALUES ('country',125,'Canada','canada')");
-		jdbcTemplate.update("INSERT INTO unique_values (key,occurrence_count,value,unaccented_value) VALUES ('country',17,'China','china')");
-		jdbcTemplate.update("INSERT INTO unique_values (key,occurrence_count,value,unaccented_value) VALUES ('country',1,'Réunion','reunion')");
+    public void setup() { 
+    	TestDataHelper.loadTestData(applicationContext, jdbcTemplate);
     }
 
     @Test
@@ -60,7 +56,7 @@ public class AutoCompleteServiceTest extends AbstractTransactionalJUnit4SpringCo
     	MockHttpServletResponse response =  new MockHttpServletResponse();
     	Object handler = handlerMapping.getHandler(request).getHandler();
         handlerAdapter.handle(request, response, handler);
-        assertEquals("{\"total_rows\":\"3\",\"rows\":[{\"id\":1,\"key\":\"country\",\"occurrence_count\":125,\"value\":\"Canada\",\"unaccented_value\":\"canada\"},{\"id\":2,\"key\":\"country\",\"occurrence_count\":17,\"value\":\"China\",\"unaccented_value\":\"china\"},{\"id\":3,\"key\":\"country\",\"occurrence_count\":1,\"value\":\"Réunion\",\"unaccented_value\":\"reunion\"}]}",
+        assertEquals("{\"total_rows\":\"3\",\"rows\":[{\"id\":3,\"key\":\"country\",\"occurrence_count\":125,\"value\":\"Canada\",\"unaccented_value\":\"canada\"},{\"id\":4,\"key\":\"country\",\"occurrence_count\":17,\"value\":\"China\",\"unaccented_value\":\"china\"},{\"id\":5,\"key\":\"country\",\"occurrence_count\":1,\"value\":\"Réunion\",\"unaccented_value\":\"reunion\"}]}",
         		response.getContentAsString());
     	
     	//test a  auto-complete on the letter "c" for the field country
@@ -68,7 +64,7 @@ public class AutoCompleteServiceTest extends AbstractTransactionalJUnit4SpringCo
     	response =  new MockHttpServletResponse();
     	handler = handlerMapping.getHandler(request).getHandler();
         handlerAdapter.handle(request, response, handler);
-        assertEquals("{\"total_rows\":\"2\",\"rows\":[{\"id\":1,\"key\":\"country\",\"occurrence_count\":125,\"value\":\"Canada\",\"unaccented_value\":\"canada\"},{\"id\":2,\"key\":\"country\",\"occurrence_count\":17,\"value\":\"China\",\"unaccented_value\":\"china\"}]}",
+        assertEquals("{\"total_rows\":\"2\",\"rows\":[{\"id\":3,\"key\":\"country\",\"occurrence_count\":125,\"value\":\"Canada\",\"unaccented_value\":\"canada\"},{\"id\":4,\"key\":\"country\",\"occurrence_count\":17,\"value\":\"China\",\"unaccented_value\":\"china\"}]}",
         		response.getContentAsString());
         
     	//test a  auto-complete on a country with an accent and make sure it's case insensitive
@@ -76,7 +72,7 @@ public class AutoCompleteServiceTest extends AbstractTransactionalJUnit4SpringCo
     	response =  new MockHttpServletResponse();
     	handler = handlerMapping.getHandler(request).getHandler();
         handlerAdapter.handle(request, response, handler);
-        assertEquals("{\"total_rows\":\"1\",\"rows\":[{\"id\":3,\"key\":\"country\",\"occurrence_count\":1,\"value\":\"Réunion\",\"unaccented_value\":\"reunion\"}]}",response.getContentAsString());
+        assertEquals("{\"total_rows\":\"1\",\"rows\":[{\"id\":5,\"key\":\"country\",\"occurrence_count\":1,\"value\":\"Réunion\",\"unaccented_value\":\"reunion\"}]}",response.getContentAsString());
     }
     
     private MockHttpServletRequest createMockHttpServletRequest(Integer fieldId, String currValue){

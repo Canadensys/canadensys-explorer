@@ -62,6 +62,11 @@ repositories {
     }
 }
 
+// task use to generate the gradle wrapper files
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.1'
+}
+
 compileJava.options.encoding = sourceEncoding
 compileTestJava.options.encoding = sourceEncoding
 compileJava.sourceCompatibility = sourceCompatibility
