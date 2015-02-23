@@ -85,8 +85,8 @@ public class OccurrenceServiceImpl implements OccurrenceService {
 	 */
 	@Override
 	@Transactional(readOnly=true)
-	@Cacheable(value=CacheManagementServiceIF.DWCA_RESOURCE_MODEL_CACHE_KEY, key="#resourceUUID", condition="#resourceUUID != null")
-	public DwcaResourceModel loadDwcaResource(String resourceUUID) {
-		return resourceDAO.loadByResourceUUID(resourceUUID);
+	@Cacheable(value=CacheManagementServiceIF.DWCA_RESOURCE_MODEL_CACHE_KEY, key="#sourceFileId", condition="#sourceFileId != null")
+	public DwcaResourceModel loadDwcaResourceBySourceFileId(String sourceFileId) {
+		return resourceDAO.loadBySourceFileId(sourceFileId);
 	}
 }

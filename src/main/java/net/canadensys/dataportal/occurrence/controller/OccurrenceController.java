@@ -82,13 +82,13 @@ public class OccurrenceController {
 		}
 		
 		//loadDwcaResource is using cache
-		DwcaResourceModel resourceModel = occurrenceService.loadDwcaResource(occModel.getResource_uuid());
+		DwcaResourceModel resourceModel = occurrenceService.loadDwcaResourceBySourceFileId(occModel.getSourcefileid());
 		if(resourceModel == null){
 			throw new ResourceNotFoundException();
 		}
 		
 		//loadResourceMetadata is using cache
-		ResourceMetadataModel resourceMetadata = occurrenceService.loadResourceMetadata(occModel.getResource_uuid());
+		ResourceMetadataModel resourceMetadata = occurrenceService.loadResourceMetadata(resourceModel.getResource_uuid());
 		
 		//Get main contact
 		ContactModel contactModel = null;

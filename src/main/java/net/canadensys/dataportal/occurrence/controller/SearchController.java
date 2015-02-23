@@ -402,7 +402,7 @@ public class SearchController {
 		HashMap<String,Object> modelRoot = new HashMap<String,Object>();
 		if(occModel != null){
 			//loadDwcaResource is using cache
-			DwcaResourceModel resourceModel = occurrenceService.loadDwcaResource(occModel.getResource_uuid());
+			DwcaResourceModel resourceModel = occurrenceService.loadDwcaResourceBySourceFileId(occModel.getSourcefileid());
 			if(resourceModel == null){
 				throw new ResourceNotFoundException();
 			}
