@@ -17,9 +17,9 @@ Dependencies
 
 ### Libraries
 * [Apache Maven 3](http://maven.apache.org/)
-* [Spring Framework 4.0.2](http://www.springsource.org/spring-framework)
-* [Canadensys Data Access 2.11.0](https://github.com/Canadensys/canadensys-data-access)
-* [Hibernate 4.3.2](http://www.hibernate.org/)
+* [Spring Framework 4.0.9](http://www.springsource.org/spring-framework)
+* [Liger Data Access 2.12.0](https://github.com/WingLongitude/liger-data-access)
+* [Hibernate 4.3.7](http://www.hibernate.org/)
 * [Freemarker 2.3.20](http://freemarker.sourceforge.net/)
 * [SiteMesh 3.0.0](https://github.com/sitemesh/sitemesh3/)
 * [Rewrite 2.0.12](https://github.com/ocpsoft/rewrite)
@@ -28,7 +28,6 @@ Dependencies
 
 ### Projects
 * [canadensys-web-theme](https://github.com/Canadensys/canadensys-web-theme)
-* [canadensys-web-core](https://github.com/Canadensys/canadensys-web-core)
 
 Build
 -----
