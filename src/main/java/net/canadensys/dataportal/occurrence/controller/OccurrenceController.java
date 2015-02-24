@@ -89,6 +89,9 @@ public class OccurrenceController {
 		
 		//loadResourceMetadata is using cache
 		ResourceMetadataModel resourceMetadata = occurrenceService.loadResourceMetadata(resourceModel.getResource_uuid());
+		if(resourceMetadata == null){
+			throw new ResourceNotFoundException();
+		}
 		
 		//Get main contact
 		ContactModel contactModel = null;
@@ -103,7 +106,7 @@ public class OccurrenceController {
 		
 		// load multimedia extension data
 		List<OccurrenceExtensionModel> occMultimediaExtModelList = occurrenceService.loadOccurrenceExtensionModel(
-				GbifTerm.Multimedia.simpleName(), occModel.getResource_uuid(), dwcaId);
+				GbifTerm.Multimedia.simpleName(), resourceModel.getSourcefileid(), dwcaId);
 		
 		HashMap<String,Object> modelRoot = new HashMap<String,Object>();
 		modelRoot.put("occModel", occModel);

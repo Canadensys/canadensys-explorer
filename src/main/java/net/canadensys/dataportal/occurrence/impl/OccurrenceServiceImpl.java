@@ -67,8 +67,8 @@ public class OccurrenceServiceImpl implements OccurrenceService {
 	
 	@Override
 	@Transactional(readOnly=true)
-	public List<OccurrenceExtensionModel> loadOccurrenceExtensionModel(String extensionType, String resourceUUID, String dwcaId) {
-		return occurrenceExtensionDAO.load(extensionType, resourceUUID, dwcaId);
+	public List<OccurrenceExtensionModel> loadOccurrenceExtensionModel(String extensionType, String sourceFileId, String dwcaId) {
+		return occurrenceExtensionDAO.load(extensionType, sourceFileId, dwcaId);
 	}
 	
 	@Override

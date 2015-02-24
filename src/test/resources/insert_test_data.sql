@@ -1,14 +1,14 @@
 /* Occurrence with extension */
 INSERT INTO occurrence(
-auto_id,datasetname,sourcefileid,resource_uuid,dwca_id,scientificname,taxonrank,country,stateprovince,collectioncode,catalognumber,minimumelevationinmeters,maximumelevationinmeters,syear,habitat,_class,_order,decimallatitude,decimallongitude,hasmedia)
+auto_id,datasetname,sourcefileid,dwca_id,scientificname,taxonrank,country,stateprovince,collectioncode,catalognumber,minimumelevationinmeters,maximumelevationinmeters,syear,habitat,_class,_order,decimallatitude,decimallongitude,hasmedia)
 VALUES (
-1,'E. C. Smith Herbarium (ACAD)','acad-specimens','db4f9560-9cca-11e4-89d3-123b93f75cba',
+1,'E. C. Smith Herbarium (ACAD)','acad-specimens',
 'ACAD-1','Acer pseudoplatanus','species','Canada','Nova Scotia','ACAD','ECS019597',100,200,1980,'Under rocks','Magnoliopsida','Sapindales',45.099220,-62.354647,true
 );
 INSERT INTO occurrence_raw(
-auto_id,datasetname,sourcefileid,resource_uuid,dwca_id,scientificname,taxonrank,country,stateprovince,collectioncode,catalognumber,year,habitat)
+auto_id,datasetname,sourcefileid,dwca_id,scientificname,taxonrank,country,stateprovince,collectioncode,catalognumber,year,habitat)
 VALUES (
-1,'E. C. Smith Herbarium (ACAD)','acad-specimens','db4f9560-9cca-11e4-89d3-123b93f75cba',
+1,'E. C. Smith Herbarium (ACAD)','acad-specimens',
 'ACAD-1','Acer pseudoplatanus','species','Canada','Nova Scotia','ACAD','ECS019597',1980,'Under rocks'
 );
 
@@ -23,8 +23,7 @@ toKeyValue('creator=>Chuck Norris','references=>http://procyon.acadiau.ca/ecsmit
 2,'ACAD-1','acad-specimens','db4f9560-9cca-11e4-89d3-123b93f75cba','Multimedia',
 toKeyValue('creator=>JCVD','references=>http://procyon.acadiau.ca/ecsmith/cgi-bin/image.cgi?ECS019597,jpeg','identifier=>http://procyon.acadiau.ca/ecsmith/cgi-bin/image.cgi?ECS019597,jpeg',
 'license=>http://creativecommons.org/licenses/unkown','title=>Image title 2')
-)
-;
+);
 
 /* Occurrence with associatedMedia */
 INSERT INTO occurrence(

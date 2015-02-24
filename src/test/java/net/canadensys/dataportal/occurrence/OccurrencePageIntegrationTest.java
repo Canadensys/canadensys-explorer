@@ -27,6 +27,12 @@ public class OccurrencePageIntegrationTest extends AbstractIntegrationTest {
 		
 		WebElement h1 = browser.findElement(By.cssSelector("h1"));
 		assertEquals("Acer pseudoplatanus", h1.getText());
+		
+		//make sure data coming from the extension are included
+		WebElement imageDiv =  browser.findElement(By.cssSelector("div#occpage_image"));
+		WebElement attributionElement = imageDiv.findElement(By.cssSelector("div.attribution a"));
+		assertEquals("http://creativecommons.org/licenses/by/4.0/", attributionElement.getAttribute("href"));
+		
 		//make sure footer is there
 		assertEquals("div",footerDiv.getTagName().toLowerCase());
 	}

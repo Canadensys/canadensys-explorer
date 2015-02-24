@@ -37,13 +37,13 @@ public interface OccurrenceService {
 	public OccurrenceModel loadOccurrenceModel(String sourcefileid, String dwcaId, boolean loadRawModel);
 	
 	/**
-	 * Load all OccurrenceExtensionModel of the specified type based on the unique key resourceUUID/dwcaId.
+	 * Load all OccurrenceExtensionModel of the specified type based on the unique key sourceFileId/dwcaId.
 	 * @param extensionType
-	 * @param resourceUUID
+	 * @param sourceFileId
 	 * @param dwcaId
 	 * @return
 	 */
-	public List<OccurrenceExtensionModel> loadOccurrenceExtensionModel(String extensionType, String resourceUUID, String dwcaId);
+	public List<OccurrenceExtensionModel> loadOccurrenceExtensionModel(String extensionType, String sourceFileId, String dwcaId);
 	
 	/**
 	 * Load a ResourceMetadataModel based on the resourceUUID.
