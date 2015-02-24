@@ -72,7 +72,7 @@
 		<#list page.occViewModel.imageViewModelList as currMultimediaViewModel>
 			<li>
 				<div vocab="http://schema.org/" typeof="ImageObject">
-					<a href="${currMultimediaViewModel.references!}" class="media"><img src="${currMultimediaViewModel.identifier!}" title="${currMultimediaViewModel.title!}" alt="${currMultimediaViewModel.title!}" property="contentUrl"/></a>
+					<a href="${currMultimediaViewModel.references!}" class="media" property="isBasedOnUrl"><img src="${currMultimediaViewModel.identifier!}" title="${currMultimediaViewModel.title!}" alt="${currMultimediaViewModel.title!}" property="contentUrl"/></a>
 					<@licenseDiv license=currMultimediaViewModel.license! licenseShortname=currMultimediaViewModel.licenseShortname! creator=currMultimediaViewModel.creator!/>
 				</div>
 			</li>
@@ -277,7 +277,7 @@
 				<th>${rc.getMessage("resourcecontact.email")}</th>
 				<td>
 					<#if page.contactModel.email?has_content>
-						<a href="mailto:${page.contactModel.email}" property="email">${page.contactModel.email}</a>
+						<span property="email"><a href="mailto:${page.contactModel.email}">${page.contactModel.email}</a></span>
 					</#if>
 				</td>
 			</tr>
