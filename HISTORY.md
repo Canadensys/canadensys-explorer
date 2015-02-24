@@ -1,5 +1,8 @@
 Version History
 ===============
+Version 2.4.1 2015-02-24
+* Bug fix occurrence page image display
+
 Version 2.4.0 2015-02-23
 * Changed canadensys-data-access for liger-data-access
 * Closed issues: https://github.com/Canadensys/canadensys-explorer/milestones/2.4.0
