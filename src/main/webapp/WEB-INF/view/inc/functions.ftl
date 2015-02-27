@@ -19,9 +19,9 @@
 	<#return formattedDate>
 </#function>
 
-<#-- Safely return the full number or the default value if NULL (NULL is defined as an empty string)-->
-<#-- numvalue must be a number or NULL -->
- <#function safeNumber numvalue defaultvalue>
+<#-- Safely return the full number or the default value if blank (blank is defined by an empty string)-->
+<#-- numvalue must be a number or "" -->
+ <#function safeNumber numvalue defaultvalue="">
 	<#local value=defaultvalue>
 	<#if numvalue?has_content>
 	<#local value=numvalue?c>

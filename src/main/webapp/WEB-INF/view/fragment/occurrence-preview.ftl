@@ -40,7 +40,7 @@
 	<dt>${rc.getMessage("occ.country")}</dt><dd>${page.occModel.country!}</dd>
 	<dt>${rc.getMessage("occ.stateprovince")}</dt><dd>${page.occModel.stateprovince!}</dd>
 	<dt>${rc.getMessage("occ.locality")}</dt><dd>${page.occModel.locality!}</dd>
-	<dt>${rc.getMessage("view.preview.latlong")}</dt><dd>${page.occModel.decimallatitude!} ${page.occModel.decimallongitude!}</dd>
+	<dt>${rc.getMessage("view.preview.latlong")}</dt><dd>${safeNumber(page.occModel.decimallatitude!)} ${safeNumber(page.occModel.decimallongitude!)}</dd>
 	<#assign altituteStr = "">
 	<#if page.occModel.minimumelevationinmeters??>
 		<#assign altituteStr = page.occModel.minimumelevationinmeters>

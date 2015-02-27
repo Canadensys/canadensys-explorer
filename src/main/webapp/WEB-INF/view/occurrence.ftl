@@ -121,11 +121,11 @@
 			<tbody>
 				<tr>
 					<th scope="row">${rc.getMessage("occ.decimallatitude")}</th>
-					<td property="decimalLatitude">${safeNumber(page.occModel.decimallatitude!"","")}</td>
+					<td property="decimalLatitude">${safeNumber(page.occModel.decimallatitude!)}</td>
 				</tr>
 				<tr>
 					<th scope="row">${rc.getMessage("occ.decimallongitude")}</th>
-					<td property="decimalLongitude">${safeNumber(page.occModel.decimallongitude!"","")}</td>
+					<td property="decimalLongitude">${safeNumber(page.occModel.decimallongitude!)}</td>
 				</tr>
 				<tr>
 					<th scope="row">${rc.getMessage("occ.coordinateuncertaintyinmeters")}</th>
