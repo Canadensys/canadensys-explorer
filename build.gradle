@@ -54,6 +54,7 @@ ext {
 
 repositories {
     mavenCentral()
+    jcenter()
     mavenLocal()
     
     maven {
