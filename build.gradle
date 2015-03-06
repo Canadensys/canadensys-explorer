@@ -44,7 +44,7 @@ ext {
 	postgresqlVersion = '9.3-1102-jdbc4'
 	
 	ligerVersion = '2.12.0'
-	webCoreVersion = '0.6'
+	webCoreVersion = '0.7'
 
 	tomcatVersion = '6.0.29'
 	seleniumVersion = '2.43.1'
