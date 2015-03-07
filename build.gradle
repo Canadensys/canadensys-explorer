@@ -59,7 +59,6 @@ repositories {
     
     maven {
         url "http://repository.gbif.org/content/groups/gbif"
-        url "https://oss.sonatype.org/content/repositories/snapshots"
     }
 }
 
