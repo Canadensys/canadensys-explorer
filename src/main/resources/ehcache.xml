@@ -4,4 +4,5 @@
     <cache name="distinctValuesCountCache" maxElementsInMemory="30" eternal="false" overflowToDisk="false" />
     <cache name="dwcaResourceModelCache" maxElementsInMemory="30" eternal="false" overflowToDisk="false" />
     <cache name="resourceMetadataCache" maxElementsInMemory="30" eternal="false" overflowToDisk="false" />
+    <cache name="occurrenceCountCache" maxElementsInMemory="2" eternal="false" overflowToDisk="false" />
 </ehcache>

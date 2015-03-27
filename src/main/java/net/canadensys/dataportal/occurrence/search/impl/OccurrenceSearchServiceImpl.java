@@ -132,10 +132,26 @@ public class OccurrenceSearchServiceImpl implements OccurrenceSearchService {
 		return occurrenceDAO.loadOccurrenceSummary(auto_id,SearchServiceConfig.OCCURENCE_SUMMARY_FIELDS);
 	}
 	
+	/**
+	 * Note: We only cache the count when no searchCriteria is used (all records).
+	 * The cache only contains 1 element per method (shared with getGeoreferencedOccurrenceCount).
+	 */
 	@Override
+	@Cacheable(value=CacheManagementServiceIF.OCCURRENCE_COUNT_CACHE_KEY, key="#root.method.name", condition="#searchCriteria.isEmpty()")
 	@Transactional(readOnly=true)
 	public int getOccurrenceCount(Map<String, List<SearchQueryPart>> searchCriteria){
 		return occurrenceDAO.getOccurrenceCount(searchCriteria);
+	}
+	
+	/**
+	 * Note: We only cache the count when no searchCriteria is used (all records).
+	 * The cache only contains 1 element per method (shared with getOccurrenceCount).
+	 */
+	@Override
+	@Cacheable(value=CacheManagementServiceIF.OCCURRENCE_COUNT_CACHE_KEY, key="#root.method.name", condition="#searchCriteria.isEmpty()")
+	@Transactional(readOnly=true)
+	public int getGeoreferencedOccurrenceCount(Map<String, List<SearchQueryPart>> searchCriteria){
+		return mapServerAccess.getGeoreferencedRecordCount(searchCriteria);
 	}
 	
 	@Override
@@ -148,12 +164,7 @@ public class OccurrenceSearchServiceImpl implements OccurrenceSearchService {
 		sqp.addParsedValue(fieldValue, searchField.getRelatedField(), fieldValue);
 		return sqp;
 	}
-	
-	@Override
-	@Transactional(readOnly=true)
-	public int getGeoreferencedOccurrenceCount(Map<String, List<SearchQueryPart>> searchCriteria){
-		return mapServerAccess.getGeoreferencedRecordCount(searchCriteria);
-	}
+
 	
 	@Override
 	public String getMapQuery(Map<String, List<SearchQueryPart>> searchCriteria) {

@@ -108,5 +108,24 @@ public class CachingTest extends AbstractTransactionalJUnit4SpringContextTests{
     	
     	assertEquals(resourceModel.getName(), resourceModelFromCache.getName());
     }
+    
+    /**
+     * Test OccurrenceCountCache
+     */
+    @Test
+    public void testOccurrenceCountCache(){
+    	OccurrenceSearchService searchService = (OccurrenceSearchService)applicationContext.getBean("occurrenceSearchService");
+    	Map<String,List<SearchQueryPart>> searchCriteria = new HashMap<String, List<SearchQueryPart>>();
+  
+		//count all different countries with empty searchCriteria 
+    	Integer count = searchService.getOccurrenceCount(searchCriteria);
+    	assertTrue(count.intValue() > 0);
+    	
+    	//extract value from cache
+    	Cache cache = CacheManager.getCacheManager(CacheManager.DEFAULT_NAME).getCache(CacheManagementServiceIF.OCCURRENCE_COUNT_CACHE_KEY);
+    	//the key is the method name
+    	Integer countFromCache = (Integer)cache.get("getOccurrenceCount").getObjectValue();
+    	assertEquals(count, countFromCache);
+    }
 
 }
