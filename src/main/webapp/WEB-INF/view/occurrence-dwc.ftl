@@ -48,7 +48,7 @@
 			<tr><td>15</td><td>root</td><td><a href="http://rs.tdwg.org/dwc/terms/ownerInstitutionCode">ownerInstitutionCode</a></td><td>${page.occRawModel.ownerinstitutioncode?if_exists}</td><td class="unused"></td></tr>
 			<tr><td>16</td><td>root</td><td><a href="http://rs.tdwg.org/dwc/terms/basisOfRecord">basisOfRecord</a></td><td>${page.occRawModel.basisofrecord?if_exists}</td><td>${page.occModel.basisofrecord!}</td></tr>
 			<tr class="unused"><td>17</td><td>root</td><td><a href="http://rs.tdwg.org/dwc/terms/informationWithheld">informationWithheld</a></td><td>${page.occRawModel.informationwithheld?if_exists}</td><td class="unused"></td></tr>
-			<tr class="unused"><td>18</td><td>root</td><td><a href="http://rs.tdwg.org/dwc/terms/dataGeneralizations">dataGeneralizations</a></td><td>${page.occRawModel.datageneralizations?if_exists}</td><td class="unused"></td></tr>
+			<tr class="unused"><td>18</td><td>root</td><td><a href="http://rs.tdwg.org/dwc/terms/dataGeneralizations">dataGeneralizations</a></td><td>${page.occRawModel.datageneralizations!}</td><td>${page.occModel.datageneralizations!}</td></tr>
 			<tr><td>19</td><td>root</td><td><a href="http://rs.tdwg.org/dwc/terms/dynamicProperties">dynamicProperties</a></td><td>${page.occRawModel.dynamicproperties?if_exists}</td><td class="unused"></td></tr>
 			<tr><td>20</td><td>occurrence</td><td><a href="http://rs.tdwg.org/dwc/terms/occurrenceID">occurrenceID</a></td><td>${page.occRawModel.occurrenceid!}</td><td>${page.occModel.occurrenceid!}</td></tr>
 			<tr><td>21</td><td>occurrence</td><td><a href="http://rs.tdwg.org/dwc/terms/catalogNumber">catalogNumber</a></td><td>${page.occRawModel.catalognumber?if_exists}</td><td>${page.occModel.catalognumber?if_exists}</td></tr>
@@ -65,7 +65,7 @@
 			<tr class="unused"><td>32</td><td>occurrence</td><td><a href="http://rs.tdwg.org/dwc/terms/occurrenceStatus">occurrenceStatus</a></td><td>${page.occRawModel.occurrencestatus?if_exists}</td><td class="unused"></td></tr>
 			<tr><td>33</td><td>occurrence</td><td><a href="http://rs.tdwg.org/dwc/terms/preparations">preparations</a></td><td>${page.occRawModel.preparations?if_exists}</td><td class="unused"></td></tr>
 			<tr><td>34</td><td>occurrence</td><td><a href="http://rs.tdwg.org/dwc/terms/disposition">disposition</a></td><td>${page.occRawModel.disposition?if_exists}</td><td class="unused"></td></tr>
-			<tr><td>35</td><td>occurrence</td><td><a href="http://rs.tdwg.org/dwc/terms/otherCatalogNumbers">otherCatalogNumbers</a></td><td>${page.occRawModel.othercatalognumbers?if_exists}</td><td class="unused"></td></tr>
+			<tr><td>35</td><td>occurrence</td><td><a href="http://rs.tdwg.org/dwc/terms/otherCatalogNumbers">otherCatalogNumbers</a></td><td>${page.occRawModel.othercatalognumbers!}</td><td>${page.occModel.othercatalognumbers!}</td></tr>
 			<tr><td>36</td><td>occurrence</td><td><a href="http://rs.tdwg.org/dwc/terms/previousIdentifications">previousIdentifications</a></td><td>${page.occRawModel.previousidentifications?if_exists}</td><td class="unused"></td></tr>
 			<tr><td>37</td><td>occurrence</td><td><a href="http://rs.tdwg.org/dwc/terms/associatedMedia">associatedMedia</a></td><td>${page.occRawModel.associatedmedia?if_exists}</td><td>${page.occModel.associatedmedia?if_exists}</td></tr>
 			<tr><td>38</td><td>occurrence</td><td><a href="http://rs.tdwg.org/dwc/terms/associatedReferences">associatedReferences</a></td><td>${page.occRawModel.associatedreferences?if_exists}</td><td class="unused"></td></tr>

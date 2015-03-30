@@ -179,6 +179,10 @@
 				<td property="catalogNumber">${page.occModel.catalognumber!}</td>
 			</tr>
 			<tr>
+				<th scope="row">${rc.getMessage("occ.othercatalognumbers")}</th>
+				<td property="catalogNumber">${page.occModel.othercatalognumbers!}</td>
+			</tr>
+			<tr>
 				<th scope="row">${rc.getMessage("occ.recordedby")}</th>
 				<td property="recordedBy">${page.occModel.recordedby!}</td>
 			</tr>
@@ -212,11 +216,15 @@
 		<tbody>
 			<tr>
 				<th scope="row">${rc.getMessage("occ.dwcaid")}</th>
-				<td>${page.occModel.dwcaid?if_exists}</td>
+				<td>${page.occModel.dwcaid!}</td>
+			</tr>
+			<tr>
+				<th scope="row">${rc.getMessage("occ.occurrenceid")}</th>
+				<td>${page.occModel.occurrenceid!}</td>
 			</tr>
 			<tr>
 				<th scope="row">${rc.getMessage("occ.basisofrecord")}</th>
-				<td>${page.occRawModel.basisofrecord?if_exists}</td>
+				<td>${page.occRawModel.basisofrecord!}</td>
 			</tr>
 			<tr>
 				<th scope="row">${rc.getMessage("occpage.menu.sourcerecord")}</th>
@@ -224,7 +232,7 @@
 			</tr>
 			<tr>
 				<th scope="row">${rc.getMessage("occ.modified")}</th>
-				<td>${page.occRawModel.modified?if_exists}</td>
+				<td>${page.occRawModel.modified!}</td>
 			</tr>
 		</tbody>
 		</table>
