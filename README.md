@@ -11,7 +11,7 @@ Dependencies
 ------------
 ### Softwares
 * [Apache Server 2.2](http://httpd.apache.org/)
-* [Tomcat 6](http://tomcat.apache.org/)
+* [Tomcat 7](http://tomcat.apache.org/)
 * [Postgresql 9.1](http://www.postgresql.org/)
 * [Windshaft](https://github.com/CartoDB/Windshaft)
 

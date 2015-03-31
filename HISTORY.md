@@ -1,5 +1,9 @@
 Version History
 ===============
+
+Version 2.5.0 2015-03-31
+* Closed issues: https://github.com/Canadensys/canadensys-explorer/milestones/2.5.0
+
 Version 2.4.1 2015-02-24
 * Bug fix occurrence page image display
 
