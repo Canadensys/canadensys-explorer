@@ -73,9 +73,9 @@ public class OccurrenceServiceImpl implements OccurrenceService {
 	
 	@Override
 	@Transactional(readOnly=true)
-	@Cacheable(value=CacheManagementServiceIF.RESOURCE_METADATA_MODEL_CACHE_KEY, key="#resourceUUID", condition="#resourceUUID != null")
-	public ResourceMetadataModel loadResourceMetadata(String resourceUUID) {
-		return resourceMetadataDAO.load(resourceUUID);
+	@Cacheable(value=CacheManagementServiceIF.RESOURCE_METADATA_MODEL_CACHE_KEY, key="#resourceId", condition="#resourceId != null")
+	public ResourceMetadataModel loadResourceMetadata(Integer resourceId) {
+		return resourceMetadataDAO.load(resourceId);
 	}
 
 	/**

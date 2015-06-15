@@ -88,7 +88,7 @@ public class OccurrenceController {
 		}
 		
 		//loadResourceMetadata is using cache
-		ResourceMetadataModel resourceMetadata = occurrenceService.loadResourceMetadata(resourceModel.getResource_uuid());
+		ResourceMetadataModel resourceMetadata = occurrenceService.loadResourceMetadata(resourceModel.getId());
 		if(resourceMetadata == null){
 			throw new ResourceNotFoundException();
 		}

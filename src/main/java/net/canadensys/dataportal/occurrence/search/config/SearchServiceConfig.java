@@ -180,7 +180,7 @@ public class SearchServiceConfig {
 		OCCURENCE_SUMMARY_FIELDS.add("rawscientificname");
 		OCCURENCE_SUMMARY_FIELDS.add("_references");
 		OCCURENCE_SUMMARY_FIELDS.add(OccurrenceFieldConstants.DWCA_ID);
-		OCCURENCE_SUMMARY_FIELDS.add(OccurrenceFieldConstants.RESOURCE_UUID);
+		OCCURENCE_SUMMARY_FIELDS.add(OccurrenceFieldConstants.RESOURCE_ID);
 		OCCURENCE_SUMMARY_FIELDS.add(OccurrenceFieldConstants.SOURCE_FILE_ID);
 		OCCURENCE_SUMMARY_FIELDS.add("typestatus");
 	}

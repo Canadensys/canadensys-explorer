@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,6 +52,22 @@ public class HttpErrorController {
 		HashMap<String,Object> modelRoot = new HashMap<String,Object>();
 		ControllerHelper.setPageHeaderVariables(req,"404",null,appConfig, modelRoot);
         return new ModelAndView("error/404",OccurrencePortalConfig.PAGE_ROOT_MODEL_KEY,modelRoot);
+	}
+	
+	/**
+	 * Exception thrown when the Method is not supported by our definitions.
+	 * Normally, it's a HEAD request.
+	 * 
+	 * @param req
+	 * @return
+	 */
+	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+	@ResponseStatus(value=HttpStatus.METHOD_NOT_ALLOWED)
+	public ModelAndView handleHttpRequestMethodNotSupported(HttpServletRequest req){
+		LOGGER.debug("RequestMethodNotSupported handled by HttpErrorController:" + req.getMethod() + " at " + req.getRequestURI());
+		HashMap<String,Object> model = new HashMap<String,Object>();
+		ControllerHelper.setPageHeaderVariables(req,"404",null,appConfig, model);
+        return new ModelAndView("error/404", OccurrencePortalConfig.PAGE_ROOT_MODEL_KEY, model);
 	}
 	
 	@ExceptionHandler(Exception.class)

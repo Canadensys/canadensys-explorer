@@ -407,7 +407,7 @@ public class SearchController {
 				throw new ResourceNotFoundException();
 			}
 			List<OccurrenceExtensionModel> occMultimediaExtModelList = occurrenceService.loadOccurrenceExtensionModel(
-					GbifTerm.Multimedia.simpleName(), occModel.getResource_uuid(), occModel.getDwcaid());
+					GbifTerm.Multimedia.simpleName(), resourceModel.getGbif_package_id(), occModel.getDwcaid());
 			
 			modelRoot.put("occModel", occModel);
 			modelRoot.put("occViewModel", occurrenceController.buildOccurrenceViewModel(occModel, resourceModel, occMultimediaExtModelList, locale));

@@ -46,12 +46,12 @@ public interface OccurrenceService {
 	public List<OccurrenceExtensionModel> loadOccurrenceExtensionModel(String extensionType, String sourceFileId, String dwcaId);
 	
 	/**
-	 * Load a ResourceMetadataModel based on the resourceUUID.
+	 * Load a ResourceMetadataModel based on the resourceId.
 	 * 
-	 * @param resourceUUID
+	 * @param resourceId
 	 * @return
 	 */
-	public ResourceMetadataModel loadResourceMetadata(String resourceUUID);
+	public ResourceMetadataModel loadResourceMetadata(Integer resourceId);
 	
 	/**
 	 * This should be updated soon to use resourceId instead of sourceFileId.

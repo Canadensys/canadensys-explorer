@@ -25,12 +25,29 @@
                 <property name="URL" value="${database.url}"/>
              </bean>
         </constructor-arg>
-    </bean> 
-	
-	<!-- create tables from the canadensys-data-access jar -->
+    </bean>
+    
+    <!-- add support for TEXT type -->
 	<jdbc:initialize-database data-source="dataSource">
 		<jdbc:script location="/WEB-INF/h2setup.sql" />
-    	<jdbc:script location="classpath:/script/occurrence/create_occurrence_tables.sql" />
+	</jdbc:initialize-database>
+	
+  	<!-- Liquibase scripts -->
+	<bean id="springLiquibase"
+		class="liquibase.integration.spring.SpringLiquibase">
+		<property name="dataSource" ref="dataSource" />
+		<property name="changeLog" value="classpath:script/liquibase/publicChangeLogFile-master.xml"/>
+	</bean>
+	
+	<bean id="springLiquibaseBuffer"
+		class="liquibase.integration.spring.SpringLiquibase">
+		<property name="dataSource" ref="dataSource" />
+		<property name="contexts" value="buffer" />
+		<property name="changeLog" value="classpath:script/liquibase/bufferChangeLogFile-master.xml"/>
+	</bean>
+	
+	<!-- insert test data -->
+	<jdbc:initialize-database data-source="dataSource">
     	<jdbc:script location="/WEB-INF/insert_test_data.sql" />
   	</jdbc:initialize-database>
 	

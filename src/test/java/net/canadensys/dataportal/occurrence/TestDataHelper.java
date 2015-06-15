@@ -36,7 +36,6 @@ public class TestDataHelper {
 			JdbcTestUtils.deleteFromTables(jdbcTemplate, "contact");
 			JdbcTestUtils.deleteFromTables(jdbcTemplate, "resource_metadata");
 			JdbcTestUtils.deleteFromTables(jdbcTemplate, "dwca_resource");
-			JdbcTestUtils.deleteFromTables(jdbcTemplate, "db_metadata");
 			JdbcTestUtils.deleteFromTables(jdbcTemplate, "unique_values");
 		
 			//Get the same connection

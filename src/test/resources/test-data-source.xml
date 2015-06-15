@@ -1,14 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/jdbc
+    http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd">
 	
 	<!-- H2 config -->
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="${database.driver}" />
 		<property name="url" value="${database.url}" />
+	</bean>
+	
+	<jdbc:initialize-database data-source="dataSource">
+		<jdbc:script location="classpath:h2/h2setup.sql" />
+  	</jdbc:initialize-database>
+	
+	<!-- Liquibase scripts -->
+	<bean id="springLiquibase"
+		class="liquibase.integration.spring.SpringLiquibase">
+		<property name="dataSource" ref="dataSource" />
+		<property name="changeLog" value="classpath:script/liquibase/publicChangeLogFile-master.xml"/>
+	</bean>
+	
+	<bean id="springLiquibaseBuffer"
+		class="liquibase.integration.spring.SpringLiquibase">
+		<property name="dataSource" ref="dataSource" />
+		<property name="contexts" value="buffer" />
+		<property name="changeLog" value="classpath:script/liquibase/bufferChangeLogFile-master.xml"/>
 	</bean>
 	
 	<bean id="sessionFactory"

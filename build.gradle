@@ -42,8 +42,9 @@ ext {
 	sitemeshVersion = '3.0.0'
 	snakeYamlVersion = '1.14'
 	postgresqlVersion = '9.3-1102-jdbc4'
+	liquibaseVersion = '3.3.2'
 	
-	ligerVersion = '2.12.0'
+	ligerVersion = '2.13.1'
 	webCoreVersion = '0.7'
 
 	tomcatVersion = '7.0.59'
@@ -94,6 +95,7 @@ dependencies {
 	compile group: 'net.sf.ehcache', name: 'ehcache-core', version: ehCacheVersion
 	compile group: 'org.sitemesh', name: 'sitemesh', version: sitemeshVersion
 	compile group: 'org.yaml', name: 'snakeyaml', version: snakeYamlVersion
+	compile group: 'org.liquibase', name: 'liquibase-core', version: liquibaseVersion
 
 	//h2 is included to allow integration testing using a mock database
     compile group: 'com.h2database', name: 'h2', version: h2Version
