@@ -8,7 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import net.canadensys.dataportal.occurrence.AbstractIntegrationTest;
+import net.canadensys.dataportal.occurrence.AbstractFunctionalTest;
 
 import org.junit.Test;
 
@@ -22,22 +22,22 @@ public class URLResolutionIntegrationTest {
 	@Test
 	public void testURLThatShouldNotResolve() {
 		//wrong URL with no language specified
-		assertResponseCode(AbstractIntegrationTest.TESTING_SERVER_URL_LEGACY+"toto",404);
+		assertResponseCode(AbstractFunctionalTest.TESTING_SERVER_URL_LEGACY+"toto",404);
 		//wrong URL with language specified
-		assertResponseCode(AbstractIntegrationTest.TESTING_SERVER_URL+"toto",404);
+		assertResponseCode(AbstractFunctionalTest.TESTING_SERVER_URL+"toto",404);
 		//conflicted language URL
-		assertResponseCode(AbstractIntegrationTest.TESTING_SERVER_URL_LEGACY+"fr/search?view=table",404);
+		assertResponseCode(AbstractFunctionalTest.TESTING_SERVER_URL_LEGACY+"fr/search?view=table",404);
 	}
 	
 	
 	@Test
 	public void testResolveLegacyURL() {
-		assertResponseCode(AbstractIntegrationTest.TESTING_SERVER_URL_LEGACY+"r/acad-specimens",200);
+		assertResponseCode(AbstractFunctionalTest.TESTING_SERVER_URL_LEGACY+"r/acad-specimens",200);
 		
 		//This URL should NOT be used since 'dataset' was used as 'resource'.
 		//The issue is that it was publish in our IPT as 'External links' so we 
 		//need to main it until we update all the resources.
-		assertResponseCode(AbstractIntegrationTest.TESTING_SERVER_URL_LEGACY+"d/acad-specimens",200);
+		assertResponseCode(AbstractFunctionalTest.TESTING_SERVER_URL_LEGACY+"d/acad-specimens",200);
 	}
 	
 	/**

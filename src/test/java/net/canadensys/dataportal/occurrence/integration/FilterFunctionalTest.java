@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import net.canadensys.dataportal.occurrence.AbstractIntegrationTest;
+import net.canadensys.dataportal.occurrence.AbstractFunctionalTest;
 
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -20,7 +20,7 @@ import org.openqa.selenium.support.ui.Select;
  * @author cgendreau
  *
  */
-public class FilterIntegrationTest extends AbstractIntegrationTest{
+public class FilterFunctionalTest extends AbstractFunctionalTest{
 	
 	//the footer div presence ensure the page was all rendered by Freemarker
 	@FindBy(css = "div#footer")

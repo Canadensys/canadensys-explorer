@@ -17,7 +17,7 @@ import org.openqa.selenium.support.PageFactory;
  * @author canadensys
  *
  */
-public class ExplorerPageIntegrationTest extends AbstractIntegrationTest {
+public class ExplorerPageFunctionalTest extends AbstractFunctionalTest {
 	
 	//the footer div presence ensure the page was all rendered by Freemarker
 	@FindBy(css = "div#footer")

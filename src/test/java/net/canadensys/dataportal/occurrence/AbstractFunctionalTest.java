@@ -11,7 +11,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
  * @author canadensys
  *
  */
-public abstract class AbstractIntegrationTest {
+public abstract class AbstractFunctionalTest {
 	
 	//TODO : read from a config file or set with DI
 	public static final String TESTING_SERVER_URL = "http://localhost:9966/explorer/en/";

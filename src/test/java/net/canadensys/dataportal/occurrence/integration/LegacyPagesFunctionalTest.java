@@ -1,7 +1,7 @@
 package net.canadensys.dataportal.occurrence.integration;
 
 import static org.junit.Assert.assertEquals;
-import net.canadensys.dataportal.occurrence.AbstractIntegrationTest;
+import net.canadensys.dataportal.occurrence.AbstractFunctionalTest;
 
 import org.junit.Test;
 import org.openqa.selenium.WebElement;
@@ -13,7 +13,7 @@ import org.openqa.selenium.support.PageFactory;
  * @author cgendreau
  *
  */
-public class LegacyPagesIntegrationTest extends AbstractIntegrationTest{
+public class LegacyPagesFunctionalTest extends AbstractFunctionalTest{
 	
 	//the footer div presence ensure the page was all rendered by Freemarker
 	@FindBy(css = "div#footer")
