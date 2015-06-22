@@ -1,6 +1,9 @@
 Version History
 ===============
 
+Version 2.6.0 2015-06-22
+* Update to liger-data-access 2.13.1
+
 Version 2.5.0 2015-03-31
 * Closed issues: https://github.com/Canadensys/canadensys-explorer/milestones/2.5.0
 

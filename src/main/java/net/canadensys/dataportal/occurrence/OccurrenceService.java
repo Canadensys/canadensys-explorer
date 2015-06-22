@@ -54,12 +54,11 @@ public interface OccurrenceService {
 	public ResourceMetadataModel loadResourceMetadata(Integer resourceId);
 	
 	/**
-	 * This should be updated soon to use resourceId instead of sourceFileId.
-	 * Load a DwcaResourceModel based on the sourceFileId.
+	 * Load a DwcaResourceModel based on its id.
 	 * 
-	 * @param sourceFileId
+	 * @param resourceId
 	 * @return
 	 */
-	public DwcaResourceModel loadDwcaResourceBySourceFileId(String sourceFileId);
+	public DwcaResourceModel loadDwcaResource(Integer resourceId);
 
 }

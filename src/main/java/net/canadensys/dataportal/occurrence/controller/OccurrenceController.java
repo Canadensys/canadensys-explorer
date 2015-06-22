@@ -82,7 +82,7 @@ public class OccurrenceController {
 		}
 		
 		//loadDwcaResource is using cache
-		DwcaResourceModel resourceModel = occurrenceService.loadDwcaResourceBySourceFileId(occModel.getSourcefileid());
+		DwcaResourceModel resourceModel = occurrenceService.loadDwcaResource(occModel.getResource_id());
 		if(resourceModel == null){
 			throw new ResourceNotFoundException();
 		}

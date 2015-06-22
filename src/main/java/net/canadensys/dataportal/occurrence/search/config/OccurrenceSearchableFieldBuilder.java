@@ -15,7 +15,12 @@ import net.canadensys.query.SearchableFieldTypeEnum;
  */
 public class OccurrenceSearchableFieldBuilder {
 	private OccurrenceSearchableField searchableField = null;
-		
+	
+	/**
+	 * 
+	 * @param id numerical unique id to identify the OccurrenceSearchableField 
+	 * @param name unique String to identify the OccurrenceSearchableField
+	 */
 	public OccurrenceSearchableFieldBuilder(int id, String name){
 		searchableField = new OccurrenceSearchableField();
 		searchableField.setSearchableFieldId(id);

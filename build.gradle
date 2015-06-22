@@ -24,6 +24,8 @@ else{
 System.setProperty('file.encoding', 'UTF-8')
 
 def group = 'net.canadensys'
+def name = 'explorer'
+def version = '2.6.0'
 
 ext {
 	versionFile = project.file("config/production/version.properties")

@@ -98,12 +98,12 @@ public class CachingTest extends AbstractTransactionalJUnit4SpringContextTests{
     public void testResourceModelCache(){
     	OccurrenceService occService = (OccurrenceService)applicationContext.getBean("occurrenceService");
 
-    	DwcaResourceModel resourceModel = occService.loadDwcaResourceBySourceFileId("acad-specimens");
+    	DwcaResourceModel resourceModel = occService.loadDwcaResource(1);
     	assertNotNull(resourceModel);
     	
     	//extract value from cache
     	Cache cache = CacheManager.getCacheManager(CacheManager.DEFAULT_NAME).getCache(CacheManagementServiceIF.DWCA_RESOURCE_MODEL_CACHE_KEY);
-    	DwcaResourceModel resourceModelFromCache = (DwcaResourceModel)cache.get("acad-specimens").getObjectValue();
+    	DwcaResourceModel resourceModelFromCache = (DwcaResourceModel)cache.get(1).getObjectValue();
     	assertNotNull(resourceModelFromCache);
     	
     	assertEquals(resourceModel.getName(), resourceModelFromCache.getName());
