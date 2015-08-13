@@ -194,21 +194,14 @@
 		</table>
 		
 		<#-- associatedSequences, optional section -->
-		<#if page.occViewModel.associatedSequencesPerProviderMap?has_content>
+		<#if page.occViewModel.associatedSequences?has_content>
 		<h2>${rc.getMessage("occpage.group.associatedsequences")}</h2>
-		<table class="occpage_group">
-		<tbody>
-			<#list page.occViewModel.associatedSequencesPerProviderMap?keys as sequenceProvider>
-				<#list page.occViewModel.associatedSequencesPerProviderMap[sequenceProvider] as associatedSequence>
-					<tr>
-						<#-- dont't repeat header text -->
-						<th scope="row"><#if associatedSequence_index == 0>${sequenceProvider}</#if></th>
-						<td><@hrefIfNotEmpty text=associatedSequence.getLeft() link=associatedSequence.getRight()/></td>
-				</tr>
-				</#list>
-			</#list>
-		</tbody>
-		</table>
+		
+		<ul class="clear_fix">
+		<#list page.occViewModel.associatedSequences as associatedSequence>
+			<li><@hrefIfUrl text=associatedSequence /></li>
+		</#list>
+		</ul>
 		</#if>
 
 		<h2>${rc.getMessage("occpage.group.record")}</h2>

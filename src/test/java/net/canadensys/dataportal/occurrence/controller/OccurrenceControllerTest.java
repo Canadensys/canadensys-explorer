@@ -5,10 +5,8 @@ import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.ModelAndViewAssert.assertViewName;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
@@ -18,8 +16,6 @@ import net.canadensys.dataportal.occurrence.config.OccurrencePortalConfig;
 import net.canadensys.dataportal.occurrence.model.OccurrenceModel;
 import net.canadensys.dataportal.occurrence.model.OccurrenceViewModel;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -127,27 +123,20 @@ public class OccurrenceControllerTest extends AbstractTransactionalJUnit4SpringC
      * associatedSequences urls format are defined in src/main/resources/references/sequenceProviders.properties
      */
     @Test
-    public void buildOccurrenceViewModel(){
+    public void testOccurrenceViewModel(){
     	OccurrenceModel occModel = new OccurrenceModel();
-    	occModel.setAssociatedsequences("BOLD :1234|bold: 2345|unknown:3456");
+    	occModel.setAssociatedsequences("BOLD :1234|bold: 2345|unknown:3456|http://bins.boldsystems.org/index.php/Public_BarcodeCluster?clusteruri=BOLD:AAJ7963");
     	
     	OccurrenceViewModel occViewModel = occurrenceController.buildOccurrenceViewModel(occModel, null, null, Locale.ENGLISH);
     	
-    	Map<String,List<Pair<String,String>>> associatedSequencesPerProviderMap = occViewModel.getAssociatedSequencesPerProviderMap();
+    	//Map<String,List<Pair<String,String>>> associatedSequencesPerProviderMap = occViewModel.getAssociatedSequencesPerProviderMap();
+    	List<String> associatedSequences = occViewModel.getAssociatedSequences();
+    	assertEquals(4, associatedSequences.size());
     	
-    	assertEquals(2,associatedSequencesPerProviderMap.keySet().size());
-    	
-    	Iterator<String> keyIt = associatedSequencesPerProviderMap.keySet().iterator();
-    	String firstKey = keyIt.next();
-    	assertEquals(2,associatedSequencesPerProviderMap.get(firstKey).size());
-    	
-    	//ensure we have urls for known provider
-    	assertTrue(StringUtils.isNotBlank(associatedSequencesPerProviderMap.get(firstKey).get(0).getValue()));
-    	assertTrue(StringUtils.isNotBlank(associatedSequencesPerProviderMap.get(firstKey).get(1).getValue()));
-    	
-    	//ensure we do not have urls for unknown provider
-    	String secondKey = keyIt.next();
-    	assertTrue(StringUtils.isBlank(associatedSequencesPerProviderMap.get(secondKey).get(0).getValue()));
+    	assertEquals("http://bins.boldsystems.org/index.php/Public_BarcodeCluster?clusteruri=BOLD:AAJ7963", associatedSequences.get(0));
+    	assertEquals("http://www.boldsystems.org/connectivity/specimenlookup.php?processid=1234", associatedSequences.get(1));
+    	assertEquals("http://www.boldsystems.org/connectivity/specimenlookup.php?processid=2345", associatedSequences.get(2));
+    	assertEquals("unknown:3456", associatedSequences.get(3));
     }
     
 }

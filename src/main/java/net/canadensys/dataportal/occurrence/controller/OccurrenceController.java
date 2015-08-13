@@ -1,6 +1,7 @@
 package net.canadensys.dataportal.occurrence.controller;
 
 import java.text.MessageFormat;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -38,6 +39,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
+
+import com.google.common.collect.Lists;
 
 /**
  * Controller of all occurrence related features of the occurrence portal.
@@ -207,33 +210,7 @@ public class OccurrenceController {
 		}
 		
 		//handle associated sequences
-		if(StringUtils.isNotEmpty(occModel.getAssociatedsequences())){
-			String[] sequences = StringUtils.split(occModel.getAssociatedsequences(), ASSOCIATED_SEQUENCES_SEPARATOR);
-			
-			String seqProvider, seqId, seqProviderUrlFormat;
-			for(String currentSequence : sequences){
-				seqProvider = StringUtils.substringBefore(currentSequence, ASSOCIATED_SEQUENCES_PROVIDER_SEPARATOR).trim().toLowerCase();
-				seqId = StringUtils.substringAfter(currentSequence, ASSOCIATED_SEQUENCES_PROVIDER_SEPARATOR).trim();
-				seqProviderUrlFormat = appConfig.getSequenceProviderUrlFormat(seqProvider);
-				
-				//set display name if defined, otherwise keep extracted name
-				if(appConfig.getSequenceProviderDisplayName(seqProvider) != null){
-					seqProvider = appConfig.getSequenceProviderDisplayName(seqProvider);
-				}
-				
-				if(seqProvider != null && seqId != null){
-					if(StringUtils.isBlank(seqProviderUrlFormat)){
-						occViewModel.addAssociatedSequenceLink(seqProvider, seqId, "");
-					}
-					else{
-						occViewModel.addAssociatedSequenceLink(seqProvider,seqId,MessageFormat.format(seqProviderUrlFormat, seqId));
-					}
-				}
-				else{
-					LOGGER.warn("associatedSequences [" + occModel.getAssociatedsequences() + "] cannot be parsed." );
-				}
-			}
-		}
+		handleAssociatedSequence(occModel, occViewModel);
 		
 		//handle data source page URL (url to the resource page)
 		if(resourceModel != null){
@@ -247,5 +224,38 @@ public class OccurrenceController {
 				FormatterUtility.buildRecommendedCitation(occModel, occViewModel.getDataSourcePageURL(), bundle));
 		
 		return occViewModel;
+	}
+	
+	/**
+	 * Handle the received associated sequences string and fill the list in OccurrenceViewModel if any.
+	 * 
+	 * @param occModel
+	 * @param occViewModel
+	 */
+	private void handleAssociatedSequence(OccurrenceModel occModel, OccurrenceViewModel occViewModel){
+		if(StringUtils.isEmpty(occModel.getAssociatedsequences())){
+			return;
+		}
+		
+		String[] sequences = StringUtils.split(occModel.getAssociatedsequences(), ASSOCIATED_SEQUENCES_SEPARATOR);
+		List<String> associatedSequences = Lists.newArrayList();
+		
+		String seqProvider, seqId, seqProviderUrlFormat;
+		boolean knownFormat = false;
+		for(String currentSequence : sequences){
+			seqProvider = StringUtils.substringBefore(currentSequence, ASSOCIATED_SEQUENCES_PROVIDER_SEPARATOR).trim().toLowerCase();
+			seqId = StringUtils.substringAfter(currentSequence, ASSOCIATED_SEQUENCES_PROVIDER_SEPARATOR).trim();
+			seqProviderUrlFormat = appConfig.getSequenceProviderUrlFormat(seqProvider);
+			knownFormat = StringUtils.isNotBlank(seqProviderUrlFormat);
+			if(seqProvider != null && seqId != null && knownFormat){
+				associatedSequences.add(MessageFormat.format(seqProviderUrlFormat, seqId));
+			}
+			else{
+				associatedSequences.add(currentSequence);
+			}
+		}
+		
+		Collections.sort(associatedSequences);
+		occViewModel.setAssociatedSequences(associatedSequences);
 	}
 }

@@ -1,11 +1,7 @@
 package net.canadensys.dataportal.occurrence.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * This model is tailored for views.
@@ -19,12 +15,11 @@ public class OccurrenceViewModel {
 	private String recommendedCitation;
 	
 	private List<MultimediaViewModel> multimediaViewModelList;
+	private List<String> associatedSequences;
 	
 	//prefiltered list
 	private List<MultimediaViewModel> imageViewModelList;
 	private List<MultimediaViewModel> otherMediaViewModelList;
-	
-	private Map<String,List<Pair<String,String>>> associatedSequencesPerProviderMap;
 		
 	public void addMultimediaViewModel(MultimediaViewModel multimediaViewModel){
 		if(multimediaViewModelList == null){
@@ -65,26 +60,6 @@ public class OccurrenceViewModel {
 	public List<MultimediaViewModel> getOtherMediaViewModelList(){
 		return otherMediaViewModelList;
 	}
-	
-	/**
-	 * @param sequenceProvider
-	 * @param providedSequenceId identifier for the sequence including the provider e.g. GenBank:KC251652
-	 * @param link
-	 */
-	public void addAssociatedSequenceLink(String sequenceProvider, String providedSequenceId, String link){
-		if(associatedSequencesPerProviderMap == null){
-			associatedSequencesPerProviderMap = new HashMap<String, List<Pair<String,String>>>();
-		}
-		
-		if(associatedSequencesPerProviderMap.get(sequenceProvider) == null){
-			associatedSequencesPerProviderMap.put(sequenceProvider, new ArrayList<Pair<String,String>>());
-		}
-		associatedSequencesPerProviderMap.get(sequenceProvider).add(Pair.of(providedSequenceId, link));
-	}
-	
-	public Map<String,List<Pair<String,String>>> getAssociatedSequencesPerProviderMap() {
-		return associatedSequencesPerProviderMap;
-	}
 
 	public String getDataSourcePageURL() {
 		return dataSourcePageURL;
@@ -100,4 +75,13 @@ public class OccurrenceViewModel {
 	public void setRecommendedCitation(String recommendedCitation) {
 		this.recommendedCitation = recommendedCitation;
 	}
+
+	public List<String> getAssociatedSequences() {
+		return associatedSequences;
+	}
+
+	public void setAssociatedSequences(List<String> associatedSequences) {
+		this.associatedSequences = associatedSequences;
+	}
+
 }
