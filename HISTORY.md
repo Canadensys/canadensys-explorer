@@ -1,6 +1,9 @@
 Version History
 ===============
 
+Version 2.7.0 2015-08-18
+* Changed display of associted sequences (see [Issue #38](https://github.com/Canadensys/canadensys-explorer/issues/38))
+
 Version 2.6.0 2015-06-22
 * Update to liger-data-access 2.13.1
 
