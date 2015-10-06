@@ -60,5 +60,26 @@ public interface OccurrenceService {
 	 * @return
 	 */
 	public DwcaResourceModel loadDwcaResource(Integer resourceId);
+	
+	/**
+	 * Load a ResourceInformationModel based on the resource_uuid
+	 * 
+	 * @param resource_uuid
+	 * @return
+	 */
+	public ResourceMetadataModel loadResourceMetadataModel(String resourceUuid);
+	
+	/**
+	 * Returns a list with all available resources on the database.
+	 * @return
+	 */
+	public List<DwcaResourceModel> loadResources();
 
+	/**
+	 * Load a ResourceModel based on the auto_id
+	 * 
+	 * @param sourcefileid
+	 * @return
+	 */
+	public DwcaResourceModel loadResourceModelByAutoId(String auto_id);
 }

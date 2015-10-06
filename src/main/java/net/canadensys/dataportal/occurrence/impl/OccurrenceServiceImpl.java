@@ -89,4 +89,22 @@ public class OccurrenceServiceImpl implements OccurrenceService {
 	public DwcaResourceModel loadDwcaResource(Integer resourceId) {
 		return resourceDAO.load(resourceId);
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public ResourceMetadataModel loadResourceMetadataModel(String resourceUuid) {
+		return resourceMetadataDAO.load(resourceUuid);
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<DwcaResourceModel> loadResources() {
+		return resourceDAO.loadResources();
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public DwcaResourceModel loadResourceModelByAutoId(String auto_id) {
+		return resourceDAO.load(Integer.parseInt(auto_id));
+	}
 }

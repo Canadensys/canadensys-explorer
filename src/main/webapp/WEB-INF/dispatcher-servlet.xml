@@ -23,7 +23,7 @@
 
 	<import resource="data-source.xml" />
 
-	<context:component-scan base-package="net.canadensys.dataportal.occurrence"/>
+	<context:component-scan base-package="net.canadensys.dataportal.occurrence, net.canadensys.dataportal.resource, net.canadensys.dataportal.publisher"/>
 	
 	<!-- use to return JSON -->
 	<mvc:annotation-driven/>
