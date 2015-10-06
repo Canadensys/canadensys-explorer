@@ -1,0 +1,821 @@
+/* Stylesheet for all apps in http://data.canadensys.net */
+
+/* Screen view */
+@media screen {
+
+	/*-- HTML elements --*/
+
+	html { height: 100%; }
+	body {
+		background-color: white;
+		color: #22241e;
+		font-family: "Lucida Grande", Arial, Sans-Serif;
+		font-size: 10px;
+		height: 100%;
+		margin: 0;
+		min-width: 1024px;
+		padding: 0;
+		width: 100%;
+	}
+
+	a {
+		color: #4A5FB1;
+		text-decoration: none;
+	}
+	a:hover {
+		color: #4A5FB1;
+		text-decoration: underline;	
+	}
+
+	h1, h2, h3, h4, h5, h6 { line-height: 1.5em; }
+
+	form {
+		margin: 0;
+		padding: 0;
+	}
+
+	input {
+		margin: 0;
+		padding: 0;
+	}
+
+	/*-- Skip navigation link --*/
+	.skipnav { text-align: left; }
+	.skipnav {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip: rect(1px, 1px, 1px, 1px);
+	 }
+	.skipnav:focus {
+		position: static;
+		width: inherit;
+		height: inherit;
+		overflow: inherit;
+		clip: rect(auto, auto, auto, auto);
+	 }
+
+	/*-- Header --*/
+
+	#header {
+		background: -moz-linear-gradient(bottom, #B3D1FF 0%, #4A5FB1 100%);	
+		background: -ms-linear-gradient(bottom, #B3D1FF 0%, #4A5FB1 100%);
+		background: -o-linear-gradient(bottom, #B3D1FF 0%, #4A5FB1 100%);
+		background: -webkit-linear-gradient(bottom, #B3D1FF 0%, #4A5FB1 100%);
+		background: linear-gradient(bottom, #4A5FB1 0%, #B3D1FF 100%);
+		background-color: #B3D1FF;
+		height: 120px;
+		position: relative;
+	}
+	
+	#header_message {
+	  position:absolute;
+	  left:10px;
+	  top: 3px;
+	  color:#F0BABB;
+	  font-size:1.2em;
+	}
+
+	#header_content {
+		color: #4A5FB1;
+		margin: 0 auto;
+		position: relative;
+		width: 690px;
+		z-index: 2;
+	}
+
+  #header_content a, #header_message a {
+  	color: #4A5FB1;
+  	text-decoration: none;	
+  }
+
+  #header_content a:hover, #header_message a:hover { color: white; }
+
+	#nav_top {
+		font-size: 1.2em;
+		margin: 0;
+		padding: 0;
+		position: absolute;
+		right: 0;
+		top: 3px;
+	}
+	#nav_top form {
+		display: inline;
+	}
+
+	#nav_title {
+		background: url("http://data.canadensys.net/common/images/canadensys-logo.png") top left no-repeat;
+		background-color: transparent;
+		float: left;
+		font-family: "Century Gothic", Arial, Sans-Serif;
+		font-size: 4.2em;
+		font-weight: normal;
+		letter-spacing: 0.08em;
+		margin: 0;
+		margin-top: 15px;
+		padding: 0;
+		padding-left: 73px; /* for logo */
+	}
+	#nav_title a { color: white !important; }
+
+	#nav_portal {
+		float: right;
+		font-family: "Century Gothic", Arial, Sans-Serif;
+		font-size: 2.3em;
+		font-weight: normal;
+		letter-spacing: 0.08em;
+		margin: 0;
+		margin-top: 30px; /* 15 (#nav_title) + 15 */
+		padding: 0;
+		text-transform: lowercase;
+	}
+	#nav_portal .selected {
+		color: white;
+		font-weight: bold;
+	}
+
+
+	/*-- Topmenu --*/
+
+	#menu {
+		bottom: 0px;
+		margin: 0 auto;
+		overflow: hidden;
+		position: absolute;
+		text-align: center;
+		text-transform: lowercase;
+		width: 100%; /* 690px; */
+		z-index: 2;
+	}
+	#menu ul {
+		clear: left;
+		float: left;
+		margin: 0;
+		left: 50%; /* http://matthewjamestaylor.com/centered-menus/ */
+		padding: 0;
+		position: relative;
+	}
+	#menu ul li {
+		background: -moz-linear-gradient(bottom, #0b0b09 20%, #32342b 60%);
+		background: -ms-linear-gradient(bottom, #0b0b09 20%, #32342b 60%);
+		background: -o-linear-gradient(bottom, #0b0b09 20%, #32342b 60%);
+		background: -webkit-linear-gradient(bottom, #0b0b09 20%, #32342b 60%);
+		background: linear-gradient(bottom, #0b0b09 20%, #32342b 60%);
+		background-color :#22241e;
+		display: block;
+		float: left;
+		font-family: "Tw Cen MT", Arial, Sans-Serif;
+		font-size: 2.2em;
+		letter-spacing: 0.07em;
+		list-style: none;
+		padding: 4px 14px 7px 14px;
+		position: relative;
+		right: 50%;		
+	}
+	#menu ul li.menu_first {
+		border-top-left-radius: 5px;
+		margin: 0;
+		padding-left: 0;
+		padding-right: 0;
+		width: 9px;
+	}
+	#menu ul li.menu_last {
+		border-top-right-radius: 5px;
+		margin: 0;
+		padding-left: 0;
+		padding-right: 0;
+		width: 9px;
+	}
+	#menu ul li a { 
+		color: #c8c8c8;
+		text-decoration: none;
+	}
+	#menu ul li a:hover { color: white; }
+	#menu ul li.current, #menu ul li.current_page_ancestor, #menu ul li.current_page_parent, #menu ul li.current_page_item  { background: white; }
+	#menu ul li.current a, #menu ul li.current_page_ancestor a, #menu ul li.current_page_parent a, #menu ul li.current_page_item a { color: #4A5FB1; }
+	#menu ul li.menu_search { padding-right: 0!important; } /* currently not used */
+	#menu ul li.menu_search a { /* looking glass */
+		background: url("http://data.canadensys.net/common/images/looking-glass.png") 10px 0px no-repeat;
+		margin: 0;
+		overflow: hidden;
+		padding: 0;
+		position: relative;
+	}
+	#menu ul li.menu_search a:hover { background: url("http://data.canadensys.net/common/images/looking-glass.png") 10px -25px no-repeat; }
+
+	#searchform {
+		margin: 0;
+		padding: 0;
+	}
+	#searchform a {
+		margin: 0;
+		margin-top: -10px;
+		padding: 0;
+	}
+	#searchform input {
+		margin: 0;
+		padding: 0;
+	}
+
+
+	/*-- Containers and content --*/
+
+	#body {
+		height: 90%; /* old IE */
+		margin: 36px auto;
+		min-width: 1024px;
+		position: relative;
+		width: 1024px; /* 36 + 616 (width of content) + 36 + 300 + 36 */
+	}
+	body > #body {
+		height: auto;
+		min-height: 90%; /* other browsers */
+	}
+	.fullscreen { width: 100% !important; }
+
+	#content {
+		font-size: 1.35em;
+		font-weight: normal;
+		margin-right: 336px; /* for side_bar */
+		line-height: 1.5em;
+		padding: 0 36px;
+		text-align: left!important;
+	}
+	#content.no_side_bar {
+		margin-right: 0;
+	}
+
+	#ie { /* IE browser suggestion message */
+		color: #22241e;
+		font-size: 1.2em;
+		height: 24px;
+		margin: 0;
+		left: 36px;
+		padding: 0;
+		position: absolute;
+		top: -24px;
+	}
+
+
+	/*-- Sidemenu --*/
+
+	#side_bar {
+		font-size: 1.5em;
+		padding-right: 36px;
+		position: absolute;
+		right: 0;
+		top: 0;
+		width: 300px;
+	}
+
+	.side_menu {
+		margin: 0 0 18px;
+		padding: 0!important; /* overwrite .round */
+	}
+	.side_menu li {
+		border-bottom: 1px solid #a8a7a5;
+		list-style: none;
+	}
+	.side_menu li:last-child { border-bottom: none!important; }
+	.side_menu li.current_page_item > a, .side_menu li.current > a { background: url("http://data.canadensys.net/common/images/arrow.png") 3px 3px no-repeat transparent; }
+	.side_menu a { /* warning: only use <a> elements in the .side_menu */
+		display: block;
+		padding: 6px 15px;
+	}
+	.side_menu a:hover {
+		background-color: #d3d3d3!important;
+		text-decoration: none;
+	}
+	.side_menu ul { /* sublevels */
+		background: white;
+		border-top: 1px solid #a8a7a5;
+		display: none; /* collapse menu by default */
+		padding: 0;
+	}
+	.side_menu .current_page_item ul, .side_menu .current_page_ancestor ul { display: block } /* Show submenu */
+	.side_menu ul a { padding-left: 24px; }
+
+
+	/*-- Footer --*/
+
+	#footer {
+		background: -moz-linear-gradient(bottom, #4A5FB1 0%, #B3D1FF 100%);	
+		background: -ms-linear-gradient(bottom, #4A5FB1 0%, #B3D1FF 100%);
+		background: -o-linear-gradient(bottom, #4A5FB1 0%, #B3D1FF 100%);
+		background: -webkit-linear-gradient(bottom, #4A5FB1 0%, #B3D1FF 100%);
+		background: linear-gradient(bottom, #4A5FB1 0%, #B3D1FF 100%);
+		background-color: #961b00;
+		clear: both;
+		height: 90px;
+		width: 100%;
+		z-index: 1;
+	}
+	#footer_content {
+		clear: both;
+		color: #4A5FB1;
+		font-size: 12px;
+		margin: 0 auto;
+		padding: 18px 0 0; /* = 36px for content */
+		text-align: left;
+		width: 1024px;
+	}
+	#footer_content a {
+		color: white;
+		text-decoration: none;	
+	}
+	#footer_content a:hover { color: white; }
+
+	.footer_section { width: 500px; }
+	.footer_section p {
+		height: 31px;
+		margin: 0;
+	}
+	.footer_section ul {
+		clear: both;
+		list-style: none;
+		margin: 9px 0 0 0;
+		padding: 0;
+	}
+	.footer_section li { display: inline; }
+	.footer_section li:after { content: " | "; }
+	.footer_section li:last-child:after { content: ""; }
+
+	.cc_logo {
+		display: block;
+		float: left;
+		margin-right: 18px;
+		height: 31px;
+		width: 88px;
+	}
+	#cc0 { background: url("http://data.canadensys.net/common/images/cc0-logo.png") no-repeat; }
+	#cc_by { background: url("http://data.canadensys.net/common/images/cc-by-logo.png") no-repeat; }
+
+
+	/*-- Feedback --*/
+
+	#feedback_bar {
+		background: url("http://data.canadensys.net/common/images/feedback.png") no-repeat #22241e;
+		_display: none; /* IE 6 */
+		position: fixed;
+		right: 0;
+		top: 40%;
+		z-index: 60;
+	}
+	#feedback_bar a {
+		display: block;
+		height: 98px;
+		width: 27px;
+	}
+
+
+	/*-- Content & view classes --*/
+
+	#content blockquote {
+		border-left: 3px solid #e7e7e7;
+		margin: 0;
+		padding-left: 15px;
+	}
+	#content a:visited { color: #6a0d00; }
+	#content h1, #view h1 { font-size: 1.8em; }
+	#content h2, #view h2 {
+		border-bottom: 2px solid #22241e;
+		font-size: 1.3em;
+	}
+	#content h1 .edit {
+		float: right;
+		font-size: 15px;
+	}
+	#content table {
+		border: none;
+		border-collapse: collapse;
+		font-size: 13.5px;
+		padding: 9px 0;
+		width: 100%;
+		text-align: left;
+	}
+	#content table th, #content table td {
+		padding-bottom: 3px;
+		vertical-align: top;
+	}
+
+
+	/*-- Align & clear classes --*/
+
+	.align_left { text-align: left!important; }
+	.align_center { text-align: center!important; }
+	.align_right { text-align: right!important; }
+	.left { float: left; }
+	.right { float: right; }
+	.clear { clear: both; }
+	.no_margin { margin: 0; }
+	.hidden { display: none; }
+	.background_center td { background-position: top center!important; } /* to center icons */
+
+	.clear_fix:after { /* http://css-tricks.com/snippets/css/clear-fix/ */
+		visibility: hidden;
+		display: block;
+		content: "";
+		clear: both;
+		height: 0;
+	}
+	* html .clear_fix { zoom: 1; } /* IE6 */
+	*:first-child+html .clear_fix { zoom: 1; } /* IE7 */
+
+
+	/*-- Custom classes --*/
+
+	table.sortable th:not(.sorttable_nosort) {
+		color: #4A5FB1;
+		cursor: pointer;
+	}
+
+	ul.custom_list {
+/*		margin: 15px 0; */
+		margin-left: 0; /* for IE */
+		padding: 0;
+	}
+	ul.custom_list.round { padding: 3px 9px; } /* redeclare: used for checklist builder */
+	ul.custom_list li {
+/*		clear: both; */
+		list-style-type: none;
+	}
+	form.custom_form { padding: 0 36px; }
+	form.custom_form input[type=text] {
+		font-size: 1em;
+		height: 21px;
+		margin-right: 18px; /* for button */
+		width: 330px;
+	}
+	form.custom_form select { font-size: 1em; }
+
+
+	/*-- Other classes --*/
+
+	.round { /* add to p, ul, li */
+		background-color: #e7e7e7;
+		border: 1px solid #a8a7a5;
+		border-radius: 5px;
+		padding: 3px 9px;
+	}
+	#tooltip {
+		background: #22241e;
+		border-radius: 5px;
+		color: white;
+		padding: 3px 9px;
+		position: absolute;
+		width: 300px;
+		z-index: 100;
+	}
+	#tooltip h3 {
+		font-size: 12px;
+		font-weight: normal;
+		margin: 0;
+	}
+
+	.warning {
+		background-color: #f1e300;
+		margin-bottom: 18px;
+	}
+
+	ul.buttons { padding: 0; } /* add to <ul> */
+	ul.buttons li {
+		display: inline;
+		list-style: none;
+	}
+	ul.buttons a {
+		background: white;
+		border: 1px solid #a8a7a5;
+		border-radius: 5px;
+		color: #22241e!important;
+		cursor: pointer;
+		font-weight: bold;
+		margin: 0 2px;
+		padding: 6px 12px;
+	}
+	ul.buttons a:hover {
+		border: 1px solid #22241e;
+		text-decoration: none;
+	}
+	ul.buttons a.selected, .buttons a:active {
+		background-color: #e7e7e7;
+		-moz-box-shadow: inset 0 1px 2px #a8a7a5;
+		-webkit-box-shadow: inset 0 1px 2px #a8a7a5;
+		box-shadow: inset 0 1px 2px #a8a7a5;
+	}
+
+	.big_button { /* add to <a> (wrapped in <p>) */
+		background-color: #e7e7e7!important;
+		cursor: pointer;
+		display: block;
+		font-size: 15px;
+		height: 48px; /* 3 + 42 + 3 */
+		line-height: 48px;
+		padding: 0 63px 0 15px;  /* 48 icon + 9 padding */
+	}
+	p .big_button { margin: 0 0 18px; }
+	.big_button:hover, .big_button a:hover, .big_button.selected {
+		background-color: #d3d3d3!important;
+		text-decoration: none;
+	}
+	.big_button.multi_line {
+		height: 100%!important;
+		line-height: 22px;
+		min-height: 48px;
+	}
+
+	ul.index {
+		font-style: italic;
+		line-height: 1.2em;	
+		margin: 0;
+		padding: 0 0 18px;
+	}
+	ul.index li {
+		font-size: 0.9em;
+		list-style: none;	
+	}
+
+	#search_box { margin-bottom: 18px; }
+
+	/*-- Icons --*/
+	#dwc_archive { background: url("http://data.canadensys.net/common/images/button-dwca.png") top right no-repeat; }
+	#csv_file { background: url("http://data.canadensys.net/common/images/button-csv.png") top right no-repeat; }
+	#eml_file { background: url("http://data.canadensys.net/common/images/button-eml.png") top right no-repeat; }
+	#rtf_file { background: url("http://data.canadensys.net/common/images/button-rtf.png") top right no-repeat; }
+	#explorer_link { background: url("http://data.canadensys.net/common/images/button-explorer.png") top right no-repeat; }
+	#gbif_link { background: url("http://data.canadensys.net/common/images/button-gbif.png") top right no-repeat; }
+	#print_page { background: url("http://data.canadensys.net/common/images/button-printer.png") top right no-repeat; }
+
+	/*-- Reserved WordPress classes for images --*/
+
+	.alignright { float: right; }
+	.alignleft { float: left; }
+
+	p img {
+		border: 0;
+		max-width: 100%;
+		padding: 0;
+	}
+	img.centered {
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	img.alignright {
+		display: inline;
+		margin: 0 0 2px 7px;
+		padding: 4px;
+	}
+	img.alignleft {
+		display: inline;
+		margin: 0 7px 2px 0;
+		padding: 4px;
+	}
+
+
+	/*-- IPT overwrites --*/
+
+	#resourcestable td, #resourcestable th { padding: 6px 0; }
+
+	#resourcelogo {
+		float: left;
+	}
+	#resourcelogo img {
+		max-height: 64px;
+		max-width: 64px;
+		padding-bottom: 18px;
+		padding-right: 18px;
+	}
+	div.definition:after { /* clear_fix for mapping: http://code.google.com/p/gbif-providertoolkit/issues/detail?id=837 */
+		visibility: hidden;
+		display: block;
+		content: "";
+		clear: both;
+		height: 0;
+	}
+	* html .definition { zoom: 1; } /* IE6 */
+	*:first-child+html .definition { zoom: 1; } /* IE7 */
+	div.definition div.title, div.definition div.titleOverview { background-color: #e7e7e7; }
+	div.details table th, div.details td { padding: 0px 9px 6px 0px; }
+	div.details table th { width: 25%; }
+	table#admintable { width: inherit; }
+	table#admintable th, table#admintable td { vertical-align: middle; }
+
+	/* Once http://code.google.com/p/gbif-providertoolkit/issues/detail?id=809 is addressed, remove the following: */
+	div.textinline{ position: relative; }
+	div.textinline img.infoImg{ position: absolute; }
+	div.textinline .info{ top: 30px; }	
+	div.textinline h2{ margin-left: 30px; }
+
+	}
+
+/* Print view */
+@media print {
+
+	/* HTML elements */
+
+	body {
+	    font-family: "Lucida Grande", Arial, Sans-Serif;
+	    font-size: 10px;
+	    color: #22241e;
+	    width: 100%;
+	    background-color: #ffffff;
+	    padding: 0;
+	    margin: 0;
+	    min-width: 908px;
+	}
+
+	a {
+	    color: #4A5FB1;
+	    text-decoration: none;
+	}
+	a:hover {
+	    color: #4A5FB1;
+	    text-decoration: underline; 
+	}
+
+	h1, h2, h3, h4, h5, h6 {
+	    line-height: 1.5em;
+	}
+
+	form {
+	    padding: 0;
+	    margin: 0;
+	}
+
+	input {
+	    padding: 0;
+	    margin: 0;
+	}
+
+
+	/* Header, Sidebar and Footer */
+
+	#header, #sidebar, #side_bar, #footer {
+	    display:none;
+	}
+
+	/* Containers and content */
+
+	html, body, #wrapper {
+	   width: 100%;
+	}
+
+	#content {
+	    font-size: 1.35em;
+	    line-height: 1.5em;
+	    font-weight: normal;
+	    text-align: justify;
+	    text-align: left!important; /* data portal only */
+	}
+	#content blockquote {
+	    margin: 0;
+	    padding-left: 15px;
+	    border-left: 3px solid #e7e7e7;
+	}
+	#content a:visited {
+	    color: #6a0d00;
+	}
+	#content ul {
+	    list-style-type: disc;
+	}
+	#content h1 {
+	    font-size: 1.8em;
+	}
+	#content h2 {
+	    font-size: 1.3em;
+	    border-bottom: 2px solid #22241e;
+	}
+
+	/* General classes */
+
+	.align_left { text-align: left; }
+	.align_center { text-align: center; }
+	.align_right { text-align: right; }
+
+	.background_center td { /* to center icons */
+	    background-position: top center!important;
+	}
+
+	.round { /* add to p, ul, li */
+	    border: 1px solid #a8a7a5;
+	    background-color: #e7e7e7;
+	    padding: 3px 9px;
+	    border-radius: 5px;
+	    -moz-border-radius: 5px;
+	    -webkit-border-radius: 5px;
+	}
+
+	.warning {
+	    background-color: #f1e300;
+	    margin-bottom: 18px;
+	}
+
+	ul.custom_list {
+	    padding: 0;
+	}
+	ul.custom_list.round {
+	    padding: 3px 9px;
+	}
+	ul.custom_list li {
+	    list-style-type: none;
+	}
+	table.custom_table {
+	    padding: 9px 0;
+	    width: 100%;
+	    border: none;
+	    border-collapse: collapse; 
+	}
+	table.custom_table tr {
+	    vertical-align: top;
+	}
+	form.custom_form {
+	    padding: 0 36px;
+	}
+	form.custom_form input[type=text] {
+	    width: 330px;
+	    margin-right: 18px; /* For button */
+	    font-size: 1em;
+	    height: 21px;
+	}
+	form.custom_form select {
+	    font-size: 1em;
+	}
+
+	.big_button { /* Add to li */
+	    font-size: 15px;
+	/*  width: 240px; */
+	    padding: 0 63px 0 15px;  /* 48 icon + 9 padding */
+	    height: 48px; /* 3 + 42 + 3 */
+	    line-height: 48px;
+	    background-color: #e7e7e7!important;
+	    cursor: pointer;
+	}
+	.big_button:hover, .big_button.selected {
+	    background-color: #d3d3d3!important;
+	}
+	.big_button a:hover, .big_button a:visited {
+	    text-decoration: none;
+	    color: #4A5FB1!important;
+	}
+	.big_button.multi_line {
+	    line-height: 22px;
+	    min-height: 48px;
+	    height: 100%!important;
+	}
+
+	.sortable { /* Add to th */
+	    color: #4A5FB1;
+	    cursor: pointer;
+	}
+
+	ul.index {
+	    line-height: 1.2em;
+	    font-style: italic;
+	    margin: 0;
+	    padding: 0 0 18px;
+	}
+	ul.index li {
+	    font-size: 0.9em;
+	    list-style: none;   
+	}
+
+	#search_box {
+	    margin-bottom: 18px;
+	}
+
+
+	/* Reserved WordPress classes for images */
+
+	.alignright { float: right; }
+	.alignleft { float: left; }
+
+	p img {
+	    border: 0;
+	    padding: 0;
+	    max-width: 100%;
+	}
+	img.centered {
+	    display: block;
+	    margin-left: auto;
+	    margin-right: auto;
+	}
+	img.alignright {
+	    padding: 4px;
+	    margin: 0 0 2px 7px;
+	    display: inline;
+	}
+	img.alignleft {
+	    padding: 4px;
+	    margin: 0 7px 2px 0;
+	    display: inline;
+	}
+	
+	#uservoice-feedback{
+	    display:none
+	}
+	
+	/*-- Icons --*/
+	#dwc_archive, #csv_file, #eml_file, #rtf_file, #explorer_link, #gbif_link, #print_page { background: none; }
+
+}
