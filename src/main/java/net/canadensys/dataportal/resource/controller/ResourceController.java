@@ -94,7 +94,7 @@ public class ResourceController {
 					} else {
 						/**
 						 * Logic to load the records to a given page Ex.: Page 4
-						 * → Get From 61 to 80 → Shift interval on the index
+						 * → Get From 61 to 80 → Shift interval on repatriados-gbif-dk/occurrences/43305689the index
 						 * list is from 60 final 79
 						 */
 						int shift = (page - 1) * pageSize;

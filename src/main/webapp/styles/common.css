@@ -86,7 +86,7 @@
 	}
 
   #header_content a, #header_message a {
-  	color: #4A5FB1;
+  	color: #000;
   	text-decoration: none;	
   }
 
@@ -376,7 +376,7 @@
 		margin: 0;
 		padding-left: 15px;
 	}
-	#content a:visited { color: #6a0d00; }
+	#content a:visited { color: #4A5FB1; }
 	#content h1, #view h1 { font-size: 1.8em; }
 	#content h2, #view h2 {
 		border-bottom: 2px solid #22241e;
@@ -674,7 +674,7 @@
 	    border-left: 3px solid #e7e7e7;
 	}
 	#content a:visited {
-	    color: #6a0d00;
+	    color: #4A5FB1;
 	}
 	#content ul {
 	    list-style-type: disc;
