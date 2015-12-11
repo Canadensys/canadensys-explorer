@@ -38,6 +38,8 @@
 							<option value="${page.availableFilters.taxonrank}">${rc.getMessage("filter.taxonrank")}</option>
 						</optgroup>
 						<optgroup label="${rc.getMessage("filter.group.dataset")}">
+							<option value="${page.availableFilters.resourcename}">${rc.getMessage("filter.resourcename")}</option>
+							<option value="${page.availableFilters.publishername}">${rc.getMessage("filter.publishername")}</option>
 							<option value="${page.availableFilters.institutioncode}">${rc.getMessage("filter.institutioncode")}</option>
 							<option value="${page.availableFilters.datasetname}">${rc.getMessage("filter.datasetname")}</option>
 							<option value="${page.availableFilters.sourcefileid}">${rc.getMessage("filter.sourcefileid")}</option>
@@ -63,7 +65,9 @@
 						<optgroup label="${rc.getMessage("filter.group.extra")}">
 							<option value="${page.availableFilters.hascoordinates}">${rc.getMessage("filter.hascoordinates")}</option>
 							<option value="${page.availableFilters.hasmedia}">${rc.getMessage("filter.hasmedia")}</option>
-							<option value="${page.availableFilters.hasassociatedsequences}">${rc.getMessage("filter.hasassociatedsequences")}</option>
+							<#if page.availableFilters.hasassociatedsequences?has_content>
+								<option value="${page.availableFilters.hasassociatedsequences}">${rc.getMessage("filter.hasassociatedsequences")}</option>
+							</#if>	
 							<option value="${page.availableFilters.hastypestatus}">${rc.getMessage("filter.hastypestatus")}</option>
 						</optgroup>
 					</select>

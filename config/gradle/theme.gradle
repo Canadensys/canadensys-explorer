@@ -1,0 +1,14 @@
+ext {
+	webThemeVersion = '0.4-SNAPSHOT'
+}
+
+dependencies {
+	compile("winglongitude:web-theme:${webThemeVersion}@war")
+}
+
+//include our layout.ftl to the root of 'decorators' as defined in sitemesh3.xml
+war {
+	from("${webAppDirName}/decorators/layouts/default"){
+        into("decorators")
+	}
+}
