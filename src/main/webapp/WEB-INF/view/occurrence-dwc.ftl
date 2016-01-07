@@ -34,7 +34,7 @@
 			<tr><td>1</td><td>root</td><td><a href="http://purl.org/dc/terms/type">type</a></td><td>${page.occRawModel.type?if_exists}</td><td class="unused"></td></tr>
 			<tr><td>2</td><td>root</td><td><a href="http://purl.org/dc/terms/modified">modified</a></td><td> ${page.occRawModel.modified?if_exists}</td><td class="unused"></td></tr>
 			<tr><td>3</td><td>root</td><td><a href="http://purl.org/dc/terms/language">language</a></td><td>${page.occRawModel.language?if_exists}</td><td class="unused"></td></tr>
-			<tr><td>4</td><td>root</td><td><a href="http://purl.org/dc/terms/rights">rights</a></td><td>${page.occRawModel.rights?if_exists}</td><td class="unused"></td></tr>
+			<tr><td>4</td><td>root</td><td><a href="http://purl.org/dc/terms/license">license</a></td><td>${page.occRawModel.license?if_exists}</td><td class="unused"></td></tr>
 			<tr><td>5</td><td>root</td><td><a href="http://purl.org/dc/terms/rightsHolder">rightsHolder</a></td><td>${page.occRawModel.rightsholder?if_exists}</td><td class="unused"></td></tr>
 			<tr class="unused"><td>6</td><td>root</td><td><a href="http://purl.org/dc/terms/accessRights">accessRights</a></td><td>${page.occRawModel.accessrights?if_exists}</td><td class="unused"></td></tr>
 			<tr><td>7</td><td>root</td><td><a href="http://purl.org/dc/terms/bibliographicCitation">bibliographicCitation</a></td><td>${page.occRawModel.bibliographiccitation!}</td><td>${page.occRawModel.bibliographiccitation!}</td></tr>

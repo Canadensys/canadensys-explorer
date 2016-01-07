@@ -242,8 +242,8 @@
 				<td>${page.occModel.datasetname!}</td>
 			</tr>
 			<tr>
-				<th scope="row">${rc.getMessage("occ.rights")}</th>
-				<td>${page.occRawModel.rights?if_exists}</td>
+				<th scope="row">${rc.getMessage("occ.license")}</th>
+				<td>${page.occRawModel.license?if_exists}</td>
 			</tr>
 		</tbody>
 		<tbody>

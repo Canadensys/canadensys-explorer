@@ -60,10 +60,10 @@ VALUES (
 'ACAD 3','Myosotis arvensis','species','Canada','Nova Scotia','ACAD','z10441',2013,'On a lobster claw'
 );
 INSERT INTO occurrence_raw(
-auto_id,datasetname,sourcefileid,resource_id,dwca_id,scientificname,taxonrank,country,stateprovince,collectioncode,catalognumber,year,habitat)
+auto_id,datasetname,sourcefileid,resource_id,dwca_id,scientificname,taxonrank,country,stateprovince,collectioncode,catalognumber,year,habitat,license)
 VALUES (
 3,'E. C. Smith Herbarium (ACAD)','acad-specimens',1,
-'ACAD 3','Myosotis arvensis','species','Canada','Nova Scotia','ACAD','z10441',2013, 'On a lobster claw'
+'ACAD 3','Myosotis arvensis','species','Canada','Nova Scotia','ACAD','z10441',2013, 'On a lobster claw','CC0'
 );
 
 INSERT INTO occurrence(

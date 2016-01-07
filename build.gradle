@@ -45,7 +45,7 @@ ext {
 	postgresqlVersion = '9.3-1102-jdbc4'
 	liquibaseVersion = '3.3.2'
 	
-	ligerVersion = '2.13.1'
+	ligerVersion = '2.16.1'
 	webCoreVersion = '0.7'
 
 	tomcatVersion = '7.0.59'
