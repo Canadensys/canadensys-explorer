@@ -1,8 +1,10 @@
 language: java
 before_install:
+# Workaround for issue with openjdk7 see https://github.com/travis-ci/travis-ci/issues/5227#issuecomment-165131913
+  - cat /etc/hosts # optionally check the content *before*
   - sudo hostname "$(hostname | cut -c1-63)"
- #- "export DISPLAY=:99.0"
- #- "sh -e /etc/init.d/xvfb start"
+  - sed -e "s/^\\(127\\.0\\.0\\.1.*\\)/\\1 $(hostname | cut -c1-63)/" /etc/hosts | sudo tee /etc/hosts
+  - cat /etc/hosts # optionally check the content *after*
 jdk:
   - oraclejdk7
   - openjdk7
