@@ -235,7 +235,7 @@ public class SearchServiceConfig {
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.HAS_ASSOCIATED_SEQUENCES.id,
 				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.HAS_ASSOCIATED_SEQUENCES.id,"hasassociatedsequences").singleValue("hasassociatedsequences",Boolean.class).eqOperator().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.COUNTY.id,
-				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.COUNTY.id,"county").singleValue("county",String.class).eqOperator().supportSuggestion().toOccurrenceSearchableField());
+				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.COUNTY.id,"county").singleValue("county",String.class).eqOperator().likeOperator(QueryOperatorEnum.CLIKE).supportSuggestion().eqOperator().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.MUNICIPALITY.id,
 				new OccurrenceSearchableFieldBuilder(SearchableFieldEnum.MUNICIPALITY.id,"municipality").singleValue("municipality",String.class).eqOperator().likeOperator(QueryOperatorEnum.CLIKE).eqOperator().supportSuggestion().toOccurrenceSearchableField());
 		SEARCHABLE_FIELD_MAP.put(SearchableFieldEnum.SOURCE_FILE_ID.id,
